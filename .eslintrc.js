@@ -21,5 +21,8 @@ module.exports = {
         jest: true
       }
     }
-  ]
+  ],
+  globals: {
+    "L": "readable"
+  }
 };
