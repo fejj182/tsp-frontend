@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { map, tileLayer } from "leaflet";
+import L from "leaflet";
 
 export default {
   data() {
@@ -13,14 +13,20 @@ export default {
       myMap: null
     };
   },
+  props: {
+    onClick: {
+      type: Function
+    }
+  },
   mounted() {
-    this.myMap = map("map").setView(this.centreCoords, this.zoomLevel);
+    this.myMap = L.map("map");
+    this.myMap.setView(this.centreCoords, this.zoomLevel);
     this.addInitialTile();
-    this.myMap.on("click", this.onMapClick);
+    this.myMap.on("click", this.onClick);
   },
   methods: {
     addInitialTile() {
-      tileLayer(
+      L.tileLayer(
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
         {
           attribution:
@@ -30,9 +36,6 @@ export default {
           accessToken: process.env.VUE_APP_OPEN_STREET_MAPS_KEY
         }
       ).addTo(this.myMap);
-    },
-    onMapClick(event) {
-      console.log(event.latlng);
     }
   }
 };

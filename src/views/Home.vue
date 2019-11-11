@@ -1,6 +1,6 @@
 <template>
   <div id="home">
-    <Map />
+    <Map :on-click="onMapClick" />
     <Markers />
   </div>
 </template>
@@ -14,6 +14,11 @@ export default {
   components: {
     Map,
     Markers
+  },
+  methods: {
+    onMapClick: event => {
+      console.log(event.latlng);
+    }
   }
 };
 </script>

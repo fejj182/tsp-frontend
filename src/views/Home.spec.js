@@ -13,4 +13,20 @@ describe("Home", () => {
     const wrapper = shallowMount(Home);
     expect(wrapper.find(Markers).exists()).toBe(true);
   });
+
+  describe("Map", () => {
+    const MapStub = {
+      name: "Map",
+      template: "<span><slot></slot></span>",
+      props: ["on-click"]
+    };
+    it("should contain an onClick prop", () => {
+      const wrapper = shallowMount(Home, {
+        stubs: {
+          Map: MapStub
+        }
+      });
+      expect(wrapper.find(MapStub).props().onClick).toBeTruthy();
+    });
+  });
 });
