@@ -14,6 +14,7 @@ module.exports = {
   overrides: [
     {
       files: [
+        '**/__mocks__/**',
         '**/*.spec.js',
         "**/__tests__/*.{j,t}s?(x)",
         "**/tests/unit/**/*.spec.{j,t}s?(x)"

@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import Map from "@/map/Map.vue";
-import Markers from "@/markers/Markers.vue";
+import Map from "@/modules/map/Map.vue";
+import Markers from "@/modules/markers/Markers.vue";
 
 export default {
   name: "home",
@@ -16,8 +16,10 @@ export default {
     Markers
   },
   methods: {
-    onMapClick: event => {
-      console.log(event.latlng);
+    onMapClick(event) {
+      const lat = event.latlng.lat;
+      const lon = event.latlng.lng;
+      this.$store.dispatch("getNearestStation", { lat, lon });
     }
   }
 };
