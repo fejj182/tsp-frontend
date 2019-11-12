@@ -1,11 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as markers from "@/store/modules/markers";
+import * as nearestStation from "@/store/modules/nearestStation/getNearestStation";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    markers
+    nearestStation
   }
 });
