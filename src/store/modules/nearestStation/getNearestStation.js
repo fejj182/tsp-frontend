@@ -8,7 +8,7 @@ export const getters = {};
 
 export const actions = {
   async getNearestStation({ commit }, location) {
-    const station = stationsApi.getNearestStation(location);
+    const station = await stationsApi.getNearestStation(location);
     commit("FETCH_NEAREST_STATION_SUCCESS", station);
   }
 };
