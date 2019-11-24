@@ -8,25 +8,16 @@ describe("Home", () => {
     const wrapper = shallowMount(Home);
     expect(wrapper.find(Map).exists()).toBe(true);
   });
-
   it("should contain the markers", () => {
     const wrapper = shallowMount(Home);
     expect(wrapper.find(Markers).exists()).toBe(true);
   });
 
   describe("Map", () => {
-    const MapStub = {
-      name: "Map",
-      template: "<span><slot></slot></span>",
-      props: ["on-click"]
-    };
-    it("should contain an onClick prop", () => {
-      const wrapper = shallowMount(Home, {
-        stubs: {
-          Map: MapStub
-        }
-      });
-      expect(wrapper.find(MapStub).props().onClick).toBeTruthy();
+    it("should contain the listeners", () => {
+      const wrapper = shallowMount(Home);
+      expect(wrapper.find(Map).vm.$listeners.mapClick).toBeDefined();
+      expect(wrapper.find(Map).vm.$listeners.mapCreated).toBeDefined();
     });
   });
 

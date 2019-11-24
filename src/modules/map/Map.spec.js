@@ -9,6 +9,7 @@ jest.mock("leaflet", () => ({
 
 describe("Map", () => {
   let mockOn;
+
   beforeEach(() => {
     mockOn = jest.fn();
     L.map.mockReturnValue({
@@ -19,14 +20,18 @@ describe("Map", () => {
       addTo: jest.fn()
     });
   });
-  it("should call function passed in as onClick function when map is clicked", () => {
-    const mockOnClick = jest.fn();
-    const wrapper = shallowMount(Map, {
-      propsData: {
-        onClick: mockOnClick
-      }
-    });
+
+  it("should call onMapClick function when map is clicked", () => {
+    const wrapper = shallowMount(Map);
     wrapper.find("#map").trigger("click");
-    expect(mockOn).toHaveBeenCalledWith("click", mockOnClick);
+    expect(mockOn).toHaveBeenCalledWith("click", wrapper.vm.onMapClick);
+  });
+
+  describe("onMapClick", () => {
+    it("should emit mapClick event", () => {
+      const wrapper = shallowMount(Map);
+      wrapper.vm.onMapClick("event");
+      expect(wrapper.emitted().mapClick[0]).toEqual(["event"]);
+    });
   });
 });

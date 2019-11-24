@@ -1,7 +1,7 @@
 <template>
   <div id="home">
-    <Map :on-click="onMapClick" />
-    <Markers />
+    <Map @mapClick="onMapClick" @mapCreated="onMapCreated" />
+    <Markers :map="map" />
   </div>
 </template>
 
@@ -11,6 +11,11 @@ import Markers from "@/modules/markers/Markers.vue";
 
 export default {
   name: "home",
+  data: function() {
+    return {
+      map: null
+    };
+  },
   components: {
     Map,
     Markers
@@ -20,6 +25,9 @@ export default {
       const lat = event.latlng.lat;
       const lon = event.latlng.lng;
       this.$store.dispatch("getNearestStation", { lat, lon });
+    },
+    onMapCreated(map) {
+      this.map = map;
     }
   }
 };
