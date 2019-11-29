@@ -6,6 +6,11 @@
 import L, { Map } from "leaflet";
 
 export default {
+  data: function() {
+    return {
+      activeMarker: null
+    };
+  },
   props: {
     map: {
       type: Map
@@ -18,10 +23,15 @@ export default {
   },
   watch: {
     nearestStation: function() {
-      L.marker([
+      const marker = L.marker([
         this.$store.state.nearestStation.station.lat,
-        this.$store.state.nearestStation.station.lon
-      ]).addTo(this.map);
+        this.$store.state.nearestStation.station.lng
+      ]);
+      if (this.activeMarker) {
+        this.activeMarker.remove();
+      }
+      this.activeMarker = marker;
+      marker.addTo(this.map);
     }
   }
 };

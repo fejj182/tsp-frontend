@@ -23,8 +23,8 @@ export default {
   methods: {
     onMapClick(event) {
       const lat = event.latlng.lat;
-      const lon = event.latlng.lng;
-      this.$store.dispatch("getNearestStation", { lat, lon });
+      const lng = event.latlng.lng;
+      this.$store.dispatch("getNearestStation", { lat, lng });
     },
     onMapCreated(map) {
       this.map = map;

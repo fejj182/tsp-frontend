@@ -2,6 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Home from "./Home";
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/markers/Markers.vue";
+import faker from "faker";
 
 describe("Home", () => {
   it("should contain the map", () => {
@@ -29,10 +30,14 @@ describe("Home", () => {
           $store: mockStore
         }
       });
-      wrapper.vm.onMapClick({ latlng: { lat: "123", lng: "456" } });
+      const lat = faker.address.latitude();
+      const lng = faker.address.longitude();
+      wrapper.vm.onMapClick({
+        latlng: { lat, lng }
+      });
       expect(mockStore.dispatch).toHaveBeenCalledWith("getNearestStation", {
-        lat: "123",
-        lon: "456"
+        lat,
+        lng
       });
     });
   });
