@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       centreCoords: [40.7067997, 0.5801695],
-      zoomLevel: 8,
+      zoomLevel: 7,
       myMap: null,
       tileOptions: {
         attribution:
