@@ -1,22 +1,32 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "./Home";
+import Home from "@/modules/home/Home.vue";
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/markers/Markers.vue";
+import TripForm from "@/modules/trip/TripForm.vue";
 import faker from "faker";
+import Vue from "vue";
+import Vuetify from "vuetify";
+
+Vue.use(Vuetify);
 
 describe("Home", () => {
+  let wrapper;
+  beforeEach(() => {
+    wrapper = shallowMount(Home);
+  });
+
   it("should contain the map", () => {
-    const wrapper = shallowMount(Home);
     expect(wrapper.find(Map).exists()).toBe(true);
   });
   it("should contain the markers", () => {
-    const wrapper = shallowMount(Home);
     expect(wrapper.find(Markers).exists()).toBe(true);
+  });
+  it("should contain the trip builder form", () => {
+    expect(wrapper.find(TripForm).exists()).toBe(true);
   });
 
   describe("Map", () => {
     it("should contain the listeners", () => {
-      const wrapper = shallowMount(Home);
       expect(wrapper.find(Map).vm.$listeners.mapClick).toBeDefined();
       expect(wrapper.find(Map).vm.$listeners.mapCreated).toBeDefined();
     });
