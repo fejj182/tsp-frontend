@@ -6,6 +6,7 @@
       filled
       rounded
       @change="setActiveStation"
+      v-model="activeStation"
     ></v-autocomplete>
   </v-form>
 </template>
@@ -31,6 +32,19 @@ export default {
   methods: {
     setActiveStation(station) {
       this.$store.dispatch("setActiveStation", station);
+    }
+  },
+  computed: {
+    activeStation() {
+      const station = this.$store.state.nearestStation.station;
+      return {
+        text: station.name,
+        value: {
+          name: station.name,
+          lat: station.lat,
+          lng: station.lng
+        }
+      };
     }
   }
 };
