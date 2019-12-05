@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import L, { Map } from "leaflet";
+import L from "leaflet";
 
 export default {
   data: function() {
@@ -13,7 +13,7 @@ export default {
   },
   props: {
     map: {
-      type: Map
+      type: Object
     }
   },
   computed: {

@@ -9,12 +9,15 @@ export const getters = {};
 export const actions = {
   async getNearestStation({ commit }, location) {
     const station = await stationsApi.getNearestStation(location);
-    commit("FETCH_NEAREST_STATION_SUCCESS", station);
+    commit("SET_ACTIVE_STATION", station);
+  },
+  setActiveStation({ commit }, station) {
+    commit("SET_ACTIVE_STATION", station);
   }
 };
 
 export const mutations = {
-  FETCH_NEAREST_STATION_SUCCESS(state, station) {
+  SET_ACTIVE_STATION(state, station) {
     state.station = station;
   }
 };

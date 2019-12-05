@@ -12,6 +12,7 @@ Vue.use(Vuetify);
 describe("Home", () => {
   let wrapper;
   beforeEach(() => {
+    jest.resetAllMocks();
     wrapper = shallowMount(Home);
   });
 
@@ -49,6 +50,16 @@ describe("Home", () => {
         lat,
         lng
       });
+    });
+  });
+
+  describe("onMapCreated", () => {
+    it("should set the map", () => {
+      const wrapper = shallowMount(Home);
+      const mockMap = {};
+      wrapper.vm.onMapCreated(mockMap);
+      expect(wrapper.vm.map).toBe(mockMap);
+      expect(wrapper.find(Markers).props().map).toBe(mockMap);
     });
   });
 });

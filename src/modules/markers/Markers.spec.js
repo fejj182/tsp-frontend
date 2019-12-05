@@ -35,7 +35,7 @@ describe("Markers", () => {
     });
 
     it("should set the active marker when the store is updated", () => {
-      const mockMap = jest.fn();
+      const mockMap = {};
       const wrapper = mount(Markers, {
         mocks: {
           $store: mockStore
@@ -54,7 +54,7 @@ describe("Markers", () => {
     });
 
     it("should remove the old marker from the map if an active marker is already set", () => {
-      const mockMap = jest.fn();
+      const mockMap = {};
       const wrapper = mount(Markers, {
         mocks: {
           $store: mockStore
