@@ -1,4 +1,4 @@
-import { mount, shallowMount, createLocalVue } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import flushPromises from "flush-promises";
 import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
@@ -9,10 +9,8 @@ jest.mock("@/api/stations");
 
 Vue.use(Vuetify);
 
-const localVue = createLocalVue();
-
 describe("TripForm", () => {
-  let mockEnabledStations, vuetify, mockStore, barcelona, valencia, madrid;
+  let mockEnabledStations, mockStore, barcelona, valencia, madrid;
 
   beforeEach(() => {
     barcelona = {
@@ -41,8 +39,6 @@ describe("TripForm", () => {
         }
       }
     };
-
-    vuetify = new Vuetify();
   });
 
   it("should get stations when component mounted", () => {
@@ -71,17 +67,17 @@ describe("TripForm", () => {
     expect(wrapper.vm.stations).toEqual(mockFormValues);
   });
 
-  describe("v-autocomplete", () => {
+  describe("first destination", () => {
     it("should have stations in props", async () => {
-      const wrapper = mount(TripForm, {
-        localVue,
-        vuetify,
+      const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
       await flushPromises();
-      expect(wrapper.find(".v-autocomplete").props().items).toEqual([
+      expect(
+        wrapper.find("[data-test-id=destination-1]").props().items
+      ).toEqual([
         {
           text: "Barcelona-Sants",
           value: barcelona
@@ -97,30 +93,42 @@ describe("TripForm", () => {
       ]);
     });
     it("should call store dispatch on change", () => {
-      const wrapper = mount(TripForm, {
-        localVue,
-        vuetify,
+      const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      wrapper.find(".v-autocomplete").vm.$emit("change", barcelona);
+      wrapper
+        .find("[data-test-id=destination-1]")
+        .vm.$emit("change", barcelona);
       expect(mockStore.dispatch).toBeCalledWith("setActiveStation", barcelona);
     });
 
     it("should have v-model = activeStation", () => {
       mockStore.state.nearestStation.station = barcelona;
-      const wrapper = mount(TripForm, {
-        localVue,
-        vuetify,
+      const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.find(".v-autocomplete").props().value).toEqual({
+      expect(
+        wrapper.find("[data-test-id=destination-1]").props().value
+      ).toEqual({
         text: barcelona.name,
         value: barcelona
       });
+    });
+  });
+  describe("second destination", () => {
+    it("should appear after the first is selected", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(false);
+      mockStore.state.nearestStation.station = barcelona;
+      expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(true);
     });
   });
 });
