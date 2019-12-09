@@ -35,36 +35,49 @@ describe("TripForm", () => {
       dispatch: jest.fn(),
       state: {
         nearestStation: {
-          station: {}
+          station: barcelona
         }
       }
     };
   });
 
-  it("should get stations when component mounted", () => {
-    shallowMount(TripForm, {
-      mocks: {
-        $store: mockStore
-      }
+  describe("getStations", () => {
+    it("should get stations when component mounted", () => {
+      shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(stationsApi.getStations).toHaveBeenCalledTimes(1);
     });
-    expect(stationsApi.getStations).toHaveBeenCalledTimes(1);
-  });
 
-  it("should load stations into starting destination input", async () => {
-    const wrapper = shallowMount(TripForm, {
-      mocks: {
-        $store: mockStore
-      }
-    });
-    await flushPromises();
+    it("should load stations into starting destination input", async () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      await flushPromises();
 
-    const mockFormValues = mockEnabledStations.map(station => {
-      return {
-        text: station.name,
-        value: station
-      };
+      const mockFormValues = mockEnabledStations.map(station => {
+        return {
+          text: station.name,
+          value: station
+        };
+      });
+      expect(wrapper.vm.stations).toEqual(mockFormValues);
     });
-    expect(wrapper.vm.stations).toEqual(mockFormValues);
+
+    it("should have no stations if api call fails", async () => {
+      stationsApi.getStations.mockRejectedValue("Failed");
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      await flushPromises();
+      expect(wrapper.vm.stations).toEqual([]);
+    });
   });
 
   describe("first destination", () => {
@@ -121,6 +134,7 @@ describe("TripForm", () => {
   });
   describe("second destination", () => {
     it("should appear after the first is selected", () => {
+      mockStore.state.nearestStation.station = null;
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore

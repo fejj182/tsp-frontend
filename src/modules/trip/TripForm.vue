@@ -10,7 +10,7 @@
       :value="activeStation"
     ></v-autocomplete>
     <v-autocomplete
-      v-if="hasActiveStation"
+      v-if="activeStation"
       label="Where next?"
       data-test-id="destination-2"
       :items="stations"
@@ -27,19 +27,26 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      stations: null
+      stations: []
     };
   },
-  async mounted() {
-    const stations = await stationsApi.getStations();
-    this.stations = stations.map(station => {
-      return {
-        text: station.name,
-        value: station
-      };
-    });
+  mounted() {
+    this.getStations();
   },
   methods: {
+    async getStations() {
+      try {
+        const stations = await stationsApi.getStations();
+        this.stations = stations.map(station => {
+          return {
+            text: station.name,
+            value: station
+          };
+        });
+      } catch (e) {
+        this.stations = [];
+      }
+    },
     setActiveStation(station) {
       this.$store.dispatch("setActiveStation", station);
     }
@@ -57,11 +64,8 @@ export default {
           }
         };
       } else {
-        return {};
+        return null;
       }
-    },
-    hasActiveStation() {
-      return !_.isEmpty(this.activeStation);
     }
   }
 };
