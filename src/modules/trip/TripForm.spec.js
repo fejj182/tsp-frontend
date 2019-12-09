@@ -4,6 +4,7 @@ import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import _ from "lodash";
 
 jest.mock("@/api/stations");
 
@@ -130,6 +131,30 @@ describe("TripForm", () => {
         text: barcelona.name,
         value: barcelona
       });
+    });
+  });
+  describe("stationMapper", () => {
+    it("should be used for all stations", async () => {
+      stationsApi.getStations.mockResolvedValue([
+        {
+          name: "Barcelona-Sants",
+          lat: "41.379520",
+          lng: "2.140624"
+        }
+      ]);
+      mockStore.state.nearestStation.station = {
+        ...barcelona,
+        cat: 456
+      };
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      await flushPromises();
+      expect(
+        _.find(wrapper.vm.stations, wrapper.vm.activeStation)
+      ).toBeTruthy();
     });
   });
   describe("second destination", () => {

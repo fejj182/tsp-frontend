@@ -38,10 +38,7 @@ export default {
       try {
         const stations = await stationsApi.getStations();
         this.stations = stations.map(station => {
-          return {
-            text: station.name,
-            value: station
-          };
+          return this.stationFormMapper(station);
         });
       } catch (e) {
         this.stations = [];
@@ -49,20 +46,24 @@ export default {
     },
     setActiveStation(station) {
       this.$store.dispatch("setActiveStation", station);
+    },
+    stationFormMapper(station) {
+      return {
+        text: station.name,
+        value: {
+          id: station.id,
+          name: station.name,
+          lat: station.lat,
+          lng: station.lng
+        }
+      };
     }
   },
   computed: {
     activeStation() {
       const station = this.$store.state.nearestStation.station;
       if (!_.isEmpty(station)) {
-        return {
-          text: station.name,
-          value: {
-            name: station.name,
-            lat: station.lat,
-            lng: station.lng
-          }
-        };
+        return this.stationFormMapper(station);
       } else {
         return null;
       }
