@@ -6,7 +6,8 @@ module.exports = {
   extends: ["plugin:vue/essential", "@vue/prettier"],
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "error" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off"
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
+    "no-unused-vars": "warn"
   },
   parserOptions: {
     parser: "babel-eslint"
@@ -14,8 +15,8 @@ module.exports = {
   overrides: [
     {
       files: [
-        '**/__mocks__/**',
-        '**/*.spec.js',
+        "**/__mocks__/**",
+        "**/*.spec.js",
         "**/__tests__/*.{j,t}s?(x)",
         "**/tests/unit/**/*.spec.{j,t}s?(x)"
       ],
@@ -25,6 +26,6 @@ module.exports = {
     }
   ],
   globals: {
-    "L": "readable"
+    L: "readable"
   }
 };

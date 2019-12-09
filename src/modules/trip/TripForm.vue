@@ -1,19 +1,28 @@
 <template>
   <v-form ref="form">
+    <v-alert
+      data-test-id="alert"
+      v-if="alert"
+      v-model="alert"
+      dismissible
+      type="error"
+    >
+      Service down. Please try again later.
+    </v-alert>
     <v-autocomplete
       label="Start from..."
       data-test-id="destination-1"
       :items="stations"
       filled
       rounded
-      @change="setActiveStation"
+      @change="onChangeStartingDestination"
       :value="activeStation"
     ></v-autocomplete>
     <v-autocomplete
       v-if="activeStation"
       label="Where next?"
       data-test-id="destination-2"
-      :items="stations"
+      :items="connections"
       filled
       rounded
     ></v-autocomplete>
@@ -27,7 +36,9 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      stations: []
+      alert: false,
+      stations: [],
+      connections: []
     };
   },
   mounted() {
@@ -35,19 +46,30 @@ export default {
   },
   methods: {
     async getStations() {
+      this.stations = [];
       try {
         const stations = await stationsApi.getStations();
-        this.stations = stations.map(station => {
-          return this.stationFormMapper(station);
-        });
+        this.stations = this.stationFormMapper(stations);
       } catch (e) {
-        this.stations = [];
+        this.alert = true;
       }
     },
-    setActiveStation(station) {
+    async onChangeStartingDestination(station) {
       this.$store.dispatch("setActiveStation", station);
+      this.connections = [];
+      try {
+        const connections = await stationsApi.getConnections(station.id);
+        this.connections = this.stationFormMapper(connections);
+      } catch (e) {
+        this.alert = true;
+      }
     },
-    stationFormMapper(station) {
+    stationFormMapper(stations) {
+      return stations.map(station => {
+        return this.mapStation(station);
+      });
+    },
+    mapStation(station) {
       return {
         text: station.name,
         value: {
@@ -63,7 +85,7 @@ export default {
     activeStation() {
       const station = this.$store.state.nearestStation.station;
       if (!_.isEmpty(station)) {
-        return this.stationFormMapper(station);
+        return this.mapStation(station);
       } else {
         return null;
       }
