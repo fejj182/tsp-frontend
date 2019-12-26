@@ -18,7 +18,7 @@ describe("stations", () => {
   describe("getNearestStation", () => {
     it("should call the endpoint", () => {
       const location = {
-        lat: faker.address.latitude(),
+        lat: parseFloat(faker.address.latitude()),
         lng: faker.address.longitude
       };
       stations.getNearestStation(location);

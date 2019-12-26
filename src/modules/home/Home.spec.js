@@ -47,8 +47,8 @@ describe("Home", () => {
           $store: mockStore
         }
       });
-      const lat = faker.address.latitude();
-      const lng = faker.address.longitude();
+      const lat = parseFloat(faker.address.latitude());
+      const lng = parseFloat(faker.address.longitude());
       wrapper.vm.onMapClick({
         latlng: { lat, lng }
       });

@@ -17,20 +17,20 @@ describe("TripForm", () => {
     barcelona = {
       id: 1,
       name: "Barcelona-Sants",
-      lat: "41.379520",
-      lng: "2.140624"
+      lat: 41.37952,
+      lng: 2.140624
     };
     valencia = {
       id: 2,
       name: "Valencia-Estacio del Nord",
-      lat: "39.465064",
-      lng: "-0.377433"
+      lat: 39.465064,
+      lng: -0.377433
     };
     madrid = {
       id: 3,
       name: "Madrid - Atocha Cercanias",
-      lat: "40.406528",
-      lng: "-3.689373"
+      lat: 40.406528,
+      lng: -3.689373
     };
     mockEnabledStations = [barcelona, valencia, madrid];
     stationsApi.getStations.mockResolvedValue(mockEnabledStations);

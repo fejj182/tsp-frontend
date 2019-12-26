@@ -45,8 +45,8 @@ describe("Markers", () => {
         }
       });
 
-      const lat = faker.address.latitude();
-      const lng = faker.address.longitude();
+      const lat = parseFloat(faker.address.latitude());
+      const lng = parseFloat(faker.address.longitude());
       wrapper.vm.$store.state.nearestStation.station = { lat, lng };
 
       expect(wrapper.vm.activeMarker).toEqual(mockMarker);
@@ -67,8 +67,8 @@ describe("Markers", () => {
       const prevActiveMarker = { remove: jest.fn() };
       wrapper.vm.activeMarker = prevActiveMarker;
 
-      const lat = faker.address.latitude();
-      const lng = faker.address.longitude();
+      const lat = parseFloat(faker.address.latitude());
+      const lng = parseFloat(faker.address.longitude());
       wrapper.vm.$store.state.nearestStation.station = { lat, lng };
 
       expect(prevActiveMarker.remove).toBeCalledTimes(1);

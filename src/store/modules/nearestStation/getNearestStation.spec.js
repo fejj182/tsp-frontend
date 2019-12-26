@@ -12,8 +12,8 @@ describe("stations", () => {
   let barcelona = {
     id: 1,
     name: "Barcelona-Sants",
-    lat: "41.379520",
-    lng: "2.140624"
+    lat: 41.37952,
+    lng: 2.140624
   };
   const mockConnections = [];
   describe("action", () => {
@@ -21,8 +21,8 @@ describe("stations", () => {
       let location, commit;
       beforeEach(() => {
         location = {
-          lat: faker.address.latitude(),
-          lng: faker.address.longitude()
+          lat: parseFloat(faker.address.latitude()),
+          lng: parseFloat(faker.address.longitude())
         };
         commit = jest.fn();
       });
