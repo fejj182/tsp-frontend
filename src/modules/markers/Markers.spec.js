@@ -8,7 +8,7 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Markers", () => {
-  describe("Nearest Station", () => {
+  describe("Active marker", () => {
     let mockMarker = {
       addTo: jest.fn(),
       remove: jest.fn()

@@ -9,6 +9,7 @@
       <v-col cols="9">
         <Map @mapClick="onMapClick" @mapCreated="onMapCreated" id="map" />
         <Markers :map="map" />
+        <Connections v-if="map" :map="map" />
       </v-col>
     </v-row>
   </v-container>
@@ -18,6 +19,7 @@
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/markers/Markers.vue";
 import TripForm from "@/modules/trip/TripForm.vue";
+import Connections from "@/modules/connections/Connections.vue";
 
 export default {
   name: "home",
@@ -29,7 +31,8 @@ export default {
   components: {
     TripForm,
     Map,
-    Markers
+    Markers,
+    Connections
   },
   methods: {
     onMapClick(event) {

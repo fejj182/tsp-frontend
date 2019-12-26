@@ -3,6 +3,7 @@ import Home from "@/modules/home/Home.vue";
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/markers/Markers.vue";
 import TripForm from "@/modules/trip/TripForm.vue";
+import Connections from "@/modules/connections/Connections.vue";
 import faker from "faker";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -24,6 +25,11 @@ describe("Home", () => {
   });
   it("should contain the trip builder form", () => {
     expect(wrapper.find(TripForm).exists()).toBe(true);
+  });
+  it("should contain the connections", () => {
+    expect(wrapper.find(Connections).exists()).toBe(false);
+    wrapper.vm.map = {};
+    expect(wrapper.find(Connections).exists()).toBe(true);
   });
 
   describe("Map", () => {
