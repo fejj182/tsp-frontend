@@ -1,6 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Connections from "./Connections.vue";
 import L from "leaflet";
+import faker from "faker";
 
 jest.mock("leaflet", () => ({
   geoJSON: jest.fn()
@@ -18,6 +19,9 @@ describe("Connections", () => {
         nearestStation: {
           connections: []
         }
+      },
+      getters: {
+        connectionCoordSets: []
       }
     };
   });
@@ -40,21 +44,56 @@ describe("Connections", () => {
   });
 
   describe("Active Connections", () => {
-    it("should add connections to geoJson layer if not empty", () => {
-      const mockAddData = jest.fn();
+    let mockAddData;
+    beforeEach(() => {
+      mockAddData = jest.fn();
       L.geoJSON.mockReturnValue({
         addTo: jest.fn(),
         addData: mockAddData
       });
+    });
+    it("should add 1 connection to geoJson layer if have at least two points", () => {
+      mockStore.getters.connectionCoordSets = [[fakeCoord(), fakeCoord()]];
       const wrapper = shallowMount(Connections, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.vm.activeConnections).toEqual([]);
-      const valencia = [{ name: "valencia", coords: [] }];
-      wrapper.vm.$store.state.nearestStation.connections = valencia;
-      expect(mockAddData).toHaveBeenCalled();
+
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).toHaveBeenCalledTimes(1);
+    });
+
+    it("should add 4 connections to geoJson layer if has two connections with 3 points each", () => {
+      mockStore.getters.connectionCoordSets = [
+        [fakeCoord(), fakeCoord(), fakeCoord()],
+        [fakeCoord(), fakeCoord(), fakeCoord()]
+      ];
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).toHaveBeenCalledTimes(4);
+    });
+
+    it("should not add connections to geoJson layer empty", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).not.toHaveBeenCalled();
     });
   });
+
+  function fakeCoord() {
+    return [
+      parseFloat(faker.address.longitude()),
+      parseFloat(faker.address.latitude())
+    ];
+  }
 });

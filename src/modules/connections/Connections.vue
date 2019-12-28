@@ -8,9 +8,18 @@ import L from "leaflet";
 export default {
   data() {
     return {
-      geoJsonLayer: null,
-      activeConnections: []
+      geoJsonLayer: null
     };
+  },
+  methods: {
+    buildLinesFromCoords(coordSet) {
+      for (let i = 0; i < coordSet.length - 1; i++) {
+        this.geoJsonLayer.addData({
+          type: "LineString",
+          coordinates: [coordSet[i], coordSet[i + 1]]
+        });
+      }
+    }
   },
   beforeMount() {
     this.geoJsonLayer = L.geoJSON();
@@ -28,28 +37,10 @@ export default {
   },
   watch: {
     connections: function() {
-      const connections = this.$store.state.nearestStation.connections;
-      const geoData = [];
-
-      if (connections && connections.length > 0) {
-        // TODO: add tests for this?
-        connections.forEach(connection => {
-          let i = 0;
-          const coords = connection.coords;
-          coords.forEach(point => {
-            if (i < coords.length - 1) {
-              geoData.push({
-                type: "LineString",
-                coordinates: [coords[i], coords[i + 1]]
-              });
-            }
-            i++;
-          });
-          this.geoJsonLayer.addData(geoData);
-        });
-
-        this.activeConnections = this.$store.state.nearestStation.connections; //TODO: is this needed?
-      }
+      const coordSet = this.$store.getters.connectionCoordSets;
+      coordSet.forEach(set => {
+        this.buildLinesFromCoords(set);
+      });
     }
   }
 };

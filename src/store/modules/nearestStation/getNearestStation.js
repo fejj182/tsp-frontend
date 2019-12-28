@@ -7,7 +7,11 @@ export const state = {
   connections: []
 };
 
-export const getters = {};
+export const getters = {
+  connectionCoordSets: state => {
+    return state.connections.map(connection => connection.coords);
+  }
+};
 
 export const actions = {
   async getNearestStation({ commit }, location) {
