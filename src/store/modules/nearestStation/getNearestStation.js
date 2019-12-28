@@ -22,7 +22,6 @@ export const actions = {
   async changeTripFormStartingStation({ commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     const connections = await stationsApi.getConnections(station.id);
-    // TODO: try catch with error
     commit("SET_ACTIVE_CONNECTIONS", connections);
   }
 };

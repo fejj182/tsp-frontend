@@ -180,8 +180,8 @@ describe("TripForm", () => {
       });
     });
 
-    xit("should show error if api call fails", async () => {
-      stationsApi.getConnections.mockRejectedValue("Failed");
+    it("should show error if api call fails", async () => {
+      mockStore.dispatch.mockRejectedValue("Failed");
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore

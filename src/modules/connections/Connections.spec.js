@@ -79,13 +79,58 @@ describe("Connections", () => {
       expect(mockAddData).toHaveBeenCalledTimes(4);
     });
 
-    it("should not add connections to geoJson layer empty", () => {
+    it("should skip invalid coordsets", () => {
+      mockStore.getters.connectionCoordSets = [
+        undefined,
+        [fakeCoord(), fakeCoord(), fakeCoord()]
+      ];
       const wrapper = shallowMount(Connections, {
         mocks: {
           $store: mockStore
         }
       });
+
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).toHaveBeenCalledTimes(2);
+    });
+
+    it("should skip undefined coordsets", () => {
+      mockStore.getters.connectionCoordSets = [
+        [undefined, fakeCoord()],
+        [fakeCoord(), fakeCoord(), fakeCoord()]
+      ];
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).toHaveBeenCalledTimes(2);
+    });
+
+    it("should skip invalid coordsets", () => {
+      mockStore.getters.connectionCoordSets = [
+        [[1], fakeCoord()],
+        [[1, 2, 3], fakeCoord(), fakeCoord()]
+      ];
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(mockAddData).toHaveBeenCalledTimes(1);
+    });
+
+    it("should not add undefined connections to geoJson layer", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.vm.$store.state.nearestStation.connections = undefined;
       expect(mockAddData).not.toHaveBeenCalled();
     });
   });

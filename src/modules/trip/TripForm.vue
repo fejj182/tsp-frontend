@@ -36,7 +36,7 @@ import _ from "lodash";
 export default {
   data() {
     return {
-      alert: false, // TODO: use store for this
+      alert: false,
       stations: [],
       connections: []
     };
@@ -56,10 +56,14 @@ export default {
     },
     async onChangeStartingDestination(station) {
       this.connections = [];
-      await this.$store.dispatch("changeTripFormStartingStation", station);
-      this.connections = this.stationFormMapper(
-        this.$store.state.nearestStation.connections
-      );
+      try {
+        await this.$store.dispatch("changeTripFormStartingStation", station);
+        this.connections = this.stationFormMapper(
+          this.$store.state.nearestStation.connections
+        );
+      } catch (e) {
+        this.alert = true;
+      }
     },
     stationFormMapper(stations) {
       return stations.map(station => {
