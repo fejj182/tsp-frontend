@@ -18,14 +18,14 @@ export default {
   },
   computed: {
     nearestStation() {
-      return this.$store.state.nearestStation.station;
+      return this.$store.state.stations.station;
     }
   },
   watch: {
     nearestStation: function() {
       const marker = L.marker([
-        this.$store.state.nearestStation.station.lat,
-        this.$store.state.nearestStation.station.lng
+        this.$store.state.stations.station.lat,
+        this.$store.state.stations.station.lng
       ]);
       if (this.activeMarker) {
         this.activeMarker.remove();

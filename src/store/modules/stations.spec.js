@@ -1,4 +1,4 @@
-import * as module from "./getNearestStation";
+import * as module from "./stations";
 import stationsApi from "@/api/stations";
 import faker from "faker";
 import flushPromises from "flush-promises";
@@ -32,45 +32,48 @@ describe("stations", () => {
   });
   describe("actions", () => {
     describe("getNearestStation", () => {
-      let location, commit;
+      let location, dispatch;
       beforeEach(() => {
         location = {
           lat: parseFloat(faker.address.latitude()),
           lng: parseFloat(faker.address.longitude())
         };
-        commit = jest.fn();
+        dispatch = jest.fn();
       });
       it("should call the endpoint", async () => {
-        await module.actions.getNearestStation({ commit }, location);
+        await module.actions.getNearestStation({ dispatch }, location);
         expect(stationsApi.getNearestStation).toHaveBeenCalledWith(location);
       });
 
-      it("should commit the station to the store", async () => {
-        stationsApi.getNearestStation.mockResolvedValue(barcelona);
-
-        await module.actions.getNearestStation({ commit }, location);
+      it("should call dispatch addStationsToMap", async () => {
+        const mockNearestStation = {};
+        stationsApi.getNearestStation.mockReturnValue(mockNearestStation);
+        await module.actions.getNearestStation({ dispatch }, location);
         await flushPromises();
-        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
+        expect(dispatch).toHaveBeenCalledWith(
+          "addStationsToMap",
+          mockNearestStation
+        );
       });
     });
-    describe("changeTripFormStartingStation", () => {
+    describe("addStationsToMap", () => {
       let commit;
       beforeEach(() => {
         commit = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.changeTripFormStartingStation({ commit }, barcelona);
+        module.actions.addStationsToMap({ commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
       });
 
       it("should get the connections for starting station", () => {
-        module.actions.changeTripFormStartingStation({ commit }, barcelona);
+        module.actions.addStationsToMap({ commit }, barcelona);
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(mockConnections);
-        module.actions.changeTripFormStartingStation({ commit }, barcelona);
+        module.actions.addStationsToMap({ commit }, barcelona);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",

@@ -1,7 +1,5 @@
 import stationsApi from "@/api/stations";
 
-//TODO: change name of module?
-
 export const state = {
   station: {},
   connections: []
@@ -14,12 +12,11 @@ export const getters = {
 };
 
 export const actions = {
-  async getNearestStation({ commit }, location) {
+  async getNearestStation({ dispatch }, location) {
     const station = await stationsApi.getNearestStation(location);
-    // TODO: try catch with error
-    commit("SET_ACTIVE_STATION", station);
+    dispatch("addStationsToMap", station);
   },
-  async changeTripFormStartingStation({ commit }, station) {
+  async addStationsToMap({ commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);

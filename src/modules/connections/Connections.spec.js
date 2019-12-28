@@ -18,7 +18,7 @@ describe("Connections", () => {
     L.geoJSON.mockReturnValue(geoJSON);
     mockStore = {
       state: {
-        nearestStation: {
+        stations: {
           connections: []
         }
       },
@@ -43,7 +43,7 @@ describe("Connections", () => {
           $store: mockStore
         }
       });
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(wrapper.vm.geoJsonLayer).toBeTruthy();
     });
 
@@ -53,7 +53,7 @@ describe("Connections", () => {
           $store: mockStore
         }
       });
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addTo).toHaveBeenCalledWith(wrapper.props().map);
     });
 
@@ -65,7 +65,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.geoJsonLayer = geoJSON;
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.removeFrom).toHaveBeenCalledWith(wrapper.props().map);
     });
   });
@@ -79,7 +79,7 @@ describe("Connections", () => {
         }
       });
 
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addData).toHaveBeenCalledTimes(1);
     });
 
@@ -94,7 +94,7 @@ describe("Connections", () => {
         }
       });
 
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addData).toHaveBeenCalledTimes(4);
     });
 
@@ -109,7 +109,7 @@ describe("Connections", () => {
         }
       });
 
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addData).toHaveBeenCalledTimes(2);
     });
 
@@ -124,7 +124,7 @@ describe("Connections", () => {
         }
       });
 
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addData).toHaveBeenCalledTimes(2);
     });
 
@@ -139,7 +139,7 @@ describe("Connections", () => {
         }
       });
 
-      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      wrapper.vm.$store.state.stations.connections = "valencia";
       expect(geoJSON.addData).toHaveBeenCalledTimes(1);
     });
 
@@ -149,7 +149,7 @@ describe("Connections", () => {
           $store: mockStore
         }
       });
-      wrapper.vm.$store.state.nearestStation.connections = undefined;
+      wrapper.vm.$store.state.stations.connections = undefined;
       expect(geoJSON.addData).not.toHaveBeenCalled();
     });
   });

@@ -57,9 +57,9 @@ export default {
     async onChangeStartingDestination(station) {
       this.connections = [];
       try {
-        await this.$store.dispatch("changeTripFormStartingStation", station);
+        await this.$store.dispatch("addStationsToMap", station);
         this.connections = this.stationFormMapper(
-          this.$store.state.nearestStation.connections
+          this.$store.state.stations.connections
         );
       } catch (e) {
         this.alert = true;
@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     activeStation() {
-      const station = this.$store.state.nearestStation.station;
+      const station = this.$store.state.stations.station;
       if (!_.isEmpty(station)) {
         return this.mapStation(station);
       } else {

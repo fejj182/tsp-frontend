@@ -18,7 +18,7 @@ describe("Markers", () => {
       L.marker.mockReturnValue(mockMarker);
       mockStore = {
         state: {
-          nearestStation: {
+          stations: {
             station: {}
           }
         }
@@ -47,7 +47,7 @@ describe("Markers", () => {
 
       const lat = parseFloat(faker.address.latitude());
       const lng = parseFloat(faker.address.longitude());
-      wrapper.vm.$store.state.nearestStation.station = { lat, lng };
+      wrapper.vm.$store.state.stations.station = { lat, lng };
 
       expect(wrapper.vm.activeMarker).toEqual(mockMarker);
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
@@ -69,7 +69,7 @@ describe("Markers", () => {
 
       const lat = parseFloat(faker.address.latitude());
       const lng = parseFloat(faker.address.longitude());
-      wrapper.vm.$store.state.nearestStation.station = { lat, lng };
+      wrapper.vm.$store.state.stations.station = { lat, lng };
 
       expect(prevActiveMarker.remove).toBeCalledTimes(1);
       expect(wrapper.vm.activeMarker).toEqual(mockMarker);
