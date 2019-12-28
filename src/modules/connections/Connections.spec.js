@@ -8,12 +8,14 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Connections", () => {
-  let mockGeoJSON, mockStore;
+  let geoJSON, mockStore;
   beforeEach(() => {
-    mockGeoJSON = {
-      addTo: jest.fn()
+    geoJSON = {
+      addTo: jest.fn(),
+      addData: jest.fn(),
+      removeFrom: jest.fn()
     };
-    L.geoJSON.mockReturnValue(mockGeoJSON);
+    L.geoJSON.mockReturnValue(geoJSON);
     mockStore = {
       state: {
         nearestStation: {
@@ -25,33 +27,50 @@ describe("Connections", () => {
       }
     };
   });
-  it("should initialize geoJson layer", () => {
-    const wrapper = shallowMount(Connections, {
-      mocks: {
-        $store: mockStore
-      }
+  describe("GeoJSON layer", () => {
+    it("should initialize geoJson layer", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.vm.geoJsonLayer).toBeNull();
     });
-    expect(wrapper.vm.geoJsonLayer).toBeTruthy();
-  });
 
-  it("should add geoJson layer to the map", () => {
-    const wrapper = shallowMount(Connections, {
-      mocks: {
-        $store: mockStore
-      }
+    it("should initialize geoJson layer", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(wrapper.vm.geoJsonLayer).toBeTruthy();
     });
-    expect(mockGeoJSON.addTo).toHaveBeenCalledWith(wrapper.props().map);
+
+    it("should add geoJson layer to the map", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(geoJSON.addTo).toHaveBeenCalledWith(wrapper.props().map);
+    });
+
+    it("should clear layer before adding new connections", () => {
+      const wrapper = shallowMount(Connections, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      wrapper.vm.geoJsonLayer = geoJSON;
+      wrapper.vm.$store.state.nearestStation.connections = "valencia";
+      expect(geoJSON.removeFrom).toHaveBeenCalledWith(wrapper.props().map);
+    });
   });
 
   describe("Active Connections", () => {
-    let mockAddData;
-    beforeEach(() => {
-      mockAddData = jest.fn();
-      L.geoJSON.mockReturnValue({
-        addTo: jest.fn(),
-        addData: mockAddData
-      });
-    });
     it("should add 1 connection to geoJson layer if have at least two points", () => {
       mockStore.getters.connectionCoordSets = [[fakeCoord(), fakeCoord()]];
       const wrapper = shallowMount(Connections, {
@@ -61,7 +80,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
-      expect(mockAddData).toHaveBeenCalledTimes(1);
+      expect(geoJSON.addData).toHaveBeenCalledTimes(1);
     });
 
     it("should add 4 connections to geoJson layer if has two connections with 3 points each", () => {
@@ -76,7 +95,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
-      expect(mockAddData).toHaveBeenCalledTimes(4);
+      expect(geoJSON.addData).toHaveBeenCalledTimes(4);
     });
 
     it("should skip invalid coordsets", () => {
@@ -91,7 +110,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
-      expect(mockAddData).toHaveBeenCalledTimes(2);
+      expect(geoJSON.addData).toHaveBeenCalledTimes(2);
     });
 
     it("should skip undefined coordsets", () => {
@@ -106,7 +125,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
-      expect(mockAddData).toHaveBeenCalledTimes(2);
+      expect(geoJSON.addData).toHaveBeenCalledTimes(2);
     });
 
     it("should skip invalid coordsets", () => {
@@ -121,7 +140,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.$store.state.nearestStation.connections = "valencia";
-      expect(mockAddData).toHaveBeenCalledTimes(1);
+      expect(geoJSON.addData).toHaveBeenCalledTimes(1);
     });
 
     it("should not add undefined connections to geoJson layer", () => {
@@ -131,7 +150,7 @@ describe("Connections", () => {
         }
       });
       wrapper.vm.$store.state.nearestStation.connections = undefined;
-      expect(mockAddData).not.toHaveBeenCalled();
+      expect(geoJSON.addData).not.toHaveBeenCalled();
     });
   });
 

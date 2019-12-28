@@ -27,8 +27,6 @@ describe("Home", () => {
     expect(wrapper.find(TripForm).exists()).toBe(true);
   });
   it("should contain the connections", () => {
-    expect(wrapper.find(Connections).exists()).toBe(false);
-    wrapper.vm.map = {};
     expect(wrapper.find(Connections).exists()).toBe(true);
   });
 

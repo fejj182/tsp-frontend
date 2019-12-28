@@ -9,7 +9,7 @@
       <v-col cols="9">
         <Map @mapClick="onMapClick" @mapCreated="onMapCreated" id="map" />
         <Markers :map="map" />
-        <Connections v-if="map" :map="map" />
+        <Connections :map="map" />
       </v-col>
     </v-row>
   </v-container>
