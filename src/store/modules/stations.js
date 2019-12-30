@@ -1,7 +1,7 @@
 import stationsApi from "@/api/stations";
 
 export const state = {
-  station: {},
+  activeStation: {},
   connections: []
 };
 
@@ -25,7 +25,7 @@ export const actions = {
 
 export const mutations = {
   SET_ACTIVE_STATION(state, station) {
-    state.station = station;
+    state.activeStation = station;
   },
   SET_ACTIVE_CONNECTIONS(state, connections) {
     state.connections = connections;

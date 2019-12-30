@@ -17,15 +17,15 @@ export default {
     }
   },
   computed: {
-    nearestStation() {
-      return this.$store.state.stations.station;
+    activeStation() {
+      return this.$store.state.stations.activeStation;
     }
   },
   watch: {
-    nearestStation: function() {
+    activeStation: function() {
       const marker = L.marker([
-        this.$store.state.stations.station.lat,
-        this.$store.state.stations.station.lng
+        this.$store.state.stations.activeStation.lat,
+        this.$store.state.stations.activeStation.lng
       ]);
       if (this.activeMarker) {
         this.activeMarker.remove();

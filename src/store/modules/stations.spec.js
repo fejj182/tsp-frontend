@@ -89,7 +89,7 @@ describe("stations", () => {
         station: null
       };
       module.mutations.SET_ACTIVE_STATION(state, barcelona);
-      expect(state.station).toEqual(barcelona);
+      expect(state.activeStation).toEqual(barcelona);
     });
     it("should add the connections to the state", () => {
       const state = {
