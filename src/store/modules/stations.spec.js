@@ -19,28 +19,35 @@ describe("stations", () => {
 
   describe("actions", () => {
     describe("getNearestStation", () => {
-      let location, dispatch;
+      let location, dispatch, commit;
       beforeEach(() => {
+        jest.clearAllMocks();
         location = {
           lat: parseFloat(faker.address.latitude()),
           lng: parseFloat(faker.address.longitude())
         };
         dispatch = jest.fn();
+        commit = jest.fn();
       });
-      it("should call the endpoint", async () => {
-        await module.actions.getNearestStation({ dispatch }, location);
+      it("should call the endpoint", () => {
+        module.actions.getNearestStation({ dispatch, commit }, location);
         expect(stationsApi.getNearestStation).toHaveBeenCalledWith(location);
       });
 
       it("should call dispatch addStationsToMap", async () => {
         const mockNearestStation = {};
         stationsApi.getNearestStation.mockReturnValue(mockNearestStation);
-        await module.actions.getNearestStation({ dispatch }, location);
+        await module.actions.getNearestStation({ dispatch, commit }, location);
         await flushPromises();
         expect(dispatch).toHaveBeenCalledWith(
           "addStationsToMap",
           mockNearestStation
         );
+      });
+
+      it("should clear the active stations before calling the endpoint", async () => {
+        module.actions.getNearestStation({ dispatch, commit }, location);
+        expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_STATION");
       });
     });
     describe("addStationsToMap", () => {
@@ -51,6 +58,11 @@ describe("stations", () => {
       it("should commit the station to the store", () => {
         module.actions.addStationsToMap({ commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
+      });
+
+      it("should clear the active stations before calling the endpoint", async () => {
+        module.actions.addStationsToMap({ commit }, barcelona);
+        expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
       it("should get the connections for starting station", () => {
@@ -73,7 +85,7 @@ describe("stations", () => {
   describe("mutations", () => {
     it("should add the station to the state", () => {
       const state = {
-        station: null
+        activeStation: null
       };
       module.mutations.SET_ACTIVE_STATION(state, barcelona);
       expect(state.activeStation).toEqual(barcelona);
@@ -84,6 +96,21 @@ describe("stations", () => {
       };
       module.mutations.SET_ACTIVE_CONNECTIONS(state, mockConnections);
       expect(state.connections).toEqual(mockConnections);
+    });
+    it("should clear active station", () => {
+      const state = {
+        activeStation: {}
+      };
+      module.mutations.CLEAR_ACTIVE_STATION(state);
+      expect(state.activeStation).toBeNull();
+    });
+
+    it("should clear active connections", () => {
+      const state = {
+        connections: [{}]
+      };
+      module.mutations.CLEAR_ACTIVE_CONNECTIONS(state);
+      expect(state.connections).toEqual([]);
     });
   });
 });
