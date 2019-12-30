@@ -46,10 +46,10 @@ export default {
     connections: function() {
       if (this.connections) {
         this.initGeoJSONLayer();
-        const coordSet = this.$store.getters.connectionCoordSets;
-        coordSet.forEach(set => {
-          if (set) {
-            this.buildLinesFromCoords(set);
+        this.connections.forEach(connection => {
+          const coordSet = connection.coords;
+          if (coordSet) {
+            this.buildLinesFromCoords(coordSet);
           }
         });
       }

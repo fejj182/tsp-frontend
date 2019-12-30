@@ -16,20 +16,7 @@ describe("stations", () => {
     lng: 2.140624
   };
   const mockConnections = [];
-  describe("getters", () => {
-    describe("connectionCoordSets", () => {
-      it("returns connectionsCoords", () => {
-        const mockCoords = [
-          [faker.address.latitude(), faker.address.longitude()]
-        ];
-        const state = {
-          connections: [{ coords: mockCoords }, { coords: mockCoords }]
-        };
-        const connectionCoordSets = module.getters.connectionCoordSets(state);
-        expect(connectionCoordSets).toEqual([mockCoords, mockCoords]);
-      });
-    });
-  });
+
   describe("actions", () => {
     describe("getNearestStation", () => {
       let location, dispatch;
