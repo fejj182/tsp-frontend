@@ -37,8 +37,7 @@ export default {
   data() {
     return {
       alert: false,
-      stations: [],
-      connections: []
+      stations: []
     };
   },
   mounted() {
@@ -55,12 +54,8 @@ export default {
       }
     },
     async onChangeStartingDestination(station) {
-      this.connections = [];
       try {
         await this.$store.dispatch("addStationsToMap", station);
-        this.connections = this.stationFormMapper(
-          this.$store.state.stations.connections
-        );
       } catch (e) {
         this.alert = true;
       }
@@ -90,6 +85,9 @@ export default {
       } else {
         return null;
       }
+    },
+    connections() {
+      return this.stationFormMapper(this.$store.state.stations.connections);
     }
   }
 };
