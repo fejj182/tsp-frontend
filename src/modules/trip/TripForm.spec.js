@@ -40,7 +40,7 @@ describe("TripForm", () => {
       dispatch: jest.fn(),
       state: {
         stations: {
-          station: {},
+          activeStation: {},
           connections: []
         }
       }
@@ -163,7 +163,7 @@ describe("TripForm", () => {
     });
 
     it("should have v-model = activeStation", () => {
-      mockStore.state.stations.station = barcelona;
+      mockStore.state.stations.activeStation = barcelona;
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
@@ -199,12 +199,12 @@ describe("TripForm", () => {
         }
       });
       expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(false);
-      mockStore.state.stations.station = barcelona;
+      mockStore.state.stations.activeStation = barcelona;
       expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(true);
     });
 
     it("should have stations in props", async () => {
-      mockStore.state.stations.station = barcelona;
+      mockStore.state.stations.activeStation = barcelona;
       mockStore.state.stations.connections = [valencia];
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -230,7 +230,7 @@ describe("TripForm", () => {
   describe("stationMapper", () => {
     it("should be used for all stations", async () => {
       stationsApi.getStations.mockResolvedValue([barcelona]);
-      mockStore.state.stations.station = {
+      mockStore.state.stations.activeStation = {
         ...barcelona,
         cat: 456
       };

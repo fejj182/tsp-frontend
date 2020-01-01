@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     activeStation() {
-      const station = this.$store.state.stations.station;
+      const station = this.$store.state.stations.activeStation;
       if (!_.isEmpty(station)) {
         return this.mapStation(station);
       } else {

@@ -51,12 +51,14 @@ export default {
   },
   watch: {
     activeStation: function() {
-      const marker = L.marker(
-        [this.activeStation.lat, this.activeStation.lng],
-        { icon: this.generateIcon("purple") }
-      );
-      this.replaceActiveMarker(marker);
-      marker.addTo(this.map);
+      if (this.activeStation) {
+        const marker = L.marker(
+          [this.activeStation.lat, this.activeStation.lng],
+          { icon: this.generateIcon("purple") }
+        );
+        this.replaceActiveMarker(marker);
+        marker.addTo(this.map);
+      }
     },
     connections: function() {
       if (this.connections) {

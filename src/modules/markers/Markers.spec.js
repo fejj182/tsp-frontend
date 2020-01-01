@@ -76,6 +76,26 @@ describe("Markers", () => {
       expect(wrapper.vm.activeMarker).toEqual(mockMarker);
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
+
+    it("should not add marker to map if active marker is reset in store", () => {
+      const mockMap = {};
+      const wrapper = mount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
+
+      const prevActiveMarker = { remove: jest.fn() };
+      wrapper.vm.activeMarker = prevActiveMarker;
+
+      wrapper.vm.$store.state.stations.activeStation = null;
+
+      expect(wrapper.vm.activeMarker).toEqual(prevActiveMarker);
+      expect(mockMarker.addTo).not.toHaveBeenCalledWith(mockMap);
+    });
   });
 
   describe("Connections", () => {
