@@ -13,10 +13,10 @@ export const actions = {
     const station = await stationsApi.getNearestStation(location);
     dispatch("addStationsToMap", station);
   },
-  async addStationsToMap({ commit }, station) {
-    commit("SET_ACTIVE_STATION", station);
+  async addStationsToMap({ commit }, startingStation) {
+    commit("SET_ACTIVE_STATION", startingStation);
     commit("CLEAR_ACTIVE_CONNECTIONS");
-    const connections = await stationsApi.getConnections(station.id);
+    const connections = await stationsApi.getConnections(startingStation.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);
   }
 };

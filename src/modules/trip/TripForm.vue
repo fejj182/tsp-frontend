@@ -53,9 +53,9 @@ export default {
         this.alert = true;
       }
     },
-    async onChangeStartingDestination(station) {
+    async onChangeStartingDestination(startingStation) {
       try {
-        await this.$store.dispatch("addStationsToMap", station);
+        await this.$store.dispatch("addStationsToMap", startingStation);
       } catch (e) {
         this.alert = true;
       }
