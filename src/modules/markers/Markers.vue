@@ -1,11 +1,19 @@
 <template>
-  <div></div>
+  <div v-if="activeMarker">
+    <div v-for="marker in allMarkers" :key="marker.station.id">
+      <Popup :marker="marker.marker" :station="marker.station" />
+    </div>
+  </div>
 </template>
 
 <script>
 import L from "leaflet";
+import Popup from "@/modules/popup/Popup.vue";
 
 export default {
+  components: {
+    Popup
+  },
   data: function() {
     return {
       activeMarker: null,
@@ -23,6 +31,9 @@ export default {
     },
     connections() {
       return this.$store.state.stations.connections;
+    },
+    allMarkers() {
+      return [this.activeMarker, ...this.activeConnections];
     }
   },
   methods: {
@@ -34,16 +45,10 @@ export default {
         className: `div-icon-${colour}`
       });
     },
-    replaceActiveMarker(marker) {
-      if (this.activeMarker) {
-        this.activeMarker.remove();
-      }
-      this.activeMarker = marker;
-    },
     resetConnections() {
       if (this.activeConnections.length > 0) {
         this.activeConnections.forEach(connection => {
-          connection.remove();
+          connection.marker.remove();
         });
       }
       this.activeConnections = [];
@@ -56,7 +61,13 @@ export default {
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
-        this.replaceActiveMarker(marker);
+        if (this.activeMarker) {
+          this.activeMarker.marker.remove();
+        }
+        this.activeMarker = {
+          station: this.activeStation,
+          marker
+        };
         marker.addTo(this.map);
       }
     },
@@ -67,7 +78,10 @@ export default {
           const marker = L.marker([connection.lat, connection.lng], {
             icon: this.generateIcon("red")
           });
-          this.activeConnections.push(marker);
+          this.activeConnections.push({
+            station: connection,
+            marker
+          });
           marker.addTo(this.map);
         });
       }

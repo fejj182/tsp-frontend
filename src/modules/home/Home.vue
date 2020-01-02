@@ -7,7 +7,7 @@
         </v-container>
       </v-col>
       <v-col cols="9">
-        <Map @mapClick="onMapClick" @mapCreated="onMapCreated" id="map" />
+        <Map @mapClick="onMapClick" @mapCreated="onMapCreated" />
         <Markers :map="map" />
         <Connections :map="map" />
       </v-col>

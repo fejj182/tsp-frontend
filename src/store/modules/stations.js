@@ -1,7 +1,7 @@
 import stationsApi from "@/api/stations";
 
 export const state = {
-  activeStation: {},
+  activeStation: null,
   connections: []
 };
 
