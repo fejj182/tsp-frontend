@@ -1,7 +1,11 @@
 <template>
   <div v-if="activeMarker">
     <div v-for="marker in allMarkers" :key="marker.station.id">
-      <Popup :marker="marker.marker" :station="marker.station" />
+      <Popup
+        :marker="marker.marker"
+        :station="marker.station"
+        :auto-open="!!marker.autoOpen"
+      />
     </div>
   </div>
 </template>
@@ -66,7 +70,8 @@ export default {
         }
         this.activeMarker = {
           station: this.activeStation,
-          marker
+          marker,
+          autoOpen: true
         };
         marker.addTo(this.map);
       }

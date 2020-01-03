@@ -48,7 +48,8 @@ describe("Markers", () => {
 
       expect(wrapper.vm.activeMarker).toEqual({
         station: wrapper.vm.$store.state.stations.activeStation,
-        marker: mockMarker
+        marker: mockMarker,
+        autoOpen: true
       });
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
@@ -62,7 +63,8 @@ describe("Markers", () => {
       expect(prevActiveMarker.marker.remove).toBeCalledTimes(1);
       expect(wrapper.vm.activeMarker).toEqual({
         station: wrapper.vm.$store.state.stations.activeStation,
-        marker: mockMarker
+        marker: mockMarker,
+        autoOpen: true
       });
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
