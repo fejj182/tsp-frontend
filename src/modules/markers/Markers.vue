@@ -60,14 +60,15 @@ export default {
   },
   watch: {
     activeStation: function() {
+      if (this.activeMarker) {
+        this.activeMarker.marker.remove();
+        this.activeMarker = null;
+      }
       if (this.activeStation) {
         const marker = L.marker(
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
-        if (this.activeMarker) {
-          this.activeMarker.marker.remove();
-        }
         this.activeMarker = {
           station: this.activeStation,
           marker,

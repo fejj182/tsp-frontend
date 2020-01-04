@@ -146,6 +146,13 @@ describe("Markers", () => {
       changeConnectionsInStore(wrapper);
       expect(wrapper.findAll(Popup).length).toBe(3);
     });
+
+    it("should remove all popups if there is no active station", () => {
+      changeActiveStationInStore(wrapper);
+      changeConnectionsInStore(wrapper);
+      wrapper.vm.$store.state.stations.activeStation = null;
+      expect(wrapper.findAll(Popup).length).toBe(0);
+    });
   });
 
   function changeActiveStationInStore(wrapper) {
