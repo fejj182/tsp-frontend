@@ -1,6 +1,6 @@
 <template>
   <div v-if="stationMarker">
-    <div v-for="marker in allMarkers" :key="marker.station.id">
+    <div v-show="false" v-for="marker in allMarkers" :key="marker.station.id">
       <Popup
         :marker="marker.marker"
         :station="marker.station"
