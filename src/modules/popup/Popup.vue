@@ -17,12 +17,22 @@ export default {
       type: Boolean
     }
   },
+  methods: {
+    bindPopup(marker) {
+      const popup = marker.bindPopup(this.$refs.popup, {
+        offset: [0, -35]
+      });
+      if (this.autoOpen) {
+        popup.openPopup();
+      }
+    }
+  },
   mounted() {
-    const popup = this.marker.bindPopup(this.$refs.popup, {
-      offset: [0, -35]
-    });
-    if (this.autoOpen) {
-      popup.openPopup();
+    this.bindPopup(this.marker);
+  },
+  watch: {
+    marker: function(marker) {
+      this.bindPopup(marker);
     }
   }
 };

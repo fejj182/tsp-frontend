@@ -1,6 +1,6 @@
 <template>
-  <div v-if="stationMarker">
-    <div v-show="false" v-for="marker in allMarkers" :key="marker.station.id">
+  <div>
+    <div v-show="false" v-for="marker in popups" :key="marker.station.id">
       <Popup
         :marker="marker.marker"
         :station="marker.station"
@@ -36,8 +36,17 @@ export default {
     connections() {
       return this.$store.state.stations.connections;
     },
-    allMarkers() {
-      return [this.stationMarker, ...this.connectionMarkers];
+    popups() {
+      const popups = {};
+      if (this.stationMarker) {
+        popups[this.stationMarker.station.id] = this.stationMarker;
+      }
+      if (this.connectionMarkers.length > 0) {
+        this.connectionMarkers.forEach(connection => {
+          popups[connection.station.id] = connection;
+        });
+      }
+      return popups;
     }
   },
   methods: {
@@ -54,8 +63,8 @@ export default {
         this.connectionMarkers.forEach(connection => {
           connection.marker.remove();
         });
+        this.connectionMarkers = [];
       }
-      this.connectionMarkers = [];
     }
   },
   watch: {
@@ -69,12 +78,12 @@ export default {
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
+        marker.addTo(this.map);
         this.stationMarker = {
           station: this.activeStation,
           marker,
           autoOpen: true
         };
-        marker.addTo(this.map);
       }
     },
     connections: function() {
@@ -83,11 +92,11 @@ export default {
         const marker = L.marker([connection.lat, connection.lng], {
           icon: this.generateIcon("red")
         });
+        marker.addTo(this.map);
         this.connectionMarkers.push({
           station: connection,
           marker
         });
-        marker.addTo(this.map);
       });
     }
   }

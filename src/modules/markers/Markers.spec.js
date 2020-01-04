@@ -99,8 +99,8 @@ describe("Markers", () => {
 
     it("should remove the old connection markers when the store is updated", () => {
       const prevConnectionMarkers = [
-        { marker: { remove: jest.fn() } },
-        { marker: { remove: jest.fn() } }
+        { marker: { remove: jest.fn() }, station: { id: 1 } },
+        { marker: { remove: jest.fn() }, station: { id: 2 } }
       ];
       wrapper.vm.connectionMarkers.push(
         prevConnectionMarkers[0],
@@ -147,11 +147,11 @@ describe("Markers", () => {
       expect(wrapper.findAll(Popup).length).toBe(3);
     });
 
-    it("should remove all popups if there is no active station", () => {
+    it("should remove station popup if there is no active station", () => {
       changeActiveStationInStore(wrapper);
       changeConnectionsInStore(wrapper);
       wrapper.vm.$store.state.stations.activeStation = null;
-      expect(wrapper.findAll(Popup).length).toBe(0);
+      expect(wrapper.findAll(Popup).length).toBe(2);
       expect(wrapper.vm.stationMarker).toBe(null);
     });
 
@@ -173,8 +173,9 @@ describe("Markers", () => {
   }
 
   function getStation() {
+    const id = faker.random.number();
     const lat = parseFloat(faker.address.latitude());
     const lng = parseFloat(faker.address.longitude());
-    return { lat, lng };
+    return { id, lat, lng };
   }
 });
