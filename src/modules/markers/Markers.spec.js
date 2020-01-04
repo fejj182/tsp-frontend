@@ -40,13 +40,13 @@ describe("Markers", () => {
 
   describe("Active marker", () => {
     it("should be empty when component is mounted", () => {
-      expect(wrapper.vm.activeMarker).toBeNull();
+      expect(wrapper.vm.stationMarker).toBeNull();
     });
 
     it("should add the active marker to the map when the store is updated", () => {
       changeActiveStationInStore(wrapper);
 
-      expect(wrapper.vm.activeMarker).toEqual({
+      expect(wrapper.vm.stationMarker).toEqual({
         station: wrapper.vm.$store.state.stations.activeStation,
         marker: mockMarker,
         autoOpen: true
@@ -55,13 +55,13 @@ describe("Markers", () => {
     });
 
     it("should remove the old marker from the map if an active marker is already set", () => {
-      const prevActiveMarker = { station: {}, marker: { remove: jest.fn() } };
-      wrapper.vm.activeMarker = prevActiveMarker;
+      const prevstationMarker = { station: {}, marker: { remove: jest.fn() } };
+      wrapper.vm.stationMarker = prevstationMarker;
 
       changeActiveStationInStore(wrapper);
 
-      expect(prevActiveMarker.marker.remove).toBeCalledTimes(1);
-      expect(wrapper.vm.activeMarker).toEqual({
+      expect(prevstationMarker.marker.remove).toBeCalledTimes(1);
+      expect(wrapper.vm.stationMarker).toEqual({
         station: wrapper.vm.$store.state.stations.activeStation,
         marker: mockMarker,
         autoOpen: true
@@ -70,12 +70,12 @@ describe("Markers", () => {
     });
 
     it("should not add marker to map if active marker is reset in store", () => {
-      const prevActiveMarker = { station: {}, marker: {} };
-      wrapper.vm.activeMarker = prevActiveMarker;
+      const prevstationMarker = { station: {}, marker: {} };
+      wrapper.vm.stationMarker = prevstationMarker;
 
       wrapper.vm.$store.state.stations.activeStation = null;
 
-      expect(wrapper.vm.activeMarker).toEqual(prevActiveMarker);
+      expect(wrapper.vm.stationMarker).toEqual(prevstationMarker);
       expect(mockMarker.addTo).not.toHaveBeenCalledWith(mockMap);
     });
   });
@@ -84,7 +84,7 @@ describe("Markers", () => {
     it("should add the connections to the map when the store is updated", () => {
       changeConnectionsInStore(wrapper);
 
-      expect(wrapper.vm.activeConnections).toEqual([
+      expect(wrapper.vm.connectionMarkers).toEqual([
         {
           station: wrapper.vm.$store.state.stations.connections[0],
           marker: mockMarker
@@ -102,7 +102,7 @@ describe("Markers", () => {
         { marker: { remove: jest.fn() } },
         { marker: { remove: jest.fn() } }
       ];
-      wrapper.vm.activeConnections.push(
+      wrapper.vm.connectionMarkers.push(
         prevConnectionMarkers[0],
         prevConnectionMarkers[1]
       );
@@ -113,7 +113,7 @@ describe("Markers", () => {
         expect(marker.marker.remove).toBeCalledTimes(1);
         expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
       });
-      expect(wrapper.vm.activeConnections).toEqual([
+      expect(wrapper.vm.connectionMarkers).toEqual([
         {
           station: wrapper.vm.$store.state.stations.connections[0],
           marker: mockMarker

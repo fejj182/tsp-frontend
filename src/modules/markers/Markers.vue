@@ -1,5 +1,5 @@
 <template>
-  <div v-if="activeMarker">
+  <div v-if="stationMarker">
     <div v-for="marker in allMarkers" :key="marker.station.id">
       <Popup
         :marker="marker.marker"
@@ -20,8 +20,8 @@ export default {
   },
   data: function() {
     return {
-      activeMarker: null,
-      activeConnections: []
+      stationMarker: null,
+      connectionMarkers: []
     };
   },
   props: {
@@ -37,7 +37,7 @@ export default {
       return this.$store.state.stations.connections;
     },
     allMarkers() {
-      return [this.activeMarker, ...this.activeConnections];
+      return [this.stationMarker, ...this.connectionMarkers];
     }
   },
   methods: {
@@ -50,26 +50,26 @@ export default {
       });
     },
     resetConnections() {
-      if (this.activeConnections.length > 0) {
-        this.activeConnections.forEach(connection => {
+      if (this.connectionMarkers.length > 0) {
+        this.connectionMarkers.forEach(connection => {
           connection.marker.remove();
         });
       }
-      this.activeConnections = [];
+      this.connectionMarkers = [];
     }
   },
   watch: {
     activeStation: function() {
-      if (this.activeMarker) {
-        this.activeMarker.marker.remove();
-        this.activeMarker = null;
+      if (this.stationMarker) {
+        this.stationMarker.marker.remove();
+        this.stationMarker = null;
       }
       if (this.activeStation) {
         const marker = L.marker(
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
-        this.activeMarker = {
+        this.stationMarker = {
           station: this.activeStation,
           marker,
           autoOpen: true
@@ -84,7 +84,7 @@ export default {
           const marker = L.marker([connection.lat, connection.lng], {
             icon: this.generateIcon("red")
           });
-          this.activeConnections.push({
+          this.connectionMarkers.push({
             station: connection,
             marker
           });
