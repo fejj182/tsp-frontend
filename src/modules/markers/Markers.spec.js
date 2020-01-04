@@ -152,6 +152,15 @@ describe("Markers", () => {
       changeConnectionsInStore(wrapper);
       wrapper.vm.$store.state.stations.activeStation = null;
       expect(wrapper.findAll(Popup).length).toBe(0);
+      expect(wrapper.vm.stationMarker).toBe(null);
+    });
+
+    it("should remove connection popups if there are no connections", () => {
+      changeActiveStationInStore(wrapper);
+      changeConnectionsInStore(wrapper);
+      wrapper.vm.$store.state.stations.connections = [];
+      expect(wrapper.findAll(Popup).length).toBe(1);
+      expect(wrapper.vm.connectionMarkers).toEqual([]);
     });
   });
 

@@ -78,19 +78,17 @@ export default {
       }
     },
     connections: function() {
-      if (this.connections) {
-        this.resetConnections();
-        this.connections.forEach(connection => {
-          const marker = L.marker([connection.lat, connection.lng], {
-            icon: this.generateIcon("red")
-          });
-          this.connectionMarkers.push({
-            station: connection,
-            marker
-          });
-          marker.addTo(this.map);
+      this.resetConnections();
+      this.connections.forEach(connection => {
+        const marker = L.marker([connection.lat, connection.lng], {
+          icon: this.generateIcon("red")
         });
-      }
+        this.connectionMarkers.push({
+          station: connection,
+          marker
+        });
+        marker.addTo(this.map);
+      });
     }
   }
 };
