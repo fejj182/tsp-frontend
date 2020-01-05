@@ -1,6 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import Popup from "./Popup.vue";
 import faker from "faker";
+import Vue from "vue";
+import flushPromises from "flush-promises";
 
 describe("Popup", () => {
   let wrapper, station, mockMarker;
@@ -18,7 +20,7 @@ describe("Popup", () => {
   });
   it("should bind popup to marker on mount", () => {
     const popup = wrapper.find("[data-test-id=popup]");
-    expect(wrapper.vm.marker.bindPopup).toHaveBeenCalledWith(
+    expect(mockMarker.bindPopup).toHaveBeenCalledWith(
       popup.element,
       expect.any(Object)
     );
@@ -39,5 +41,15 @@ describe("Popup", () => {
       }
     });
     expect(mockPopup.openPopup).toHaveBeenCalled();
+  });
+
+  it("should bind popup if marker prop changes", () => {
+    const popup = wrapper.find("[data-test-id=popup]");
+    const newMarker = { bindPopup: jest.fn() };
+    wrapper.setProps({ marker: newMarker });
+    expect(newMarker.bindPopup).toHaveBeenCalledWith(
+      popup.element,
+      expect.any(Object)
+    );
   });
 });
