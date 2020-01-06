@@ -4,7 +4,8 @@
       <Popup
         :marker="marker.marker"
         :station="marker.station"
-        :auto-open="!!marker.autoOpen"
+        :is-active="!!marker.isActive"
+        :is-connection="!!marker.isConnection"
       />
     </div>
   </div>
@@ -82,7 +83,7 @@ export default {
         this.stationMarker = {
           station: this.activeStation,
           marker,
-          autoOpen: true
+          isActive: true
         };
       }
     },
@@ -95,7 +96,8 @@ export default {
         marker.addTo(this.map);
         this.connectionMarkers.push({
           station: connection,
-          marker
+          marker,
+          isConnection: true
         });
       });
     }
