@@ -48,7 +48,9 @@ export default {
 </script>
 
 <style scoped>
-#map {
-  height: 100vh;
+#map,
+.container,
+.row {
+  height: 100%;
 }
 </style>
