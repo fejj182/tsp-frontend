@@ -4,7 +4,6 @@
       <Popup
         :marker="marker.marker"
         :station="marker.station"
-        :is-active="!!marker.isActive"
         :is-connection="!!marker.isConnection"
       />
     </div>
@@ -39,6 +38,7 @@ export default {
     },
     popups() {
       const popups = {};
+      // TODO: why does popup of active station not re-mount?
       if (this.stationMarker) {
         popups[this.stationMarker.station.id] = this.stationMarker;
       }
@@ -82,9 +82,9 @@ export default {
         marker.addTo(this.map);
         this.stationMarker = {
           station: this.activeStation,
-          marker,
-          isActive: true
+          marker
         };
+        this.$store.dispatch("openPopup", this.activeStation);
       }
     },
     connections: function() {

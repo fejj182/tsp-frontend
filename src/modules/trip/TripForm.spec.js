@@ -226,6 +226,19 @@ describe("TripForm", () => {
         }
       ]);
     });
+
+    it("should call store dispatch on change", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.stations.activeStation = barcelona;
+      wrapper
+        .find("[data-test-id=destination-2]")
+        .vm.$emit("change", barcelona);
+      expect(mockStore.dispatch).toBeCalledWith("openPopup", barcelona);
+    });
   });
   describe("stationMapper", () => {
     it("should be used for all stations", async () => {

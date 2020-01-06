@@ -21,6 +21,7 @@ describe("Markers", () => {
     jest.resetAllMocks();
     L.marker.mockReturnValue(mockMarker);
     mockStore = {
+      dispatch: jest.fn(),
       state: {
         stations: {
           activeStation: null,
@@ -118,8 +119,11 @@ describe("Markers", () => {
       changeActiveStationInStore(wrapper);
       const popups = wrapper.findAll(Popup);
       expect(popups.length).toBe(1);
-      popups.wrappers.forEach(popup => {
-        expect(popup.props().isActive).toBe(true);
+      popups.wrappers.forEach(() => {
+        expect(mockStore.dispatch).toHaveBeenCalledWith(
+          "openPopup",
+          wrapper.vm.activeStation
+        );
       });
     });
 

@@ -12,6 +12,11 @@
 
 <script>
 export default {
+  data: function() {
+    return {
+      popup: null
+    };
+  },
   props: {
     marker: {
       type: Object
@@ -19,20 +24,22 @@ export default {
     station: {
       type: Object
     },
-    isActive: {
-      type: Boolean
-    },
     isConnection: {
       type: Boolean
     }
   },
+  computed: {
+    open() {
+      return this.$store.state.popups.openStation;
+    }
+  },
   methods: {
     bindPopup(marker) {
-      const popup = marker.bindPopup(this.$refs.popup, {
+      this.popup = marker.bindPopup(this.$refs.popup, {
         offset: [0, -35]
       });
-      if (this.isActive) {
-        popup.openPopup();
+      if (this.station.name == this.open.name) {
+        this.popup.openPopup();
       }
     },
     addToTrip() {
@@ -43,8 +50,14 @@ export default {
     this.bindPopup(this.marker);
   },
   watch: {
-    marker: function(marker) {
+    marker(marker) {
+      // TODO: can remove this component guaranteed to mount every time
       this.bindPopup(marker);
+    },
+    open(station) {
+      if (this.station.name == station.name) {
+        this.popup.openPopup();
+      }
     }
   }
 };

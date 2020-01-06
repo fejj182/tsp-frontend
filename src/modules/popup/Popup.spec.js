@@ -7,15 +7,28 @@ import Vuetify from "vuetify";
 Vue.use(Vuetify);
 
 describe("Popup", () => {
-  let station, mockMarker;
+  let station, mockMarker, mockStore;
   beforeEach(() => {
+    station = { name: faker.address.city() };
     mockMarker = {
       bindPopup: jest.fn()
     };
-    station = { name: faker.address.city() };
+    mockStore = {
+      dispatch: jest.fn(),
+      state: {
+        popups: {
+          openStation: {
+            name: ""
+          }
+        }
+      }
+    };
   });
   it("should bind popup to marker on mount", () => {
     const wrapper = shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
       propsData: {
         marker: mockMarker,
         station
@@ -30,6 +43,9 @@ describe("Popup", () => {
 
   it("should have station name as an h1", () => {
     const wrapper = shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
       propsData: {
         marker: mockMarker,
         station
@@ -41,34 +57,24 @@ describe("Popup", () => {
   it("should auto-open popup if is active", () => {
     const mockPopup = { openPopup: jest.fn() };
     mockMarker.bindPopup.mockReturnValue(mockPopup);
+    mockStore.state.popups.openStation = station;
     shallowMount(Popup, {
-      propsData: {
-        marker: mockMarker,
-        station,
-        isActive: true
-      }
-    });
-    expect(mockPopup.openPopup).toHaveBeenCalled();
-  });
-
-  it("should bind popup if marker prop changes", () => {
-    const wrapper = shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
       propsData: {
         marker: mockMarker,
         station
       }
     });
-    const popup = wrapper.find("[data-test-id=popup]");
-    const newMarker = { bindPopup: jest.fn() };
-    wrapper.setProps({ marker: newMarker });
-    expect(newMarker.bindPopup).toHaveBeenCalledWith(
-      popup.element,
-      expect.any(Object)
-    );
+    expect(mockPopup.openPopup).toHaveBeenCalled();
   });
 
   it("should not show button to add station to trip", () => {
     const wrapper = shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
       propsData: {
         marker: mockMarker,
         station
@@ -77,9 +83,49 @@ describe("Popup", () => {
     expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(false);
   });
 
+  describe("watch", () => {
+    it("should open popup if state changes", () => {
+      const mockPopup = { openPopup: jest.fn() };
+      mockMarker.bindPopup.mockReturnValue(mockPopup);
+      shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station
+        }
+      });
+      mockStore.state.popups.openStation = station;
+      expect(mockPopup.openPopup).toHaveBeenCalled();
+    });
+
+    it("should bind popup if marker prop changes", () => {
+      const wrapper = shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station
+        }
+      });
+      const popup = wrapper.find("[data-test-id=popup]");
+      const newMarker = { bindPopup: jest.fn() };
+      wrapper.setProps({ marker: newMarker });
+      expect(newMarker.bindPopup).toHaveBeenCalledWith(
+        popup.element,
+        expect.any(Object)
+      );
+    });
+  });
+
   describe("Connections", () => {
     it("should show button to add station to trip", () => {
       const wrapper = shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
         propsData: {
           marker: mockMarker,
           station,
@@ -92,9 +138,7 @@ describe("Popup", () => {
     it("should dispatch addStationToTrip when button is clicked", () => {
       const wrapper = mount(Popup, {
         mocks: {
-          $store: {
-            dispatch: jest.fn()
-          }
+          $store: mockStore
         },
         propsData: {
           marker: mockMarker,

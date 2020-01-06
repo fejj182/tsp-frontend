@@ -25,6 +25,7 @@
       :items="connections"
       filled
       rounded
+      @change="onChangeConnection"
     ></v-autocomplete>
   </v-form>
 </template>
@@ -59,6 +60,9 @@ export default {
       } catch (e) {
         this.alert = true;
       }
+    },
+    onChangeConnection(station) {
+      this.$store.dispatch("openPopup", station);
     },
     stationFormMapper(stations) {
       return stations.map(station => {

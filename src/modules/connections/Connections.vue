@@ -43,7 +43,7 @@ export default {
     }
   },
   watch: {
-    connections: function() {
+    connections() {
       if (this.connections) {
         this.initGeoJSONLayer();
         this.connections.forEach(connection => {
