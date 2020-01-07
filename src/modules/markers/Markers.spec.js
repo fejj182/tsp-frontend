@@ -13,7 +13,8 @@ describe("Markers", () => {
   let mockStore, wrapper;
   const mockMarker = {
     addTo: jest.fn(),
-    remove: jest.fn()
+    remove: jest.fn(),
+    once: jest.fn()
   };
   const mockMap = {};
 
@@ -41,7 +42,7 @@ describe("Markers", () => {
 
   describe("Active marker", () => {
     it("should be empty when component is mounted", () => {
-      expect(wrapper.vm.stationMarker).toBeNull();
+      expect(wrapper.vm.stationPoint).toBeNull();
     });
 
     it("should add the active marker to the map when the store is updated", () => {
@@ -50,22 +51,22 @@ describe("Markers", () => {
     });
 
     it("should remove the old marker from the map if an active marker is already set", () => {
-      const prevstationMarker = { station: {}, marker: { remove: jest.fn() } };
-      wrapper.vm.stationMarker = prevstationMarker;
+      const prevStationPoint = { station: {}, marker: { remove: jest.fn() } };
+      wrapper.vm.stationPoint = prevStationPoint;
 
       changeActiveStationInStore(wrapper);
 
-      expect(prevstationMarker.marker.remove).toBeCalledTimes(1);
+      expect(prevStationPoint.marker.remove).toBeCalledTimes(1);
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
 
     it("should not add marker to map if active marker is reset in store", () => {
-      const prevstationMarker = { station: {}, marker: {} };
-      wrapper.vm.stationMarker = prevstationMarker;
+      const prevStationPoint = { station: {}, marker: {} };
+      wrapper.vm.stationPoint = prevStationPoint;
 
       wrapper.vm.$store.state.stations.activeStation = null;
 
-      expect(wrapper.vm.stationMarker).toEqual(prevstationMarker);
+      expect(wrapper.vm.stationPoint).toEqual(prevStationPoint);
       expect(mockMarker.addTo).not.toHaveBeenCalledWith(mockMap);
     });
   });
@@ -77,7 +78,7 @@ describe("Markers", () => {
     });
 
     it("should remove the old connection markers when the store is updated", () => {
-      const prevConnectionMarkers = [
+      const prevConnectionPoints = [
         {
           marker: { remove: jest.fn() },
           station: { id: 1 }
@@ -87,17 +88,44 @@ describe("Markers", () => {
           station: { id: 2 }
         }
       ];
-      wrapper.vm.connectionMarkers.push(
-        prevConnectionMarkers[0],
-        prevConnectionMarkers[1]
+      wrapper.vm.connectionPoints.push(
+        prevConnectionPoints[0],
+        prevConnectionPoints[1]
       );
 
       changeConnectionsInStore(wrapper);
 
-      prevConnectionMarkers.forEach(marker => {
+      prevConnectionPoints.forEach(marker => {
         expect(marker.marker.remove).toBeCalledTimes(1);
         expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
       });
+    });
+
+    it("should set on click function on marker", () => {
+      changeConnectionsInStore(wrapper);
+      expect(mockMarker.once.mock.calls).toEqual([
+        ["click", expect.any(Function)],
+        ["click", expect.any(Function)]
+      ]);
+    });
+
+    it("should dispatch selectConnection when onMarkerClick called", () => {
+      const connection = getStation();
+      wrapper.vm.onMarkerClick(connection);
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        "selectConnection",
+        connection.id
+      );
+    });
+
+    it("should reset click handlers of other connections", () => {
+      changeConnectionsInStore(wrapper);
+      wrapper.vm.onMarkerClick(wrapper.vm.$store.state.stations.connections[0]);
+      //TODO: can we be more specific with the station in the callback of mockMarker.once?
+      expect(mockMarker.once).toHaveBeenCalledWith(
+        "click",
+        expect.any(Function)
+      );
     });
   });
 
@@ -141,7 +169,7 @@ describe("Markers", () => {
       changeConnectionsInStore(wrapper);
       wrapper.vm.$store.state.stations.activeStation = null;
       expect(wrapper.findAll(Popup).length).toBe(2);
-      expect(wrapper.vm.stationMarker).toBe(null);
+      expect(wrapper.vm.stationPoint).toBe(null);
     });
 
     it("should remove connection popups if there are no connections", () => {

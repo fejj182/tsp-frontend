@@ -42,6 +42,9 @@ describe("TripForm", () => {
         stations: {
           activeStation: {},
           connections: []
+        },
+        tripform: {
+          connectionId: null
         }
       }
     };
@@ -162,7 +165,7 @@ describe("TripForm", () => {
       expect(wrapper.vm.connections).toEqual([]);
     });
 
-    it("should have v-model = activeStation", () => {
+    it("should have value of the mapped activeStation", () => {
       mockStore.state.stations.activeStation = barcelona;
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -225,6 +228,24 @@ describe("TripForm", () => {
           value: valencia
         }
       ]);
+    });
+
+    it("should have the value set from of store if present", () => {
+      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.stations.connections = [valencia, madrid];
+      mockStore.state.tripform.connectionId = madrid.id;
+
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=destination-2]").props().value
+      ).toEqual({
+        text: madrid.name,
+        value: madrid
+      });
     });
 
     it("should call store dispatch on change", () => {

@@ -26,6 +26,7 @@
       filled
       rounded
       @change="onChangeConnection"
+      :value="connection"
     ></v-autocomplete>
   </v-form>
 </template>
@@ -92,6 +93,13 @@ export default {
     },
     connections() {
       return this.stationFormMapper(this.$store.state.stations.connections);
+    },
+    connection() {
+      const connectionId = this.$store.state.tripform.connectionId;
+      const connection = this.connections.find(connection => {
+        return connection.value.id === connectionId;
+      });
+      return connectionId ? connection : null;
     }
   }
 };

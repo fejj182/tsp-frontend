@@ -1,10 +1,10 @@
 <template>
   <div>
-    <div v-show="false" v-for="marker in popups" :key="marker.station.id">
+    <div v-show="false" v-for="point in popups" :key="point.station.id">
       <Popup
-        :marker="marker.marker"
-        :station="marker.station"
-        :is-connection="!!marker.isConnection"
+        :marker="point.marker"
+        :station="point.station"
+        :is-connection="!!point.isConnection"
       />
     </div>
   </div>
@@ -20,8 +20,8 @@ export default {
   },
   data: function() {
     return {
-      stationMarker: null,
-      connectionMarkers: []
+      stationPoint: null,
+      connectionPoints: []
     };
   },
   props: {
@@ -39,11 +39,11 @@ export default {
     popups() {
       const popups = {};
       // TODO: why does popup of active station not re-mount?
-      if (this.stationMarker) {
-        popups[this.stationMarker.station.id] = this.stationMarker;
+      if (this.stationPoint) {
+        popups[this.stationPoint.station.id] = this.stationPoint;
       }
-      if (this.connectionMarkers.length > 0) {
-        this.connectionMarkers.forEach(connection => {
+      if (this.connectionPoints.length > 0) {
+        this.connectionPoints.forEach(connection => {
           popups[connection.station.id] = connection;
         });
       }
@@ -60,19 +60,29 @@ export default {
       });
     },
     resetConnections() {
-      if (this.connectionMarkers.length > 0) {
-        this.connectionMarkers.forEach(connection => {
+      if (this.connectionPoints.length > 0) {
+        this.connectionPoints.forEach(connection => {
           connection.marker.remove();
         });
-        this.connectionMarkers = [];
+        this.connectionPoints = [];
       }
+    },
+    onMarkerClick(connection) {
+      this.$store.dispatch("selectConnection", connection.id);
+      this.connectionPoints
+        .filter(point => {
+          return point.station.id !== connection.id;
+        })
+        .map(point => {
+          point.marker.once("click", () => this.onMarkerClick(point.station));
+        });
     }
   },
   watch: {
     activeStation: function() {
-      if (this.stationMarker) {
-        this.stationMarker.marker.remove();
-        this.stationMarker = null;
+      if (this.stationPoint) {
+        this.stationPoint.marker.remove();
+        this.stationPoint = null;
       }
       if (this.activeStation) {
         const marker = L.marker(
@@ -80,7 +90,7 @@ export default {
           { icon: this.generateIcon("purple") }
         );
         marker.addTo(this.map);
-        this.stationMarker = {
+        this.stationPoint = {
           station: this.activeStation,
           marker
         };
@@ -94,7 +104,8 @@ export default {
           icon: this.generateIcon("red")
         });
         marker.addTo(this.map);
-        this.connectionMarkers.push({
+        marker.once("click", () => this.onMarkerClick(connection));
+        this.connectionPoints.push({
           station: connection,
           marker,
           isConnection: true
