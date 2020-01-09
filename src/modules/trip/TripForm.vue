@@ -42,6 +42,26 @@ export default {
       stations: []
     };
   },
+  computed: {
+    activeStation() {
+      const station = this.$store.state.stations.activeStation;
+      if (!_.isEmpty(station)) {
+        return this.mapStation(station);
+      } else {
+        return null;
+      }
+    },
+    connections() {
+      return this.stationFormMapper(this.$store.state.stations.connections);
+    },
+    connection() {
+      const connectionId = this.$store.state.tripform.connectionId;
+      const connection = this.connections.find(connection => {
+        return connection.value.id === connectionId;
+      });
+      return connectionId ? connection : null;
+    }
+  },
   mounted() {
     this.getStations();
   },
@@ -80,26 +100,6 @@ export default {
           lng: station.lng
         }
       };
-    }
-  },
-  computed: {
-    activeStation() {
-      const station = this.$store.state.stations.activeStation;
-      if (!_.isEmpty(station)) {
-        return this.mapStation(station);
-      } else {
-        return null;
-      }
-    },
-    connections() {
-      return this.stationFormMapper(this.$store.state.stations.connections);
-    },
-    connection() {
-      const connectionId = this.$store.state.tripform.connectionId;
-      const connection = this.connections.find(connection => {
-        return connection.value.id === connectionId;
-      });
-      return connectionId ? connection : null;
     }
   }
 };

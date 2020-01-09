@@ -2,8 +2,14 @@
   <div data-test-id="popup" ref="popup">
     <h1>{{ station.name }}</h1>
     <div v-if="isConnection">
-      <v-btn data-test-id="add-to-station" @click="addToTrip" text icon>
-        <v-icon left color="indigo">mdi-plus-circle-outline</v-icon>
+      <v-btn
+        data-test-id="add-to-station"
+        color="indigo"
+        @click="addToTrip"
+        rounded
+        outlined
+      >
+        <v-icon left>mdi-plus</v-icon>
         <span>Add to trip</span>
       </v-btn>
     </div>
@@ -68,7 +74,10 @@ h1 {
   font-size: 18px;
 }
 span {
-  color: #3f51b5;
-  margin-left: -2px;
+  margin-left: -0.25rem;
+}
+
+button {
+  margin-top: 1rem;
 }
 </style>
