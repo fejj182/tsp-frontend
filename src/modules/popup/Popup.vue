@@ -1,18 +1,17 @@
 <template>
-  <div data-test-id="popup" ref="popup">
+  <div data-test-id="popup" ref="popup" class="content">
+    <v-btn
+      v-if="isConnection"
+      data-test-id="add-to-station"
+      @click="addToTrip"
+      color="indigo"
+      fab
+      x-small
+      outlined
+    >
+      <v-icon>mdi-plus</v-icon>
+    </v-btn>
     <h1>{{ station.name }}</h1>
-    <div v-if="isConnection">
-      <v-btn
-        data-test-id="add-to-station"
-        color="indigo"
-        @click="addToTrip"
-        rounded
-        outlined
-      >
-        <v-icon left>mdi-plus</v-icon>
-        <span>Add to trip</span>
-      </v-btn>
-    </div>
   </div>
 </template>
 
@@ -70,14 +69,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
-  font-size: 18px;
+.content {
+  display: flex;
+  align-items: center;
 }
-span {
-  margin-left: -0.25rem;
-}
-
 button {
-  margin-top: 1rem;
+  margin-right: 0.5rem;
+}
+h1 {
+  font-size: 16px;
 }
 </style>

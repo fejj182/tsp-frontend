@@ -28,6 +28,16 @@
       @change="onChangeConnection"
       :value="connection"
     ></v-autocomplete>
+    <v-btn
+      v-if="connection"
+      data-test-id="add-destination"
+      color="indigo"
+      rounded
+      outlined
+    >
+      <v-icon left>mdi-plus</v-icon>
+      <span>Add destination</span>
+    </v-btn>
   </v-form>
 </template>
 
@@ -84,6 +94,7 @@ export default {
     },
     onChangeConnection(station) {
       this.$store.dispatch("openPopup", station);
+      this.$store.dispatch("selectConnection", station.id);
     },
     stationFormMapper(stations) {
       return stations.map(station => {

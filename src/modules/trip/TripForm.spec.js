@@ -261,6 +261,43 @@ describe("TripForm", () => {
       expect(mockStore.dispatch).toBeCalledWith("openPopup", barcelona);
     });
   });
+
+  describe("Add destination button", () => {
+    it("should exist only if connection selected", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.find("add-destination").exists()).toBe(false);
+    });
+
+    it("should exist only if connection selected", () => {
+      mockStore.state.stations.connections = [valencia, madrid];
+      mockStore.state.tripform.connectionId = valencia.id;
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
+        true
+      );
+    });
+
+    it("should dispatch selectConnection when connection selected", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.vm.onChangeConnection(barcelona);
+      expect(mockStore.dispatch).toBeCalledWith(
+        "selectConnection",
+        barcelona.id
+      );
+    });
+  });
   describe("stationMapper", () => {
     it("should be used for all stations", async () => {
       stationsApi.getStations.mockResolvedValue([barcelona]);
