@@ -10,6 +10,7 @@
       outlined
     >
       <v-icon>mdi-plus</v-icon>
+      <label>Add to station</label>
     </v-btn>
     <h1>{{ station.name }}</h1>
   </div>
@@ -75,6 +76,9 @@ export default {
 }
 button {
   margin-right: 0.5rem;
+}
+label {
+  display: none;
 }
 h1 {
   font-size: 16px;
