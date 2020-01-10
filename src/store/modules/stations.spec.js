@@ -51,28 +51,34 @@ describe("stations", () => {
       });
     });
     describe("addStationsToMap", () => {
-      let commit;
+      let commit, dispatch;
       beforeEach(() => {
         commit = jest.fn();
+        dispatch = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.addStationsToMap({ commit }, barcelona);
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
       });
 
       it("should clear the active stations before calling the endpoint", async () => {
-        module.actions.addStationsToMap({ commit }, barcelona);
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
+      it("should dispatch clearConnection action", () => {
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        expect(dispatch).toHaveBeenCalledWith("clearConnection");
+      });
+
       it("should get the connections for starting station", () => {
-        module.actions.addStationsToMap({ commit }, barcelona);
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(mockConnections);
-        module.actions.addStationsToMap({ commit }, barcelona);
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",
