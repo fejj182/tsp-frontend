@@ -12,6 +12,12 @@ jest.mock("@/api/stations");
 Vue.use(Vuetify);
 
 describe("StartInput", () => {
+  let enabledStations;
+  beforeEach(() => {
+    jest.resetAllMocks();
+    enabledStations = [getStation(), getStation(), getStation()];
+    stationsApi.getStations.mockResolvedValue(enabledStations);
+  });
   describe("on component loading", () => {
     it("should get stations when component mounted", () => {
       shallowMount(StartInput);
@@ -19,9 +25,6 @@ describe("StartInput", () => {
     });
 
     it("should load stations from api into props", async () => {
-      let enabledStations = [getStation(), getStation(), getStation()];
-      stationsApi.getStations.mockResolvedValue(enabledStations);
-
       const wrapper = shallowMount(StartInput);
       await flushPromises();
       const mappedStations = enabledStations.map(station =>
@@ -44,6 +47,39 @@ describe("StartInput", () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
       const wrapper = shallowMount(StartInput);
+      await flushPromises();
+      expect(wrapper.emitted().alert.length).toBe(1);
+    });
+  });
+
+  describe("On change", () => {
+    let mockStore;
+    beforeEach(() => {
+      mockStore = {
+        dispatch: jest.fn()
+      };
+    });
+
+    it("should call store dispatch on change", () => {
+      const wrapper = shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      const station = getStation();
+      wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
+      expect(mockStore.dispatch).toBeCalledWith("addStationsToMap", station);
+    });
+
+    it("should emit an alert if fails", async () => {
+      mockStore.dispatch.mockRejectedValue("fail");
+      const wrapper = shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      const station = getStation();
+      wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
     });
