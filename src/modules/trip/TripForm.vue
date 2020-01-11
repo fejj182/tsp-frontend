@@ -9,27 +9,10 @@
     >
       Service down. Please try again later.
     </v-alert>
-    <v-autocomplete
-      label="Start from..."
-      class="connection"
-      data-test-id="destination-1"
-      :items="stations"
-      filled
-      rounded
-      @change="onChangeStartingDestination"
-      :value="activeStation"
-    ></v-autocomplete>
-    <v-autocomplete
-      v-if="activeStation"
-      label="Where next?"
-      class="connection"
-      data-test-id="destination-2"
-      :items="connections"
-      filled
-      rounded
-      @change="onChangeConnection"
-      :value="connection"
-    ></v-autocomplete>
+    <StartInput @alert="onAlert" :value="activeStation" />
+    <div v-if="activeStation">
+      <ConnectionInput :items="connections" :value="connection" />
+    </div>
     <v-btn
       v-if="connection"
       @click="onAddConnection"
@@ -45,27 +28,33 @@
 </template>
 
 <script>
-import stationsApi from "@/api/stations";
-import _ from "lodash";
+import StartInput from "./StartInput.vue";
+import ConnectionInput from "./ConnectionInput.vue";
+import mapStation from "./stationFormMapper";
 
 export default {
+  components: {
+    StartInput,
+    ConnectionInput
+  },
   data() {
     return {
-      alert: false,
-      stations: []
+      alert: false
     };
   },
   computed: {
     activeStation() {
-      const station = this.$store.state.stations.activeStation;
-      if (!_.isEmpty(station)) {
-        return this.mapStation(station);
-      } else {
-        return null;
+      let station = this.$store.state.stations.activeStation;
+      if (station) {
+        station = mapStation(station);
       }
+      return station;
     },
     connections() {
-      return this.stationFormMapper(this.$store.state.stations.connections);
+      const connections = this.$store.state.stations.connections;
+      return connections.map(station => {
+        return mapStation(station);
+      });
     },
     connection() {
       const connectionId = this.$store.state.tripform.connectionId;
@@ -75,45 +64,10 @@ export default {
       return connectionId ? connection : null;
     }
   },
-  mounted() {
-    this.getStations();
-  },
   methods: {
-    async getStations() {
-      this.stations = [];
-      try {
-        const stations = await stationsApi.getStations();
-        this.stations = this.stationFormMapper(stations);
-      } catch (e) {
-        this.alert = true;
-      }
-    },
-    async onChangeStartingDestination(startingStation) {
-      try {
-        await this.$store.dispatch("addStationsToMap", startingStation);
-      } catch (e) {
-        this.alert = true;
-      }
-    },
-    onChangeConnection(station) {
-      this.$store.dispatch("selectConnection", station);
-    },
     onAddConnection() {},
-    stationFormMapper(stations) {
-      return stations.map(station => {
-        return this.mapStation(station);
-      });
-    },
-    mapStation(station) {
-      return {
-        text: station.name,
-        value: {
-          id: station.id,
-          name: station.name,
-          lat: station.lat,
-          lng: station.lng
-        }
-      };
+    onAlert() {
+      this.alert = true;
     }
   }
 };

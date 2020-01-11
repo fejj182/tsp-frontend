@@ -50,6 +50,18 @@ describe("StartInput", () => {
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
     });
+
+    it("should use value prop in input", () => {
+      const mockStation = { id: 1 };
+      const wrapper = shallowMount(StartInput, {
+        propsData: {
+          value: mockStation
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=destination-1]").props().value
+      ).toEqual(mockStation);
+    });
   });
 
   describe("On change", () => {

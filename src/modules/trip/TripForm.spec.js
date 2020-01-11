@@ -1,10 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
-import flushPromises from "flush-promises";
 import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import _ from "lodash";
+import StartInput from "./StartInput.vue";
+import ConnectionInput from "./ConnectionInput.vue";
 
 jest.mock("@/api/stations");
 
@@ -40,7 +40,7 @@ describe("TripForm", () => {
       dispatch: jest.fn(),
       state: {
         stations: {
-          activeStation: {},
+          activeStation: null,
           connections: []
         },
         tripform: {
@@ -50,163 +50,44 @@ describe("TripForm", () => {
     };
   });
 
-  describe("getStations", () => {
-    it("should get stations when component mounted", () => {
-      shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(stationsApi.getStations).toHaveBeenCalledTimes(1);
-    });
-
-    it("should load stations into starting destination input", async () => {
+  describe("StartInput", () => {
+    it("should have pass mapped activeStation to StartInput", () => {
+      mockStore.state.stations.activeStation = barcelona;
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      await flushPromises();
-
-      const mockFormValues = mockEnabledStations.map(station => {
-        return {
-          text: station.name,
-          value: station
-        };
+      expect(wrapper.find(StartInput).props().value).toEqual({
+        text: barcelona.name,
+        value: barcelona
       });
-      expect(wrapper.vm.stations).toEqual(mockFormValues);
     });
 
     it("should have no stations if api call fails", async () => {
-      stationsApi.getStations.mockRejectedValue("Failed");
-
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(false);
-
-      await flushPromises();
-      expect(wrapper.vm.stations).toEqual([]);
+      wrapper.find(StartInput).vm.$emit("alert");
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
     });
   });
-  describe("first destination", () => {
-    it("should have stations in props", async () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      await flushPromises();
-      expect(
-        wrapper.find("[data-test-id=destination-1]").props().items
-      ).toEqual([
-        {
-          text: "Barcelona-Sants",
-          value: barcelona
-        },
-        {
-          text: "Valencia-Estacio del Nord",
-          value: valencia
-        },
-        {
-          text: "Madrid - Atocha Cercanias",
-          value: madrid
-        }
-      ]);
-    });
-    it("should call store dispatch on change", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      expect(mockStore.dispatch).toBeCalledWith("addStationsToMap", barcelona);
-    });
-
-    it("should store connections on change", async () => {
-      mockStore.state.stations.connections = [valencia];
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      await flushPromises();
-      expect(wrapper.vm.connections).toEqual([
-        { text: valencia.name, value: valencia }
-      ]);
-    });
-
-    it("should clear connections on change", async () => {
-      mockStore.state.stations.connections = [valencia];
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      await flushPromises();
-      mockStore.state.stations.connections = [];
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      expect(wrapper.vm.connections).toEqual([]);
-    });
-
-    it("should have value of the mapped activeStation", () => {
-      mockStore.state.stations.activeStation = barcelona;
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(
-        wrapper.find("[data-test-id=destination-1]").props().value
-      ).toEqual({
-        text: barcelona.name,
-        value: barcelona
-      });
-    });
-
-    it("should show error if api call fails", async () => {
-      mockStore.dispatch.mockRejectedValue("Failed");
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      await flushPromises();
-      expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
-    });
-  });
-  describe("second destination", () => {
+  describe("Connections", () => {
     it("should appear after the first is selected", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(false);
+      expect(wrapper.find(ConnectionInput).exists()).toBe(false);
       mockStore.state.stations.activeStation = barcelona;
-      expect(wrapper.find("[data-test-id=destination-2]").exists()).toBe(true);
+      expect(wrapper.find(ConnectionInput).exists()).toBe(true);
     });
 
-    it("should have stations in props", async () => {
+    it("should pass connections as items", async () => {
       mockStore.state.stations.activeStation = barcelona;
       mockStore.state.stations.connections = [valencia];
       const wrapper = shallowMount(TripForm, {
@@ -215,18 +96,8 @@ describe("TripForm", () => {
         }
       });
 
-      wrapper
-        .find("[data-test-id=destination-1]")
-        .vm.$emit("change", barcelona);
-      await flushPromises();
-
-      expect(
-        wrapper.find("[data-test-id=destination-2]").props().items
-      ).toEqual([
-        {
-          text: valencia.name,
-          value: valencia
-        }
+      expect(wrapper.find(ConnectionInput).props().items).toEqual([
+        { text: valencia.name, value: valencia }
       ]);
     });
 
@@ -240,9 +111,7 @@ describe("TripForm", () => {
           $store: mockStore
         }
       });
-      expect(
-        wrapper.find("[data-test-id=destination-2]").props().value
-      ).toEqual({
+      expect(wrapper.find(ConnectionInput).props().value).toEqual({
         text: madrid.name,
         value: madrid
       });
@@ -270,52 +139,6 @@ describe("TripForm", () => {
       expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
         true
       );
-    });
-
-    it("should dispatch selectConnection when connection selected", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper.vm.onChangeConnection(barcelona);
-      expect(mockStore.dispatch).toBeCalledWith("selectConnection", barcelona);
-    });
-  });
-
-  describe("Multi destinations", () => {
-    xit("should show additional destination when second destination selected", async () => {
-      mockStore.state.stations.activeStation = barcelona;
-      mockStore.state.stations.connections = [valencia];
-      mockStore.state.tripform.connectionId = valencia.id;
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-
-      wrapper.find("[data-test-id=add-destination]").vm.$emit("click");
-      expect(wrapper.findAll(".connection").length).toBe(3);
-    });
-  });
-
-  describe("stationMapper", () => {
-    it("should be used for all stations", async () => {
-      stationsApi.getStations.mockResolvedValue([barcelona]);
-      mockStore.state.stations.activeStation = {
-        ...barcelona,
-        cat: 456
-      };
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      await flushPromises();
-
-      expect(
-        _.find(wrapper.vm.stations, wrapper.vm.activeStation)
-      ).toBeTruthy();
     });
   });
 });
