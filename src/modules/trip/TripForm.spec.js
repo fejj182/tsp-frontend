@@ -247,19 +247,6 @@ describe("TripForm", () => {
         value: madrid
       });
     });
-
-    it("should call store dispatch on change", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      mockStore.state.stations.activeStation = barcelona;
-      wrapper
-        .find("[data-test-id=destination-2]")
-        .vm.$emit("change", barcelona);
-      expect(mockStore.dispatch).toBeCalledWith("openPopup", barcelona);
-    });
   });
 
   describe("Add destination button", () => {
@@ -292,12 +279,26 @@ describe("TripForm", () => {
         }
       });
       wrapper.vm.onChangeConnection(barcelona);
-      expect(mockStore.dispatch).toBeCalledWith(
-        "selectConnection",
-        barcelona.id
-      );
+      expect(mockStore.dispatch).toBeCalledWith("selectConnection", barcelona);
     });
   });
+
+  describe("Multi destinations", () => {
+    xit("should show additional destination when second destination selected", async () => {
+      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.stations.connections = [valencia];
+      mockStore.state.tripform.connectionId = valencia.id;
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      wrapper.find("[data-test-id=add-destination]").vm.$emit("click");
+      expect(wrapper.findAll(".connection").length).toBe(3);
+    });
+  });
+
   describe("stationMapper", () => {
     it("should be used for all stations", async () => {
       stationsApi.getStations.mockResolvedValue([barcelona]);

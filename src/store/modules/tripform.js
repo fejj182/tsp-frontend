@@ -5,8 +5,9 @@ export const state = {
 export const getters = {};
 
 export const actions = {
-  selectConnection({ commit }, connectionId) {
-    commit("SELECT_CONNECTION", connectionId);
+  selectConnection({ dispatch, commit }, connection) {
+    dispatch("openPopup", connection);
+    commit("SELECT_CONNECTION", connection.id);
   },
   clearConnection({ commit }) {
     commit("CLEAR_CONNECTION");

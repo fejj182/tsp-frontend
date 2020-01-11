@@ -3,11 +3,21 @@ import * as module from "./tripform";
 describe("popups", () => {
   describe("actions", () => {
     describe("selectConnection", () => {
+      let commit, dispatch;
+      beforeEach(() => {
+        commit = jest.fn();
+        dispatch = jest.fn();
+      });
       it("should commit to the store", () => {
-        let commit = jest.fn();
-        let connection = {};
-        module.actions.selectConnection({ commit }, connection);
-        expect(commit).toHaveBeenCalledWith("SELECT_CONNECTION", connection);
+        let connection = { id: "1" };
+        module.actions.selectConnection({ dispatch, commit }, connection);
+        expect(commit).toHaveBeenCalledWith("SELECT_CONNECTION", connection.id);
+      });
+
+      it("should dispatch openPopup action", () => {
+        let connection = { id: "1" };
+        module.actions.selectConnection({ dispatch, commit }, connection);
+        expect(dispatch).toHaveBeenCalledWith("openPopup", connection);
       });
     });
     describe("clearConnection", () => {

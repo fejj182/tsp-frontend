@@ -114,7 +114,7 @@ describe("Markers", () => {
       wrapper.vm.onMarkerClick(connection);
       expect(mockStore.dispatch).toHaveBeenCalledWith(
         "selectConnection",
-        connection.id
+        connection
       );
     });
 

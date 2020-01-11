@@ -11,6 +11,7 @@
     </v-alert>
     <v-autocomplete
       label="Start from..."
+      class="connection"
       data-test-id="destination-1"
       :items="stations"
       filled
@@ -21,6 +22,7 @@
     <v-autocomplete
       v-if="activeStation"
       label="Where next?"
+      class="connection"
       data-test-id="destination-2"
       :items="connections"
       filled
@@ -30,6 +32,7 @@
     ></v-autocomplete>
     <v-btn
       v-if="connection"
+      @click="onAddConnection"
       data-test-id="add-destination"
       color="indigo"
       rounded
@@ -93,9 +96,9 @@ export default {
       }
     },
     onChangeConnection(station) {
-      this.$store.dispatch("openPopup", station);
-      this.$store.dispatch("selectConnection", station.id);
+      this.$store.dispatch("selectConnection", station);
     },
+    onAddConnection() {},
     stationFormMapper(stations) {
       return stations.map(station => {
         return this.mapStation(station);
