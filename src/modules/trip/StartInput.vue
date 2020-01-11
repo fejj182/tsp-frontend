@@ -1,13 +1,15 @@
 <template>
-  <v-autocomplete
-    label="Start from..."
-    data-test-id="destination-1"
-    :items="stations"
-    filled
-    rounded
-    @change="onChangeStartingDestination"
-    :value="value"
-  ></v-autocomplete>
+  <div>
+    <v-autocomplete
+      label="Start from..."
+      data-test-id="destination-1"
+      :items="stations"
+      filled
+      rounded
+      @change="onChangeStartingDestination"
+      :value="value"
+    ></v-autocomplete>
+  </div>
 </template>
 
 <script>

@@ -27,7 +27,9 @@ describe("StartInput", () => {
       const mappedStations = enabledStations.map(station =>
         mapStation(station)
       );
-      expect(wrapper.vm.stations).toEqual(mappedStations);
+      expect(
+        wrapper.find("[data-test-id=destination-1]").props().items
+      ).toEqual(mappedStations);
     });
 
     it("should have no stations if api call fails", async () => {
