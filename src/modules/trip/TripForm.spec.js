@@ -72,22 +72,6 @@ describe("TripForm", () => {
         mockConnections
       );
     });
-
-    it("should have the value set from of store if present", () => {
-      mockStore.state.tripform.stops = { 1: valencia };
-      mockStore.state.stations.activeConnections = [valencia, madrid];
-      mockStore.state.tripform.connectionId = madrid.id;
-
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(wrapper.find(ConnectionInput).props().value).toEqual({
-        text: madrid.name,
-        value: madrid
-      });
-    });
   });
 
   describe("Add destination button", () => {

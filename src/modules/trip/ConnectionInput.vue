@@ -8,7 +8,7 @@
       filled
       rounded
       @change="onChangeConnection"
-      :value="value"
+      :value="connection"
     ></v-autocomplete>
   </div>
 </template>
@@ -20,9 +20,6 @@ export default {
     connections: {
       type: Array
     },
-    value: {
-      type: Object
-    },
     mapper: {
       type: Function
     }
@@ -32,6 +29,13 @@ export default {
       return this.connections.map(station => {
         return mapStation(station);
       });
+    },
+    connection() {
+      const connectionId = this.$store.state.tripform.connectionId;
+      const connection = this.items.find(connection => {
+        return connection.value.id === connectionId;
+      });
+      return connectionId ? connection : null;
     }
   },
   methods: {

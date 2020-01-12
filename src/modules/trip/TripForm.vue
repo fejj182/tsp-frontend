@@ -11,7 +11,7 @@
     </v-alert>
     <StartInput @alert="onAlert" />
     <div v-for="stop in stops" :key="stop.position">
-      <ConnectionInput :connections="stop.connections" :value="connection" />
+      <ConnectionInput :connections="stop.connections" />
     </div>
     <v-btn
       v-if="connection"
