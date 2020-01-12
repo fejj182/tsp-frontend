@@ -14,7 +14,7 @@
       <ConnectionInput :connections="stop.connections" />
     </div>
     <v-btn
-      v-if="connection"
+      v-if="connectionSet"
       @click="onAddConnection"
       data-test-id="add-destination"
       color="indigo"
@@ -30,7 +30,6 @@
 <script>
 import StartInput from "./StartInput.vue";
 import ConnectionInput from "./ConnectionInput.vue";
-import mapStation from "./stationFormMapper";
 
 export default {
   components: {
@@ -43,18 +42,8 @@ export default {
     };
   },
   computed: {
-    activeConnections() {
-      const connections = this.$store.state.stations.activeConnections;
-      return connections.map(station => {
-        return mapStation(station);
-      });
-    },
-    connection() {
-      const connectionId = this.$store.state.tripform.connectionId;
-      const connection = this.activeConnections.find(connection => {
-        return connection.value.id === connectionId;
-      });
-      return connectionId ? connection : null;
+    connectionSet() {
+      return this.$store.state.tripform.connectionId;
     },
     stops() {
       return this.$store.state.tripform.stops;

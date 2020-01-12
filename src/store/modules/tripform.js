@@ -26,6 +26,9 @@ export const mutations = {
     state.connectionId = null;
   },
   SET_STOP_CONNECTIONS: (state, { connections, position }) => {
-    state.stops[position] = { connections };
+    state.stops = {
+      ...state.stops,
+      [position]: { connections }
+    };
   }
 };
