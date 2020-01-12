@@ -9,7 +9,7 @@
     >
       Service down. Please try again later.
     </v-alert>
-    <StartInput @alert="onAlert" :value="activeStation" />
+    <StartInput @alert="onAlert" />
     <div v-for="stop in stops" :key="stop.position">
       <ConnectionInput :connections="stop.connections" :value="connection" />
     </div>
@@ -43,13 +43,6 @@ export default {
     };
   },
   computed: {
-    activeStation() {
-      let station = this.$store.state.stations.activeStation;
-      if (station) {
-        station = mapStation(station);
-      }
-      return station;
-    },
     activeConnections() {
       const connections = this.$store.state.stations.activeConnections;
       return connections.map(station => {

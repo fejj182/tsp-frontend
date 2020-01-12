@@ -37,19 +37,6 @@ describe("TripForm", () => {
   });
 
   describe("StartInput", () => {
-    it("should have pass mapped activeStation to StartInput", () => {
-      mockStore.state.stations.activeStation = barcelona;
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(wrapper.find(StartInput).props().value).toEqual({
-        text: barcelona.name,
-        value: barcelona
-      });
-    });
-
     it("should have no stations if api call fails", async () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {

@@ -6,6 +6,8 @@ import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
 import mapStation from "./stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
+import { state as stations } from "@/store/modules/stations";
+import _ from "lodash";
 
 jest.mock("@/api/stations");
 
@@ -13,19 +15,36 @@ Vue.use(Vuetify);
 
 describe("StartInput", () => {
   let enabledStations;
+  let mockStore;
+  let station;
   beforeEach(() => {
     jest.resetAllMocks();
+    station = fakeStation();
     enabledStations = [fakeStation(), fakeStation(), fakeStation()];
     stationsApi.getStations.mockResolvedValue(enabledStations);
+    mockStore = {
+      dispatch: jest.fn(),
+      state: {
+        stations: _.cloneDeep(stations)
+      }
+    };
   });
   describe("on component loading", () => {
     it("should get stations when component mounted", () => {
-      shallowMount(StartInput);
+      shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       expect(stationsApi.getStations).toHaveBeenCalledTimes(1);
     });
 
     it("should load stations from api into props", async () => {
-      const wrapper = shallowMount(StartInput);
+      const wrapper = shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       await flushPromises();
       const mappedStations = enabledStations.map(station =>
         mapStation(station)
@@ -38,47 +57,50 @@ describe("StartInput", () => {
     it("should have no stations if api call fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(StartInput);
+      const wrapper = shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       await flushPromises();
       expect(wrapper.vm.stations).toEqual([]);
+    });
+
+    it("should have use activeStation from store as input value", () => {
+      mockStore.state.stations.activeStation = station;
+      const wrapper = shallowMount(StartInput, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=destination-1]").props().value
+      ).toEqual({
+        text: station.name,
+        value: station
+      });
     });
 
     it("should emit an alert if fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(StartInput);
-      await flushPromises();
-      expect(wrapper.emitted().alert.length).toBe(1);
-    });
-
-    it("should use value prop in input", () => {
-      const mockStation = { id: 1 };
       const wrapper = shallowMount(StartInput, {
-        propsData: {
-          value: mockStation
+        mocks: {
+          $store: mockStore
         }
       });
-      expect(
-        wrapper.find("[data-test-id=destination-1]").props().value
-      ).toEqual(mockStation);
+      await flushPromises();
+      expect(wrapper.emitted().alert.length).toBe(1);
     });
   });
 
   describe("On change", () => {
-    let mockStore;
-    beforeEach(() => {
-      mockStore = {
-        dispatch: jest.fn()
-      };
-    });
-
     it("should call store dispatch on change", () => {
       const wrapper = shallowMount(StartInput, {
         mocks: {
           $store: mockStore
         }
       });
-      const station = fakeStation();
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("addStationsToMap", station);
     });
@@ -90,7 +112,6 @@ describe("StartInput", () => {
           $store: mockStore
         }
       });
-      const station = fakeStation();
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
