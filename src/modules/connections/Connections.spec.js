@@ -24,7 +24,7 @@ describe("Connections", () => {
     mockStore = {
       state: {
         stations: {
-          connections: []
+          activeConnections: []
         }
       }
     };
@@ -45,7 +45,7 @@ describe("Connections", () => {
           $store: mockStore
         }
       });
-      wrapper.vm.$store.state.stations.connections = [
+      wrapper.vm.$store.state.stations.activeConnections = [
         { coords: [fakeCoord(), fakeCoord()] }
       ];
       expect(wrapper.vm.geoJsonLayer).toBeTruthy();
@@ -61,7 +61,7 @@ describe("Connections", () => {
           map: mockMap
         }
       });
-      wrapper.vm.$store.state.stations.connections = [
+      wrapper.vm.$store.state.stations.activeConnections = [
         { coords: [fakeCoord(), fakeCoord()] }
       ];
       expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
@@ -79,7 +79,7 @@ describe("Connections", () => {
       });
 
       wrapper.vm.geoJsonLayer = geoJSON;
-      wrapper.vm.$store.state.stations.connections = [
+      wrapper.vm.$store.state.stations.activeConnections = [
         { coords: [fakeCoord(), fakeCoord()] }
       ];
       expect(geoJSON.removeFrom).toHaveBeenCalledWith(mockMap);
@@ -95,7 +95,7 @@ describe("Connections", () => {
           }
         });
 
-        wrapper.vm.$store.state.stations.connections = [
+        wrapper.vm.$store.state.stations.activeConnections = [
           { coords: [fakeCoord(), fakeCoord()] }
         ];
         expect(geoJSON.addData).toHaveBeenCalledTimes(1);
@@ -108,7 +108,7 @@ describe("Connections", () => {
           }
         });
 
-        wrapper.vm.$store.state.stations.connections = [
+        wrapper.vm.$store.state.stations.activeConnections = [
           { coords: [fakeCoord(), fakeCoord(), fakeCoord()] },
           { coords: [fakeCoord(), fakeCoord(), fakeCoord()] }
         ];
@@ -122,7 +122,7 @@ describe("Connections", () => {
           }
         });
 
-        wrapper.vm.$store.state.stations.connections = [
+        wrapper.vm.$store.state.stations.activeConnections = [
           { coords: undefined },
           { coords: [fakeCoord(), fakeCoord(), fakeCoord()] }
         ];
@@ -136,7 +136,7 @@ describe("Connections", () => {
           }
         });
 
-        wrapper.vm.$store.state.stations.connections = [
+        wrapper.vm.$store.state.stations.activeConnections = [
           { coords: [undefined, fakeCoord()] },
           { coords: [fakeCoord(), fakeCoord(), fakeCoord()] }
         ];
@@ -150,7 +150,7 @@ describe("Connections", () => {
           }
         });
 
-        wrapper.vm.$store.state.stations.connections = [
+        wrapper.vm.$store.state.stations.activeConnections = [
           { coords: [[1], fakeCoord()] },
           { coords: [[1, 2, 3], fakeCoord(), fakeCoord()] }
         ];
@@ -163,7 +163,7 @@ describe("Connections", () => {
             $store: mockStore
           }
         });
-        wrapper.vm.$store.state.stations.connections = undefined;
+        wrapper.vm.$store.state.stations.activeConnections = undefined;
         expect(geoJSON.addData).not.toHaveBeenCalled();
       });
     });

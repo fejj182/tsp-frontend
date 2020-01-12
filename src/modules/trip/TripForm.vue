@@ -51,7 +51,7 @@ export default {
       return station;
     },
     connections() {
-      const connections = this.$store.state.stations.connections;
+      const connections = this.$store.state.stations.activeConnections;
       return connections.map(station => {
         return mapStation(station);
       });

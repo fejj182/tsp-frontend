@@ -41,7 +41,7 @@ describe("TripForm", () => {
       state: {
         stations: {
           activeStation: null,
-          connections: []
+          activeConnections: []
         },
         tripform: {
           connectionId: null
@@ -89,7 +89,7 @@ describe("TripForm", () => {
 
     it("should pass connections as items", async () => {
       mockStore.state.stations.activeStation = barcelona;
-      mockStore.state.stations.connections = [valencia];
+      mockStore.state.stations.activeConnections = [valencia];
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
@@ -103,7 +103,7 @@ describe("TripForm", () => {
 
     it("should have the value set from of store if present", () => {
       mockStore.state.stations.activeStation = barcelona;
-      mockStore.state.stations.connections = [valencia, madrid];
+      mockStore.state.stations.activeConnections = [valencia, madrid];
       mockStore.state.tripform.connectionId = madrid.id;
 
       const wrapper = shallowMount(TripForm, {
@@ -129,7 +129,7 @@ describe("TripForm", () => {
     });
 
     it("should exist only if connection selected", () => {
-      mockStore.state.stations.connections = [valencia, madrid];
+      mockStore.state.stations.activeConnections = [valencia, madrid];
       mockStore.state.tripform.connectionId = valencia.id;
       const wrapper = shallowMount(TripForm, {
         mocks: {

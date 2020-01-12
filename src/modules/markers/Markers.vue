@@ -34,7 +34,7 @@ export default {
       return this.$store.state.stations.activeStation;
     },
     connections() {
-      return this.$store.state.stations.connections;
+      return this.$store.state.stations.activeConnections;
     },
     popups() {
       const popups = {};

@@ -39,7 +39,7 @@ export default {
   },
   computed: {
     connections() {
-      return this.$store.state.stations.connections;
+      return this.$store.state.stations.activeConnections;
     }
   },
   watch: {

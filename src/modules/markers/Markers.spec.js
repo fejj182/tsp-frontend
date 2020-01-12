@@ -26,7 +26,7 @@ describe("Markers", () => {
       state: {
         stations: {
           activeStation: null,
-          connections: []
+          activeConnections: []
         }
       }
     };
@@ -120,7 +120,9 @@ describe("Markers", () => {
 
     it("should reset click handlers of other connections", () => {
       changeConnectionsInStore(wrapper);
-      wrapper.vm.onMarkerClick(wrapper.vm.$store.state.stations.connections[0]);
+      wrapper.vm.onMarkerClick(
+        wrapper.vm.$store.state.stations.activeConnections[0]
+      );
       //TODO: can we be more specific with the station in the callback of mockMarker.once?
       expect(mockMarker.once).toHaveBeenCalledWith(
         "click",
@@ -175,7 +177,7 @@ describe("Markers", () => {
     it("should remove connection popups if there are no connections", () => {
       changeActiveStationInStore(wrapper);
       changeConnectionsInStore(wrapper);
-      wrapper.vm.$store.state.stations.connections = [];
+      wrapper.vm.$store.state.stations.activeConnections = [];
       expect(wrapper.findAll(Popup).length).toBe(1);
     });
   });
@@ -185,7 +187,10 @@ describe("Markers", () => {
   }
 
   function changeConnectionsInStore(wrapper) {
-    wrapper.vm.$store.state.stations.connections = [getStation(), getStation()];
+    wrapper.vm.$store.state.stations.activeConnections = [
+      getStation(),
+      getStation()
+    ];
   }
 
   function getStation() {

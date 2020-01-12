@@ -2,7 +2,7 @@ import stationsApi from "@/api/stations";
 
 export const state = {
   activeStation: null,
-  connections: []
+  activeConnections: []
 };
 
 export const getters = {};
@@ -27,12 +27,12 @@ export const mutations = {
     state.activeStation = station;
   },
   SET_ACTIVE_CONNECTIONS(state, connections) {
-    state.connections = connections;
+    state.activeConnections = connections;
   },
   CLEAR_ACTIVE_STATION(state) {
     state.activeStation = null;
   },
   CLEAR_ACTIVE_CONNECTIONS(state) {
-    state.connections = [];
+    state.activeConnections = [];
   }
 };

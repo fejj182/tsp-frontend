@@ -98,10 +98,10 @@ describe("stations", () => {
     });
     it("should add the connections to the state", () => {
       const state = {
-        connections: null
+        activeConnections: null
       };
       module.mutations.SET_ACTIVE_CONNECTIONS(state, mockConnections);
-      expect(state.connections).toEqual(mockConnections);
+      expect(state.activeConnections).toEqual(mockConnections);
     });
     it("should clear active station", () => {
       const state = {
@@ -113,10 +113,10 @@ describe("stations", () => {
 
     it("should clear active connections", () => {
       const state = {
-        connections: [{}]
+        activeConnections: [{}]
       };
       module.mutations.CLEAR_ACTIVE_CONNECTIONS(state);
-      expect(state.connections).toEqual([]);
+      expect(state.activeConnections).toEqual([]);
     });
   });
 });
