@@ -5,35 +5,21 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import StartInput from "./StartInput.vue";
 import ConnectionInput from "./ConnectionInput.vue";
+import { fakeStation } from "@/helpers/tests";
 
 jest.mock("@/api/stations");
 
 Vue.use(Vuetify);
 
 describe("TripForm", () => {
-  let mockEnabledStations, mockStore, barcelona, valencia, madrid;
+  let mockStore, barcelona, valencia, madrid;
 
   beforeEach(() => {
-    barcelona = {
-      id: 1,
-      name: "Barcelona-Sants",
-      lat: 41.37952,
-      lng: 2.140624
-    };
-    valencia = {
-      id: 2,
-      name: "Valencia-Estacio del Nord",
-      lat: 39.465064,
-      lng: -0.377433
-    };
-    madrid = {
-      id: 3,
-      name: "Madrid - Atocha Cercanias",
-      lat: 40.406528,
-      lng: -3.689373
-    };
-    mockEnabledStations = [barcelona, valencia, madrid];
-    stationsApi.getStations.mockResolvedValue(mockEnabledStations);
+    barcelona = fakeStation("barcelona");
+    valencia = fakeStation("valencia");
+    madrid = fakeStation("madrid");
+
+    stationsApi.getStations.mockResolvedValue([barcelona, valencia, madrid]);
     stationsApi.getConnections.mockResolvedValue([valencia]);
 
     mockStore = {

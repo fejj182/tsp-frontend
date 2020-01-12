@@ -3,9 +3,9 @@ import StartInput from "./StartInput.vue";
 import stationsApi from "@/api/stations";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import faker from "faker";
 import flushPromises from "flush-promises";
 import mapStation from "./stationFormMapper";
+import { fakeStation } from "@/helpers/tests";
 
 jest.mock("@/api/stations");
 
@@ -15,7 +15,7 @@ describe("StartInput", () => {
   let enabledStations;
   beforeEach(() => {
     jest.resetAllMocks();
-    enabledStations = [getStation(), getStation(), getStation()];
+    enabledStations = [fakeStation(), fakeStation(), fakeStation()];
     stationsApi.getStations.mockResolvedValue(enabledStations);
   });
   describe("on component loading", () => {
@@ -78,7 +78,7 @@ describe("StartInput", () => {
           $store: mockStore
         }
       });
-      const station = getStation();
+      const station = fakeStation();
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("addStationsToMap", station);
     });
@@ -90,18 +90,10 @@ describe("StartInput", () => {
           $store: mockStore
         }
       });
-      const station = getStation();
+      const station = fakeStation();
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
     });
   });
-
-  function getStation() {
-    const id = faker.random.number();
-    const name = faker.address.city();
-    const lat = parseFloat(faker.address.latitude());
-    const lng = parseFloat(faker.address.longitude());
-    return { id, name, lat, lng };
-  }
 });
