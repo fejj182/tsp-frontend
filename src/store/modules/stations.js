@@ -18,6 +18,7 @@ export const actions = {
     commit("CLEAR_ACTIVE_CONNECTIONS");
     dispatch("clearConnection");
     const connections = await stationsApi.getConnections(startingStation.id);
+    dispatch("setStopConnections", { connections, position: 1 });
     commit("SET_ACTIVE_CONNECTIONS", connections);
   }
 };

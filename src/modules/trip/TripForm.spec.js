@@ -6,32 +6,32 @@ import Vuetify from "vuetify";
 import StartInput from "./StartInput.vue";
 import ConnectionInput from "./ConnectionInput.vue";
 import { fakeStation } from "@/helpers/tests";
+import { state as tripform } from "@/store/modules/tripform";
+import { state as stations } from "@/store/modules/stations";
+import _ from "lodash";
 
 jest.mock("@/api/stations");
 
 Vue.use(Vuetify);
 
 describe("TripForm", () => {
-  let mockStore, barcelona, valencia, madrid;
+  let mockStore, barcelona, valencia, madrid, mockConnections;
 
   beforeEach(() => {
     barcelona = fakeStation("barcelona");
     valencia = fakeStation("valencia");
     madrid = fakeStation("madrid");
 
+    mockConnections = [valencia, madrid];
+
     stationsApi.getStations.mockResolvedValue([barcelona, valencia, madrid]);
-    stationsApi.getConnections.mockResolvedValue([valencia]);
+    stationsApi.getConnections.mockResolvedValue(mockConnections);
 
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        stations: {
-          activeStation: null,
-          activeConnections: []
-        },
-        tripform: {
-          connectionId: null
-        }
+        stations: _.cloneDeep(stations),
+        tripform: _.cloneDeep(tripform)
       }
     };
   });
@@ -62,33 +62,32 @@ describe("TripForm", () => {
     });
   });
   describe("Connections", () => {
-    it("should appear after the first is selected", () => {
+    it("should appear if there are stops in the store", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
       expect(wrapper.find(ConnectionInput).exists()).toBe(false);
-      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.tripform.stops = { 1: barcelona };
       expect(wrapper.find(ConnectionInput).exists()).toBe(true);
     });
 
     it("should pass connections as items", async () => {
-      mockStore.state.stations.activeStation = barcelona;
-      mockStore.state.stations.activeConnections = [valencia];
+      mockStore.state.tripform.stops = { 1: { connections: mockConnections } };
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
 
-      expect(wrapper.find(ConnectionInput).props().items).toEqual([
-        { text: valencia.name, value: valencia }
-      ]);
+      expect(wrapper.find(ConnectionInput).props().connections).toEqual(
+        mockConnections
+      );
     });
 
     it("should have the value set from of store if present", () => {
-      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.tripform.stops = { 1: valencia };
       mockStore.state.stations.activeConnections = [valencia, madrid];
       mockStore.state.tripform.connectionId = madrid.id;
 

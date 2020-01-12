@@ -15,6 +15,9 @@ describe("ConnectionInput", () => {
     const wrapper = shallowMount(ConnectionInput, {
       mocks: {
         $store: mockStore
+      },
+      propsData: {
+        connections: []
       }
     });
     wrapper.find("[data-test-id=destination-2").vm.$emit("change", station);

@@ -10,8 +10,8 @@
       Service down. Please try again later.
     </v-alert>
     <StartInput @alert="onAlert" :value="activeStation" />
-    <div v-if="activeStation">
-      <ConnectionInput :items="connections" :value="connection" />
+    <div v-for="stop in stops" :key="stop.position">
+      <ConnectionInput :connections="stop.connections" :value="connection" />
     </div>
     <v-btn
       v-if="connection"
@@ -50,7 +50,7 @@ export default {
       }
       return station;
     },
-    connections() {
+    activeConnections() {
       const connections = this.$store.state.stations.activeConnections;
       return connections.map(station => {
         return mapStation(station);
@@ -58,10 +58,13 @@ export default {
     },
     connection() {
       const connectionId = this.$store.state.tripform.connectionId;
-      const connection = this.connections.find(connection => {
+      const connection = this.activeConnections.find(connection => {
         return connection.value.id === connectionId;
       });
       return connectionId ? connection : null;
+    },
+    stops() {
+      return this.$store.state.tripform.stops;
     }
   },
   methods: {

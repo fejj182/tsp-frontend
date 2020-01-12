@@ -14,9 +14,10 @@
 </template>
 
 <script>
+import mapStation from "./stationFormMapper";
 export default {
   props: {
-    items: {
+    connections: {
       type: Array
     },
     value: {
@@ -24,6 +25,13 @@ export default {
     },
     mapper: {
       type: Function
+    }
+  },
+  computed: {
+    items() {
+      return this.connections.map(station => {
+        return mapStation(station);
+      });
     }
   },
   methods: {

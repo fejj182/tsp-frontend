@@ -1,5 +1,6 @@
 export const state = {
-  connectionId: null
+  connectionId: null,
+  stops: {}
 };
 
 export const getters = {};
@@ -11,6 +12,9 @@ export const actions = {
   },
   clearConnection({ commit }) {
     commit("CLEAR_CONNECTION");
+  },
+  setStopConnections({ commit }, { connections, position }) {
+    commit("SET_STOP_CONNECTIONS", { connections, position });
   }
 };
 
@@ -20,5 +24,8 @@ export const mutations = {
   },
   CLEAR_CONNECTION: state => {
     state.connectionId = null;
+  },
+  SET_STOP_CONNECTIONS: (state, { connections, position }) => {
+    state.stops[position] = { connections };
   }
 };
