@@ -11,10 +11,10 @@
     </v-alert>
     <StartInput @alert="onAlert" />
     <div v-for="stop in stops" :key="stop.position">
-      <ConnectionInput :connections="stop.connections" />
+      <ConnectionInput class="connection" :connections="stop.connections" />
     </div>
     <v-btn
-      v-if="connectionSet"
+      v-if="hasStops"
       @click="onAddConnection"
       data-test-id="add-destination"
       color="indigo"
@@ -42,15 +42,17 @@ export default {
     };
   },
   computed: {
-    connectionSet() {
-      return this.$store.state.trip.connectionId;
-    },
     stops() {
       return this.$store.state.trip.stops;
+    },
+    hasStops() {
+      return this.stops.length > 0;
     }
   },
   methods: {
-    onAddConnection() {},
+    onAddConnection() {
+      this.$store.dispatch("addStopToTrip");
+    },
     onAlert() {
       this.alert = true;
     }

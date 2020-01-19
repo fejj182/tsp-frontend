@@ -16,9 +16,9 @@ export const actions = {
   async addStationsToMap({ dispatch, commit }, startingStation) {
     commit("SET_ACTIVE_STATION", startingStation);
     commit("CLEAR_ACTIVE_CONNECTIONS");
-    dispatch("clearConnection");
+    dispatch("resetTrip");
     const connections = await stationsApi.getConnections(startingStation.id);
-    dispatch("setStopConnections", { connections, position: 1 });
+    dispatch("setStopConnections", { connections });
     commit("SET_ACTIVE_CONNECTIONS", connections);
   }
 };

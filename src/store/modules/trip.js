@@ -1,6 +1,6 @@
 export const state = {
   connectionId: null,
-  stops: {}
+  stops: []
 };
 
 export const getters = {};
@@ -10,11 +10,12 @@ export const actions = {
     dispatch("openPopup", connection);
     commit("SELECT_CONNECTION", connection.id);
   },
-  clearConnection({ commit }) {
+  resetTrip({ commit }) {
     commit("CLEAR_CONNECTION");
+    commit("CLEAR_STOPS");
   },
-  setStopConnections({ commit }, { connections, position }) {
-    commit("SET_STOP_CONNECTIONS", { connections, position });
+  setStopConnections({ commit }, { connections }) {
+    commit("ADD_STOP_CONNECTIONS", { connections });
   }
 };
 
@@ -25,10 +26,10 @@ export const mutations = {
   CLEAR_CONNECTION: state => {
     state.connectionId = null;
   },
-  SET_STOP_CONNECTIONS: (state, { connections, position }) => {
-    state.stops = {
-      ...state.stops,
-      [position]: { connections }
-    };
+  CLEAR_STOPS: state => {
+    state.stops = [];
+  },
+  ADD_STOP_CONNECTIONS: (state, { connections }) => {
+    state.stops = [...state.stops, { connections }];
   }
 };

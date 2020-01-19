@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount } from "@vue/test-utils";
 import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
 import Vue from "vue";
@@ -74,8 +74,36 @@ describe("TripForm", () => {
     });
   });
 
+  describe("Multi destinations", () => {
+    it("should show 1 connection input when there is 1 stop in the store", async () => {
+      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.trip.stops = [{ connections: mockConnections }];
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.findAll(".connection").length).toBe(1);
+    });
+
+    it("should show 3 connection inputs when there is 3 stops in the store", async () => {
+      mockStore.state.stations.activeStation = barcelona;
+      mockStore.state.trip.stops = [
+        { connections: mockConnections },
+        { connections: mockConnections },
+        { connections: mockConnections }
+      ];
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.findAll(".connection").length).toBe(3);
+    });
+  });
+
   describe("Add destination button", () => {
-    it("should exist only if connection selected", () => {
+    it("should not exist when component loads", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
@@ -84,9 +112,9 @@ describe("TripForm", () => {
       expect(wrapper.find("add-destination").exists()).toBe(false);
     });
 
-    it("should exist only if connection selected", () => {
+    it("should exist only if at least 1 stop in store", () => {
       mockStore.state.stations.activeConnections = [valencia, madrid];
-      mockStore.state.trip.connectionId = valencia.id;
+      mockStore.state.trip.stops = [barcelona];
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
@@ -95,6 +123,28 @@ describe("TripForm", () => {
       expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
         true
       );
+    });
+
+    it("should dispatch addStopToTrip action onClick", () => {
+      mockStore.state.stations.activeConnections = [valencia, madrid];
+      mockStore.state.trip.stops = [barcelona];
+      const wrapper = mount(TripForm, {
+        mocks: {
+          $store: mockStore
+        },
+        stubs: {
+          StartInput: {
+            name: "StartInput",
+            template: "<span></span>"
+          },
+          ConnectionInput: {
+            name: "ConnectionInput",
+            template: "<span></span>"
+          }
+        }
+      });
+      wrapper.find("[data-test-id=add-destination]").trigger("click");
+      expect(mockStore.dispatch).toBeCalledWith("addStopToTrip");
     });
   });
 });

@@ -15,7 +15,7 @@ describe("stations", () => {
     lat: 41.37952,
     lng: 2.140624
   };
-  const mockConnections = [];
+  const connections = [];
 
   describe("actions", () => {
     describe("getNearestStation", () => {
@@ -61,14 +61,14 @@ describe("stations", () => {
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
       });
 
-      it("should clear the active stations before calling the endpoint", async () => {
+      it("should clear the active connections before calling the endpoint", async () => {
         module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
-      it("should dispatch clearConnection action", () => {
+      it("should dispatch resetTrip action", () => {
         module.actions.addStationsToMap({ dispatch, commit }, barcelona);
-        expect(dispatch).toHaveBeenCalledWith("clearConnection");
+        expect(dispatch).toHaveBeenCalledWith("resetTrip");
       });
 
       it("should get the connections for starting station", () => {
@@ -76,13 +76,22 @@ describe("stations", () => {
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
+      it("should dispatch setStopConnections", async () => {
+        stationsApi.getConnections.mockResolvedValue(connections);
+        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        await flushPromises();
+        expect(dispatch).toHaveBeenCalledWith("setStopConnections", {
+          connections
+        });
+      });
+
       it("should commit the connections to the store", async () => {
-        stationsApi.getConnections.mockResolvedValue(mockConnections);
+        stationsApi.getConnections.mockResolvedValue(connections);
         module.actions.addStationsToMap({ dispatch, commit }, barcelona);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",
-          mockConnections
+          connections
         );
       });
     });
@@ -100,8 +109,8 @@ describe("stations", () => {
       const state = {
         activeConnections: null
       };
-      module.mutations.SET_ACTIVE_CONNECTIONS(state, mockConnections);
-      expect(state.activeConnections).toEqual(mockConnections);
+      module.mutations.SET_ACTIVE_CONNECTIONS(state, connections);
+      expect(state.activeConnections).toEqual(connections);
     });
     it("should clear active station", () => {
       const state = {
