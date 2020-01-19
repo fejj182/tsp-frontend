@@ -4,7 +4,7 @@ import { fakeStation } from "@/helpers/tests";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import { state as stations } from "@/store/modules/stations";
-import { state as tripform } from "@/store/modules/tripform";
+import { state as trip } from "@/store/modules/trip";
 import _ from "lodash";
 
 Vue.use(Vuetify);
@@ -16,7 +16,7 @@ describe("ConnectionInput", () => {
       dispatch: jest.fn(),
       state: {
         stations: _.cloneDeep(stations),
-        tripform: _.cloneDeep(tripform)
+        trip: _.cloneDeep(trip)
       }
     };
   });
@@ -40,7 +40,7 @@ describe("ConnectionInput", () => {
   it("should have the value set from of store if present", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
-    mockStore.state.tripform.connectionId = madrid.id;
+    mockStore.state.trip.connectionId = madrid.id;
 
     const wrapper = shallowMount(ConnectionInput, {
       mocks: {

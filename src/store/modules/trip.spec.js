@@ -1,4 +1,4 @@
-import * as module from "./tripform";
+import * as module from "./trip";
 
 describe("popups", () => {
   describe("actions", () => {

@@ -6,7 +6,7 @@ import Vuetify from "vuetify";
 import StartInput from "./StartInput.vue";
 import ConnectionInput from "./ConnectionInput.vue";
 import { fakeStation } from "@/helpers/tests";
-import { state as tripform } from "@/store/modules/tripform";
+import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
 import _ from "lodash";
 
@@ -31,7 +31,7 @@ describe("TripForm", () => {
       dispatch: jest.fn(),
       state: {
         stations: _.cloneDeep(stations),
-        tripform: _.cloneDeep(tripform)
+        trip: _.cloneDeep(trip)
       }
     };
   });
@@ -56,12 +56,12 @@ describe("TripForm", () => {
         }
       });
       expect(wrapper.find(ConnectionInput).exists()).toBe(false);
-      mockStore.state.tripform.stops = { 1: barcelona };
+      mockStore.state.trip.stops = { 1: barcelona };
       expect(wrapper.find(ConnectionInput).exists()).toBe(true);
     });
 
     it("should pass connections as items", async () => {
-      mockStore.state.tripform.stops = { 1: { connections: mockConnections } };
+      mockStore.state.trip.stops = { 1: { connections: mockConnections } };
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
@@ -86,7 +86,7 @@ describe("TripForm", () => {
 
     it("should exist only if connection selected", () => {
       mockStore.state.stations.activeConnections = [valencia, madrid];
-      mockStore.state.tripform.connectionId = valencia.id;
+      mockStore.state.trip.connectionId = valencia.id;
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore

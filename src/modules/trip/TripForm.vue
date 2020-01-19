@@ -43,10 +43,10 @@ export default {
   },
   computed: {
     connectionSet() {
-      return this.$store.state.tripform.connectionId;
+      return this.$store.state.trip.connectionId;
     },
     stops() {
-      return this.$store.state.tripform.stops;
+      return this.$store.state.trip.stops;
     }
   },
   methods: {

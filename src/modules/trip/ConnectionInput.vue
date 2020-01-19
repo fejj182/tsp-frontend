@@ -31,7 +31,7 @@ export default {
       });
     },
     connection() {
-      const connectionId = this.$store.state.tripform.connectionId;
+      const connectionId = this.$store.state.trip.connectionId;
       const connection = this.items.find(connection => {
         return connection.value.id === connectionId;
       });
