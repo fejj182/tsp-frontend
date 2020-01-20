@@ -7,7 +7,6 @@
       filled
       rounded
       @change="onChangeStartingDestination"
-      :value="activeStation"
     ></v-autocomplete>
   </div>
 </template>
@@ -21,15 +20,6 @@ export default {
     return {
       stations: []
     };
-  },
-  computed: {
-    activeStation() {
-      let station = this.$store.state.stations.activeStation;
-      if (station) {
-        station = mapStation(station);
-      }
-      return station;
-    }
   },
   methods: {
     async getStations() {

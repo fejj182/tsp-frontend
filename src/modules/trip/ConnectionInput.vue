@@ -31,11 +31,8 @@ export default {
       });
     },
     connection() {
-      const connectionId = this.$store.state.trip.connectionId;
-      const connection = this.items.find(connection => {
-        return connection.value.id === connectionId;
-      });
-      return connectionId ? connection : null;
+      const selectedConnection = this.$store.state.trip.selectedConnection;
+      return selectedConnection ? mapStation(selectedConnection) : null;
     }
   },
   methods: {

@@ -51,7 +51,10 @@ export default {
   },
   methods: {
     onAddConnection() {
-      this.$store.dispatch("addStopToTrip");
+      this.$store.dispatch(
+        "addStopToTrip",
+        this.$store.state.trip.selectedConnection
+      );
     },
     onAlert() {
       this.alert = true;

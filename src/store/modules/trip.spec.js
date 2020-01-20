@@ -11,7 +11,7 @@ describe("popups", () => {
       it("should commit SELECT_CONNECTION to the store", () => {
         let connection = { id: "1" };
         module.actions.selectConnection({ dispatch, commit }, connection);
-        expect(commit).toHaveBeenCalledWith("SELECT_CONNECTION", connection.id);
+        expect(commit).toHaveBeenCalledWith("SELECT_CONNECTION", connection);
       });
 
       it("should dispatch openPopup action", () => {
@@ -33,11 +33,11 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
     });
-    describe("setStopConnections", () => {
+    describe("addStopConnections", () => {
       it("should commit ADD_STOP_CONNECTIONS to the store", () => {
         let commit = jest.fn();
         let connections = { connections: {} };
-        module.actions.setStopConnections({ commit }, connections);
+        module.actions.addStopConnections({ commit }, connections);
         expect(commit).toHaveBeenCalledWith(
           "ADD_STOP_CONNECTIONS",
           connections
@@ -49,20 +49,20 @@ describe("popups", () => {
     describe("SELECT_CONNECTION", () => {
       it("should set the connection id", () => {
         let state = {
-          connectionId: null
+          selectedConnection: null
         };
-        let connectionId = 1;
-        module.mutations.SELECT_CONNECTION(state, connectionId);
-        expect(state.connectionId).toEqual(connectionId);
+        let selectedConnection = 1;
+        module.mutations.SELECT_CONNECTION(state, selectedConnection);
+        expect(state.selectedConnection).toEqual(selectedConnection);
       });
     });
     describe("CLEAR_CONNECTION", () => {
       it("should clear the connection id", () => {
         let state = {
-          connectionId: 1
+          selectedConnection: 1
         };
         module.mutations.CLEAR_CONNECTION(state);
-        expect(state.connectionId).toEqual(null);
+        expect(state.selectedConnection).toEqual(null);
       });
     });
     describe("CLEAR_STOPS", () => {

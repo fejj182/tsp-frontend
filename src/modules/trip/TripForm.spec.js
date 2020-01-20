@@ -128,6 +128,7 @@ describe("TripForm", () => {
     it("should dispatch addStopToTrip action onClick", () => {
       mockStore.state.stations.activeConnections = [valencia, madrid];
       mockStore.state.trip.stops = [barcelona];
+      mockStore.state.trip.selectedConnection = madrid;
       const wrapper = mount(TripForm, {
         mocks: {
           $store: mockStore
@@ -144,7 +145,7 @@ describe("TripForm", () => {
         }
       });
       wrapper.find("[data-test-id=add-destination]").trigger("click");
-      expect(mockStore.dispatch).toBeCalledWith("addStopToTrip");
+      expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", madrid);
     });
   });
 });

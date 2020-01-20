@@ -66,21 +66,6 @@ describe("StartInput", () => {
       expect(wrapper.vm.stations).toEqual([]);
     });
 
-    it("should have use activeStation from store as input value", () => {
-      mockStore.state.stations.activeStation = station;
-      const wrapper = shallowMount(StartInput, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(
-        wrapper.find("[data-test-id=destination-1]").props().value
-      ).toEqual({
-        text: station.name,
-        value: station
-      });
-    });
-
     it("should emit an alert if fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 

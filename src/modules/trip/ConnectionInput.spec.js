@@ -37,10 +37,27 @@ describe("ConnectionInput", () => {
     );
   });
 
+  it("should have the value null if not present in the store", () => {
+    const valencia = fakeStation("valencia");
+    const madrid = fakeStation("madrid");
+
+    const wrapper = shallowMount(ConnectionInput, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        connections: [valencia, madrid]
+      }
+    });
+    expect(wrapper.find("[data-test-id=destination-2]").props().value).toBe(
+      null
+    );
+  });
+
   it("should have the value set from of store if present", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
-    mockStore.state.trip.connectionId = madrid.id;
+    mockStore.state.trip.selectedConnection = madrid;
 
     const wrapper = shallowMount(ConnectionInput, {
       mocks: {

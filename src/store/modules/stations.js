@@ -18,7 +18,14 @@ export const actions = {
     commit("CLEAR_ACTIVE_CONNECTIONS");
     dispatch("resetTrip");
     const connections = await stationsApi.getConnections(startingStation.id);
-    dispatch("setStopConnections", { connections });
+    dispatch("addStopConnections", { connections });
+    commit("SET_ACTIVE_CONNECTIONS", connections);
+  },
+  async addStopToTrip({ dispatch, commit }, station) {
+    commit("SET_ACTIVE_STATION", station);
+    commit("CLEAR_ACTIVE_CONNECTIONS");
+    const connections = await stationsApi.getConnections(station.id);
+    dispatch("addStopConnections", { connections });
     commit("SET_ACTIVE_CONNECTIONS", connections);
   }
 };
