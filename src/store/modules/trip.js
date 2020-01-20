@@ -1,4 +1,5 @@
 export const state = {
+  startingStation: null,
   selectedConnection: null,
   stops: []
 };
@@ -16,6 +17,9 @@ export const actions = {
   },
   addStopConnections({ commit }, { connections }) {
     commit("ADD_STOP_CONNECTIONS", { connections });
+  },
+  selectStartingInput({ commit }, station) {
+    commit("SELECT_STARTING_STATION", station);
   }
 };
 
@@ -31,5 +35,8 @@ export const mutations = {
   },
   ADD_STOP_CONNECTIONS: (state, { connections }) => {
     state.stops = [...state.stops, { connections }];
-  }
+  },
+  SELECT_STARTING_STATION(state, station) {
+    state.startingStation = station;
+  },
 };

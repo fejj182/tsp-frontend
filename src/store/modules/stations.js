@@ -11,6 +11,7 @@ export const actions = {
   async getNearestStation({ dispatch, commit }, location) {
     commit("CLEAR_ACTIVE_STATION");
     const station = await stationsApi.getNearestStation(location);
+    dispatch("selectStartingInput", station);
     dispatch("addStationsToMap", station);
   },
   async addStationsToMap({ dispatch, commit }, startingStation) {

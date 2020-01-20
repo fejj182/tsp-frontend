@@ -7,6 +7,7 @@
       filled
       rounded
       @change="onChangeStartingDestination"
+      :value="startingStation"
     ></v-autocomplete>
   </div>
 </template>
@@ -20,6 +21,15 @@ export default {
     return {
       stations: []
     };
+  },
+  computed: {
+    startingStation() {
+      let station = this.$store.state.trip.startingStation;
+      if (station) {
+        station = mapStation(station);
+      }
+      return station;
+    }
   },
   methods: {
     async getStations() {

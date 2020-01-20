@@ -6,7 +6,7 @@ import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
 import mapStation from "./stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
-import { state as stations } from "@/store/modules/stations";
+import { state as trip } from "@/store/modules/trip";
 import _ from "lodash";
 
 jest.mock("@/api/stations");
@@ -25,7 +25,7 @@ describe("StartInput", () => {
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        stations: _.cloneDeep(stations)
+        trip: _.cloneDeep(trip)
       }
     };
   });
@@ -66,7 +66,7 @@ describe("StartInput", () => {
       expect(wrapper.vm.stations).toEqual([]);
     });
 
-    it("should emit an alert if fails", async () => {
+    it("should emit an alert if getStations fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
       const wrapper = shallowMount(StartInput, {
@@ -90,7 +90,7 @@ describe("StartInput", () => {
       expect(mockStore.dispatch).toBeCalledWith("addStationsToMap", station);
     });
 
-    it("should emit an alert if fails", async () => {
+    it("should emit an alert if dispatch fails", async () => {
       mockStore.dispatch.mockRejectedValue("fail");
       const wrapper = shallowMount(StartInput, {
         mocks: {
