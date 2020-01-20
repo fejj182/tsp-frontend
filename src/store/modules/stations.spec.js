@@ -34,13 +34,13 @@ describe("stations", () => {
         expect(stationsApi.getNearestStation).toHaveBeenCalledWith(location);
       });
 
-      it("should call dispatch addStationsToMap", async () => {
+      it("should call dispatch addStopToTrip", async () => {
         const mockNearestStation = {};
         stationsApi.getNearestStation.mockReturnValue(mockNearestStation);
         await module.actions.getNearestStation({ dispatch, commit }, location);
         await flushPromises();
         expect(dispatch).toHaveBeenCalledWith(
-          "addStationsToMap",
+          "addStopToTrip",
           mockNearestStation
         );
       });
@@ -50,44 +50,39 @@ describe("stations", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_STATION");
       });
     });
-    describe("addStationsToMap", () => {
+    describe("addStopToTrip", () => {
       let commit, dispatch;
       beforeEach(() => {
         commit = jest.fn();
         dispatch = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
       });
 
       it("should clear the active connections before calling the endpoint", async () => {
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
-      it("should dispatch resetTrip action", () => {
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
-        expect(dispatch).toHaveBeenCalledWith("resetTrip");
-      });
-
       it("should get the connections for starting station", () => {
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
-      it("should dispatch addStopConnections", async () => {
+      it("should dispatch addConnectionsToForm", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         await flushPromises();
-        expect(dispatch).toHaveBeenCalledWith("addStopConnections", {
+        expect(dispatch).toHaveBeenCalledWith("addConnectionsToForm", {
           connections
         });
       });
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.addStationsToMap({ dispatch, commit }, barcelona);
+        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",

@@ -55,6 +55,21 @@ describe("Home", () => {
         lng
       });
     });
+
+    it("should dispatch resetTrip event", () => {
+      const mockStore = { dispatch: jest.fn() };
+      const wrapper = shallowMount(Home, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      const lat = parseFloat(faker.address.latitude());
+      const lng = parseFloat(faker.address.longitude());
+      wrapper.vm.onMapClick({
+        latlng: { lat, lng }
+      });
+      expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
+    });
   });
 
   describe("onMapCreated", () => {

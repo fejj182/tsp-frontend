@@ -148,7 +148,7 @@ describe("Popup", () => {
       });
       wrapper.find("[data-test-id=add-to-station]").trigger("click");
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith(
-        "addStationToTrip",
+        "addStopToTrip",
         station
       );
     });

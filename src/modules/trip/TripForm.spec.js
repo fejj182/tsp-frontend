@@ -76,7 +76,6 @@ describe("TripForm", () => {
 
   describe("Multi destinations", () => {
     it("should show 1 connection input when there is 1 stop in the store", async () => {
-      mockStore.state.stations.activeStation = barcelona;
       mockStore.state.trip.stops = [{ connections: mockConnections }];
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -87,7 +86,6 @@ describe("TripForm", () => {
     });
 
     it("should show 3 connection inputs when there is 3 stops in the store", async () => {
-      mockStore.state.stations.activeStation = barcelona;
       mockStore.state.trip.stops = [
         { connections: mockConnections },
         { connections: mockConnections },

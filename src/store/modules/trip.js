@@ -15,7 +15,7 @@ export const actions = {
     commit("CLEAR_CONNECTION");
     commit("CLEAR_STOPS");
   },
-  addStopConnections({ commit }, { connections }) {
+  addConnectionsToForm({ commit }, { connections }) {
     commit("ADD_STOP_CONNECTIONS", { connections });
   },
   selectStartingInput({ commit }, station) {
@@ -38,5 +38,5 @@ export const mutations = {
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;
-  },
+  }
 };

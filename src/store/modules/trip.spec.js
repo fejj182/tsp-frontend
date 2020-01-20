@@ -33,15 +33,23 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
     });
-    describe("addStopConnections", () => {
+    describe("addConnectionsToForm", () => {
       it("should commit ADD_STOP_CONNECTIONS to the store", () => {
         let commit = jest.fn();
         let connections = { connections: {} };
-        module.actions.addStopConnections({ commit }, connections);
+        module.actions.addConnectionsToForm({ commit }, connections);
         expect(commit).toHaveBeenCalledWith(
           "ADD_STOP_CONNECTIONS",
           connections
         );
+      });
+    });
+    describe("selectStartingInput", () => {
+      it("should commit SELECT_STARTING_STATION to the store", () => {
+        let commit = jest.fn();
+        let station = {};
+        module.actions.selectStartingInput({ commit }, station);
+        expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
       });
     });
   });
@@ -82,6 +90,16 @@ describe("popups", () => {
         };
         module.mutations.ADD_STOP_CONNECTIONS(state, connections);
         expect(state.stops).toEqual([connections, connections]);
+      });
+    });
+    describe("SELECT_STARTING_STATION", () => {
+      it("should add starting station", () => {
+        let state = {
+          startingStation: null
+        };
+        const station = {};
+        module.mutations.SELECT_STARTING_STATION(state, station);
+        expect(state.startingStation).toEqual(station);
       });
     });
   });
