@@ -44,7 +44,7 @@ export default {
       }
     },
     async onChangeStartingDestination(station) {
-      this.$store.dispatch("resetTrip");
+      this.$store.dispatch("resetTripForm");
       try {
         await this.$store.dispatch("addStopToTrip", station);
       } catch (e) {

@@ -90,14 +90,14 @@ describe("StartInput", () => {
       expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", station);
     });
 
-    it("should dispatch resetTrip on change", () => {
+    it("should dispatch resetTripForm on change", () => {
       const wrapper = shallowMount(StartInput, {
         mocks: {
           $store: mockStore
         }
       });
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
-      expect(mockStore.dispatch).toBeCalledWith("resetTrip");
+      expect(mockStore.dispatch).toBeCalledWith("resetTripForm");
     });
 
     it("should emit an alert if dispatch fails", async () => {

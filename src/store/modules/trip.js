@@ -11,7 +11,7 @@ export const actions = {
     dispatch("openPopup", connection);
     commit("SELECT_CONNECTION", connection);
   },
-  resetTrip({ commit }) {
+  resetTripForm({ commit }) {
     commit("CLEAR_CONNECTION");
     commit("CLEAR_STOPS");
   },

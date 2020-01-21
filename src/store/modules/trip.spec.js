@@ -20,16 +20,16 @@ describe("popups", () => {
         expect(dispatch).toHaveBeenCalledWith("openPopup", connection);
       });
     });
-    describe("resetTrip", () => {
+    describe("resetTripForm", () => {
       it("should commit CLEAR_CONNECTION to the store", () => {
         let commit = jest.fn();
-        module.actions.resetTrip({ commit });
+        module.actions.resetTripForm({ commit });
         expect(commit).toHaveBeenCalledWith("CLEAR_CONNECTION");
       });
 
       it("should commit CLEAR_STOPS to the store", () => {
         let commit = jest.fn();
-        module.actions.resetTrip({ commit });
+        module.actions.resetTripForm({ commit });
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
     });
