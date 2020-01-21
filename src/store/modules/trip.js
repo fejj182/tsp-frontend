@@ -34,7 +34,11 @@ export const mutations = {
     state.stops = [];
   },
   ADD_STOP_CONNECTIONS: (state, { connections }) => {
-    state.stops = [...state.stops, { connections }];
+    const prevStops = state.stops.map(stop => {
+      stop.readOnly = true;
+      return stop;
+    });
+    state.stops = [...prevStops, { connections }];
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;

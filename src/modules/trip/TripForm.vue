@@ -10,8 +10,12 @@
       Service down. Please try again later.
     </v-alert>
     <StartInput @alert="onAlert" />
-    <div v-for="stop in stops" :key="stop.position">
-      <ConnectionInput class="connection" :connections="stop.connections" />
+    <div v-for="(stop, index) in stops" :key="index">
+      <ConnectionInput
+        class="connection"
+        :connections="stop.connections"
+        :read-only="stop.readOnly"
+      />
     </div>
     <v-btn
       v-if="hasStops"

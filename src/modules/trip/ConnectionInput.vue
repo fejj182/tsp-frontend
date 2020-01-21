@@ -2,13 +2,13 @@
   <div>
     <v-autocomplete
       label="Where next?"
-      class="connection"
-      data-test-id="destination-2"
+      data-test-id="connection"
       :items="items"
       filled
       rounded
+      :readonly="readOnly"
       @change="onChangeConnection"
-      :value="connection"
+      :value="selected"
     ></v-autocomplete>
   </div>
 </template>
@@ -16,12 +16,18 @@
 <script>
 import mapStation from "./stationFormMapper";
 export default {
+  data() {
+    return {
+      readOnlyValue: null
+    };
+  },
   props: {
     connections: {
       type: Array
     },
-    mapper: {
-      type: Function
+    readOnly: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -30,9 +36,24 @@ export default {
         return mapStation(station);
       });
     },
-    connection() {
-      const selectedConnection = this.$store.state.trip.selectedConnection;
-      return selectedConnection ? mapStation(selectedConnection) : null;
+    selectedConnection() {
+      return this.$store.state.trip.selectedConnection;
+    },
+    selected() {
+      if (this.readOnly && this.readOnlyValue) {
+        return mapStation(this.readOnlyValue);
+      } else if (!this.readOnly && this.selectedConnection) {
+        return mapStation(this.selectedConnection);
+      } else {
+        return null;
+      }
+    }
+  },
+  watch: {
+    selectedConnection() {
+      if (!this.readOnly) {
+        this.readOnlyValue = this.selectedConnection;
+      }
     }
   },
   methods: {

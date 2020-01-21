@@ -72,6 +72,17 @@ describe("TripForm", () => {
         mockConnections
       );
     });
+
+    it("should pass stop read-only prop", () => {
+      mockStore.state.trip.stops = { 1: { readOnly: true } };
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+
+      expect(wrapper.find(ConnectionInput).props().readOnly).toBe(true);
+    });
   });
 
   describe("Multi destinations", () => {

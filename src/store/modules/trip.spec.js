@@ -84,12 +84,14 @@ describe("popups", () => {
     });
     describe("ADD_STOP_CONNECTIONS", () => {
       it("should add connections for the next stop", () => {
-        const connections = { connections: [] };
         let state = {
-          stops: [connections]
+          stops: [{ connections: [] }]
         };
-        module.mutations.ADD_STOP_CONNECTIONS(state, connections);
-        expect(state.stops).toEqual([connections, connections]);
+        module.mutations.ADD_STOP_CONNECTIONS(state, { connections: [] });
+        expect(state.stops).toEqual([
+          { connections: [], readOnly: true },
+          { connections: [] }
+        ]);
       });
     });
     describe("SELECT_STARTING_STATION", () => {

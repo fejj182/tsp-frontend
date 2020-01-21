@@ -30,7 +30,7 @@ describe("ConnectionInput", () => {
         connections: []
       }
     });
-    wrapper.find("[data-test-id=destination-2").vm.$emit("change", station);
+    wrapper.find("[data-test-id=connection").vm.$emit("change", station);
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       "selectConnection",
       station
@@ -38,20 +38,15 @@ describe("ConnectionInput", () => {
   });
 
   it("should have the value null if not present in the store", () => {
-    const valencia = fakeStation("valencia");
-    const madrid = fakeStation("madrid");
-
     const wrapper = shallowMount(ConnectionInput, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: [valencia, madrid]
+        connections: []
       }
     });
-    expect(wrapper.find("[data-test-id=destination-2]").props().value).toBe(
-      null
-    );
+    expect(wrapper.find("[data-test-id=connection]").props().value).toBe(null);
   });
 
   it("should have the value set from of store if present", () => {
@@ -67,9 +62,46 @@ describe("ConnectionInput", () => {
         connections: [valencia, madrid]
       }
     });
-    expect(wrapper.find("[data-test-id=destination-2]").props().value).toEqual({
+    expect(wrapper.find("[data-test-id=connection]").props().value).toEqual({
       text: madrid.name,
       value: madrid
     });
+  });
+
+  it("should use last value from store when changed to read-only", () => {
+    const valencia = fakeStation("valencia");
+    const madrid = fakeStation("madrid");
+
+    const wrapper = shallowMount(ConnectionInput, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        connections: [valencia, madrid]
+      }
+    });
+    mockStore.state.trip.selectedConnection = madrid;
+    wrapper.setProps({ readOnly: true });
+    mockStore.state.trip.selectedConnection = valencia;
+
+    expect(wrapper.find("[data-test-id=connection]").props().value).toEqual({
+      text: madrid.name,
+      value: madrid
+    });
+  });
+
+  it("should have readonly property set from the prop", () => {
+    const wrapper = shallowMount(ConnectionInput, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        connections: [],
+        readOnly: true
+      }
+    });
+    expect(wrapper.find("[data-test-id=connection]").props().readonly).toEqual(
+      true
+    );
   });
 });
