@@ -2,35 +2,15 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="./assets/vuetify-logo-dark.webp"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="./assets/vuetify-name-dark.webp"
-          width="100"
-        />
+        <header>
+          <span class="logo">
+            <i class="fas fa-train"></i>
+            Trainspotter
+          </span>
+        </header>
       </div>
 
       <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
     </v-app-bar>
 
     <v-content>
@@ -48,3 +28,19 @@ export default {
   })
 };
 </script>
+
+<style lang="scss" scoped>
+@font-face {
+  font-family: "Helvetica Bold Italic";
+  src: url("assets/Helvetica-bold-italic.ttf") format("truetype");
+}
+
+i {
+  padding: 0.75rem;
+}
+
+.logo {
+  font-family: "Helvetica Bold Italic";
+  font-size: 34px;
+}
+</style>
