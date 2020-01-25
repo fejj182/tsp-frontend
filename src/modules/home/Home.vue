@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="grey lighten-5 pa-1">
     <v-row no-gutters>
-      <v-col cols="3">
+      <v-col :md="3" cols="12">
         <v-container>
           <TripForm />
         </v-container>
       </v-col>
-      <v-col cols="9">
+      <v-col :md="9" cols="12">
         <Map @mapClick="onMapClick" @mapCreated="onMapCreated" />
         <Markers :map="map" />
         <Connections :map="map" />
@@ -49,7 +49,6 @@ export default {
 </script>
 
 <style scoped>
-#map,
 .container,
 .row {
   height: 100%;
