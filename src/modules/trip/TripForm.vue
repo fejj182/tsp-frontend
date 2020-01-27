@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" class="pa-4" @submit.prevent="saveTrip">
     <v-alert
       data-test-id="alert"
       v-if="alert"
@@ -21,12 +21,15 @@
       v-if="hasStops"
       @click="onAddConnection"
       data-test-id="add-destination"
-      color="indigo"
-      rounded
-      outlined
     >
       <v-icon left>mdi-plus</v-icon>
       <span>Add destination</span>
+    </v-btn>
+    <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
+      Reset Trip
+    </v-btn>
+    <v-btn type="submit" v-if="hasStops" data-test-id="save-trip">
+      Save Trip
     </v-btn>
   </v-form>
 </template>
@@ -34,6 +37,7 @@
 <script>
 import StartInput from "./StartInput.vue";
 import ConnectionInput from "./ConnectionInput.vue";
+import tripApi from "@/api/trip";
 
 export default {
   components: {
@@ -42,7 +46,8 @@ export default {
   },
   data() {
     return {
-      alert: false
+      alert: false,
+      trip: {}
     };
   },
   computed: {
@@ -50,7 +55,7 @@ export default {
       return this.$store.state.trip.stops;
     },
     hasStops() {
-      return this.stops.length > 0;
+      return this.stops.length > 0 && this.$store.state.trip.selectedConnection;
     }
   },
   methods: {
@@ -62,9 +67,20 @@ export default {
     },
     onAlert() {
       this.alert = true;
+    },
+    resetTrip() {
+      this.$refs.form.reset();
+      this.$store.dispatch("resetTripForm");
+    },
+    saveTrip() {
+      tripApi.create(this.trip);
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+button {
+  margin: 0.25rem;
+}
+</style>

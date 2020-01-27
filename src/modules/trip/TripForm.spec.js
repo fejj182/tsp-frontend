@@ -1,6 +1,7 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
+import tripApi from "@/api/trip";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import StartInput from "./StartInput.vue";
@@ -11,6 +12,7 @@ import { state as stations } from "@/store/modules/stations";
 import _ from "lodash";
 
 jest.mock("@/api/stations");
+jest.mock("@/api/trip");
 
 Vue.use(Vuetify);
 
@@ -111,50 +113,115 @@ describe("TripForm", () => {
     });
   });
 
-  describe("Add destination button", () => {
-    it("should not exist when component loads", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(wrapper.find("add-destination").exists()).toBe(false);
-    });
-
-    it("should exist only if at least 1 stop in store", () => {
-      mockStore.state.stations.activeConnections = [valencia, madrid];
+  describe("Buttons", () => {
+    beforeEach(() => {
       mockStore.state.trip.stops = [barcelona];
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
-        true
-      );
+      mockStore.state.trip.selectedConnection = barcelona;
     });
-
-    it("should dispatch addStopToTrip action onClick", () => {
-      mockStore.state.stations.activeConnections = [valencia, madrid];
-      mockStore.state.trip.stops = [barcelona];
-      mockStore.state.trip.selectedConnection = madrid;
-      const wrapper = mount(TripForm, {
-        mocks: {
-          $store: mockStore
-        },
-        stubs: {
-          StartInput: {
-            name: "StartInput",
-            template: "<span></span>"
-          },
-          ConnectionInput: {
-            name: "ConnectionInput",
-            template: "<span></span>"
+    describe("Add destination button", () => {
+      it("should exist only if at least 1 stop in store", () => {
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore
           }
-        }
+        });
+        expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
+          true
+        );
       });
-      wrapper.find("[data-test-id=add-destination]").trigger("click");
-      expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", madrid);
+
+      it("should not exist when component loads", () => {
+        mockStore.state.trip.stops = [];
+        mockStore.state.trip.selectedConnection = null;
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore
+          }
+        });
+        expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
+          false
+        );
+      });
+
+      it("should dispatch addStopToTrip action onClick", () => {
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore
+          },
+          stubs: {
+            StartInput: {
+              name: "StartInput",
+              template: "<span></span>"
+            },
+            ConnectionInput: {
+              name: "ConnectionInput",
+              template: "<span></span>"
+            }
+          }
+        });
+        wrapper.find("[data-test-id=add-destination]").trigger("click");
+        expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", barcelona);
+      });
+    });
+
+    describe("Reset trip", () => {
+      let wrapper, mockReset;
+      beforeEach(() => {
+        mockReset = jest.fn();
+        wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore
+          },
+          stubs: {
+            StartInput: {
+              name: "StartInput",
+              template: "<span></span>"
+            },
+            ConnectionInput: {
+              name: "ConnectionInput",
+              template: "<span></span>"
+            },
+            VForm: {
+              name: "v-form",
+              template: "<span><slot></slot></span>",
+              methods: {
+                reset: mockReset
+              }
+            }
+          }
+        });
+      });
+      it("should reset form", () => {
+        wrapper.find("[data-test-id=reset-trip]").trigger("click");
+        expect(mockReset).toHaveBeenCalled();
+      });
+
+      it("should dispatch resetTripForm action", () => {
+        wrapper.find("[data-test-id=reset-trip]").trigger("click");
+        expect(mockStore.dispatch).toHaveBeenCalledWith("resetTripForm");
+      });
+    });
+
+    describe("Save trip", () => {
+      it("should call create in tripApi", () => {
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore
+          },
+          stubs: {
+            StartInput: {
+              name: "StartInput",
+              template: "<span></span>"
+            },
+            ConnectionInput: {
+              name: "ConnectionInput",
+              template: "<span></span>"
+            }
+          }
+        });
+        wrapper.find("[data-test-id=save-trip]").trigger("submit");
+        expect(tripApi.create).toHaveBeenCalledWith(wrapper.vm.trip);
+      });
     });
   });
 });
