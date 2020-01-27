@@ -51,7 +51,7 @@ export default {
 
 @media only screen and (max-width: 600px) {
   #map {
-    height: 67.5vh;
+    height: 70vh;
   }
 }
 </style>

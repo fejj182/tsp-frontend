@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" class="pa-4" @submit.prevent="saveTrip">
+  <v-form ref="form" @submit.prevent="saveTrip">
     <v-alert
       data-test-id="alert"
       v-if="alert"
@@ -17,20 +17,30 @@
         :read-only="stop.readOnly"
       />
     </div>
-    <v-btn
-      v-if="hasStops"
-      @click="onAddConnection"
-      data-test-id="add-destination"
-    >
-      <v-icon left>mdi-plus</v-icon>
-      <span>Add destination</span>
-    </v-btn>
-    <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
-      Reset Trip
-    </v-btn>
-    <v-btn type="submit" v-if="hasStops" data-test-id="save-trip">
-      Save Trip
-    </v-btn>
+    <div class="btn-row">
+      <v-btn
+        v-if="hasStops"
+        @click="onAddConnection"
+        data-test-id="add-destination"
+      >
+        <v-icon left>mdi-plus</v-icon>
+        <span>Add stop</span>
+      </v-btn>
+      <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
+        Reset Trip
+      </v-btn>
+    </div>
+    <div class="btn-row">
+      <v-btn
+        type="submit"
+        v-if="hasStops"
+        data-test-id="save-trip"
+        color="primary"
+        block
+      >
+        Save Trip
+      </v-btn>
+    </div>
   </v-form>
 </template>
 
@@ -80,7 +90,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-button {
-  margin: 0.25rem;
+.v-form {
+  padding: 16px;
+}
+
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 0.75rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .v-form {
+    padding: 4px;
+  }
 }
 </style>
