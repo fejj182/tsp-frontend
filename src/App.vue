@@ -43,4 +43,8 @@ i {
   font-family: "Helvetica Bold Italic";
   font-size: 34px;
 }
+
+.v-app-bar.v-app-bar--fixed {
+  z-index: 2000;
+}
 </style>
