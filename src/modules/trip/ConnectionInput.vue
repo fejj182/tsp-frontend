@@ -64,4 +64,8 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-autocomplete {
+  z-index: 1500;
+}
+</style>
