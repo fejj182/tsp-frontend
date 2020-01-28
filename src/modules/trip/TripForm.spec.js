@@ -156,6 +156,10 @@ describe("TripForm", () => {
             ConnectionInput: {
               name: "ConnectionInput",
               template: "<span></span>"
+            },
+            VFadeTransition: {
+              name: "v-fade-transition",
+              template: "<span></span>"
             }
           }
         });
@@ -187,6 +191,10 @@ describe("TripForm", () => {
               methods: {
                 reset: mockReset
               }
+            },
+            VFadeTransition: {
+              name: "v-fade-transition",
+              template: "<span></span>"
             }
           }
         });
@@ -215,6 +223,10 @@ describe("TripForm", () => {
             },
             ConnectionInput: {
               name: "ConnectionInput",
+              template: "<span></span>"
+            },
+            VFadeTransition: {
+              name: "v-fade-transition",
               template: "<span></span>"
             }
           }

@@ -9,6 +9,19 @@
     >
       Service down. Please try again later.
     </v-alert>
+    <v-fade-transition>
+      <v-alert
+        color="teal"
+        v-if="info"
+        dark
+        text
+        dense
+        icon="mdi-school"
+        dismissible
+      >
+        Click map to find nearest station
+      </v-alert>
+    </v-fade-transition>
     <StartInput @alert="onAlert" />
     <div v-for="(stop, index) in stops" :key="index">
       <ConnectionInput
@@ -57,8 +70,14 @@ export default {
   data() {
     return {
       alert: false,
-      trip: {}
+      trip: {},
+      info: true
     };
+  },
+  mounted() {
+    setTimeout(() => {
+      this.info = false;
+    }, 7500);
   },
   computed: {
     stops() {
