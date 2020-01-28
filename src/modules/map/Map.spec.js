@@ -14,7 +14,7 @@ describe("Map", () => {
     mockOn = jest.fn();
     L.map.mockReturnValue({
       setView: jest.fn(),
-      on: mockOn
+      once: mockOn
     });
     L.tileLayer.mockReturnValue({
       addTo: jest.fn()
@@ -25,6 +25,13 @@ describe("Map", () => {
     const wrapper = shallowMount(Map);
     wrapper.find("#map").trigger("click");
     expect(mockOn).toHaveBeenCalledWith("click", wrapper.vm.onMapClick);
+  });
+
+  it("should call onMapClick function only once", () => {
+    const wrapper = shallowMount(Map);
+    wrapper.find("#map").trigger("click");
+    wrapper.find("#map").trigger("click");
+    expect(mockOn).toHaveBeenCalledTimes(1);
   });
 
   describe("onMapClick", () => {

@@ -34,11 +34,12 @@ export default {
         this.tileOptions
       ).addTo(this.myMap);
 
-      this.myMap.on("click", this.onMapClick);
+      this.myMap.once("click", this.onMapClick);
     },
     onMapClick(event) {
       this.$emit("mapClick", event);
     }
+    // TODO: Reset map click when form is reset
   }
 };
 </script>
