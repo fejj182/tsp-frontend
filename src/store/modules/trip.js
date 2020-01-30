@@ -1,25 +1,25 @@
 export const state = {
   startingStation: null,
-  selectedConnection: null,
+  selectedStop: null,
   stops: []
 };
 
 export const getters = {
   hasStops(state) {
-    return state.stops.length > 0 && state.selectedConnection != null;
+    return state.stops.length > 0 && state.selectedStop != null;
   }
 };
 
 export const actions = {
-  selectConnection({ dispatch, commit }, connection) {
-    dispatch("openPopup", connection);
-    commit("SELECT_CONNECTION", connection);
+  selectStop({ dispatch, commit }, station) {
+    dispatch("openPopup", station);
+    commit("SELECT_STOP", station);
   },
   resetTripForm({ commit }) {
     commit("CLEAR_STOPS");
   },
-  addConnectionsToForm({ commit }, { connections }) {
-    commit("ADD_STOP_CONNECTIONS", { connections });
+  addStop({ commit }, { stations }) {
+    commit("ADD_STOP", { stations });
   },
   selectStartingInput({ commit }, station) {
     commit("SELECT_STARTING_STATION", station);
@@ -27,19 +27,19 @@ export const actions = {
 };
 
 export const mutations = {
-  SELECT_CONNECTION: (state, selectedConnection) => {
-    state.selectedConnection = selectedConnection;
+  SELECT_STOP: (state, station) => {
+    state.selectedStop = station;
   },
   CLEAR_STOPS: state => {
     state.stops = [];
-    state.selectedConnection = null;
+    state.selectedStop = null;
   },
-  ADD_STOP_CONNECTIONS: (state, { connections }) => {
+  ADD_STOP: (state, { stations }) => {
     const prevStops = state.stops.map(stop => {
       stop.readOnly = true;
       return stop;
     });
-    state.stops = [...prevStops, { connections }];
+    state.stops = [...prevStops, { stations }];
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;

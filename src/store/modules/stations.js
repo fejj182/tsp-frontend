@@ -19,7 +19,7 @@ export const actions = {
     commit("CLEAR_ACTIVE_CONNECTIONS");
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);
-    dispatch("addConnectionsToForm", { connections });
+    dispatch("addStop", { stations: connections });
   }
 };
 

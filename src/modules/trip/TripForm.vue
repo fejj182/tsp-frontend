@@ -22,20 +22,13 @@
         Click map to find nearest station
       </v-alert>
     </v-fade-transition>
-    <StartInput @alert="onAlert" />
+    <FirstStop @alert="onAlert" />
     <div v-for="(stop, index) in stops" :key="index">
-      <ConnectionInput
-        class="connection"
-        :connections="stop.connections"
-        :read-only="stop.readOnly"
-      />
+      <!-- TODO: Dependency here on properties existing in each stop -->
+      <Stop class="stop" :stations="stop.stations" :read-only="stop.readOnly" />
     </div>
     <div class="btn-row">
-      <v-btn
-        v-if="hasStops"
-        @click="onAddConnection"
-        data-test-id="add-destination"
-      >
+      <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-plus</v-icon>
         <span>Add stop</span>
       </v-btn>
@@ -58,14 +51,14 @@
 </template>
 
 <script>
-import StartInput from "@/modules/trip/inputs/StartInput.vue";
-import ConnectionInput from "@/modules/trip/inputs/ConnectionInput.vue";
+import FirstStop from "@/modules/trip/inputs/FirstStop.vue";
+import Stop from "@/modules/trip/inputs/Stop.vue";
 import tripApi from "@/api/trip";
 
 export default {
   components: {
-    StartInput,
-    ConnectionInput
+    FirstStop,
+    Stop
   },
   data() {
     return {
@@ -88,10 +81,10 @@ export default {
     }
   },
   methods: {
-    onAddConnection() {
+    onAddStop() {
       this.$store.dispatch(
         "addStopToTrip",
-        this.$store.state.trip.selectedConnection
+        this.$store.state.trip.selectedStop
       );
     },
     onAlert() {

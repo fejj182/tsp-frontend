@@ -109,11 +109,11 @@ describe("Markers", () => {
       ]);
     });
 
-    it("should dispatch selectConnection when onMarkerClick called", () => {
+    it("should dispatch selectStop when onMarkerClick called", () => {
       const connection = getStation();
       wrapper.vm.onMarkerClick(connection);
       expect(mockStore.dispatch).toHaveBeenCalledWith(
-        "selectConnection",
+        "selectStop",
         connection
       );
     });

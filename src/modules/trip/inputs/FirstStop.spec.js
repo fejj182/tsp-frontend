@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
 import _ from "lodash";
 
-import StartInput from "./StartInput.vue";
+import FirstStop from "./FirstStop.vue";
 import stationsApi from "@/api/stations";
 import mapStation from "@/modules/trip/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
@@ -14,7 +14,7 @@ jest.mock("@/api/stations");
 
 Vue.use(Vuetify);
 
-describe("StartInput", () => {
+describe("FirstStop", () => {
   let enabledStations;
   let mockStore;
   let station;
@@ -32,7 +32,7 @@ describe("StartInput", () => {
   });
   describe("on component loading", () => {
     it("should get stations when component mounted", () => {
-      shallowMount(StartInput, {
+      shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -41,7 +41,7 @@ describe("StartInput", () => {
     });
 
     it("should load stations from api into props", async () => {
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -58,7 +58,7 @@ describe("StartInput", () => {
     it("should have no stations if api call fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -70,7 +70,7 @@ describe("StartInput", () => {
     it("should emit an alert if getStations fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -82,7 +82,7 @@ describe("StartInput", () => {
 
   describe("On change", () => {
     it("should dispatch addStopToTrip on change", () => {
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -92,7 +92,7 @@ describe("StartInput", () => {
     });
 
     it("should dispatch resetTripForm on change", () => {
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
@@ -104,7 +104,7 @@ describe("StartInput", () => {
     it("should emit an alert if dispatch fails", async () => {
       mockStore.dispatch.mockResolvedValueOnce();
       mockStore.dispatch.mockRejectedValueOnce();
-      const wrapper = shallowMount(StartInput, {
+      const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }

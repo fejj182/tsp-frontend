@@ -71,12 +71,12 @@ describe("stations", () => {
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
-      it("should dispatch addConnectionsToForm", async () => {
+      it("should dispatch addStop", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
         module.actions.addStopToTrip({ dispatch, commit }, barcelona);
         await flushPromises();
-        expect(dispatch).toHaveBeenCalledWith("addConnectionsToForm", {
-          connections
+        expect(dispatch).toHaveBeenCalledWith("addStop", {
+          stations: connections
         });
       });
 

@@ -6,7 +6,7 @@
       :items="stations"
       filled
       rounded
-      @change="onChangeStartingDestination"
+      @change="onChangeStation"
       :value="startingStation"
     ></v-autocomplete>
   </div>
@@ -43,7 +43,7 @@ export default {
         this.$emit("alert");
       }
     },
-    async onChangeStartingDestination(station) {
+    async onChangeStation(station) {
       this.$store.dispatch("resetTripForm");
       try {
         await this.$store.dispatch("addStopToTrip", station);

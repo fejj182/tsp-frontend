@@ -3,14 +3,14 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import _ from "lodash";
 
-import ConnectionInput from "./ConnectionInput.vue";
+import Stop from "./Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as stations } from "@/store/modules/stations";
 import { state as trip } from "@/store/modules/trip";
 
 Vue.use(Vuetify);
 
-describe("ConnectionInput", () => {
+describe("Stop", () => {
   let mockStore;
   beforeEach(() => {
     mockStore = {
@@ -21,49 +21,46 @@ describe("ConnectionInput", () => {
       }
     };
   });
-  it("should dispatch selectConnection on change", () => {
+  it("should dispatch selectStop on change", () => {
     const station = fakeStation();
-    const wrapper = shallowMount(ConnectionInput, {
+    const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: []
+        stations: []
       }
     });
-    wrapper.find("[data-test-id=connection").vm.$emit("change", station);
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      "selectConnection",
-      station
-    );
+    wrapper.find("[data-test-id=stop").vm.$emit("change", station);
+    expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
   });
 
   it("should have the value null if not present in the store", () => {
-    const wrapper = shallowMount(ConnectionInput, {
+    const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: []
+        stations: []
       }
     });
-    expect(wrapper.find("[data-test-id=connection]").props().value).toBe(null);
+    expect(wrapper.find("[data-test-id=stop]").props().value).toBe(null);
   });
 
   it("should have the value set from of store if present", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
-    mockStore.state.trip.selectedConnection = madrid;
+    mockStore.state.trip.selectedStop = madrid;
 
-    const wrapper = shallowMount(ConnectionInput, {
+    const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: [valencia, madrid]
+        stations: [valencia, madrid]
       }
     });
-    expect(wrapper.find("[data-test-id=connection]").props().value).toEqual({
+    expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: madrid.name,
       value: madrid
     });
@@ -73,36 +70,34 @@ describe("ConnectionInput", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
 
-    const wrapper = shallowMount(ConnectionInput, {
+    const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: [valencia, madrid]
+        stations: [valencia, madrid]
       }
     });
-    mockStore.state.trip.selectedConnection = madrid;
+    mockStore.state.trip.selectedStop = madrid;
     wrapper.setProps({ readOnly: true });
-    mockStore.state.trip.selectedConnection = valencia;
+    mockStore.state.trip.selectedStop = valencia;
 
-    expect(wrapper.find("[data-test-id=connection]").props().value).toEqual({
+    expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: madrid.name,
       value: madrid
     });
   });
 
   it("should have readonly property set from the prop", () => {
-    const wrapper = shallowMount(ConnectionInput, {
+    const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
       },
       propsData: {
-        connections: [],
+        stations: [],
         readOnly: true
       }
     });
-    expect(wrapper.find("[data-test-id=connection]").props().readonly).toEqual(
-      true
-    );
+    expect(wrapper.find("[data-test-id=stop]").props().readonly).toEqual(true);
   });
 });

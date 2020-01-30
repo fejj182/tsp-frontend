@@ -2,12 +2,12 @@
   <div>
     <v-autocomplete
       label="Where next?"
-      data-test-id="connection"
+      data-test-id="stop"
       :items="items"
       filled
       rounded
       :readonly="readOnly"
-      @change="onChangeConnection"
+      @change="onChangeStation"
       :value="selected"
     ></v-autocomplete>
   </div>
@@ -22,7 +22,7 @@ export default {
     };
   },
   props: {
-    connections: {
+    stations: {
       type: Array
     },
     readOnly: {
@@ -32,33 +32,33 @@ export default {
   },
   computed: {
     items() {
-      return this.connections.map(station => {
+      return this.stations.map(station => {
         return mapStation(station);
       });
     },
-    selectedConnection() {
-      return this.$store.state.trip.selectedConnection;
+    selectedStop() {
+      return this.$store.state.trip.selectedStop;
     },
     selected() {
       if (this.readOnly && this.readOnlyValue) {
         return mapStation(this.readOnlyValue);
-      } else if (!this.readOnly && this.selectedConnection) {
-        return mapStation(this.selectedConnection);
+      } else if (!this.readOnly && this.selectedStop) {
+        return mapStation(this.selectedStop);
       } else {
         return null;
       }
     }
   },
   watch: {
-    selectedConnection() {
+    selectedStop() {
       if (!this.readOnly) {
-        this.readOnlyValue = this.selectedConnection;
+        this.readOnlyValue = this.selectedStop;
       }
     }
   },
   methods: {
-    onChangeConnection(station) {
-      this.$store.dispatch("selectConnection", station);
+    onChangeStation(station) {
+      this.$store.dispatch("selectStop", station);
     }
   }
 };

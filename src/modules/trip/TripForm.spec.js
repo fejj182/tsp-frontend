@@ -4,10 +4,9 @@ import Vuetify from "vuetify";
 import _ from "lodash";
 
 import TripForm from "./TripForm.vue";
-import stationsApi from "@/api/stations";
 import tripApi from "@/api/trip";
-import StartInput from "@/modules/trip/inputs/StartInput.vue";
-import ConnectionInput from "@/modules/trip/inputs/ConnectionInput.vue";
+import FirstStop from "@/modules/trip/inputs/FirstStop.vue";
+import Stop from "@/modules/trip/inputs/Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
@@ -18,17 +17,14 @@ jest.mock("@/api/trip");
 Vue.use(Vuetify);
 
 describe("TripForm", () => {
-  let mockStore, barcelona, valencia, madrid, mockConnections;
+  let mockStore, barcelona, valencia, madrid, mockStations;
 
   beforeEach(() => {
     barcelona = fakeStation("barcelona");
     valencia = fakeStation("valencia");
     madrid = fakeStation("madrid");
 
-    mockConnections = [valencia, madrid];
-
-    stationsApi.getStations.mockResolvedValue([barcelona, valencia, madrid]);
-    stationsApi.getConnections.mockResolvedValue(mockConnections);
+    mockStations = [valencia, madrid];
 
     mockStore = {
       dispatch: jest.fn(),
@@ -42,7 +38,7 @@ describe("TripForm", () => {
     };
   });
 
-  describe("StartInput", () => {
+  describe("FirstStop", () => {
     it("should have no stations if api call fails", async () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -50,33 +46,30 @@ describe("TripForm", () => {
         }
       });
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(false);
-      wrapper.find(StartInput).vm.$emit("alert");
+      wrapper.find(FirstStop).vm.$emit("alert");
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
     });
   });
-  describe("Connections", () => {
+  describe("Stops", () => {
     it("should appear if there are stops in the store", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.find(ConnectionInput).exists()).toBe(false);
+      expect(wrapper.find(Stop).exists()).toBe(false);
       mockStore.state.trip.stops = { 1: barcelona };
-      expect(wrapper.find(ConnectionInput).exists()).toBe(true);
+      expect(wrapper.find(Stop).exists()).toBe(true);
     });
 
-    it("should pass connections as items", async () => {
-      mockStore.state.trip.stops = { 1: { connections: mockConnections } };
+    it("should pass stations as items", async () => {
+      mockStore.state.trip.stops = { 1: { stations: mockStations } };
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-
-      expect(wrapper.find(ConnectionInput).props().connections).toEqual(
-        mockConnections
-      );
+      expect(wrapper.find(Stop).props().stations).toEqual(mockStations);
     });
 
     it("should pass stop read-only prop", () => {
@@ -87,33 +80,33 @@ describe("TripForm", () => {
         }
       });
 
-      expect(wrapper.find(ConnectionInput).props().readOnly).toBe(true);
+      expect(wrapper.find(Stop).props().readOnly).toBe(true);
     });
   });
 
   describe("Multi destinations", () => {
-    it("should show 1 connection input when there is 1 stop in the store", async () => {
-      mockStore.state.trip.stops = [{ connections: mockConnections }];
+    it("should show 1 input when there is 1 stop in the store", async () => {
+      mockStore.state.trip.stops = [{ stations: mockStations }];
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.findAll(".connection").length).toBe(1);
+      expect(wrapper.findAll(".stop").length).toBe(1);
     });
 
-    it("should show 3 connection inputs when there is 3 stops in the store", async () => {
+    it("should show 3 inputs when there is 3 stops in the store", async () => {
       mockStore.state.trip.stops = [
-        { connections: mockConnections },
-        { connections: mockConnections },
-        { connections: mockConnections }
+        { stations: mockStations },
+        { stations: mockStations },
+        { stations: mockStations }
       ];
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
-      expect(wrapper.findAll(".connection").length).toBe(3);
+      expect(wrapper.findAll(".stop").length).toBe(3);
     });
   });
 
@@ -125,25 +118,25 @@ describe("TripForm", () => {
             $store: mockStore
           }
         });
-        expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
+        expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(
           false
         );
       });
 
       it("should dispatch addStopToTrip action onClick", () => {
-        mockStore.state.trip.selectedConnection = barcelona;
+        mockStore.state.trip.selectedStop = barcelona;
         mockStore.getters.hasStops = true;
         const wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore
           },
           stubs: {
-            StartInput: {
-              name: "StartInput",
+            FirstStop: {
+              name: "FirstStop",
               template: "<span></span>"
             },
-            ConnectionInput: {
-              name: "ConnectionInput",
+            Stop: {
+              name: "Stop",
               template: "<span></span>"
             },
             VFadeTransition: {
@@ -152,7 +145,7 @@ describe("TripForm", () => {
             }
           }
         });
-        wrapper.find("[data-test-id=add-destination]").trigger("click");
+        wrapper.find("[data-test-id=add-stop]").trigger("click");
         expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", barcelona);
       });
     });
@@ -166,12 +159,12 @@ describe("TripForm", () => {
             $store: mockStore
           },
           stubs: {
-            StartInput: {
-              name: "StartInput",
+            FirstStop: {
+              name: "FirstStop",
               template: "<span></span>"
             },
-            ConnectionInput: {
-              name: "ConnectionInput",
+            Stop: {
+              name: "Stop",
               template: "<span></span>"
             },
             VForm: {
@@ -228,12 +221,12 @@ describe("TripForm", () => {
             $store: mockStore
           },
           stubs: {
-            StartInput: {
-              name: "StartInput",
+            FirstStop: {
+              name: "FirstStop",
               template: "<span></span>"
             },
-            ConnectionInput: {
-              name: "ConnectionInput",
+            Stop: {
+              name: "Stop",
               template: "<span></span>"
             },
             VFadeTransition: {

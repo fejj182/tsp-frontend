@@ -68,7 +68,7 @@ export default {
       }
     },
     onMarkerClick(connection) {
-      this.$store.dispatch("selectConnection", connection);
+      this.$store.dispatch("selectStop", connection);
       this.connectionPoints
         .filter(point => {
           return point.station.id !== connection.id;

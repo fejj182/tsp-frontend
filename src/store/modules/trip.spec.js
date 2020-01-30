@@ -6,15 +6,15 @@ describe("popups", () => {
       it("should be false if there are no stops", () => {
         let state = {
           stops: [],
-          selectedConnection: {}
+          selectedStop: {}
         };
         expect(module.getters.hasStops(state)).toBe(false);
       });
 
-      it("should be false if there is no selectedConnection", () => {
+      it("should be false if there is no selectedStop", () => {
         let state = {
           stops: [{}],
-          selectedConnection: null
+          selectedStop: null
         };
         expect(module.getters.hasStops(state)).toBe(false);
       });
@@ -22,28 +22,28 @@ describe("popups", () => {
       it("should be true if has stops and a connection has been selected", () => {
         let state = {
           stops: [{}],
-          selectedConnection: {}
+          selectedStop: {}
         };
         expect(module.getters.hasStops(state)).toBe(true);
       });
     });
   });
   describe("actions", () => {
-    describe("selectConnection", () => {
+    describe("selectStop", () => {
       let commit, dispatch;
       beforeEach(() => {
         commit = jest.fn();
         dispatch = jest.fn();
       });
-      it("should commit SELECT_CONNECTION to the store", () => {
+      it("should commit SELECT_STOP to the store", () => {
         let connection = { id: "1" };
-        module.actions.selectConnection({ dispatch, commit }, connection);
-        expect(commit).toHaveBeenCalledWith("SELECT_CONNECTION", connection);
+        module.actions.selectStop({ dispatch, commit }, connection);
+        expect(commit).toHaveBeenCalledWith("SELECT_STOP", connection);
       });
 
       it("should dispatch openPopup action", () => {
         let connection = { id: "1" };
-        module.actions.selectConnection({ dispatch, commit }, connection);
+        module.actions.selectStop({ dispatch, commit }, connection);
         expect(dispatch).toHaveBeenCalledWith("openPopup", connection);
       });
     });
@@ -54,15 +54,12 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
     });
-    describe("addConnectionsToForm", () => {
-      it("should commit ADD_STOP_CONNECTIONS to the store", () => {
+    describe("addStop", () => {
+      it("should commit ADD_STOP to the store", () => {
         let commit = jest.fn();
-        let connections = { connections: {} };
-        module.actions.addConnectionsToForm({ commit }, connections);
-        expect(commit).toHaveBeenCalledWith(
-          "ADD_STOP_CONNECTIONS",
-          connections
-        );
+        let stations = { stations: {} };
+        module.actions.addStop({ commit }, stations);
+        expect(commit).toHaveBeenCalledWith("ADD_STOP", stations);
       });
     });
     describe("selectStartingInput", () => {
@@ -75,36 +72,36 @@ describe("popups", () => {
     });
   });
   describe("mutations", () => {
-    describe("SELECT_CONNECTION", () => {
+    describe("SELECT_STOP", () => {
       it("should set the connection id", () => {
         let state = {
-          selectedConnection: null
+          selectedStop: null
         };
-        let selectedConnection = 1;
-        module.mutations.SELECT_CONNECTION(state, selectedConnection);
-        expect(state.selectedConnection).toEqual(selectedConnection);
+        let selectedStop = 1;
+        module.mutations.SELECT_STOP(state, selectedStop);
+        expect(state.selectedStop).toEqual(selectedStop);
       });
     });
     describe("CLEAR_STOPS", () => {
       it("should clear stops from state", () => {
         let state = {
           stops: [{ connections: [] }],
-          selectedConnection: 1
+          selectedStop: 1
         };
         module.mutations.CLEAR_STOPS(state);
         expect(state.stops).toEqual([]);
-        expect(state.selectedConnection).toEqual(null);
+        expect(state.selectedStop).toEqual(null);
       });
     });
-    describe("ADD_STOP_CONNECTIONS", () => {
-      it("should add connections for the next stop", () => {
+    describe("ADD_STOP", () => {
+      it("should add stations for the next stop", () => {
         let state = {
-          stops: [{ connections: [] }]
+          stops: [{ stations: [] }]
         };
-        module.mutations.ADD_STOP_CONNECTIONS(state, { connections: [] });
+        module.mutations.ADD_STOP(state, { stations: [] });
         expect(state.stops).toEqual([
-          { connections: [], readOnly: true },
-          { connections: [] }
+          { stations: [], readOnly: true },
+          { stations: [] }
         ]);
       });
     });
