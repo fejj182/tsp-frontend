@@ -1,6 +1,33 @@
 import * as module from "./trip";
 
 describe("popups", () => {
+  describe("getters", () => {
+    describe("hasStops", () => {
+      it("should be false if there are no stops", () => {
+        let state = {
+          stops: [],
+          selectedConnection: {}
+        };
+        expect(module.getters.hasStops(state)).toBe(false);
+      });
+
+      it("should be false if there is no selectedConnection", () => {
+        let state = {
+          stops: [{}],
+          selectedConnection: null
+        };
+        expect(module.getters.hasStops(state)).toBe(false);
+      });
+
+      it("should be true if has stops and a connection has been selected", () => {
+        let state = {
+          stops: [{}],
+          selectedConnection: {}
+        };
+        expect(module.getters.hasStops(state)).toBe(true);
+      });
+    });
+  });
   describe("actions", () => {
     describe("selectConnection", () => {
       let commit, dispatch;

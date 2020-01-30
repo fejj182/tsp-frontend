@@ -35,6 +35,9 @@ describe("TripForm", () => {
       state: {
         stations: _.cloneDeep(stations),
         trip: _.cloneDeep(trip)
+      },
+      getters: {
+        hasStops: false
       }
     };
   });
@@ -115,25 +118,8 @@ describe("TripForm", () => {
   });
 
   describe("Buttons", () => {
-    beforeEach(() => {
-      mockStore.state.trip.stops = [barcelona];
-      mockStore.state.trip.selectedConnection = barcelona;
-    });
     describe("Add destination button", () => {
-      it("should exist only if at least 1 stop in store", () => {
-        const wrapper = shallowMount(TripForm, {
-          mocks: {
-            $store: mockStore
-          }
-        });
-        expect(wrapper.find("[data-test-id=add-destination]").exists()).toBe(
-          true
-        );
-      });
-
-      it("should not exist when component loads", () => {
-        mockStore.state.trip.stops = [];
-        mockStore.state.trip.selectedConnection = null;
+      it("add should not exist when component loads", () => {
         const wrapper = shallowMount(TripForm, {
           mocks: {
             $store: mockStore
@@ -145,6 +131,8 @@ describe("TripForm", () => {
       });
 
       it("should dispatch addStopToTrip action onClick", () => {
+        mockStore.state.trip.selectedConnection = barcelona;
+        mockStore.getters.hasStops = true;
         const wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore
@@ -200,19 +188,41 @@ describe("TripForm", () => {
           }
         });
       });
+
+      it("reset should not exist when component loads", () => {
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore
+          }
+        });
+        expect(wrapper.find("[data-test-id=reset-trip]").exists()).toBe(false);
+      });
+
       it("should reset form", () => {
+        mockStore.getters.hasStops = true;
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockReset).toHaveBeenCalled();
       });
 
       it("should dispatch resetTripForm action", () => {
+        mockStore.getters.hasStops = true;
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockStore.dispatch).toHaveBeenCalledWith("resetTripForm");
       });
     });
 
     describe("Save trip", () => {
+      it("save should not exist when component loads", () => {
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore
+          }
+        });
+        expect(wrapper.find("[data-test-id=save-trip]").exists()).toBe(false);
+      });
+
       it("should call create in tripApi", () => {
+        mockStore.getters.hasStops = true;
         const wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore

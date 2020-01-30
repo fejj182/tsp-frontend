@@ -4,7 +4,11 @@ export const state = {
   stops: []
 };
 
-export const getters = {};
+export const getters = {
+  hasStops(state) {
+    return state.stops.length > 0 && state.selectedConnection != null;
+  }
+};
 
 export const actions = {
   selectConnection({ dispatch, commit }, connection) {

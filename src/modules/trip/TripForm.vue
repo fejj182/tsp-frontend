@@ -84,7 +84,7 @@ export default {
       return this.$store.state.trip.stops;
     },
     hasStops() {
-      return this.stops.length > 0 && this.$store.state.trip.selectedConnection;
+      return this.$store.getters.hasStops;
     }
   },
   methods: {
