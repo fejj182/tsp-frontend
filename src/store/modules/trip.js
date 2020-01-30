@@ -16,7 +16,6 @@ export const actions = {
     commit("SELECT_CONNECTION", connection);
   },
   resetTripForm({ commit }) {
-    commit("CLEAR_CONNECTION");
     commit("CLEAR_STOPS");
   },
   addConnectionsToForm({ commit }, { connections }) {
@@ -31,11 +30,9 @@ export const mutations = {
   SELECT_CONNECTION: (state, selectedConnection) => {
     state.selectedConnection = selectedConnection;
   },
-  CLEAR_CONNECTION: state => {
-    state.selectedConnection = null;
-  },
   CLEAR_STOPS: state => {
     state.stops = [];
+    state.selectedConnection = null;
   },
   ADD_STOP_CONNECTIONS: (state, { connections }) => {
     const prevStops = state.stops.map(stop => {

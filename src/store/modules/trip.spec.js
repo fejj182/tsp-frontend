@@ -48,12 +48,6 @@ describe("popups", () => {
       });
     });
     describe("resetTripForm", () => {
-      it("should commit CLEAR_CONNECTION to the store", () => {
-        let commit = jest.fn();
-        module.actions.resetTripForm({ commit });
-        expect(commit).toHaveBeenCalledWith("CLEAR_CONNECTION");
-      });
-
       it("should commit CLEAR_STOPS to the store", () => {
         let commit = jest.fn();
         module.actions.resetTripForm({ commit });
@@ -91,22 +85,15 @@ describe("popups", () => {
         expect(state.selectedConnection).toEqual(selectedConnection);
       });
     });
-    describe("CLEAR_CONNECTION", () => {
-      it("should clear the connection id", () => {
-        let state = {
-          selectedConnection: 1
-        };
-        module.mutations.CLEAR_CONNECTION(state);
-        expect(state.selectedConnection).toEqual(null);
-      });
-    });
     describe("CLEAR_STOPS", () => {
       it("should clear stops from state", () => {
         let state = {
-          stops: [{ connections: [] }]
+          stops: [{ connections: [] }],
+          selectedConnection: 1
         };
         module.mutations.CLEAR_STOPS(state);
         expect(state.stops).toEqual([]);
+        expect(state.selectedConnection).toEqual(null);
       });
     });
     describe("ADD_STOP_CONNECTIONS", () => {
