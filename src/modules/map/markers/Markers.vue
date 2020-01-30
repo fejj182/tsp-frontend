@@ -12,7 +12,7 @@
 
 <script>
 import L from "leaflet";
-import Popup from "@/modules/popup/Popup.vue";
+import Popup from "@/modules/map/popup/Popup.vue";
 
 export default {
   components: {

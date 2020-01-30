@@ -2,7 +2,7 @@ import Markers from "./Markers.vue";
 import { shallowMount } from "@vue/test-utils";
 import faker from "faker";
 import L from "leaflet";
-import Popup from "@/modules/popup/Popup.vue";
+import Popup from "@/modules/map/popup/Popup.vue";
 
 jest.mock("leaflet", () => ({
   marker: jest.fn(),

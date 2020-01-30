@@ -17,9 +17,9 @@
 
 <script>
 import Map from "@/modules/map/Map.vue";
-import Markers from "@/modules/markers/Markers.vue";
+import Markers from "@/modules/map/markers/Markers.vue";
+import Connections from "@/modules/map/connections/Connections.vue";
 import TripForm from "@/modules/trip/TripForm.vue";
-import Connections from "@/modules/connections/Connections.vue";
 
 export default {
   name: "home",
