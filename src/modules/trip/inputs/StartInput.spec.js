@@ -1,13 +1,14 @@
 import { shallowMount } from "@vue/test-utils";
-import StartInput from "./StartInput.vue";
-import stationsApi from "@/api/stations";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
-import mapStation from "./stationFormMapper";
+import _ from "lodash";
+
+import StartInput from "./StartInput.vue";
+import stationsApi from "@/api/stations";
+import mapStation from "@/modules/trip/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
-import _ from "lodash";
 
 jest.mock("@/api/stations");
 

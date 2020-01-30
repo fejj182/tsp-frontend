@@ -58,8 +58,8 @@
 </template>
 
 <script>
-import StartInput from "./StartInput.vue";
-import ConnectionInput from "./ConnectionInput.vue";
+import StartInput from "@/modules/trip/inputs/StartInput.vue";
+import ConnectionInput from "@/modules/trip/inputs/ConnectionInput.vue";
 import tripApi from "@/api/trip";
 
 export default {

@@ -1,11 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
-import ConnectionInput from "./ConnectionInput.vue";
-import { fakeStation } from "@/helpers/tests";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import _ from "lodash";
+
+import ConnectionInput from "./ConnectionInput.vue";
+import { fakeStation } from "@/helpers/tests";
 import { state as stations } from "@/store/modules/stations";
 import { state as trip } from "@/store/modules/trip";
-import _ from "lodash";
 
 Vue.use(Vuetify);
 

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import mapStation from "./stationFormMapper";
+import mapStation from "@/modules/trip/stationFormMapper";
 export default {
   data() {
     return {

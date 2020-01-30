@@ -1,15 +1,16 @@
 import { shallowMount, mount } from "@vue/test-utils";
+import Vue from "vue";
+import Vuetify from "vuetify";
+import _ from "lodash";
+
 import TripForm from "./TripForm.vue";
 import stationsApi from "@/api/stations";
 import tripApi from "@/api/trip";
-import Vue from "vue";
-import Vuetify from "vuetify";
-import StartInput from "./StartInput.vue";
-import ConnectionInput from "./ConnectionInput.vue";
+import StartInput from "@/modules/trip/inputs/StartInput.vue";
+import ConnectionInput from "@/modules/trip/inputs/ConnectionInput.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
-import _ from "lodash";
 
 jest.mock("@/api/stations");
 jest.mock("@/api/trip");
