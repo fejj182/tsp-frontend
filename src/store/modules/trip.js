@@ -18,8 +18,8 @@ export const actions = {
   resetTripForm({ commit }) {
     commit("CLEAR_STOPS");
   },
-  addStop({ commit }, { stations }) {
-    commit("ADD_STOP", { stations });
+  addNewStop({ commit }, { stations }) {
+    commit("ADD_NEW_STOP", { stations });
   },
   selectStartingInput({ commit }, station) {
     commit("SELECT_STARTING_STATION", station);
@@ -34,7 +34,7 @@ export const mutations = {
     state.stops = [];
     state.selectedStop = null;
   },
-  ADD_STOP: (state, { stations }) => {
+  ADD_NEW_STOP: (state, { stations }) => {
     const prevStops = state.stops.map(stop => {
       stop.readOnly = true;
       return stop;

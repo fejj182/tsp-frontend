@@ -112,10 +112,7 @@ describe("Markers", () => {
     it("should dispatch selectStop when onMarkerClick called", () => {
       const connection = getStation();
       wrapper.vm.onMarkerClick(connection);
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        "selectStop",
-        connection
-      );
+      expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", connection);
     });
 
     it("should reset click handlers of other connections", () => {

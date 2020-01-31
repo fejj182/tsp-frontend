@@ -81,14 +81,14 @@ describe("FirstStop", () => {
   });
 
   describe("On change", () => {
-    it("should dispatch addStopToTrip on change", () => {
+    it("should dispatch confirmStop on change", () => {
       const wrapper = shallowMount(FirstStop, {
         mocks: {
           $store: mockStore
         }
       });
       wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
-      expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", station);
+      expect(mockStore.dispatch).toBeCalledWith("confirmStop", station);
     });
 
     it("should dispatch resetTripForm on change", () => {

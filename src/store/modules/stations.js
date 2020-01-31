@@ -12,14 +12,14 @@ export const actions = {
     commit("CLEAR_ACTIVE_STATION");
     const station = await stationsApi.getNearestStation(location);
     dispatch("selectStartingInput", station);
-    dispatch("addStopToTrip", station);
+    dispatch("confirmStop", station);
   },
-  async addStopToTrip({ dispatch, commit }, station) {
+  async confirmStop({ dispatch, commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     commit("CLEAR_ACTIVE_CONNECTIONS");
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);
-    dispatch("addStop", { stations: connections });
+    dispatch("addNewStop", { stations: connections });
   }
 };
 

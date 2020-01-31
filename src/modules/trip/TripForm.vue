@@ -82,10 +82,7 @@ export default {
   },
   methods: {
     onAddStop() {
-      this.$store.dispatch(
-        "addStopToTrip",
-        this.$store.state.trip.selectedStop
-      );
+      this.$store.dispatch("confirmStop", this.$store.state.trip.selectedStop);
     },
     onAlert() {
       this.alert = true;

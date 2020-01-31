@@ -49,7 +49,7 @@ export default {
       }
     },
     addToTrip() {
-      this.$store.dispatch("addStopToTrip", this.station);
+      this.$store.dispatch("confirmStop", this.station);
     }
   },
   mounted() {

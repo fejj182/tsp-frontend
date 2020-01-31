@@ -46,7 +46,7 @@ export default {
     async onChangeStation(station) {
       this.$store.dispatch("resetTripForm");
       try {
-        await this.$store.dispatch("addStopToTrip", station);
+        await this.$store.dispatch("confirmStop", station);
       } catch (e) {
         this.$emit("alert");
       }

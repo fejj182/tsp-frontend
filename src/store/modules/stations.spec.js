@@ -34,13 +34,13 @@ describe("stations", () => {
         expect(stationsApi.getNearestStation).toHaveBeenCalledWith(location);
       });
 
-      it("should call dispatch addStopToTrip", async () => {
+      it("should call dispatch confirmStop", async () => {
         const mockNearestStation = {};
         stationsApi.getNearestStation.mockReturnValue(mockNearestStation);
         await module.actions.getNearestStation({ dispatch, commit }, location);
         await flushPromises();
         expect(dispatch).toHaveBeenCalledWith(
-          "addStopToTrip",
+          "confirmStop",
           mockNearestStation
         );
       });
@@ -50,39 +50,39 @@ describe("stations", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_STATION");
       });
     });
-    describe("addStopToTrip", () => {
+    describe("confirmStop", () => {
       let commit, dispatch;
       beforeEach(() => {
         commit = jest.fn();
         dispatch = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
       });
 
       it("should clear the active connections before calling the endpoint", async () => {
-        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, barcelona);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
       it("should get the connections for starting station", () => {
-        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, barcelona);
         expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
       });
 
-      it("should dispatch addStop", async () => {
+      it("should dispatch addNewStop", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, barcelona);
         await flushPromises();
-        expect(dispatch).toHaveBeenCalledWith("addStop", {
+        expect(dispatch).toHaveBeenCalledWith("addNewStop", {
           stations: connections
         });
       });
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.addStopToTrip({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, barcelona);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",

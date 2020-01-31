@@ -123,7 +123,7 @@ describe("TripForm", () => {
         );
       });
 
-      it("should dispatch addStopToTrip action onClick", () => {
+      it("should dispatch confirmStop action onClick", () => {
         mockStore.state.trip.selectedStop = barcelona;
         mockStore.getters.hasStops = true;
         const wrapper = mount(TripForm, {
@@ -146,7 +146,7 @@ describe("TripForm", () => {
           }
         });
         wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(mockStore.dispatch).toBeCalledWith("addStopToTrip", barcelona);
+        expect(mockStore.dispatch).toBeCalledWith("confirmStop", barcelona);
       });
     });
 

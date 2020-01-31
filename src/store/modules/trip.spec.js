@@ -54,12 +54,12 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
     });
-    describe("addStop", () => {
-      it("should commit ADD_STOP to the store", () => {
+    describe("addNewStop", () => {
+      it("should commit ADD_NEW_STOP to the store", () => {
         let commit = jest.fn();
         let stations = { stations: {} };
-        module.actions.addStop({ commit }, stations);
-        expect(commit).toHaveBeenCalledWith("ADD_STOP", stations);
+        module.actions.addNewStop({ commit }, stations);
+        expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", stations);
       });
     });
     describe("selectStartingInput", () => {
@@ -93,12 +93,12 @@ describe("popups", () => {
         expect(state.selectedStop).toEqual(null);
       });
     });
-    describe("ADD_STOP", () => {
+    describe("ADD_NEW_STOP", () => {
       it("should add stations for the next stop", () => {
         let state = {
           stops: [{ stations: [] }]
         };
-        module.mutations.ADD_STOP(state, { stations: [] });
+        module.mutations.ADD_NEW_STOP(state, { stations: [] });
         expect(state.stops).toEqual([
           { stations: [], readOnly: true },
           { stations: [] }
