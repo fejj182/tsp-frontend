@@ -1,12 +1,18 @@
 export const state = {
   startingStation: null,
   selectedStop: null,
-  stops: []
+  stops: [],
+  savedTrip: []
 };
 
 export const getters = {
   hasStops(state) {
     return state.stops.length > 0 && state.selectedStop != null;
+  },
+  completeTrip(state) {
+    return state.selectedStop
+      ? [...state.savedTrip, state.selectedStop]
+      : state.savedTrip;
   }
 };
 
@@ -41,8 +47,12 @@ export const mutations = {
       return stop;
     });
     state.stops = [...prevStops, { stations }];
+    if (state.selectedStop) {
+      state.savedTrip = [...state.savedTrip, state.selectedStop];
+    }
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;
+    state.savedTrip = [station];
   }
 };

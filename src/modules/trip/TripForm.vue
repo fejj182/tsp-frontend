@@ -63,7 +63,6 @@ export default {
   data() {
     return {
       alert: false,
-      trip: {},
       info: true
     };
   },
@@ -92,7 +91,7 @@ export default {
       this.$store.dispatch("resetTrip");
     },
     saveTrip() {
-      tripApi.create(this.trip);
+      tripApi.create(this.$store.getters.completeTrip);
     }
   }
 };

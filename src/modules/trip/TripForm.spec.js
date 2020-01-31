@@ -33,7 +33,8 @@ describe("TripForm", () => {
         trip: _.cloneDeep(trip)
       },
       getters: {
-        hasStops: false
+        hasStops: false,
+        completeTrip: [{}, {}]
       }
     };
   });
@@ -118,9 +119,7 @@ describe("TripForm", () => {
             $store: mockStore
           }
         });
-        expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(
-          false
-        );
+        expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(false);
       });
 
       it("should dispatch confirmStop action onClick", () => {
@@ -236,7 +235,9 @@ describe("TripForm", () => {
           }
         });
         wrapper.find("[data-test-id=save-trip]").trigger("submit");
-        expect(tripApi.create).toHaveBeenCalledWith(wrapper.vm.trip);
+        expect(tripApi.create).toHaveBeenCalledWith(
+          mockStore.getters.completeTrip
+        );
       });
     });
   });
