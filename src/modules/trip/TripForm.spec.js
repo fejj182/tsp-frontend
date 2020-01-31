@@ -197,10 +197,10 @@ describe("TripForm", () => {
         expect(mockReset).toHaveBeenCalled();
       });
 
-      it("should dispatch resetTripForm action", () => {
+      it("should dispatch resetTrip action", () => {
         mockStore.getters.hasStops = true;
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockStore.dispatch).toHaveBeenCalledWith("resetTripForm");
+        expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
       });
     });
 

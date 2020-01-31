@@ -56,7 +56,7 @@ describe("Home", () => {
       });
     });
 
-    it("should dispatch resetTripForm event", () => {
+    it("should dispatch resetTrip event", () => {
       const mockStore = { dispatch: jest.fn() };
       const wrapper = shallowMount(Home, {
         mocks: {
@@ -68,7 +68,7 @@ describe("Home", () => {
       wrapper.vm.onMapClick({
         latlng: { lat, lng }
       });
-      expect(mockStore.dispatch).toHaveBeenCalledWith("resetTripForm");
+      expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
     });
   });
 

@@ -15,7 +15,8 @@ export const actions = {
     dispatch("openPopup", station);
     commit("SELECT_STOP", station);
   },
-  resetTripForm({ commit }) {
+  resetTrip({ dispatch, commit }) {
+    dispatch("resetMap");
     commit("CLEAR_STOPS");
   },
   addNewStop({ commit }, { stations }) {

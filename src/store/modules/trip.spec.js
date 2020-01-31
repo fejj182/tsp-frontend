@@ -29,12 +29,12 @@ describe("popups", () => {
     });
   });
   describe("actions", () => {
+    let commit, dispatch;
+    beforeEach(() => {
+      commit = jest.fn();
+      dispatch = jest.fn();
+    });
     describe("selectStop", () => {
-      let commit, dispatch;
-      beforeEach(() => {
-        commit = jest.fn();
-        dispatch = jest.fn();
-      });
       it("should commit SELECT_STOP to the store", () => {
         let connection = { id: "1" };
         module.actions.selectStop({ dispatch, commit }, connection);
@@ -47,16 +47,19 @@ describe("popups", () => {
         expect(dispatch).toHaveBeenCalledWith("openPopup", connection);
       });
     });
-    describe("resetTripForm", () => {
+    describe("resetTrip", () => {
       it("should commit CLEAR_STOPS to the store", () => {
-        let commit = jest.fn();
-        module.actions.resetTripForm({ commit });
+        module.actions.resetTrip({ dispatch, commit });
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
+      });
+
+      it("should dispatch resetMap action", () => {
+        module.actions.resetTrip({ dispatch, commit });
+        expect(dispatch).toHaveBeenCalledWith("resetMap");
       });
     });
     describe("addNewStop", () => {
       it("should commit ADD_NEW_STOP to the store", () => {
-        let commit = jest.fn();
         let stations = { stations: {} };
         module.actions.addNewStop({ commit }, stations);
         expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", stations);
@@ -64,7 +67,6 @@ describe("popups", () => {
     });
     describe("selectStartingInput", () => {
       it("should commit SELECT_STARTING_STATION to the store", () => {
-        let commit = jest.fn();
         let station = {};
         module.actions.selectStartingInput({ commit }, station);
         expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);

@@ -38,7 +38,7 @@ export default {
     onMapClick(event) {
       const lat = event.latlng.lat;
       const lng = event.latlng.lng;
-      this.$store.dispatch("resetTripForm");
+      this.$store.dispatch("resetTrip");
       this.$store.dispatch("getNearestStation", { lat, lng });
     },
     onMapCreated(map) {

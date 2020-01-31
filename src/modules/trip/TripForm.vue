@@ -89,7 +89,7 @@ export default {
     },
     resetTrip() {
       this.$refs.form.reset();
-      this.$store.dispatch("resetTripForm");
+      this.$store.dispatch("resetTrip");
     },
     saveTrip() {
       tripApi.create(this.trip);

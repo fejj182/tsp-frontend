@@ -90,24 +90,31 @@ describe("stations", () => {
         );
       });
     });
+    describe("resetMap", () => {
+      it("should commit RESET_MAP", () => {
+        let commit = jest.fn();
+        module.actions.resetMap({ commit });
+        expect(commit).toHaveBeenCalledWith("RESET_MAP");
+      });
+    });
   });
 
   describe("mutations", () => {
-    it("should add the station to the state", () => {
+    test("SET_ACTIVE_STATION should add the station to the state", () => {
       const state = {
         activeStation: null
       };
       module.mutations.SET_ACTIVE_STATION(state, barcelona);
       expect(state.activeStation).toEqual(barcelona);
     });
-    it("should add the connections to the state", () => {
+    test("SET_ACTIVE_CONNECTIONS should add the connections to the state", () => {
       const state = {
         activeConnections: null
       };
       module.mutations.SET_ACTIVE_CONNECTIONS(state, connections);
       expect(state.activeConnections).toEqual(connections);
     });
-    it("should clear active station", () => {
+    test("CLEAR_ACTIVE_STATION should clear active station", () => {
       const state = {
         activeStation: {}
       };
@@ -115,11 +122,21 @@ describe("stations", () => {
       expect(state.activeStation).toBeNull();
     });
 
-    it("should clear active connections", () => {
+    test("CLEAR_ACTIVE_CONNECTIONS should clear active connections", () => {
       const state = {
         activeConnections: [{}]
       };
       module.mutations.CLEAR_ACTIVE_CONNECTIONS(state);
+      expect(state.activeConnections).toEqual([]);
+    });
+
+    test("RESET_MAP should clear active station and connections", () => {
+      const state = {
+        activeStation: {},
+        activeConnections: [{}]
+      };
+      module.mutations.RESET_MAP(state);
+      expect(state.activeStation).toBeNull();
       expect(state.activeConnections).toEqual([]);
     });
   });
