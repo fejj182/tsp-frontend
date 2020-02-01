@@ -19,10 +19,18 @@ describe("popups", () => {
         expect(module.getters.hasStops(state)).toBe(false);
       });
 
-      it("should be true if has stops and a connection has been selected", () => {
+      it("should be true if has 1 stop and a connection has been selected", () => {
         let state = {
           stops: [{}],
           selectedStop: {}
+        };
+        expect(module.getters.hasStops(state)).toBe(true);
+      });
+
+      it("should be true if there are more than 1 stop", () => {
+        let state = {
+          stops: [{}, {}],
+          selectedStop: null
         };
         expect(module.getters.hasStops(state)).toBe(true);
       });
@@ -140,6 +148,15 @@ describe("popups", () => {
         };
         module.mutations.ADD_NEW_STOP(state, { stations: [] });
         expect(state.savedTrip).toEqual([{}]);
+      });
+      it("should clear selectedStop", () => {
+        let state = {
+          stops: [{ stations: [] }],
+          savedTrip: [{}],
+          selectedStop: {}
+        };
+        module.mutations.ADD_NEW_STOP(state, { stations: [] });
+        expect(state.selectedStop).toBe(null);
       });
     });
     describe("SELECT_STARTING_STATION", () => {

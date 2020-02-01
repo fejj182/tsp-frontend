@@ -27,6 +27,17 @@
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop class="stop" :stations="stop.stations" :read-only="stop.readOnly" />
     </div>
+    <v-alert
+      v-if="invalid"
+      data-test-id="invalid"
+      v-model="invalid"
+      text
+      dense
+      dismissible
+      type="info"
+    >
+      No stop selected
+    </v-alert>
     <div class="btn-row">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-plus</v-icon>
@@ -63,7 +74,8 @@ export default {
   data() {
     return {
       alert: false,
-      info: true
+      info: true,
+      invalid: false
     };
   },
   mounted() {
@@ -81,7 +93,14 @@ export default {
   },
   methods: {
     onAddStop() {
-      this.$store.dispatch("confirmStop", this.$store.state.trip.selectedStop);
+      if (this.$store.state.trip.selectedStop) {
+        this.$store.dispatch(
+          "confirmStop",
+          this.$store.state.trip.selectedStop
+        );
+      } else {
+        this.invalid = true;
+      }
     },
     onAlert() {
       this.alert = true;

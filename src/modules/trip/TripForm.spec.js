@@ -112,7 +112,7 @@ describe("TripForm", () => {
   });
 
   describe("Buttons", () => {
-    describe("Add destination button", () => {
+    describe("Add stop button", () => {
       it("add should not exist when component loads", () => {
         const wrapper = shallowMount(TripForm, {
           mocks: {
@@ -146,6 +146,67 @@ describe("TripForm", () => {
         });
         wrapper.find("[data-test-id=add-stop]").trigger("click");
         expect(mockStore.dispatch).toBeCalledWith("confirmStop", barcelona);
+      });
+
+      it("should not dispatch action if selectedStop is null", () => {
+        mockStore.state.trip.selectedStop = null;
+        mockStore.getters.hasStops = true;
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore
+          },
+          stubs: {
+            FirstStop: {
+              name: "FirstStop",
+              template: "<span></span>"
+            },
+            Stop: {
+              name: "Stop",
+              template: "<span></span>"
+            },
+            VFadeTransition: {
+              name: "v-fade-transition",
+              template: "<span></span>"
+            },
+            VAlert: {
+              name: "v-alert",
+              template: "<span></span>"
+            }
+          }
+        });
+        wrapper.find("[data-test-id=add-stop]").trigger("click");
+        expect(mockStore.dispatch).not.toBeCalledWith("confirmStop", null);
+      });
+
+      it("should show invalid alert if selectedStop is null", () => {
+        mockStore.state.trip.selectedStop = null;
+        mockStore.getters.hasStops = true;
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore
+          },
+          stubs: {
+            FirstStop: {
+              name: "FirstStop",
+              template: "<span></span>"
+            },
+            Stop: {
+              name: "Stop",
+              template: "<span></span>"
+            },
+            VFadeTransition: {
+              name: "v-fade-transition",
+              template: "<span></span>"
+            },
+            VAlert: {
+              name: "v-alert",
+              template: "<span></span>"
+            }
+          }
+        });
+        expect(wrapper.find("[data-test-id=invalid]").exists()).toBe(false);
+        wrapper.find("[data-test-id=add-stop]").trigger("click");
+        expect(wrapper.find("[data-test-id=invalid]").exists()).toBe(true);
       });
     });
 

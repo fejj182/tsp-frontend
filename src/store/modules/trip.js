@@ -7,7 +7,10 @@ export const state = {
 
 export const getters = {
   hasStops(state) {
-    return state.stops.length > 0 && state.selectedStop != null;
+    return (
+      state.stops.length > 1 ||
+      (state.stops.length == 1 && state.selectedStop != null)
+    );
   },
   completeTrip(state) {
     return state.selectedStop
@@ -50,6 +53,7 @@ export const mutations = {
     if (state.selectedStop) {
       state.savedTrip = [...state.savedTrip, state.selectedStop];
     }
+    state.selectedStop = null;
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;
