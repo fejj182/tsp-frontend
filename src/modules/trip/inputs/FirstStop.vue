@@ -44,7 +44,7 @@ export default {
       }
     },
     async onChangeStation(station) {
-      this.$store.dispatch("resetTrip");
+      this.$store.dispatch("selectStartingInput", station);
       try {
         await this.$store.dispatch("confirmStop", station);
       } catch (e) {

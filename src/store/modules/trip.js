@@ -31,7 +31,8 @@ export const actions = {
   addNewStop({ commit }, { stations }) {
     commit("ADD_NEW_STOP", { stations });
   },
-  selectStartingInput({ commit }, station) {
+  selectStartingInput({ dispatch, commit }, station) {
+    dispatch("resetTrip");
     commit("SELECT_STARTING_STATION", station);
   }
 };

@@ -92,8 +92,13 @@ describe("popups", () => {
     describe("selectStartingInput", () => {
       it("should commit SELECT_STARTING_STATION to the store", () => {
         let station = {};
-        module.actions.selectStartingInput({ commit }, station);
+        module.actions.selectStartingInput({ dispatch, commit }, station);
         expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
+      });
+      it("should dispatch resetTrip", () => {
+        let station = {};
+        module.actions.selectStartingInput({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("resetTrip");
       });
     });
   });
