@@ -9,16 +9,24 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Map", () => {
-  let mockOn, mockStore;
+  let mockOn, mockOff, mockStore;
 
   beforeEach(() => {
+    jest.resetAllMocks();
     mockOn = jest.fn();
+    mockOff = jest.fn();
     mockStore = {
-      dispatch: jest.fn()
+      dispatch: jest.fn(),
+      state: {
+        stations: {
+          activeStation: null
+        }
+      }
     };
     L.map.mockReturnValue({
       setView: jest.fn(),
-      once: mockOn
+      on: mockOn,
+      off: mockOff
     });
     L.tileLayer.mockReturnValue({
       addTo: jest.fn()
@@ -35,17 +43,6 @@ describe("Map", () => {
     expect(mockOn).toHaveBeenCalledWith("click", wrapper.vm.onMapClick);
   });
 
-  it("should call onMapClick function only once", () => {
-    const wrapper = shallowMount(Map, {
-      mocks: {
-        $store: mockStore
-      }
-    });
-    wrapper.find("#map").trigger("click");
-    wrapper.find("#map").trigger("click");
-    expect(mockOn).toHaveBeenCalledTimes(1);
-  });
-
   it("should dispatch addMap action", () => {
     const wrapper = shallowMount(Map, {
       mocks: {
@@ -56,8 +53,40 @@ describe("Map", () => {
   });
 
   describe("onMapClick", () => {
+    it("should set onMapClick function on map mount", () => {
+      const wrapper = shallowMount(Map, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(mockOn).toHaveBeenCalledWith("click", wrapper.vm.onMapClick);
+    });
+
+    it("should call off function if activeStation is set in store", () => {
+      shallowMount(Map, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.stations.activeStation = {};
+      expect(mockOff).toBeCalledWith("click");
+    });
+
+    it("should call on function if activeStation in store changes to null", () => {
+      mockStore.state.stations.activeStation = {};
+      const wrapper = shallowMount(Map, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.stations.activeStation = null;
+      expect(mockOn.mock.calls).toEqual([
+        ["click", wrapper.vm.onMapClick],
+        ["click", wrapper.vm.onMapClick]
+      ]);
+    });
+
     it("should dispatch getNearestStation event", () => {
-      const mockStore = { dispatch: jest.fn() };
       const wrapper = shallowMount(Map, {
         mocks: {
           $store: mockStore
@@ -75,7 +104,6 @@ describe("Map", () => {
     });
 
     it("should dispatch resetTrip event", () => {
-      const mockStore = { dispatch: jest.fn() };
       const wrapper = shallowMount(Map, {
         mocks: {
           $store: mockStore
