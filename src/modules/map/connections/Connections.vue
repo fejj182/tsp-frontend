@@ -13,11 +13,12 @@ export default {
   },
   methods: {
     initGeoJSONLayer() {
+      const map = this.$store.state.map.map;
       if (this.geoJsonLayer) {
-        this.geoJsonLayer.removeFrom(this.map);
+        this.geoJsonLayer.removeFrom(map);
       }
       this.geoJsonLayer = L.geoJSON();
-      this.geoJsonLayer.addTo(this.map);
+      this.geoJsonLayer.addTo(map);
     },
     buildLinesFromCoords(coordSet) {
       for (let i = 0; i < coordSet.length - 1; i++) {
@@ -30,11 +31,6 @@ export default {
     },
     coordSetValid(coord1, coord2) {
       return coord1 && coord2 && coord1.length == 2 && coord2.length == 2;
-    }
-  },
-  props: {
-    map: {
-      type: Object
     }
   },
   computed: {

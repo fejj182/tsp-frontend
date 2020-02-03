@@ -7,9 +7,9 @@
         </v-container>
       </v-col>
       <v-col :md="9" cols="12">
-        <Map @mapClick="onMapClick" @mapCreated="onMapCreated" />
-        <Markers :map="map" />
-        <Connections :map="map" />
+        <Map />
+        <Markers />
+        <Connections />
       </v-col>
     </v-row>
   </v-container>
@@ -23,27 +23,11 @@ import TripForm from "@/modules/trip/TripForm.vue";
 
 export default {
   name: "home",
-  data: function() {
-    return {
-      map: null
-    };
-  },
   components: {
     TripForm,
     Map,
     Markers,
     Connections
-  },
-  methods: {
-    onMapClick(event) {
-      const lat = event.latlng.lat;
-      const lng = event.latlng.lng;
-      this.$store.dispatch("resetTrip");
-      this.$store.dispatch("getNearestStation", { lat, lng });
-    },
-    onMapCreated(map) {
-      this.map = map;
-    }
   }
 };
 </script>

@@ -10,13 +10,12 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Markers", () => {
-  let mockStore, wrapper;
+  let mockStore, wrapper, mockMap;
   const mockMarker = {
     addTo: jest.fn(),
     remove: jest.fn(),
     once: jest.fn()
   };
-  const mockMap = {};
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -27,15 +26,16 @@ describe("Markers", () => {
         stations: {
           activeStation: null,
           activeConnections: []
+        },
+        map: {
+          map: {}
         }
       }
     };
+    mockMap = mockStore.state.map.map;
     wrapper = shallowMount(Markers, {
       mocks: {
         $store: mockStore
-      },
-      propsData: {
-        map: mockMap
       }
     });
   });

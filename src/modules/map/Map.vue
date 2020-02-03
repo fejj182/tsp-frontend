@@ -22,7 +22,6 @@ export default {
   },
   mounted() {
     this.createMap();
-    this.$emit("mapCreated", this.myMap);
   },
   methods: {
     createMap() {
@@ -35,9 +34,13 @@ export default {
       ).addTo(this.myMap);
 
       this.myMap.once("click", this.onMapClick);
+      this.$store.dispatch("addMap", this.myMap);
     },
     onMapClick(event) {
-      this.$emit("mapClick", event);
+      const lat = event.latlng.lat;
+      const lng = event.latlng.lng;
+      this.$store.dispatch("resetTrip");
+      this.$store.dispatch("getNearestStation", { lat, lng });
     }
     // TODO: Reset map click when form is reset
   }

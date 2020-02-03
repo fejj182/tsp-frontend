@@ -24,11 +24,6 @@ export default {
       connectionPoints: []
     };
   },
-  props: {
-    map: {
-      type: Object
-    }
-  },
   computed: {
     activeStation() {
       return this.$store.state.stations.activeStation;
@@ -89,7 +84,7 @@ export default {
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
-        marker.addTo(this.map);
+        marker.addTo(this.$store.state.map.map);
         this.stationPoint = {
           station: this.activeStation,
           marker
@@ -103,7 +98,7 @@ export default {
         const marker = L.marker([connection.lat, connection.lng], {
           icon: this.generateIcon("red")
         });
-        marker.addTo(this.map);
+        marker.addTo(this.$store.state.map.map);
         marker.once("click", () => this.onMarkerClick(connection));
         this.connectionPoints.push({
           station: connection,
