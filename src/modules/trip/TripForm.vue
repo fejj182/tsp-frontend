@@ -116,9 +116,15 @@ export default {
       this.$store.dispatch("resetTrip");
     },
     async saveTrip() {
-      const response = await tripApi.create(this.$store.getters.completeTrip);
-      if (response && response.alias) {
-        this.alias = response.alias;
+      if (this.$route.path === "/") {
+        const response = await tripApi.create(this.$store.getters.completeTrip);
+        if (response && response.alias) {
+          this.alias = response.alias;
+          setTimeout(() => {
+            this.alias = null;
+          }, 7500);
+          this.$router.push("trip/" + response.alias);
+        }
       }
     }
   }
