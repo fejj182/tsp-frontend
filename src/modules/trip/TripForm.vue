@@ -38,6 +38,11 @@
     >
       No stop selected
     </v-alert>
+    <div id="alias" v-if="alias">
+      <v-alert data-test-id="success-alias" type="success" dismissible>
+        Trip {{ alias }} created! Bookmark your personal URL.
+      </v-alert>
+    </div>
     <div class="btn-row">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-plus</v-icon>
@@ -75,7 +80,8 @@ export default {
     return {
       alert: false,
       info: true,
-      invalid: false
+      invalid: false,
+      alias: null
     };
   },
   mounted() {
@@ -109,8 +115,11 @@ export default {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
     },
-    saveTrip() {
-      tripApi.create(this.$store.getters.completeTrip);
+    async saveTrip() {
+      const response = await tripApi.create(this.$store.getters.completeTrip);
+      if (response && response.alias) {
+        this.alias = response.alias;
+      }
     }
   }
 };

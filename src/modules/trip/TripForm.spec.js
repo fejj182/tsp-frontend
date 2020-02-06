@@ -10,9 +10,11 @@ import Stop from "@/modules/trip/inputs/Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
+import flushPromises from "flush-promises";
 
-jest.mock("@/api/stations");
-jest.mock("@/api/trip");
+jest.mock("@/api/trip", () => ({
+  create: jest.fn()
+}));
 
 Vue.use(Vuetify);
 
@@ -299,6 +301,52 @@ describe("TripForm", () => {
         expect(tripApi.create).toHaveBeenCalledWith(
           mockStore.getters.completeTrip
         );
+      });
+
+      describe("Trip alias", () => {
+        it("should be present if alias is returned from api call", async () => {
+          mockStore.getters.hasStops = true;
+          tripApi.create.mockReturnValue({ alias: "alias" });
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore
+            },
+            stubs: {
+              FirstStop: {
+                name: "FirstStop",
+                template: "<span></span>"
+              },
+              Stop: {
+                name: "Stop",
+                template: "<span></span>"
+              },
+              VFadeTransition: {
+                name: "v-fade-transition",
+                template: "<span></span>"
+              },
+              VAlert: {
+                name: "v-alert",
+                template: "<span></span>"
+              }
+            }
+          });
+          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          await flushPromises();
+          expect(wrapper.find("[data-test-id=success-alias]").exists()).toBe(
+            true
+          );
+        });
+
+        it("should not be present if alias not returned from api call", () => {
+          const wrapper = shallowMount(TripForm, {
+            mocks: {
+              $store: mockStore
+            }
+          });
+          expect(wrapper.find("[data-test-id=trip-alias]").exists()).toBe(
+            false
+          );
+        });
       });
     });
   });
