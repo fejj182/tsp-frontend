@@ -53,22 +53,30 @@ describe("TripForm", () => {
     };
 
     mockRoute = {
-      path: "/"
+      name: "home"
     };
   });
 
   describe("FirstStop", () => {
-    it("should have no stations if api call fails", async () => {
+    it("should have no stations if api call fails", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore,
           $router: mockRouter,
           $route: mockRoute
+        },
+        stubs: {
+          VForm: {
+            name: "v-form",
+            template: "<span><slot></slot></span>"
+          }
         }
       });
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(false);
       wrapper.find(FirstStop).vm.$emit("alert");
-      expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
+      Vue.nextTick(() => {
+        expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
+      });
     });
   });
   describe("Stops", () => {
@@ -108,6 +116,20 @@ describe("TripForm", () => {
       });
 
       expect(wrapper.find(Stop).props().readOnly).toBe(true);
+    });
+
+    it("should pass stop", () => {
+      const mockStops = [{}];
+      mockStore.state.trip.stops = mockStops;
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore,
+          $router: mockRouter,
+          $route: mockRoute
+        }
+      });
+
+      expect(wrapper.find(Stop).props().stop).toEqual({});
     });
   });
 
@@ -349,7 +371,8 @@ describe("TripForm", () => {
 
       it("should not call tripApi if path is not /", () => {
         mockStore.getters.hasStops = true;
-        mockRoute.path = "/other";
+        mockRoute.name = "other";
+        mockRoute.params = {};
         const wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore,
@@ -459,6 +482,45 @@ describe("TripForm", () => {
           expect(mockRouter.push).toHaveBeenCalledWith("trip/alias");
         });
       });
+    });
+  });
+
+  describe("Info alert", () => {
+    it("should be present when component loads", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        },
+        stubs: {
+          VFadeTransition: {
+            name: "v-fade-transition",
+            template: "<span><slot></slot></span>"
+          }
+        }
+      });
+      expect(wrapper.find("[data-test-id=info]").exists()).toBe(true);
+    });
+
+    it("should not be present if alias route", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore,
+          $route: {
+            name: "alias",
+            params: {
+              alias: "some-alias"
+            }
+          }
+        },
+        stubs: {
+          VFadeTransition: {
+            name: "v-fade-transition",
+            template: "<span><slot></slot></span>"
+          }
+        }
+      });
+      expect(wrapper.find("[data-test-id=info]").exists()).toBe(false);
     });
   });
 });

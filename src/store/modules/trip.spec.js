@@ -1,5 +1,6 @@
 import * as module from "./trip";
 import tripApi from "@/api/trip";
+import flushPromises from "flush-promises";
 
 jest.mock("@/api/trip", () => ({
   get: jest.fn()
@@ -68,6 +69,16 @@ describe("popups", () => {
         let tripAlias = { alias: "some-alias" };
         module.actions.fetchTrip({ commit }, tripAlias);
         expect(tripApi.get).toHaveBeenCalledWith("some-alias");
+      });
+      it("should put first station in startingStation", async () => {
+        const barcelona = { name: "Barcelona" };
+        const valencia = { name: "Valencia" };
+        let trip = [barcelona, valencia];
+        tripApi.get.mockReturnValue(trip);
+        let tripAlias = { alias: "some-alias" };
+        module.actions.fetchTrip({ commit }, tripAlias);
+        await flushPromises();
+        expect(commit).toHaveBeenCalledWith("LOAD_TRIP", trip);
       });
     });
     describe("selectStop", () => {
@@ -196,6 +207,33 @@ describe("popups", () => {
         const station = {};
         module.mutations.SELECT_STARTING_STATION(state, station);
         expect(state.savedTrip).toEqual([station]);
+      });
+    });
+    describe("LOAD_TRIP", () => {
+      it("should add starting station to the state", () => {
+        let state = {
+          startingStation: null
+        };
+        const barcelona = { name: "Barcelona" };
+        const valencia = { name: "Valencia" };
+        let trip = [barcelona, valencia];
+        module.mutations.LOAD_TRIP(state, trip);
+        expect(state.startingStation).toEqual(barcelona);
+      });
+
+      it("should add stops to the state", () => {
+        let state = {
+          stops: []
+        };
+        const barcelona = { name: "Barcelona" };
+        const valencia = { name: "Valencia" };
+        const madrid = { name: "Madrid" };
+        let trip = [barcelona, valencia, madrid];
+        module.mutations.LOAD_TRIP(state, trip);
+        expect(state.stops).toEqual([
+          { readOnly: true, selected: valencia, stations: [valencia] },
+          { readOnly: false, selected: madrid, stations: [madrid] }
+        ]);
       });
     });
   });

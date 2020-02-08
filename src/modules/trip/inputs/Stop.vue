@@ -28,6 +28,9 @@ export default {
     readOnly: {
       type: Boolean,
       default: false
+    },
+    stop: {
+      type: Object
     }
   },
   computed: {
@@ -40,6 +43,10 @@ export default {
       return this.$store.state.trip.selectedStop;
     },
     selected() {
+      if (this.stop.selected) {
+        return mapStation(this.stop.selected);
+      }
+
       if (this.readOnly && this.readOnlyValue) {
         return mapStation(this.readOnlyValue);
       } else if (!this.readOnly && this.selectedStop) {

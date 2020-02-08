@@ -1,16 +1,11 @@
 <template>
   <v-form ref="form" @submit.prevent="saveTrip">
-    <v-alert
-      data-test-id="alert"
-      v-if="alert"
-      v-model="alert"
-      dismissible
-      type="error"
-    >
+    <v-alert data-test-id="alert" v-if="alert" dismissible type="error">
       Service down. Please try again later.
     </v-alert>
     <v-fade-transition>
       <v-alert
+        data-test-id="info"
         color="teal"
         v-if="info"
         dark
@@ -25,7 +20,12 @@
     <FirstStop @alert="onAlert" />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
-      <Stop class="stop" :stations="stop.stations" :read-only="stop.readOnly" />
+      <Stop
+        class="stop"
+        :stations="stop.stations"
+        :read-only="stop.readOnly"
+        :stop="stop"
+      />
     </div>
     <v-alert
       v-if="invalid"
@@ -79,15 +79,18 @@ export default {
   data() {
     return {
       alert: false,
-      info: true,
+      info: false,
       invalid: false,
       alias: null
     };
   },
   mounted() {
-    setTimeout(() => {
-      this.info = false;
-    }, 7500);
+    if (this.$route.name === "home") {
+      this.info = true;
+      setTimeout(() => {
+        this.info = false;
+      }, 7500);
+    }
   },
   computed: {
     stops() {
@@ -116,7 +119,7 @@ export default {
       this.$store.dispatch("resetTrip");
     },
     async saveTrip() {
-      if (this.$route.path === "/") {
+      if (this.$route.name === "home") {
         const response = await tripApi.create(this.$store.getters.completeTrip);
         if (response && response.alias) {
           this.alias = response.alias;

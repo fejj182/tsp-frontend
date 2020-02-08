@@ -22,8 +22,15 @@ export const getters = {
 };
 
 export const actions = {
-  fetchTrip({ commit }, payload) {
-    tripApi.get(payload.alias);
+  async fetchTrip({ commit }, payload) {
+    try {
+      const trip = await tripApi.get(payload.alias);
+      if (trip && trip.length > 0) {
+        commit("LOAD_TRIP", trip);
+      }
+    } catch (e) {
+      console.log(e);
+    }
   },
   selectStop({ dispatch, commit }, station) {
     dispatch("openPopup", station);
@@ -64,5 +71,20 @@ export const mutations = {
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;
     state.savedTrip = [station];
+  },
+  LOAD_TRIP(state, trip) {
+    const startingStation = trip.shift();
+    state.startingStation = startingStation;
+    state.savedTrip = [startingStation];
+
+    const stops = trip.map((station, index) => {
+      return {
+        readOnly: index < trip.length - 1 ? true : false,
+        selected: station,
+        stations: [station]
+      };
+    });
+
+    state.stops = stops;
   }
 };

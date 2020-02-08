@@ -28,7 +28,8 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: []
+        stations: [],
+        stop: {}
       }
     });
     wrapper.find("[data-test-id=stop").vm.$emit("change", station);
@@ -41,13 +42,14 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: []
+        stations: [],
+        stop: {}
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toBe(null);
   });
 
-  it("should have the value set from of store if present", () => {
+  it("should have the value set from of selected property of stop if present", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
     mockStore.state.trip.selectedStop = madrid;
@@ -57,7 +59,30 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [valencia, madrid]
+        stations: [valencia, madrid],
+        stop: {
+          selected: valencia
+        }
+      }
+    });
+    expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
+      text: valencia.name,
+      value: valencia
+    });
+  });
+
+  it("should have the value set from of store if present and selected property of stop is not present", () => {
+    const valencia = fakeStation("valencia");
+    const madrid = fakeStation("madrid");
+    mockStore.state.trip.selectedStop = madrid;
+
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [valencia, madrid],
+        stop: {}
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
@@ -75,7 +100,8 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [valencia, madrid]
+        stations: [valencia, madrid],
+        stop: {}
       }
     });
     mockStore.state.trip.selectedStop = madrid;
@@ -95,7 +121,8 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        readOnly: true
+        readOnly: true,
+        stop: {}
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().readonly).toEqual(true);
