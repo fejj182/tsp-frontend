@@ -1,3 +1,5 @@
+import tripApi from "@/api/trip";
+
 export const state = {
   startingStation: null,
   selectedStop: null,
@@ -20,6 +22,9 @@ export const getters = {
 };
 
 export const actions = {
+  fetchTrip({ commit }, payload) {
+    tripApi.get(payload.alias);
+  },
   selectStop({ dispatch, commit }, station) {
     dispatch("openPopup", station);
     commit("SELECT_STOP", station);

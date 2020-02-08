@@ -31,8 +31,11 @@ export default {
       return station;
     }
   },
+  created() {
+    this.fetchStations();
+  },
   methods: {
-    async getStations() {
+    async fetchStations() {
       this.stations = [];
       try {
         const stations = await stationsApi.getStations();
@@ -51,9 +54,6 @@ export default {
         this.$emit("alert");
       }
     }
-  },
-  mounted() {
-    this.getStations();
   }
 };
 </script>

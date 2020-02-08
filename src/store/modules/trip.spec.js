@@ -1,4 +1,9 @@
 import * as module from "./trip";
+import tripApi from "@/api/trip";
+
+jest.mock("@/api/trip", () => ({
+  get: jest.fn()
+}));
 
 describe("popups", () => {
   describe("getters", () => {
@@ -57,6 +62,13 @@ describe("popups", () => {
     beforeEach(() => {
       commit = jest.fn();
       dispatch = jest.fn();
+    });
+    describe("fetchTrip", () => {
+      it("should call tripApi", () => {
+        let tripAlias = { alias: "some-alias" };
+        module.actions.fetchTrip({ commit }, tripAlias);
+        expect(tripApi.get).toHaveBeenCalledWith("some-alias");
+      });
     });
     describe("selectStop", () => {
       it("should commit SELECT_STOP to the store", () => {

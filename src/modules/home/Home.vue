@@ -28,6 +28,11 @@ export default {
     Map,
     Markers,
     Connections
+  },
+  created() {
+    if (this.$route.name === "alias") {
+      this.$store.dispatch("fetchTrip", { alias: this.$route.params.alias });
+    }
   }
 };
 </script>
