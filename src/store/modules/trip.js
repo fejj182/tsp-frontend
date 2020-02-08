@@ -33,8 +33,8 @@ export const actions = {
     dispatch("resetMap");
     commit("CLEAR_STOPS");
   },
-  addNewStop({ commit }, { stations }) {
-    commit("ADD_NEW_STOP", { stations });
+  addNewStop({ commit }, payload) {
+    commit("ADD_NEW_STOP", payload.stations);
   },
   selectStartingInput({ dispatch, commit }, station) {
     dispatch("resetTrip");
@@ -50,7 +50,7 @@ export const mutations = {
     state.stops = [];
     state.selectedStop = null;
   },
-  ADD_NEW_STOP: (state, { stations }) => {
+  ADD_NEW_STOP: (state, stations) => {
     const prevStops = state.stops.map(stop => {
       stop.readOnly = true;
       return stop;
