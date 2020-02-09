@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" @submit.prevent="saveTrip">
+  <v-form ref="form" @submit.prevent="onSubmit">
     <v-alert data-test-id="alert" v-if="alert" dismissible type="error">
       Service down. Please try again later.
     </v-alert>
@@ -38,11 +38,22 @@
     >
       No stop selected
     </v-alert>
-    <div id="alias" v-if="alias">
-      <v-alert data-test-id="success-alias" type="success" dismissible>
-        Trip {{ alias }} created! Bookmark your personal URL.
-      </v-alert>
-    </div>
+    <v-alert
+      v-if="alias"
+      data-test-id="success-alias"
+      type="success"
+      dismissible
+    >
+      Trip {{ alias }} created! Bookmark your personal URL.
+    </v-alert>
+    <v-alert
+      v-if="updated"
+      data-test-id="success-updated"
+      type="success"
+      dismissible
+    >
+      Trip {{ alias }} updated!
+    </v-alert>
     <div class="btn-row">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-plus</v-icon>
@@ -81,7 +92,8 @@ export default {
       alert: false,
       info: false,
       invalid: false,
-      alias: null
+      alias: null,
+      updated: false
     };
   },
   mounted() {
@@ -118,16 +130,33 @@ export default {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
     },
+    onSubmit() {
+      if (this.$route.name === "alias") {
+        this.updateTrip();
+      } else {
+        this.saveTrip();
+      }
+    },
     async saveTrip() {
-      if (this.$route.name === "home") {
-        const response = await tripApi.create(this.$store.getters.completeTrip);
-        if (response && response.alias) {
-          this.alias = response.alias;
-          setTimeout(() => {
-            this.alias = null;
-          }, 7500);
-          this.$router.push("trip/" + response.alias);
-        }
+      const response = await tripApi.create(this.$store.getters.completeTrip);
+      if (response && response.alias) {
+        this.alias = response.alias;
+        setTimeout(() => {
+          this.alias = null;
+        }, 7500);
+        this.$router.push("trip/" + response.alias);
+      }
+    },
+    async updateTrip() {
+      const response = await tripApi.update(
+        this.$route.params.alias,
+        this.$store.getters.completeTrip
+      );
+      if (response) {
+        this.updated = true;
+        setTimeout(() => {
+          this.updated = false;
+        }, 7500);
       }
     }
   }

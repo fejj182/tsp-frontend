@@ -6,5 +6,10 @@ export default {
   },
   get: tripAlias => {
     return get(`${process.env.VUE_APP_API_BASE_URL}/trip/${tripAlias}`);
+  },
+  update: (tripAlias, trip) => {
+    return post(`${process.env.VUE_APP_API_BASE_URL}/trip/${tripAlias}`, {
+      trip
+    });
   }
 };
