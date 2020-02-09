@@ -18,7 +18,7 @@
       </v-alert>
     </v-fade-transition>
     <FirstStop @alert="onAlert" />
-    <div v-for="(stop, index) in stops" :key="index">
+    <div v-for="(stop, index) in stops" :key="index" :id="'stop-' + index">
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop
         class="stop"

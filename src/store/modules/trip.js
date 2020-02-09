@@ -23,13 +23,9 @@ export const getters = {
 
 export const actions = {
   async fetchTrip({ commit }, payload) {
-    try {
-      const trip = await tripApi.get(payload.alias);
-      if (trip && trip.length > 0) {
-        commit("LOAD_TRIP", trip);
-      }
-    } catch (e) {
-      console.log(e);
+    const trip = await tripApi.get(payload.alias);
+    if (trip && trip.length > 0) {
+      commit("LOAD_TRIP", trip);
     }
   },
   selectStop({ dispatch, commit }, station) {

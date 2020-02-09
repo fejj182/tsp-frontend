@@ -174,7 +174,7 @@ describe("TripForm", () => {
           $route: mockRoute
         }
       });
-      expect(wrapper.findAll(".stop").length).toBe(1);
+      expect(wrapper.findAll(Stop).length).toBe(1);
     });
 
     it("should show 3 inputs when there is 3 stops in the store", async () => {
@@ -190,7 +190,7 @@ describe("TripForm", () => {
           $route: mockRoute
         }
       });
-      expect(wrapper.findAll(".stop").length).toBe(3);
+      expect(wrapper.findAll(Stop).length).toBe(3);
     });
   });
 
