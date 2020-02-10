@@ -41,6 +41,6 @@
     "vuetify-loader": "^1.3.0"
   },
   "gitHooks": {
-    "pre-commit": "vue-cli-service test:unit"
+    "pre-commit": "vue-cli-service test:unit && vue-cli-service test:e2e --headless"
   }
 }
