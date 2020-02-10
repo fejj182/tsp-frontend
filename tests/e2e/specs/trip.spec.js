@@ -48,6 +48,7 @@ function updateTrip() {
     .first()
     .click();
   cy.get("[data-test-id=save-trip]").click();
+  cy.get("[data-test-id=success-updated]").should("exist");
 
   cy.reload();
   cy.get("#stop-0").should("exist");
