@@ -14,7 +14,7 @@
 
 <script>
 import stationsApi from "@/api/stations";
-import mapStation from "@/modules/trip/stationFormMapper";
+import { mapStation, mapStations } from "@/modules/trip/stationFormMapper";
 
 export default {
   data() {
@@ -39,9 +39,7 @@ export default {
       this.stations = [];
       try {
         const stations = await stationsApi.getStations();
-        this.stations = stations.map(station => {
-          return mapStation(station);
-        });
+        this.stations = mapStations(stations);
       } catch (e) {
         this.$emit("alert");
       }

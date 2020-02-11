@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import mapStation from "@/modules/trip/stationFormMapper";
+import { mapStation, mapStations } from "@/modules/trip/stationFormMapper";
 export default {
   data() {
     return {
@@ -35,9 +35,7 @@ export default {
   },
   computed: {
     items() {
-      return this.stations.map(station => {
-        return mapStation(station);
-      });
+      return mapStations(this.stations);
     },
     selectedStop() {
       return this.$store.state.trip.selectedStop;
