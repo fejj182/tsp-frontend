@@ -15,6 +15,9 @@ describe("Home", () => {
     beforeEach(() => {
       wrapper = shallowMount(Home, {
         mocks: {
+          $store: {
+            dispatch: jest.fn()
+          },
           $route: {
             name: "home"
           }
@@ -43,7 +46,7 @@ describe("Home", () => {
         dispatch: jest.fn()
       };
     });
-    it("should not fetch data at '/'", () => {
+    it("should fetch starting stations '/'", () => {
       shallowMount(Home, {
         mocks: {
           $route: {
@@ -52,7 +55,7 @@ describe("Home", () => {
           $store: mockStore
         }
       });
-      expect(mockStore.dispatch).not.toHaveBeenCalled();
+      expect(mockStore.dispatch).toHaveBeenCalledWith("fetchStartingStations");
     });
 
     it("should fetch trip if url matches", () => {

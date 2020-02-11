@@ -31,6 +31,9 @@ export default {
     connections() {
       return this.$store.state.stations.activeConnections;
     },
+    startingStations() {
+      return this.$store.state.stations.startingStations;
+    },
     popups() {
       const popups = {};
       // TODO: why does popup of active station not re-mount?
@@ -106,6 +109,16 @@ export default {
           isConnection: true
         });
       });
+    },
+    startingStations: function() {
+      if (this.startingStations.length > 0) {
+        this.startingStations.forEach(station => {
+          const marker = L.marker([station.lat, station.lng], {
+            icon: this.generateIcon("purple")
+          });
+          marker.addTo(this.$store.state.map.map);
+        });
+      }
     }
   }
 };

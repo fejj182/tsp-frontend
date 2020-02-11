@@ -25,7 +25,8 @@ describe("Markers", () => {
       state: {
         stations: {
           activeStation: null,
-          activeConnections: []
+          activeConnections: [],
+          startingStations: []
         },
         map: {
           map: {}
@@ -41,12 +42,8 @@ describe("Markers", () => {
   });
 
   describe("Active marker", () => {
-    it("should be empty when component is mounted", () => {
-      expect(wrapper.vm.stationPoint).toBeNull();
-    });
-
     it("should add the active marker to the map when the store is updated", () => {
-      changeActiveStationInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
 
@@ -54,7 +51,7 @@ describe("Markers", () => {
       const prevStationPoint = { station: {}, marker: { remove: jest.fn() } };
       wrapper.vm.stationPoint = prevStationPoint;
 
-      changeActiveStationInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
 
       expect(prevStationPoint.marker.remove).toBeCalledTimes(1);
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
@@ -64,16 +61,23 @@ describe("Markers", () => {
       const prevStationPoint = { station: {}, marker: {} };
       wrapper.vm.stationPoint = prevStationPoint;
 
-      wrapper.vm.$store.state.stations.activeStation = null;
+      mockStore.state.stations.activeStation = null;
 
       expect(wrapper.vm.stationPoint).toEqual(prevStationPoint);
       expect(mockMarker.addTo).not.toHaveBeenCalledWith(mockMap);
     });
   });
 
+  describe("Starting markers", () => {
+    it("should add the starting station markers to the map when the store is updated", () => {
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+    });
+  });
+
   describe("Connections", () => {
     it("should add the connections to the map when the store is updated", () => {
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
     });
 
@@ -93,7 +97,7 @@ describe("Markers", () => {
         prevConnectionPoints[1]
       );
 
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
 
       prevConnectionPoints.forEach(marker => {
         expect(marker.marker.remove).toBeCalledTimes(1);
@@ -102,7 +106,7 @@ describe("Markers", () => {
     });
 
     it("should set on click function on marker", () => {
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       expect(mockMarker.once.mock.calls).toEqual([
         ["click", expect.any(Function)],
         ["click", expect.any(Function)]
@@ -116,7 +120,7 @@ describe("Markers", () => {
     });
 
     it("should reset click handlers of other connections", () => {
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       wrapper.vm.onMarkerClick(
         wrapper.vm.$store.state.stations.activeConnections[0]
       );
@@ -130,8 +134,8 @@ describe("Markers", () => {
 
   describe("Icons", () => {
     it("should be generated when a marker is generated", () => {
-      changeActiveStationInStore(wrapper);
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
 
       expect(L.divIcon).toBeCalledTimes(3);
     });
@@ -143,7 +147,7 @@ describe("Markers", () => {
     });
 
     it("should create active station popups", () => {
-      changeActiveStationInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
       const popups = wrapper.findAll(Popup);
       expect(popups.length).toBe(1);
       popups.wrappers.forEach(() => {
@@ -155,7 +159,7 @@ describe("Markers", () => {
     });
 
     it("should create connection popups", () => {
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       const popups = wrapper.findAll(Popup);
       expect(popups.length).toBe(2);
       popups.wrappers.forEach(popup => {
@@ -164,31 +168,20 @@ describe("Markers", () => {
     });
 
     it("should remove station popup if there is no active station", () => {
-      changeActiveStationInStore(wrapper);
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       wrapper.vm.$store.state.stations.activeStation = null;
       expect(wrapper.findAll(Popup).length).toBe(2);
       expect(wrapper.vm.stationPoint).toBe(null);
     });
 
     it("should remove connection popups if there are no connections", () => {
-      changeActiveStationInStore(wrapper);
-      changeConnectionsInStore(wrapper);
+      mockStore.state.stations.activeStation = getStation();
+      mockStore.state.stations.activeConnections = [getStation(), getStation()];
       wrapper.vm.$store.state.stations.activeConnections = [];
       expect(wrapper.findAll(Popup).length).toBe(1);
     });
   });
-
-  function changeActiveStationInStore(wrapper) {
-    wrapper.vm.$store.state.stations.activeStation = getStation();
-  }
-
-  function changeConnectionsInStore(wrapper) {
-    wrapper.vm.$store.state.stations.activeConnections = [
-      getStation(),
-      getStation()
-    ];
-  }
 
   function getStation() {
     const id = faker.random.number();

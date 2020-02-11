@@ -2,7 +2,8 @@ import stationsApi from "@/api/stations";
 
 export const state = {
   activeStation: null,
-  activeConnections: []
+  activeConnections: [],
+  startingStations: []
 };
 
 export const getters = {};
@@ -20,6 +21,10 @@ export const actions = {
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);
     dispatch("addNewStop", { stations: connections });
+  },
+  async fetchStartingStations({ commit }) {
+    const stations = await stationsApi.getStations();
+    commit("SET_STARTING_STATIONS", stations);
   },
   resetMap({ commit }) {
     commit("RESET_MAP");
@@ -42,5 +47,8 @@ export const mutations = {
   RESET_MAP(state) {
     state.activeStation = null;
     state.activeConnections = [];
+  },
+  SET_STARTING_STATIONS(state, stations) {
+    state.startingStations = stations;
   }
 };

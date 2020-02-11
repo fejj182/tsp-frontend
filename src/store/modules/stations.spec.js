@@ -5,7 +5,8 @@ import flushPromises from "flush-promises";
 
 jest.mock("@/api/stations", () => ({
   getNearestStation: jest.fn(),
-  getConnections: jest.fn()
+  getConnections: jest.fn(),
+  getStations: jest.fn()
 }));
 
 describe("stations", () => {
@@ -89,6 +90,21 @@ describe("stations", () => {
           connections
         );
       });
+      describe("fetchStartingStations", () => {
+        it("should call the stationsApi and commit stations to state", async () => {
+          const mockStations = [{}, {}];
+          stationsApi.getStations.mockReturnValue(mockStations);
+          module.actions.fetchStartingStations({
+            commit
+          });
+          await flushPromises();
+          expect(stationsApi.getStations).toHaveBeenCalled();
+          expect(commit).toHaveBeenCalledWith(
+            "SET_STARTING_STATIONS",
+            mockStations
+          );
+        });
+      });
     });
     describe("resetMap", () => {
       it("should commit RESET_MAP", () => {
@@ -138,6 +154,15 @@ describe("stations", () => {
       module.mutations.RESET_MAP(state);
       expect(state.activeStation).toBeNull();
       expect(state.activeConnections).toEqual([]);
+    });
+
+    test("SET_STARTING_STATIONS should set starting stations in the state", () => {
+      const mockStations = [{}, {}];
+      const state = {
+        startingStations: []
+      };
+      module.mutations.SET_STARTING_STATIONS(state, mockStations);
+      expect(state.startingStations).toEqual(mockStations);
     });
   });
 });

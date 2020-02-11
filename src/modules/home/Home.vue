@@ -33,6 +33,9 @@ export default {
     if (this.$route.name === "alias") {
       this.$store.dispatch("fetchTrip", { alias: this.$route.params.alias });
     }
+    if (this.$route.name === "home") {
+      this.$store.dispatch("fetchStartingStations");
+    }
   }
 };
 </script>
