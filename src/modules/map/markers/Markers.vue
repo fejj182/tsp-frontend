@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="false" v-for="point in popups" :key="point.station.id">
+    <div v-for="(point, index) in popups" :key="index">
       <Popup
         :marker="point.marker"
         :station="point.station"
@@ -21,7 +21,9 @@ export default {
   data: function() {
     return {
       stationPoint: null,
-      connectionPoints: []
+      connectionPoints: [],
+      startingPoints: [],
+      popups: []
     };
   },
   computed: {
@@ -33,19 +35,6 @@ export default {
     },
     startingStations() {
       return this.$store.state.stations.startingStations;
-    },
-    popups() {
-      const popups = {};
-      // TODO: why does popup of active station not re-mount?
-      if (this.stationPoint) {
-        popups[this.stationPoint.station.id] = this.stationPoint;
-      }
-      if (this.connectionPoints.length > 0) {
-        this.connectionPoints.forEach(connection => {
-          popups[connection.station.id] = connection;
-        });
-      }
-      return popups;
     }
   },
   methods: {
@@ -65,6 +54,14 @@ export default {
         this.connectionPoints = [];
       }
     },
+    resetStartingConnections() {
+      if (this.startingPoints.length > 0) {
+        this.startingPoints.forEach(station => {
+          station.marker.remove();
+        });
+        this.startingPoints = [];
+      }
+    },
     onMarkerClick(connection) {
       this.$store.dispatch("selectStop", connection);
       this.connectionPoints
@@ -78,20 +75,16 @@ export default {
   },
   watch: {
     activeStation: function() {
-      if (this.stationPoint) {
-        this.stationPoint.marker.remove();
-        this.stationPoint = null;
-      }
       if (this.activeStation) {
         const marker = L.marker(
           [this.activeStation.lat, this.activeStation.lng],
           { icon: this.generateIcon("purple") }
         );
         marker.addTo(this.$store.state.map.map);
-        this.stationPoint = {
+        this.popups.push({
           station: this.activeStation,
           marker
-        };
+        });
         this.$store.dispatch("openPopup", this.activeStation);
       }
     },
@@ -103,7 +96,7 @@ export default {
         });
         marker.addTo(this.$store.state.map.map);
         marker.once("click", () => this.onMarkerClick(connection));
-        this.connectionPoints.push({
+        this.popups.push({
           station: connection,
           marker,
           isConnection: true
@@ -111,14 +104,17 @@ export default {
       });
     },
     startingStations: function() {
-      if (this.startingStations.length > 0) {
-        this.startingStations.forEach(station => {
-          const marker = L.marker([station.lat, station.lng], {
-            icon: this.generateIcon("purple")
-          });
-          marker.addTo(this.$store.state.map.map);
+      this.resetStartingConnections();
+      this.startingStations.forEach(station => {
+        const marker = L.marker([station.lat, station.lng], {
+          icon: this.generateIcon("purple")
         });
-      }
+        marker.addTo(this.$store.state.map.map);
+        this.popups.push({
+          station,
+          marker
+        });
+      });
     }
   }
 };

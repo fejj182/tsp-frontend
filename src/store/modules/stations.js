@@ -9,9 +9,8 @@ export const state = {
 export const getters = {};
 
 export const actions = {
-  async getNearestStation({ dispatch, commit }, location) {
+  async setStartingStation({ dispatch, commit }, station) {
     commit("CLEAR_ACTIVE_STATION");
-    const station = await stationsApi.getNearestStation(location);
     dispatch("selectStartingInput", station);
     dispatch("confirmStop", station);
   },

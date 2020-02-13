@@ -4,7 +4,7 @@ import faker from "faker";
 import flushPromises from "flush-promises";
 
 jest.mock("@/api/stations", () => ({
-  getNearestStation: jest.fn(),
+  setStartingStation: jest.fn(),
   getConnections: jest.fn(),
   getStations: jest.fn()
 }));
@@ -19,7 +19,7 @@ describe("stations", () => {
   const connections = [];
 
   describe("actions", () => {
-    describe("getNearestStation", () => {
+    describe("setStartingStation", () => {
       let location, dispatch, commit;
       beforeEach(() => {
         jest.clearAllMocks();
@@ -30,24 +30,16 @@ describe("stations", () => {
         dispatch = jest.fn();
         commit = jest.fn();
       });
-      it("should call the endpoint", () => {
-        module.actions.getNearestStation({ dispatch, commit }, location);
-        expect(stationsApi.getNearestStation).toHaveBeenCalledWith(location);
-      });
 
       it("should call dispatch confirmStop", async () => {
-        const mockNearestStation = {};
-        stationsApi.getNearestStation.mockReturnValue(mockNearestStation);
-        await module.actions.getNearestStation({ dispatch, commit }, location);
+        const station = {};
+        await module.actions.setStartingStation({ dispatch, commit }, station);
         await flushPromises();
-        expect(dispatch).toHaveBeenCalledWith(
-          "confirmStop",
-          mockNearestStation
-        );
+        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
       });
 
       it("should clear the active stations before calling the endpoint", async () => {
-        module.actions.getNearestStation({ dispatch, commit }, location);
+        module.actions.setStartingStation({ dispatch, commit }, location);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_STATION");
       });
     });

@@ -20,6 +20,9 @@ describe("Popup", () => {
           openStation: {
             name: ""
           }
+        },
+        trip: {
+          startingStation: null
         }
       }
     };
@@ -70,19 +73,6 @@ describe("Popup", () => {
     expect(mockPopup.openPopup).toHaveBeenCalled();
   });
 
-  it("should not show button to add station to trip", () => {
-    const wrapper = shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: {
-        marker: mockMarker,
-        station
-      }
-    });
-    expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(false);
-  });
-
   describe("watch", () => {
     it("should open popup if state changes", () => {
       const mockPopup = { openPopup: jest.fn() };
@@ -120,8 +110,21 @@ describe("Popup", () => {
     });
   });
 
-  describe("Connections", () => {
-    it("should show button to add station to trip", () => {
+  describe("Add to station button", () => {
+    it("should show button to add station to trip if no starting station selected", () => {
+      const wrapper = shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station
+        }
+      });
+      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
+    });
+    it("should show button to add station to trip if isConnection", () => {
+      mockStore.state.trip.startingStation = {};
       const wrapper = shallowMount(Popup, {
         mocks: {
           $store: mockStore
@@ -135,6 +138,24 @@ describe("Popup", () => {
       expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
     });
 
+    it("should not show button to add station to trip if startingStation present", () => {
+      mockStore.state.trip.startingStation = {};
+      const wrapper = shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station
+        }
+      });
+      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(
+        false
+      );
+    });
+  });
+
+  describe("Connections", () => {
     it("should dispatch addStationToTrip when button is clicked", () => {
       const wrapper = mount(Popup, {
         mocks: {

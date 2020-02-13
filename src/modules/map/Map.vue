@@ -23,20 +23,6 @@ export default {
   mounted() {
     this.createMap();
   },
-  computed: {
-    activeStation() {
-      return this.$store.state.stations.activeStation;
-    }
-  },
-  watch: {
-    activeStation() {
-      if (this.activeStation != null) {
-        this.myMap.off("click");
-      } else {
-        this.myMap.on("click", this.onMapClick);
-      }
-    }
-  },
   methods: {
     createMap() {
       this.myMap = L.map("map");
@@ -46,14 +32,7 @@ export default {
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
         this.tileOptions
       ).addTo(this.myMap);
-      this.myMap.on("click", this.onMapClick);
       this.$store.dispatch("addMap", this.myMap);
-    },
-    onMapClick(event) {
-      const lat = event.latlng.lat;
-      const lng = event.latlng.lng;
-      this.$store.dispatch("resetTrip");
-      this.$store.dispatch("getNearestStation", { lat, lng });
     }
   }
 };

@@ -14,7 +14,7 @@
         icon="mdi-school"
         dismissible
       >
-        Click map to find nearest station
+        Click on a station to get started.
       </v-alert>
     </v-fade-transition>
     <FirstStop @alert="onAlert" />

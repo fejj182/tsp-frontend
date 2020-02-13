@@ -1,6 +1,5 @@
 import stations from "./stations";
-import { get, post } from "@/helpers/request.js";
-import faker from "faker";
+import { get } from "@/helpers/request.js";
 jest.mock("@/helpers/request.js");
 
 describe("stations", () => {
@@ -15,14 +14,5 @@ describe("stations", () => {
     });
   });
 
-  describe("getNearestStation", () => {
-    it("should call the endpoint", () => {
-      const location = {
-        lat: parseFloat(faker.address.latitude()),
-        lng: faker.address.longitude
-      };
-      stations.getNearestStation(location);
-      expect(post).toHaveBeenCalledWith("test/stations/nearest", location);
-    });
-  });
+  //TODO: Add test for getConnections
 });

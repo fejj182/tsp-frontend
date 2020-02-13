@@ -1,7 +1,7 @@
 <template>
   <div data-test-id="popup" ref="popup" class="content">
     <v-btn
-      v-if="isConnection"
+      v-if="!startingStationSelected || isConnection"
       data-test-id="add-to-station"
       @click="addToTrip"
       color="indigo"
@@ -37,6 +37,9 @@ export default {
   computed: {
     open() {
       return this.$store.state.popups.openStation;
+    },
+    startingStationSelected() {
+      return this.$store.state.trip.startingStation;
     }
   },
   methods: {
@@ -44,12 +47,16 @@ export default {
       this.popup = marker.bindPopup(this.$refs.popup, {
         offset: [0, -35]
       });
-      if (this.station.name == this.open.name) {
+      if (this.open && this.station.name == this.open.name) {
         this.popup.openPopup();
       }
     },
     addToTrip() {
-      this.$store.dispatch("confirmStop", this.station);
+      if (this.isConnection) {
+        this.$store.dispatch("confirmStop", this.station);
+      } else {
+        this.$store.dispatch("setStartingStation", this.station);
+      }
     }
   },
   mounted() {

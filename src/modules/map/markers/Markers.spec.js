@@ -47,16 +47,6 @@ describe("Markers", () => {
       expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
     });
 
-    it("should remove the old marker from the map if an active marker is already set", () => {
-      const prevStationPoint = { station: {}, marker: { remove: jest.fn() } };
-      wrapper.vm.stationPoint = prevStationPoint;
-
-      mockStore.state.stations.activeStation = getStation();
-
-      expect(prevStationPoint.marker.remove).toBeCalledTimes(1);
-      expect(mockMarker.addTo).toHaveBeenCalledWith(mockMap);
-    });
-
     it("should not add marker to map if active marker is reset in store", () => {
       const prevStationPoint = { station: {}, marker: {} };
       wrapper.vm.stationPoint = prevStationPoint;
@@ -165,21 +155,6 @@ describe("Markers", () => {
       popups.wrappers.forEach(popup => {
         expect(popup.props().isConnection).toBe(true);
       });
-    });
-
-    it("should remove station popup if there is no active station", () => {
-      mockStore.state.stations.activeStation = getStation();
-      mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      wrapper.vm.$store.state.stations.activeStation = null;
-      expect(wrapper.findAll(Popup).length).toBe(2);
-      expect(wrapper.vm.stationPoint).toBe(null);
-    });
-
-    it("should remove connection popups if there are no connections", () => {
-      mockStore.state.stations.activeStation = getStation();
-      mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      wrapper.vm.$store.state.stations.activeConnections = [];
-      expect(wrapper.findAll(Popup).length).toBe(1);
     });
   });
 
