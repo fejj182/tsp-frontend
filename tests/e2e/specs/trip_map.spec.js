@@ -7,8 +7,10 @@ describe("trip_map", () => {
 
     cy.visit("http://localhost:8080/");
     cy.get("#map").click();
-    cy.get(".div-icon-red").click();
-    cy.get("[data-test-id=add-to-station]").click();
+    cy.get(".div-icon-red")
+      .first()
+      .click();
+    cy.get("[data-test-id=add-to-station]:visible").click();
     cy.get("[data-test-id=save-trip]").click();
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
