@@ -30,6 +30,9 @@ describe("Markers", () => {
         },
         map: {
           map: {}
+        },
+        trip: {
+          startingStation: null
         }
       }
     };
@@ -62,6 +65,17 @@ describe("Markers", () => {
     it("should add the starting station markers to the map when the store is updated", () => {
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+    });
+
+    it("should remove the inactive starting station markers from the map when the connections are set", () => {
+      const station = getStation();
+      let otherStation = getStation();
+      mockStore.state.stations.startingStations = [station, otherStation];
+      mockStore.state.trip.startingStation = station;
+      mockStore.state.stations.activeConnections = [];
+      expect(wrapper.findAll(Popup).length).toEqual(1);
+      expect(wrapper.find(Popup).props().station).toEqual(station);
+      expect(mockMarker.remove).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -125,8 +139,8 @@ describe("Markers", () => {
   describe("Icons", () => {
     it("should be generated when a marker is generated", () => {
       mockStore.state.stations.activeStation = getStation();
+      mockStore.state.trip.startingStation = getStation();
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-
       expect(L.divIcon).toBeCalledTimes(3);
     });
   });

@@ -54,13 +54,15 @@ export default {
         this.connectionPoints = [];
       }
     },
-    resetStartingConnections() {
-      if (this.startingPoints.length > 0) {
-        this.startingPoints.forEach(station => {
-          station.marker.remove();
-        });
-        this.startingPoints = [];
-      }
+    resetStartingStations() {
+      this.popups = this.popups.filter(popup => {
+        let isStartingStation =
+          popup.station.id === this.$store.state.trip.startingStation.id;
+        if (!isStartingStation) {
+          popup.marker.remove();
+        }
+        return isStartingStation;
+      });
     },
     onMarkerClick(connection) {
       this.$store.dispatch("selectStop", connection);
@@ -89,6 +91,7 @@ export default {
       }
     },
     connections: function() {
+      this.resetStartingStations();
       this.resetConnections();
       this.connections.forEach(connection => {
         const marker = L.marker([connection.lat, connection.lng], {
@@ -104,7 +107,6 @@ export default {
       });
     },
     startingStations: function() {
-      this.resetStartingConnections();
       this.startingStations.forEach(station => {
         const marker = L.marker([station.lat, station.lng], {
           icon: this.generateIcon("purple")
