@@ -9,7 +9,7 @@ export default {
   data() {
     return {
       centreCoords: [40.7067997, 0.5801695],
-      zoomLevel: screen.width > 600 ? 7 : 6,
+      zoomLevel: 6,
       myMap: null,
       tileOptions: {
         attribution:

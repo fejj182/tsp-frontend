@@ -11,7 +11,7 @@ export const getters = {};
 export const actions = {
   async setStartingStation({ dispatch, commit }, station) {
     commit("CLEAR_ACTIVE_STATION");
-    dispatch("selectStartingInput", station);
+    dispatch("startTrip", station);
     dispatch("confirmStop", station);
   },
   async confirmStop({ dispatch, commit }, station) {

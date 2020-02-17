@@ -39,8 +39,11 @@ export const actions = {
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
-  selectStartingInput({ dispatch, commit }, station) {
+  startTrip({ dispatch }, station) {
     dispatch("resetTrip");
+    dispatch("selectStartingInput", station);
+  },
+  selectStartingInput({ commit }, station) {
     commit("SELECT_STARTING_STATION", station);
   }
 };

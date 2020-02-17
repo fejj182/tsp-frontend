@@ -64,6 +64,11 @@ export default {
         return isStartingStation;
       });
     },
+    onStartingMarkerClick(station) {
+      if (this.$store.state.trip.startingStation !== station) {
+        this.$store.dispatch("selectStartingInput", station);
+      }
+    },
     onMarkerClick(connection) {
       this.$store.dispatch("selectStop", connection);
       this.connectionPoints
@@ -112,6 +117,7 @@ export default {
           icon: this.generateIcon("purple")
         });
         marker.addTo(this.$store.state.map.map);
+        marker.on("click", () => this.onStartingMarkerClick(station));
         this.popups.push({
           station,
           marker

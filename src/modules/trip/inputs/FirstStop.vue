@@ -45,7 +45,7 @@ export default {
       }
     },
     async onChangeStation(station) {
-      this.$store.dispatch("selectStartingInput", station);
+      this.$store.dispatch("startTrip", station);
       try {
         await this.$store.dispatch("confirmStop", station);
       } catch (e) {

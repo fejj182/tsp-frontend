@@ -1,7 +1,7 @@
 <template>
   <div data-test-id="popup" ref="popup" class="content">
     <v-btn
-      v-if="!startingStationSelected || isConnection"
+      v-if="isConnection || tripNotBegun"
       data-test-id="add-to-station"
       @click="addToTrip"
       color="indigo"
@@ -38,8 +38,8 @@ export default {
     open() {
       return this.$store.state.popups.openStation;
     },
-    startingStationSelected() {
-      return this.$store.state.trip.startingStation;
+    tripNotBegun() {
+      return this.$store.state.trip.stops.length === 0;
     }
   },
   methods: {

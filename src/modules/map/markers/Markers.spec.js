@@ -14,7 +14,8 @@ describe("Markers", () => {
   const mockMarker = {
     addTo: jest.fn(),
     remove: jest.fn(),
-    once: jest.fn()
+    once: jest.fn(),
+    on: jest.fn()
   };
 
   beforeEach(() => {
@@ -76,6 +77,23 @@ describe("Markers", () => {
       expect(wrapper.findAll(Popup).length).toEqual(1);
       expect(wrapper.find(Popup).props().station).toEqual(station);
       expect(mockMarker.remove).toHaveBeenCalledTimes(1);
+    });
+
+    it("should set on click function on marker", () => {
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      expect(mockMarker.on.mock.calls).toEqual([
+        ["click", expect.any(Function)],
+        ["click", expect.any(Function)]
+      ]);
+    });
+
+    it("should dispatch selectStartingInput when onMarkerClick called", () => {
+      const station = getStation();
+      wrapper.vm.onStartingMarkerClick(station);
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        "selectStartingInput",
+        station
+      );
     });
   });
 

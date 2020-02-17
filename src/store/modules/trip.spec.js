@@ -112,16 +112,23 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", payload.stations);
       });
     });
+    describe("startTrip", () => {
+      it("should dispatch selectStartingInput", () => {
+        let station = {};
+        module.actions.startTrip({ dispatch }, station);
+        expect(dispatch).toHaveBeenCalledWith("selectStartingInput", station);
+      });
+      it("should dispatch resetTrip", () => {
+        let station = {};
+        module.actions.startTrip({ dispatch }, station);
+        expect(dispatch).toHaveBeenCalledWith("resetTrip");
+      });
+    });
     describe("selectStartingInput", () => {
       it("should commit SELECT_STARTING_STATION to the store", () => {
         let station = {};
         module.actions.selectStartingInput({ dispatch, commit }, station);
         expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
-      });
-      it("should dispatch resetTrip", () => {
-        let station = {};
-        module.actions.selectStartingInput({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("resetTrip");
       });
     });
   });

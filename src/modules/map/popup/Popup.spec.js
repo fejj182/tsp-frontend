@@ -22,7 +22,8 @@ describe("Popup", () => {
           }
         },
         trip: {
-          startingStation: null
+          startingStation: null,
+          stops: []
         }
       }
     };
@@ -123,23 +124,9 @@ describe("Popup", () => {
       });
       expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
     });
-    it("should show button to add station to trip if isConnection", () => {
-      mockStore.state.trip.startingStation = {};
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: {
-          marker: mockMarker,
-          station,
-          isConnection: true
-        }
-      });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
-    });
 
-    it("should not show button to add station to trip if startingStation present", () => {
-      mockStore.state.trip.startingStation = {};
+    it("should not show button to add station to trip if there are stops in store", () => {
+      mockStore.state.trip.stops = [{}];
       const wrapper = shallowMount(Popup, {
         mocks: {
           $store: mockStore
@@ -152,6 +139,21 @@ describe("Popup", () => {
       expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(
         false
       );
+    });
+
+    it("should show button to add station to trip if isConnection", () => {
+      mockStore.state.trip.stops = [{}];
+      const wrapper = shallowMount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station,
+          isConnection: true
+        }
+      });
+      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
     });
   });
 
