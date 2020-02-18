@@ -55,6 +55,7 @@ export default {
       if (this.isConnection) {
         this.$store.dispatch("confirmStop", this.station);
       } else {
+        this.popup.closePopup();
         this.$store.dispatch("setStartingStation", this.station);
       }
     }

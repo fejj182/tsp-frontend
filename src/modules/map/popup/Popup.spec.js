@@ -155,10 +155,8 @@ describe("Popup", () => {
       });
       expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
     });
-  });
 
-  describe("Connections", () => {
-    it("should dispatch addStationToTrip when button is clicked", () => {
+    it("should dispatch confirmStop if isConnection when button is clicked", () => {
       const wrapper = mount(Popup, {
         mocks: {
           $store: mockStore
@@ -172,6 +170,26 @@ describe("Popup", () => {
       wrapper.find("[data-test-id=add-to-station]").trigger("click");
       expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith(
         "confirmStop",
+        station
+      );
+    });
+
+    it("should dispatch setStartingStation if not connection when button is clicked", () => {
+      const mockPopup = { closePopup: jest.fn() };
+      mockMarker.bindPopup.mockReturnValue(mockPopup);
+      const wrapper = mount(Popup, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          marker: mockMarker,
+          station,
+          isConnection: false
+        }
+      });
+      wrapper.find("[data-test-id=add-to-station]").trigger("click");
+      expect(wrapper.vm.$store.dispatch).toHaveBeenCalledWith(
+        "setStartingStation",
         station
       );
     });
