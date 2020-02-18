@@ -28,8 +28,7 @@ export const actions = {
       commit("LOAD_TRIP", trip);
     }
   },
-  selectStop({ dispatch, commit }, station) {
-    dispatch("openPopup", station);
+  selectStop({ commit }, station) {
     commit("SELECT_STOP", station);
   },
   resetTrip({ dispatch, commit }) {

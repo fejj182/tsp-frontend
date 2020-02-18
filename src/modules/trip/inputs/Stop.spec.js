@@ -36,6 +36,21 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
   });
 
+  it("should dispatch openPopup on change", () => {
+    const station = fakeStation();
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [],
+        stop: {}
+      }
+    });
+    wrapper.find("[data-test-id=stop").vm.$emit("change", station);
+    expect(mockStore.dispatch).toHaveBeenCalledWith("openPopup", station);
+  });
+
   it("should have the value null if not present in the store", () => {
     const wrapper = shallowMount(Stop, {
       mocks: {

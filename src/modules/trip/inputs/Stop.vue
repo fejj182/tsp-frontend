@@ -64,6 +64,7 @@ export default {
   methods: {
     onChangeStation(station) {
       this.$store.dispatch("selectStop", station);
+      this.$store.dispatch("openPopup", station);
     }
   }
 };

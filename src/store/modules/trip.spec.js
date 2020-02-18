@@ -87,12 +87,6 @@ describe("popups", () => {
         module.actions.selectStop({ dispatch, commit }, connection);
         expect(commit).toHaveBeenCalledWith("SELECT_STOP", connection);
       });
-
-      it("should dispatch openPopup action", () => {
-        let connection = { id: "1" };
-        module.actions.selectStop({ dispatch, commit }, connection);
-        expect(dispatch).toHaveBeenCalledWith("openPopup", connection);
-      });
     });
     describe("resetTrip", () => {
       it("should commit CLEAR_STOPS to the store", () => {
