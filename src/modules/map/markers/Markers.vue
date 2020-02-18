@@ -34,7 +34,47 @@ export default {
       return this.$store.state.stations.startingStations;
     }
   },
+  watch: {
+    connections: function() {
+      this.resetMarkers();
+      if (this.activeStation) {
+        this.addActiveMarker(this.activeStation);
+      }
+      this.connections.forEach(connection => {
+        this.addConnectionMarker(connection);
+      });
+    },
+    startingStations: function() {
+      this.startingStations.forEach(station => {
+        const marker = this.addActiveMarker(station);
+        marker.on("click", () => this.onStartingMarkerClick(station));
+      });
+    }
+  },
   methods: {
+    addActiveMarker(station) {
+      const marker = L.marker([station.lat, station.lng], {
+        icon: this.generateIcon("purple")
+      });
+      marker.addTo(this.$store.state.map.map);
+      this.popups.push({
+        station: station,
+        marker
+      });
+      return marker;
+    },
+    addConnectionMarker(station) {
+      const marker = L.marker([station.lat, station.lng], {
+        icon: this.generateIcon("red")
+      });
+      marker.addTo(this.$store.state.map.map);
+      this.popups.push({
+        station,
+        marker,
+        isConnection: true
+      });
+      marker.on("click", () => this.onConnectionMarkerClick(station));
+    },
     generateIcon(colour) {
       return L.divIcon({
         html: `<i class="fas fa-map-pin fa-map-pin-${colour} fa-3x"></i>`,
@@ -55,60 +95,9 @@ export default {
       }
     },
     onConnectionMarkerClick(connection) {
-      this.$store.dispatch("selectStop", connection);
-      this.popups
-        .filter(point => {
-          return point.station.id !== connection.id;
-        })
-        .map(point => {
-          point.marker.once("click", () =>
-            this.onConnectionMarkerClick(point.station)
-          );
-        });
-    },
-    addActiveMarker() {
-      if (this.activeStation) {
-        const marker = L.marker(
-          [this.activeStation.lat, this.activeStation.lng],
-          { icon: this.generateIcon("purple") }
-        );
-        marker.addTo(this.$store.state.map.map);
-        this.popups.push({
-          station: this.activeStation,
-          marker
-        });
+      if (this.$store.state.trip.selectedStop !== connection) {
+        this.$store.dispatch("selectStop", connection);
       }
-    }
-  },
-  watch: {
-    connections: function() {
-      this.resetMarkers();
-      this.addActiveMarker();
-      this.connections.forEach(connection => {
-        const marker = L.marker([connection.lat, connection.lng], {
-          icon: this.generateIcon("red")
-        });
-        marker.addTo(this.$store.state.map.map);
-        marker.once("click", () => this.onConnectionMarkerClick(connection));
-        this.popups.push({
-          station: connection,
-          marker,
-          isConnection: true
-        });
-      });
-    },
-    startingStations: function() {
-      this.startingStations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {
-          icon: this.generateIcon("purple")
-        });
-        marker.addTo(this.$store.state.map.map);
-        marker.on("click", () => this.onStartingMarkerClick(station));
-        this.popups.push({
-          station,
-          marker
-        });
-      });
     }
   }
 };

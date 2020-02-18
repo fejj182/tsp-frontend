@@ -14,7 +14,6 @@ describe("Markers", () => {
   const mockMarker = {
     addTo: jest.fn(),
     remove: jest.fn(),
-    once: jest.fn(),
     on: jest.fn()
   };
 
@@ -69,10 +68,20 @@ describe("Markers", () => {
       ]);
     });
 
-    it("should dispatch selectStartingInput when onMarkerClick called", () => {
+    it("should dispatch selectStartingInput when onStartingMarkerClick called and station not starting station", () => {
       const station = getStation();
       wrapper.vm.onStartingMarkerClick(station);
       expect(mockStore.dispatch).toHaveBeenCalledWith(
+        "selectStartingInput",
+        station
+      );
+    });
+
+    it("should not dispatch selectStartingInput when onStartingMarkerClick called and station is starting station", () => {
+      const station = getStation();
+      mockStore.state.trip.startingStation = station;
+      wrapper.vm.onStartingMarkerClick(station);
+      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
         "selectStartingInput",
         station
       );
@@ -104,16 +113,26 @@ describe("Markers", () => {
 
     it("should set on click function on marker", () => {
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(mockMarker.once.mock.calls).toEqual([
+      expect(mockMarker.on.mock.calls).toEqual([
         ["click", expect.any(Function)],
         ["click", expect.any(Function)]
       ]);
     });
 
-    it("should dispatch selectStop when onMarkerClick called", () => {
+    it("should dispatch selectStop when onMarkerClick called if connection not selected", () => {
       const connection = getStation();
       wrapper.vm.onConnectionMarkerClick(connection);
       expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", connection);
+    });
+
+    it("should not dispatch selectStop when onMarkerClick called if connection selected", () => {
+      const connection = getStation();
+      mockStore.state.trip.selectedStop = connection;
+      wrapper.vm.onConnectionMarkerClick(connection);
+      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+        "selectStop",
+        connection
+      );
     });
 
     it("should reset click handlers of other connections", () => {
@@ -121,11 +140,8 @@ describe("Markers", () => {
       wrapper.vm.onConnectionMarkerClick(
         wrapper.vm.$store.state.stations.activeConnections[0]
       );
-      //TODO: can we be more specific with the station in the callback of mockMarker.once?
-      expect(mockMarker.once).toHaveBeenCalledWith(
-        "click",
-        expect.any(Function)
-      );
+      //TODO: can we be more strict with the assertion expect.any(Function)
+      expect(mockMarker.on).toHaveBeenCalledWith("click", expect.any(Function));
     });
   });
 
