@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "@/modules/home/Home.vue";
+import NotFound from "@/components/NotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,10 @@ const routes = [
     path: "/trip/:alias",
     name: "alias",
     component: Home
+  },
+  {
+    path: "/*",
+    component: NotFound
   }
 ];
 
