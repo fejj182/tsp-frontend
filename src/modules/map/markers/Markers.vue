@@ -13,6 +13,7 @@
 <script>
 import L from "leaflet";
 import Popup from "@/modules/map/popup/Popup.vue";
+import { getPaneNameFromDuration } from "@/modules/map/panes/paneConfigs";
 
 export default {
   components: {
@@ -65,6 +66,7 @@ export default {
     },
     addConnectionMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
+        pane: getPaneNameFromDuration(station.duration),
         icon: this.generateIcon("red")
       });
       marker.addTo(this.$store.state.map.map);
@@ -77,9 +79,8 @@ export default {
     },
     generateIcon(colour) {
       return L.divIcon({
-        html: `<i class="fas fa-map-pin fa-map-pin-${colour} fa-3x"></i>`,
-        iconSize: [20, 36],
-        iconAnchor: [10, 40],
+        html: `<i class="fas fa-dot-circle fa-dot-circle-${colour}"></i>`,
+        iconSize: [20, 20],
         className: `div-icon-${colour}`
       });
     },
@@ -104,10 +105,10 @@ export default {
 </script>
 
 <style lang="scss">
-.fa-map-pin-purple {
+.fa-dot-circle-purple {
   color: #6633ff;
 }
-.fa-map-pin-red {
+.fa-dot-circle-red {
   color: #ff0066;
 }
 </style>

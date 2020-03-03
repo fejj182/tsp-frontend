@@ -4,6 +4,7 @@
 
 <script>
 import L from "leaflet";
+import { paneConfigs } from "@/modules/map/panes/paneConfigs";
 
 export default {
   data() {
@@ -17,11 +18,13 @@ export default {
         maxZoom: 18,
         id: "mapbox.streets",
         accessToken: process.env.VUE_APP_OPEN_STREET_MAPS_KEY
-      }
+      },
+      panes: {}
     };
   },
   mounted() {
     this.createMap();
+    this.createPanes();
   },
   methods: {
     createMap() {
@@ -33,6 +36,14 @@ export default {
         this.tileOptions
       ).addTo(this.myMap);
       this.$store.dispatch("addMap", this.myMap);
+    },
+    createPanes() {
+      for (let i = 0; i < 12; i++) {
+        const paneName = paneConfigs["p" + i].name;
+        const pane = this.myMap.createPane(paneName);
+        this.panes[paneName] = pane;
+      }
+      this.$store.dispatch("addPanes", this.panes);
     }
   }
 };

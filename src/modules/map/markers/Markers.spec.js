@@ -91,6 +91,7 @@ describe("Markers", () => {
   describe("Connections", () => {
     it("should add the connections to the map when the store is updated", () => {
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
+      expect(L.marker).toBeCalledTimes(2);
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
     });
 

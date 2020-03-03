@@ -8,7 +8,7 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Map", () => {
-  let mockOn, mockOff, mockStore;
+  let mockOn, mockOff, mockStore, mockMap;
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -22,14 +22,48 @@ describe("Map", () => {
         }
       }
     };
-    L.map.mockReturnValue({
+    mockMap = {
       setView: jest.fn(),
       on: mockOn,
-      off: mockOff
-    });
+      off: mockOff,
+      createPane: jest.fn()
+    };
+    L.map.mockReturnValue(mockMap);
     L.tileLayer.mockReturnValue({
       addTo: jest.fn()
     });
+  });
+
+  it("should create map", () => {
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(L.map).toBeCalledWith("map");
+  });
+
+  it("should create 12 panes for grouping the markers into hours", () => {
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockMap.createPane).toHaveBeenCalledTimes(12);
+  });
+
+  it("should dispatch panes object", () => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+
+    expect(Object.keys(wrapper.vm.panes).length).toBe(12);
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      "addPanes",
+      wrapper.vm.panes
+    );
   });
 
   it("should dispatch addMap action", () => {
