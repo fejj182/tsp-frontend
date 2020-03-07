@@ -3,6 +3,7 @@
     <v-row no-gutters>
       <v-col :md="3" cols="12">
         <v-container>
+          <Filters />
           <TripForm />
         </v-container>
       </v-col>
@@ -20,6 +21,7 @@ import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
 import TripForm from "@/modules/trip/TripForm.vue";
+import Filters from "@/modules/filters/Filters.vue";
 
 export default {
   name: "home",
@@ -27,7 +29,8 @@ export default {
     TripForm,
     Map,
     Markers,
-    Connections
+    Connections,
+    Filters
   },
   created() {
     if (this.$route.name === "alias") {

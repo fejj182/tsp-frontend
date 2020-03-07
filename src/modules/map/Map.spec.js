@@ -8,6 +8,7 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Map", () => {
+  const numberOfPaneGroups = 11;
   let mockOn, mockOff, mockStore, mockMap;
 
   beforeEach(() => {
@@ -43,23 +44,23 @@ describe("Map", () => {
     expect(L.map).toBeCalledWith("map");
   });
 
-  it("should create 12 panes for grouping the markers into hours", () => {
+  it("should create panes", () => {
     shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
     });
-    expect(mockMap.createPane).toHaveBeenCalledTimes(12);
+    expect(mockMap.createPane).toHaveBeenCalledTimes(numberOfPaneGroups);
   });
 
-  it("should dispatch panes object", () => {
+  it("should dispatch panes object of correct length", () => {
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
     });
 
-    expect(Object.keys(wrapper.vm.panes).length).toBe(12);
+    expect(Object.keys(wrapper.vm.panes).length).toBe(numberOfPaneGroups);
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       "addPanes",
       wrapper.vm.panes

@@ -13,7 +13,7 @@
 <script>
 import L from "leaflet";
 import Popup from "@/modules/map/popup/Popup.vue";
-import { getPaneNameFromDuration } from "@/modules/map/panes/paneConfigs";
+import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 
 export default {
   components: {
