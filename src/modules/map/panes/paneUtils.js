@@ -1,21 +1,19 @@
-import { interval, paneGroups } from "@/modules/map/panes/paneConfigs";
+import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 export const getPaneNameFromDuration = duration => {
-  const proposedGroup = Math.floor(duration / interval);
-  const groupNames = Object.keys(paneGroups);
+  const proposedGroup = Math.floor(duration / paneConfigs.interval);
+  const groupNames = Object.keys(paneConfigs.groups);
   const highestGroup = groupNames.length - 1;
   const givenGroup =
     proposedGroup > highestGroup ? highestGroup : proposedGroup;
   return groupNames[givenGroup];
 };
 
-//TODO: write test for this
 export const displayPanesInRange = (panes, range) => {
   const lowGroupsToHide = range[0];
   const highGroupsToHide = range[1];
 
-  const groupNames = Object.keys(paneGroups);
-
+  const groupNames = Object.keys(paneConfigs.groups);
   for (let i = 0; i < groupNames.length; i++) {
     const paneName = groupNames[i];
 

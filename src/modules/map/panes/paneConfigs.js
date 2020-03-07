@@ -1,8 +1,8 @@
-export const interval = 60;
+const interval = 60;
 
 // TODO: remove group 0? want minimum of 1 hour
 // TODO: make this better
-export const paneGroups = Object.freeze({
+const groups = Object.freeze({
   p0: {},
   p1: {},
   p2: {},
@@ -15,3 +15,8 @@ export const paneGroups = Object.freeze({
   p9: {},
   p10: {}
 });
+
+export default {
+  interval,
+  groups
+};

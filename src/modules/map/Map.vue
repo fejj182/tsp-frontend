@@ -4,7 +4,7 @@
 
 <script>
 import L from "leaflet";
-import { paneGroups } from "@/modules/map/panes/paneConfigs";
+import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 export default {
   data() {
@@ -38,7 +38,7 @@ export default {
       this.$store.dispatch("addMap", this.myMap);
     },
     createPanes() {
-      const groupNames = Object.keys(paneGroups);
+      const groupNames = Object.keys(paneConfigs.groups);
 
       for (let i = 0; i < groupNames.length; i++) {
         const paneName = groupNames[i];
