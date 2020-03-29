@@ -38,11 +38,24 @@ describe("Popup", () => {
         station
       }
     });
-    const popup = wrapper.find("[data-test-id=popup]");
+    const popup = wrapper.find(".add-to-trip");
     expect(mockMarker.bindPopup).toHaveBeenCalledWith(
       popup.element,
       expect.any(Object)
     );
+  });
+
+  it("should not show popup content as markup only injected into real popup", () => {
+    const wrapper = shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        marker: mockMarker,
+        station
+      }
+    });
+    expect(wrapper.find(".add-to-trip").isVisible()).toBe(false);
   });
 
   it("should have station name as an h1", () => {
@@ -101,7 +114,7 @@ describe("Popup", () => {
           station
         }
       });
-      const popup = wrapper.find("[data-test-id=popup]");
+      const popup = wrapper.find(".add-to-trip");
       const newMarker = { bindPopup: jest.fn() };
       wrapper.setProps({ marker: newMarker });
       expect(newMarker.bindPopup).toHaveBeenCalledWith(

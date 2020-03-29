@@ -1,18 +1,21 @@
 <template>
-  <div data-test-id="popup" ref="popup" class="content">
-    <v-btn
-      v-if="isConnection || tripNotBegun"
-      data-test-id="add-to-station"
-      @click="addToTrip"
-      color="indigo"
-      fab
-      x-small
-      outlined
-    >
-      <v-icon>mdi-plus</v-icon>
-      <label>Add to station</label>
-    </v-btn>
-    <h1>{{ station.name }}</h1>
+  <div v-show="false">
+    <div class="add-to-trip" ref="content">
+      <v-btn
+        v-if="isConnection || tripNotBegun"
+        data-test-id="add-to-station"
+        @click="addToTrip"
+        color="indigo"
+        fab
+        x-small
+        outlined
+      >
+        <v-icon>mdi-plus</v-icon>
+        <label>Add to station</label>
+      </v-btn>
+      <h1 id="station-name">{{ station.name }}</h1>
+      <p id="duration" v-if="isConnection">{{ duration }}</p>
+    </div>
   </div>
 </template>
 
@@ -34,22 +37,38 @@ export default {
       type: Boolean
     }
   },
+  mounted() {
+    this.bindPopup(this.marker);
+    if (this.open && this.station.name == this.open.name) {
+      this.openPopup();
+    }
+  },
   computed: {
     open() {
       return this.$store.state.popups.openStation;
     },
     tripNotBegun() {
       return this.$store.state.trip.stops.length === 0;
+    },
+    duration() {
+      const duration = this.station.duration;
+      const hours = Math.floor(duration / 60);
+      const hoursString = hours > 0 ? hours + "h" : "";
+
+      const minutes = duration % 60;
+      const minutesString = minutes > 0 ? minutes : "";
+
+      return "(" + hoursString + " " + minutesString + ")";
     }
   },
   methods: {
     bindPopup(marker) {
-      this.popup = marker.bindPopup(this.$refs.popup, {
-        offset: [0, -35]
+      this.popup = marker.bindPopup(this.$refs.content, {
+        offset: [-3, -2]
       });
-      if (this.open && this.station.name == this.open.name) {
-        this.popup.openPopup();
-      }
+    },
+    openPopup() {
+      this.popup.openPopup();
     },
     addToTrip() {
       if (this.isConnection) {
@@ -60,17 +79,17 @@ export default {
       }
     }
   },
-  mounted() {
-    this.bindPopup(this.marker);
-  },
   watch: {
     marker(marker) {
-      // TODO: can remove this component guaranteed to mount every time
+      // TODO: can remove this component if guaranteed to mount every time
       this.bindPopup(marker);
+      if (this.open && this.station.name == this.open.name) {
+        this.openPopup();
+      }
     },
     open(station) {
       if (this.station.name == station.name) {
-        this.popup.openPopup();
+        this.openPopup();
       }
     }
   }
@@ -78,17 +97,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.content {
+.add-to-trip {
   display: flex;
   align-items: center;
 }
-button {
-  margin-right: 0.5rem;
+#station-name {
+  margin: 0 0.5rem;
 }
 label {
   display: none;
 }
-h1 {
+h1,
+#duration {
   font-size: 16px;
+}
+#duration {
+  margin: 0;
 }
 </style>
