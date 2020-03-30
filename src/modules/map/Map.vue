@@ -44,6 +44,10 @@ export default {
         const paneName = groupNames[i];
         //TODO: Remove dependency between group name here and getPaneNameFromDuration()
         const pane = this.myMap.createPane(groupNames[i]);
+        // https://leafletjs.com/reference-1.6.0.html#map-pane - set z index in between 600 and 700
+        if (pane) {
+          pane.style.zIndex = 650;
+        }
         this.panes[paneName] = pane;
       }
 

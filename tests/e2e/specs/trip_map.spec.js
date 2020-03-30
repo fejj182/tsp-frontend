@@ -7,7 +7,11 @@ describe("trip_map", () => {
 
     cy.visit("http://localhost:8080/");
     cy.get("#map").click();
-    cy.get(".div-icon-red")
+    cy.get(".fa-dot-circle-purple")
+      .first()
+      .click();
+    cy.get("[data-test-id=add-to-station]:visible").click();
+    cy.get(".fa-dot-circle-red")
       .first()
       .click();
     cy.get("[data-test-id=add-to-station]:visible").click();

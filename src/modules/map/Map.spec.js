@@ -75,4 +75,18 @@ describe("Map", () => {
     });
     expect(mockStore.dispatch).toHaveBeenCalledWith("addMap", wrapper.vm.myMap);
   });
+
+  it("should set z-index of panes", () => {
+    var mockStyle = jest.fn();
+    mockMap.createPane.mockReturnValue({
+      style: mockStyle
+    });
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+
+    expect(mockStyle.zIndex).toEqual(650);
+  });
 });
