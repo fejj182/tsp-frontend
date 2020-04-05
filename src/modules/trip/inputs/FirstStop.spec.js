@@ -6,7 +6,7 @@ import _ from "lodash";
 
 import FirstStop from "./FirstStop.vue";
 import stationsApi from "@/api/stations";
-import { mapStation } from "@/modules/trip/stationFormMapper";
+import { mapStation } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 

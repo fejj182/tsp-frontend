@@ -9,12 +9,19 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
-    ></v-autocomplete>
+    >
+      <template v-slot:item="{ item }">
+        {{ item.text }} -
+        <span class="duration">
+          <em>{{ item.value.duration }}</em>
+        </span>
+      </template>
+    </v-autocomplete>
   </div>
 </template>
 
 <script>
-import { mapStation, mapStations } from "@/modules/trip/stationFormMapper";
+import { mapStation, mapStationsByDuration } from "@/mappers/stationFormMapper";
 export default {
   data() {
     return {
@@ -35,7 +42,7 @@ export default {
   },
   computed: {
     items() {
-      return mapStations(this.stations);
+      return mapStationsByDuration(this.stations);
     },
     selectedStop() {
       return this.$store.state.trip.selectedStop;
@@ -73,5 +80,9 @@ export default {
 <style lang="scss" scoped>
 .v-autocomplete {
   z-index: 1500;
+}
+.duration {
+  font-size: 14px;
+  padding-left: 0.25rem;
 }
 </style>

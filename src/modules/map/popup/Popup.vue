@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { toHoursAndMinutes } from "@/mappers/durationMapper";
 export default {
   data: function() {
     return {
@@ -52,13 +53,7 @@ export default {
     },
     duration() {
       const duration = this.station.duration;
-      const hours = Math.floor(duration / 60);
-      const hoursString = hours > 0 ? hours + "h " : "";
-
-      const minutes = duration % 60;
-      const minutesString = minutes > 0 ? minutes + "m" : "";
-
-      return hoursString + minutesString;
+      return toHoursAndMinutes(duration);
     }
   },
   methods: {

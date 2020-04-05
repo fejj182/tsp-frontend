@@ -14,7 +14,7 @@
 
 <script>
 import stationsApi from "@/api/stations";
-import { mapStation, mapStations } from "@/modules/trip/stationFormMapper";
+import { mapStation, mapStations } from "@/mappers/stationFormMapper";
 
 export default {
   data() {
