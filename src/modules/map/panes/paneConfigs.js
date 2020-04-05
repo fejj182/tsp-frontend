@@ -1,22 +1,7 @@
-const interval = 60;
-
-// TODO: remove group 0? want minimum of 1 hour
-// TODO: make this better
-const groups = Object.freeze({
-  p0: {},
-  p1: {},
-  p2: {},
-  p3: {},
-  p4: {},
-  p5: {},
-  p6: {},
-  p7: {},
-  p8: {},
-  p9: {},
-  p10: {}
-});
+const INTERVAL = 60;
+const NUMBER_OF_PANES = 11;
 
 export default {
-  interval,
-  groups
+  INTERVAL,
+  NUMBER_OF_PANES
 };

@@ -6,32 +6,22 @@ jest.mock("@/modules/map/panes/paneConfigs", () => jest.fn());
 describe("paneUtils", () => {
   describe("getPaneNameFromDuration", () => {
     it("should return 1st pane name for duration 0", () => {
-      paneConfigs.groups = {
-        p0: {}
-      };
-      paneConfigs.interval = 60;
+      paneConfigs.NUMBER_OF_PANES = 1;
+      paneConfigs.INTERVAL = 60;
       const paneName = getPaneNameFromDuration(0);
       expect(paneName).toBe("p0");
     });
 
     it("should return last pane name for duration 600", () => {
-      paneConfigs.groups = {
-        p0: {},
-        p1: {},
-        p2: {}
-      };
-      paneConfigs.interval = 60;
+      paneConfigs.NUMBER_OF_PANES = 3;
+      paneConfigs.INTERVAL = 60;
       const paneName = getPaneNameFromDuration(120);
       expect(paneName).toBe("p2");
     });
 
     it("should return last pane name for duration 660", () => {
-      paneConfigs.groups = {
-        p0: {},
-        p1: {},
-        p2: {}
-      };
-      paneConfigs.interval = 60;
+      paneConfigs.NUMBER_OF_PANES = 3;
+      paneConfigs.INTERVAL = 60;
       const paneName = getPaneNameFromDuration(180);
       expect(paneName).toBe("p2");
     });
@@ -39,9 +29,7 @@ describe("paneUtils", () => {
 
   describe("displayPanesInRange", () => {
     it("should style to none if pane is lower than range", () => {
-      paneConfigs.groups = {
-        p0: {}
-      };
+      paneConfigs.NUMBER_OF_PANES = 1;
       let mockStyle = {
         display: null
       };
@@ -56,11 +44,7 @@ describe("paneUtils", () => {
     });
 
     it("should style to none if pane is higher than range", () => {
-      paneConfigs.groups = {
-        p0: {},
-        p1: {},
-        p2: {}
-      };
+      paneConfigs.NUMBER_OF_PANES = 3;
       let mockStyle = {
         display: null
       };
@@ -85,11 +69,7 @@ describe("paneUtils", () => {
     });
 
     it("should style to block if pane is inside range", () => {
-      paneConfigs.groups = {
-        p0: {},
-        p1: {},
-        p2: {}
-      };
+      paneConfigs.NUMBER_OF_PANES = 3;
       let mockStyle = {
         display: null
       };
