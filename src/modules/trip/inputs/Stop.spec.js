@@ -21,7 +21,7 @@ describe("Stop", () => {
       }
     };
   });
-  it("should dispatch selectStop on change", () => {
+  test("when stop changes, should updated selected stop in store", () => {
     const station = fakeStation();
     const wrapper = shallowMount(Stop, {
       mocks: {
@@ -36,7 +36,7 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
   });
 
-  it("should dispatch openPopup on change", () => {
+  test("when stop changes, should trigger popup to open in store", () => {
     const station = fakeStation();
     const wrapper = shallowMount(Stop, {
       mocks: {
@@ -51,20 +51,7 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("openPopup", station);
   });
 
-  it("should have the value null if not present in the store", () => {
-    const wrapper = shallowMount(Stop, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: {
-        stations: [],
-        stop: {}
-      }
-    });
-    expect(wrapper.find("[data-test-id=stop]").props().value).toBe(null);
-  });
-
-  it("should have the value set from of selected property of stop if present", () => {
+  it("should set value of stop from stop selected property even if selectedStop is present in store", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
     mockStore.state.trip.selectedStop = madrid;
@@ -86,7 +73,7 @@ describe("Stop", () => {
     });
   });
 
-  it("should have the value set from of store if present and selected property of stop is not present", () => {
+  it("should have the value of stop from store if selected property of stop is not present", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
     mockStore.state.trip.selectedStop = madrid;
@@ -106,7 +93,7 @@ describe("Stop", () => {
     });
   });
 
-  it("should use last value from store when changed to read-only", () => {
+  it("should persist last value from store when changed to read-only", () => {
     const valencia = fakeStation("valencia");
     const madrid = fakeStation("madrid");
 
