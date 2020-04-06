@@ -24,6 +24,11 @@ describe("Popup", () => {
         trip: {
           startingStation: null,
           stops: []
+        },
+        map: {
+          map: {
+            setZoom: jest.fn()
+          }
         }
       }
     };
@@ -187,7 +192,7 @@ describe("Popup", () => {
       );
     });
 
-    it("should dispatch setStartingStation if not connection when button is clicked", () => {
+    it("should dispatch setStartingStation and set zoom if not connection when button is clicked", () => {
       const mockPopup = { closePopup: jest.fn() };
       mockMarker.bindPopup.mockReturnValue(mockPopup);
       const wrapper = mount(Popup, {
@@ -205,6 +210,7 @@ describe("Popup", () => {
         "setStartingStation",
         station
       );
+      expect(mockStore.state.map.map.setZoom).toHaveBeenCalledWith(6);
     });
   });
 });

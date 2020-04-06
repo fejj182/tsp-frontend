@@ -79,7 +79,7 @@ export default {
     },
     generateIcon(colour) {
       return L.divIcon({
-        html: `<i class="fas fa-map-marker-alt fa-dot-circle-${colour}"></i>`,
+        html: `<i class="fas fa-map-marker-alt marker-${colour}"></i>`,
         iconAnchor: [6.75, 18],
         iconSize: [13.5, 18],
         className: `div-icon-${colour}`
@@ -106,11 +106,11 @@ export default {
 </script>
 
 <style lang="scss">
-.fa-dot-circle-purple {
+.marker-purple {
   color: #6633ff;
   font-size: 18px;
 }
-.fa-dot-circle-red {
+.marker-red {
   color: #ff0066;
   font-size: 18px;
 }
