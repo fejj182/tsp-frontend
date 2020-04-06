@@ -15,7 +15,7 @@ function createTrip() {
     .click();
 
   cy.get("#stop-0").click();
-  cy.get(".v-list-item__content")
+  cy.get(".v-list-item")
     .first()
     .click();
   cy.get("[data-test-id=add-stop]").click();
@@ -23,7 +23,7 @@ function createTrip() {
   cy.get("#stop-1")
     .last()
     .click();
-  cy.get(".v-list-item__content")
+  cy.get(".v-list-item")
     .first()
     .click();
   cy.get("[data-test-id=save-trip]").click();
@@ -44,7 +44,7 @@ function updateTrip() {
     .click();
 
   cy.get("#stop-0").click();
-  cy.get(".v-list-item__content")
+  cy.get(".v-list-item")
     .first()
     .click();
   cy.get("[data-test-id=save-trip]").click();
