@@ -5,5 +5,6 @@ export const fakeStation = stationName => {
   const name = stationName || faker.address.city();
   const lat = parseFloat(faker.address.latitude());
   const lng = parseFloat(faker.address.longitude());
-  return { id, name, lat, lng };
+  const duration = faker.random.number(999);
+  return { id, name, lat, lng, duration };
 };

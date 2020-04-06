@@ -7,6 +7,7 @@ import Stop from "./Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as stations } from "@/store/modules/stations";
 import { state as trip } from "@/store/modules/trip";
+import { toHoursAndMinutes } from "@/mappers/durationMapper";
 
 Vue.use(Vuetify);
 
@@ -69,7 +70,7 @@ describe("Stop", () => {
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: valencia.name,
-      value: valencia
+      value: { ...valencia, duration: toHoursAndMinutes(valencia.duration) }
     });
   });
 
@@ -89,7 +90,7 @@ describe("Stop", () => {
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: madrid.name,
-      value: madrid
+      value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }
     });
   });
 
@@ -112,7 +113,7 @@ describe("Stop", () => {
 
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: madrid.name,
-      value: madrid
+      value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }
     });
   });
 

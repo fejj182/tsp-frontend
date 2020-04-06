@@ -12,6 +12,22 @@ export const mapStation = station => {
   };
 };
 
+export const mapStationByDuration = station => {
+  return {
+    text: station.name,
+    value: {
+      id: station.id,
+      name: station.name,
+      lat: station.lat,
+      lng: station.lng,
+      duration:
+        station.duration > 0
+          ? toHoursAndMinutes(station.duration)
+          : station.duration
+    }
+  };
+};
+
 export const mapStations = stations => {
   return stations
     .sort((a, b) => {

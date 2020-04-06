@@ -21,7 +21,10 @@
 </template>
 
 <script>
-import { mapStation, mapStationsByDuration } from "@/mappers/stationFormMapper";
+import {
+  mapStationByDuration,
+  mapStationsByDuration
+} from "@/mappers/stationFormMapper";
 export default {
   data() {
     return {
@@ -49,13 +52,13 @@ export default {
     },
     selected() {
       if (this.stop.selected) {
-        return mapStation(this.stop.selected);
+        return mapStationByDuration(this.stop.selected);
       }
 
       if (this.readOnly && this.readOnlyValue) {
-        return mapStation(this.readOnlyValue);
+        return mapStationByDuration(this.readOnlyValue);
       } else if (!this.readOnly && this.selectedStop) {
-        return mapStation(this.selectedStop);
+        return mapStationByDuration(this.selectedStop);
       } else {
         return null;
       }
