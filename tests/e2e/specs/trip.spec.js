@@ -18,6 +18,7 @@ function createTrip() {
   cy.get(".v-list-item")
     .first()
     .click();
+  cy.get("#stop-1").should("not.have.value", "");
   cy.get("[data-test-id=add-stop]").click();
 
   cy.get("#stop-2")
@@ -26,6 +27,7 @@ function createTrip() {
   cy.get(".v-list-item")
     .first()
     .click();
+  cy.get("#stop-2").should("not.have.value", "");
   cy.get("[data-test-id=save-trip]").click();
 
   cy.get("[data-test-id=reset-trip]").click();
@@ -53,6 +55,7 @@ function updateTrip() {
   cy.get(".v-list-item")
     .first()
     .click();
+  cy.get("#stop-1").should("not.have.value", "");
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
