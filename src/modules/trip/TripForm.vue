@@ -3,20 +3,6 @@
     <v-alert data-test-id="alert" v-if="alert" dismissible type="error">
       Service down. Please try again later.
     </v-alert>
-    <v-fade-transition>
-      <v-alert
-        data-test-id="info"
-        color="teal"
-        v-if="info"
-        dark
-        text
-        dense
-        icon="mdi-school"
-        dismissible
-      >
-        Click on a station to get started.
-      </v-alert>
-    </v-fade-transition>
     <FirstStop @alert="onAlert" />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
@@ -91,19 +77,10 @@ export default {
   data() {
     return {
       alert: false,
-      info: false,
       invalid: false,
       alias: null,
       updated: false
     };
-  },
-  mounted() {
-    if (this.$route.name === "home") {
-      this.info = true;
-      setTimeout(() => {
-        this.info = false;
-      }, 7500);
-    }
   },
   computed: {
     stops() {
@@ -166,7 +143,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-form {
-  padding: 16px;
+  padding-top: 16px;
 }
 
 .btn-row {

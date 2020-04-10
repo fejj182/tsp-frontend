@@ -77,10 +77,6 @@ describe("TripForm", () => {
           reset: mockReset
         }
       },
-      VFadeTransition: {
-        name: "v-fade-transition",
-        template: "<span></span>"
-      },
       VAlert: {
         name: "v-alert",
         template: "<span></span>"
@@ -434,45 +430,6 @@ describe("TripForm", () => {
           );
         });
       });
-    });
-  });
-
-  describe("Info alert", () => {
-    it("should be present when component loads", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore,
-          $route: mockRoute
-        },
-        stubs: {
-          VFadeTransition: {
-            name: "v-fade-transition",
-            template: "<span><slot></slot></span>"
-          }
-        }
-      });
-      expect(wrapper.find("[data-test-id=info]").exists()).toBe(true);
-    });
-
-    it("should not be present if alias route", () => {
-      const wrapper = shallowMount(TripForm, {
-        mocks: {
-          $store: mockStore,
-          $route: {
-            name: "alias",
-            params: {
-              alias: "some-alias"
-            }
-          }
-        },
-        stubs: {
-          VFadeTransition: {
-            name: "v-fade-transition",
-            template: "<span><slot></slot></span>"
-          }
-        }
-      });
-      expect(wrapper.find("[data-test-id=info]").exists()).toBe(false);
     });
   });
 });

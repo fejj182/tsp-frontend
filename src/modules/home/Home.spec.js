@@ -3,8 +3,7 @@ import Home from "@/modules/home/Home.vue";
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
-import TripForm from "@/modules/trip/TripForm.vue";
-import Filters from "@/modules/filters/Filters.vue";
+import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
@@ -32,14 +31,11 @@ describe("Home", () => {
     it("should contain the markers", () => {
       expect(wrapper.find(Markers).exists()).toBe(true);
     });
-    it("should contain the trip builder form", () => {
-      expect(wrapper.find(TripForm).exists()).toBe(true);
-    });
     it("should contain the connections", () => {
       expect(wrapper.find(Connections).exists()).toBe(true);
     });
-    it("should contain the filters", () => {
-      expect(wrapper.find(Filters).exists()).toBe(true);
+    it("should contain the trip panel", () => {
+      expect(wrapper.find(TripPanel).exists()).toBe(true);
     });
   });
 

@@ -2,10 +2,7 @@
   <v-container fluid class="grey lighten-5 pa-1">
     <v-row no-gutters>
       <v-col :md="3" cols="12">
-        <v-container>
-          <Filters />
-          <TripForm />
-        </v-container>
+        <TripPanel />
       </v-col>
       <v-col :md="9" cols="12">
         <Map />
@@ -20,17 +17,15 @@
 import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
-import TripForm from "@/modules/trip/TripForm.vue";
-import Filters from "@/modules/filters/Filters.vue";
+import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 
 export default {
   name: "home",
   components: {
-    TripForm,
+    TripPanel,
     Map,
     Markers,
-    Connections,
-    Filters
+    Connections
   },
   created() {
     if (this.$route.name === "alias") {
