@@ -42,6 +42,7 @@
     "webpack-bundle-analyzer": "^3.6.0"
   },
   "gitHooks": {
-    "pre-commit": "vue-cli-service test:unit"
+    "pre-commit": "vue-cli-service test:unit",
+    "pre-push": "vue-cli-service test:e2e --headless"
   }
 }
