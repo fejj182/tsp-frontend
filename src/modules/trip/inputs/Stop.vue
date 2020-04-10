@@ -9,6 +9,7 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
+      :id="id"
     >
       <template v-slot:item="{ item }">
         {{ item.text }} -
@@ -41,6 +42,9 @@ export default {
     },
     stop: {
       type: Object
+    },
+    id: {
+      type: String
     }
   },
   computed: {

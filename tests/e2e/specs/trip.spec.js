@@ -14,13 +14,13 @@ function createTrip() {
     .first()
     .click();
 
-  cy.get("#stop-0").click();
+  cy.get("#stop-1").click();
   cy.get(".v-list-item")
     .first()
     .click();
   cy.get("[data-test-id=add-stop]").click();
 
-  cy.get("#stop-1")
+  cy.get("#stop-2")
     .last()
     .click();
   cy.get(".v-list-item")
@@ -32,8 +32,14 @@ function createTrip() {
   cy.get(".stop").should("not.exist");
 
   cy.reload();
-  cy.get("#stop-0").should("exist");
-  cy.get("#stop-1").should("exist");
+
+  // must assert should exist so cypress will wait before asserting value
+  cy.get("#stop-1")
+    .should("exist")
+    .should("not.have.value", "");
+  cy.get("#stop-2")
+    .should("exist")
+    .should("not.have.value", "");
 }
 
 function updateTrip() {
@@ -43,7 +49,7 @@ function updateTrip() {
     .first()
     .click();
 
-  cy.get("#stop-0").click();
+  cy.get("#stop-1").click();
   cy.get(".v-list-item")
     .first()
     .click();
@@ -51,6 +57,8 @@ function updateTrip() {
   cy.get("[data-test-id=success-updated]").should("exist");
 
   cy.reload();
-  cy.get("#stop-0").should("exist");
-  cy.get("#stop-1").should("not.exist");
+  cy.get("#stop-1")
+    .should("exist")
+    .should("not.have.value", "");
+  cy.get("#stop-2").should("not.exist");
 }

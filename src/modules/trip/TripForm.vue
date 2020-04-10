@@ -18,13 +18,14 @@
       </v-alert>
     </v-fade-transition>
     <FirstStop @alert="onAlert" />
-    <div v-for="(stop, index) in stops" :key="index" :id="'stop-' + index">
+    <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop
         class="stop"
         :stations="stop.stations"
         :read-only="stop.readOnly"
         :stop="stop"
+        :id="`stop-${index + 1}`"
       />
     </div>
     <v-alert
