@@ -10,11 +10,13 @@ describe("trip_map", () => {
     cy.get(".marker-purple")
       .first()
       .click();
+    cy.get("[data-test-id=destination-1").should("not.have.value", "");
     cy.get("[data-test-id=add-to-station]:visible").click();
     cy.get(".marker-red")
       .first()
       .click();
     cy.get("[data-test-id=add-to-station]:visible").click();
+    cy.get("#stop-1").should("not.have.value", "");
     cy.get("[data-test-id=save-trip]").click();
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
