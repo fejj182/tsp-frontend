@@ -26,6 +26,7 @@ import {
   mapStationByDuration,
   mapStationsByDuration
 } from "@/mappers/stationFormMapper";
+import { filterStationsOutOfRange } from "@/modules/map/panes/paneUtils";
 export default {
   data() {
     return {
@@ -49,7 +50,11 @@ export default {
   },
   computed: {
     items() {
-      return mapStationsByDuration(this.stations);
+      const stationsInRange = filterStationsOutOfRange(
+        this.stations,
+        this.$store.state.filters.activeDurationRange
+      );
+      return mapStationsByDuration(stationsInRange);
     },
     selectedStop() {
       return this.$store.state.trip.selectedStop;

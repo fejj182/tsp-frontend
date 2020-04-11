@@ -4,7 +4,13 @@
       v-model="sliderRange"
       :step="sliderSteps"
       @change="onSlide"
-    ></v-range-slider>
+      :thumb-size="24"
+      hint="Journey time (hours)"
+    >
+      <template v-slot:thumb-label="{ value }">
+        {{ thumbLabel(value) }}
+      </template>
+    </v-range-slider>
   </div>
 </template>
 
@@ -19,8 +25,7 @@ export default {
     };
   },
   mounted() {
-    const panes = this.$store.state.map.panes;
-    displayPanesInRange(panes, this.paneGroupRange);
+    this.updateStationsByDuration();
   },
   computed: {
     paneGroupRange() {
@@ -29,11 +34,23 @@ export default {
   },
   methods: {
     onSlide() {
+      this.updateStationsByDuration();
+    },
+    updateStationsByDuration() {
       const panes = this.$store.state.map.panes;
       displayPanesInRange(panes, this.paneGroupRange);
+      this.$store.dispatch("updateDurationRange", this.paneGroupRange);
+    },
+    thumbLabel(value) {
+      const hours = value / this.sliderSteps;
+      return hours < this.sliderSteps ? hours : hours + "+";
     }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.v-input {
+  margin-top: 24px;
+}
+</style>

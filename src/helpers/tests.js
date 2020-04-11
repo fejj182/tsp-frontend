@@ -1,8 +1,8 @@
 import faker from "faker";
 
-export const fakeStation = stationName => {
+export const fakeStation = (options = {}) => {
   const id = faker.random.number();
-  const name = stationName || faker.address.city();
+  const name = options.name || faker.address.city();
   const lat = parseFloat(faker.address.latitude());
   const lng = parseFloat(faker.address.longitude());
   const duration = faker.random.number(999);

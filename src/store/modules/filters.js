@@ -1,5 +1,5 @@
 export const state = {
-  activeDurationRange: null
+  activeDurationRange: [0, 10]
 };
 
 export const getters = {};

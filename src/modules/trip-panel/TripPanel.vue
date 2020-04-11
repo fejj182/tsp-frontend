@@ -17,7 +17,7 @@
     <v-expansion-panels focusable v-model="panel" multiple>
       <v-expansion-panel v-if="connectionsExist" data-test-id="filter-panel">
         <v-expansion-panel-header>
-          Max Journey Time (hours)
+          Filter
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <ConnectionFilters />
@@ -25,7 +25,7 @@
       </v-expansion-panel>
       <v-expansion-panel data-test-id="trip-form-panel">
         <v-expansion-panel-header>
-          Plan Your Trip
+          Trip Plan
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <TripForm />
