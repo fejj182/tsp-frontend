@@ -11,13 +11,7 @@
       </v-col>
     </v-row>
     <footer>
-      <cookie-law theme="blood-orange--rounded">
-        <div slot="message">
-          We use cookies to ensure that we give you the best experience on our
-          website. If you continue to use this site we will assume that you are
-          happy with it.
-        </div>
-      </cookie-law>
+      <CookieBanner />
     </footer>
   </v-container>
 </template>
@@ -27,7 +21,7 @@ import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
-import CookieLaw from "vue-cookie-law";
+import CookieBanner from "@/modules/privacy/CookieBanner.vue";
 
 export default {
   name: "home",
@@ -36,7 +30,7 @@ export default {
     Map,
     Markers,
     Connections,
-    CookieLaw
+    CookieBanner
   },
   created() {
     if (this.$route.name === "alias") {
@@ -53,15 +47,5 @@ export default {
 .container,
 .row {
   height: 100%;
-}
-</style>
-<style>
-.Cookie {
-  padding: 1rem;
-  justify-content: center;
-}
-
-.Cookie .Cookie__button {
-  padding: 0.5em 1.75em;
 }
 </style>

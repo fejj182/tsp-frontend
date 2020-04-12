@@ -4,6 +4,7 @@ import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
+import CookieBanner from "@/modules/privacy/CookieBanner.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
@@ -36,6 +37,9 @@ describe("Home", () => {
     });
     it("should contain the trip panel", () => {
       expect(wrapper.find(TripPanel).exists()).toBe(true);
+    });
+    it("should contain the cookie banner", () => {
+      expect(wrapper.find(CookieBanner).exists()).toBe(true);
     });
   });
 
