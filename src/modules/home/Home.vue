@@ -10,6 +10,9 @@
         <Connections />
       </v-col>
     </v-row>
+    <footer>
+      <cookie-law theme="blood-orange--rounded"></cookie-law>
+    </footer>
   </v-container>
 </template>
 
@@ -18,6 +21,7 @@ import Map from "@/modules/map/Map.vue";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
+import CookieLaw from "vue-cookie-law";
 
 export default {
   name: "home",
@@ -25,7 +29,8 @@ export default {
     TripPanel,
     Map,
     Markers,
-    Connections
+    Connections,
+    CookieLaw
   },
   created() {
     if (this.$route.name === "alias") {
@@ -42,5 +47,9 @@ export default {
 .container,
 .row {
   height: 100%;
+}
+.Cookie {
+  padding: 1rem;
+  justify-content: center;
 }
 </style>
