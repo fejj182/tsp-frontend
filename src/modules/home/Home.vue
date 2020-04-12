@@ -11,7 +11,13 @@
       </v-col>
     </v-row>
     <footer>
-      <cookie-law theme="blood-orange--rounded"></cookie-law>
+      <cookie-law theme="blood-orange--rounded">
+        <div slot="message">
+          We use cookies to ensure that we give you the best experience on our
+          website. If you continue to use this site we will assume that you are
+          happy with it.
+        </div>
+      </cookie-law>
     </footer>
   </v-container>
 </template>
@@ -48,8 +54,14 @@ export default {
 .row {
   height: 100%;
 }
+</style>
+<style>
 .Cookie {
   padding: 1rem;
   justify-content: center;
+}
+
+.Cookie .Cookie__button {
+  padding: 0.5em 1.75em;
 }
 </style>
