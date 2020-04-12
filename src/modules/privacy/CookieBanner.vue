@@ -1,5 +1,9 @@
 <template>
-  <cookie-law theme="blood-orange--rounded" :buttonDecline="true">
+  <cookie-law
+    theme="blood-orange--rounded"
+    :buttonDecline="true"
+    id="cookie-banner"
+  >
     <p slot="message">
       We use
       <a href="https://www.cookiesandyou.com" target="_blank">cookies</a> to
@@ -31,28 +35,28 @@ export default {
 </script>
 
 <style>
-.Cookie {
+#cookie-banner {
   padding: 1rem;
   justify-content: center;
 }
 
-.Cookie .Cookie__content a {
+#cookie-banner .Cookie__content a {
   color: white;
 }
 
-.Cookie .Cookie__button,
-.Cookie .Cookie__button--decline {
+#cookie-banner .Cookie__button,
+#cookie-banner .Cookie__button--decline {
   padding: 0.5em 1.75em;
   background: #e76a68;
   color: white;
   margin: 0 0.5rem;
 }
 
-.Cookie .Cookie__button--decline:hover {
+#cookie-banner .Cookie__button--decline:hover {
   background: #e03f3c;
 }
 
-.Cookie .Cookie__content p {
+#cookie-banner .Cookie__content p {
   margin: 0 1rem;
 }
 </style>
