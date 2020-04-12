@@ -6,6 +6,7 @@ describe("trip_map", () => {
     });
 
     cy.visit("http://localhost:8080/");
+    cy.get(".Cookie__button").click();
     cy.get("#map").click();
     cy.get(".marker-purple")
       .first()

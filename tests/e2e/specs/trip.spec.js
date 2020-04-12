@@ -9,6 +9,7 @@ describe("Trip", function() {
 
 function createTrip() {
   cy.visit("http://localhost:8080/");
+  cy.get(".Cookie__button").click();
   cy.get("[data-test-id=destination-1]").click();
   cy.get(".v-list-item__content")
     .first()
