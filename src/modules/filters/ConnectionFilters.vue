@@ -5,7 +5,9 @@
       :step="sliderSteps"
       @change="onSlide"
       :thumb-size="24"
+      thumb-label="always"
       hint="Journey time (hours)"
+      persistent-hint
     >
       <template v-slot:thumb-label="{ value }">
         {{ thumbLabel(value) }}
@@ -51,6 +53,6 @@ export default {
 
 <style lang="scss" scoped>
 .v-input {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 </style>
