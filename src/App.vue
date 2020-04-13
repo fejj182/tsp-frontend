@@ -3,10 +3,7 @@
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <header>
-          <span class="logo">
-            <i class="fas fa-train"></i>
-            Trainspotter
-          </span>
+          <img src="@/assets/Logo-1.png" alt="trainspotter-logo" />
         </header>
       </div>
 
@@ -46,5 +43,10 @@ i {
 
 .v-app-bar.v-app-bar--fixed {
   z-index: 2000;
+}
+
+img {
+  margin-top: 0.5rem;
+  width: 80%;
 }
 </style>
