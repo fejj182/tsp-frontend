@@ -31,6 +31,7 @@ function createTrip() {
   cy.get("#stop-2").should("not.have.value", "");
   cy.get("[data-test-id=save-trip]").click();
 
+  // after trip is saved, we reset the form and check that the trip still exists
   cy.get("[data-test-id=reset-trip]").click();
   cy.get(".stop").should("not.exist");
 
