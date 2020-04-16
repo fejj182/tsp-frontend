@@ -11,10 +11,11 @@ export const getPaneNameFromDuration = duration => {
 export const filterStationsOutOfRange = (stations, range) => {
   return stations.filter(station => {
     const interval = paneConfigs.INTERVAL;
+    const highestPane = paneConfigs.NUMBER_OF_PANES - 1;
     return (
       (station.duration > range[0] * interval &&
         station.duration <= range[1] * interval) ||
-      station.duration > (paneConfigs.NUMBER_OF_PANES - 1) * interval
+      (range[1] == highestPane && station.duration > highestPane * interval)
     );
   });
 };

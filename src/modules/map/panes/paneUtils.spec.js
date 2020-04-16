@@ -55,6 +55,14 @@ describe("paneUtils", () => {
       const filteredStations = filterStationsOutOfRange(stations, [0, 2]);
       expect(filteredStations).toEqual([{ duration: 15 }, { duration: 25 }]);
     });
+
+    test("when last station duration longer than highest pane and maxRange not highest possible, filter out highest ", () => {
+      const stations = [{ duration: 15 }, { duration: 35 }];
+      paneConfigs.NUMBER_OF_PANES = 4;
+      paneConfigs.INTERVAL = 10;
+      const filteredStations = filterStationsOutOfRange(stations, [0, 2]);
+      expect(filteredStations).toEqual([{ duration: 15 }]);
+    });
   });
 
   describe("displayPanesInRange", () => {
