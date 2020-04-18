@@ -5,6 +5,7 @@
         <header>
           <a href="/">
             <img src="@/assets/Logo-1.png" alt="trainspotter-logo" />
+            <span> Click to return to home </span>
           </a>
         </header>
       </div>
@@ -36,6 +37,10 @@ export default {
 
 i {
   padding: 0.75rem;
+}
+
+span {
+  display: none;
 }
 
 .logo {
