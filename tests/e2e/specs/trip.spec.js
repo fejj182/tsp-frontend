@@ -11,7 +11,7 @@ describe("Trip", function() {
 function createTrip() {
   cy.visit("http://localhost:8080/");
   cy.get(".Cookie__button").click();
-  cy.get("[data-test-id=destination-1]").click();
+  cy.get("[data-test-id=first-stop]").click();
   cy.get(".v-list-item__content")
     .first()
     .click();
@@ -47,7 +47,7 @@ function createTrip() {
 function updateTrip() {
   cy.get("[data-test-id=reset-trip]").click();
   cy.get(".stop").should("not.exist");
-  cy.get("[data-test-id=destination-1]").click();
+  cy.get("[data-test-id=first-stop]").click();
   cy.get(".v-list-item__content")
     .first()
     .click();

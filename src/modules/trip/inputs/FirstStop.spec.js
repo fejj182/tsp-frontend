@@ -50,9 +50,9 @@ describe("FirstStop", () => {
       const mappedStations = enabledStations.map(station =>
         mapStation(station)
       );
-      expect(
-        wrapper.find("[data-test-id=destination-1]").props().items
-      ).toEqual(mappedStations);
+      expect(wrapper.find("[data-test-id=first-stop]").props().items).toEqual(
+        mappedStations
+      );
     });
 
     it("should have no stations if api call fails", async () => {
@@ -87,7 +87,7 @@ describe("FirstStop", () => {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
+      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("confirmStop", station);
     });
 
@@ -97,7 +97,7 @@ describe("FirstStop", () => {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
+      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
     });
 
@@ -109,7 +109,7 @@ describe("FirstStop", () => {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=destination-1]").vm.$emit("change", station);
+      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
     });
