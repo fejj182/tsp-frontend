@@ -3,7 +3,9 @@
     <v-app-bar app color="primary" dark>
       <div class="d-flex align-center">
         <header>
-          <img src="@/assets/Logo-1.png" alt="trainspotter-logo" />
+          <router-link to="/">
+            <img src="@/assets/Logo-1.png" alt="trainspotter-logo" />
+          </router-link>
         </header>
       </div>
 

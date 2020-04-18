@@ -3,6 +3,7 @@
     theme="blood-orange--rounded"
     :buttonDecline="true"
     id="cookie-banner"
+    @decline="decline"
   >
     <p slot="message">
       We use
@@ -29,6 +30,11 @@ export default {
           document.getElementsByClassName("Cookie__button")[0],
           document.getElementsByClassName("Cookie__button--decline")[0]
         );
+    }
+  },
+  methods: {
+    decline() {
+      this.$gtag.optOut();
     }
   }
 };
