@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
 import _ from "lodash";
 
-import FirstStop from "./FirstStop.vue";
+import StartingDestination from "./StartingDestination.vue";
 import stationsApi from "@/api/stations";
 import { mapStation } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
@@ -14,7 +14,7 @@ jest.mock("@/api/stations");
 
 Vue.use(Vuetify);
 
-describe("FirstStop", () => {
+describe("StartingDestination", () => {
   let enabledStations;
   let mockStore;
   let station;
@@ -32,7 +32,7 @@ describe("FirstStop", () => {
   });
   describe("on component loading", () => {
     it("should get stations when component mounted", () => {
-      shallowMount(FirstStop, {
+      shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
@@ -41,7 +41,7 @@ describe("FirstStop", () => {
     });
 
     it("should load stations from api into props", async () => {
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
@@ -50,15 +50,15 @@ describe("FirstStop", () => {
       const mappedStations = enabledStations.map(station =>
         mapStation(station)
       );
-      expect(wrapper.find("[data-test-id=first-stop]").props().items).toEqual(
-        mappedStations
-      );
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().items
+      ).toEqual(mappedStations);
     });
 
     it("should have no stations if api call fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
@@ -70,7 +70,7 @@ describe("FirstStop", () => {
     it("should emit an alert if getStations fails", async () => {
       stationsApi.getStations.mockRejectedValue("Failed");
 
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
@@ -82,34 +82,40 @@ describe("FirstStop", () => {
 
   describe("On change", () => {
     it("should dispatch confirmStop on change", () => {
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
+      wrapper
+        .find("[data-test-id=starting-destination]")
+        .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("confirmStop", station);
     });
 
     it("should dispatch startTrip on change", () => {
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
+      wrapper
+        .find("[data-test-id=starting-destination]")
+        .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
     });
 
     it("should emit an alert if dispatch fails", async () => {
       mockStore.dispatch.mockResolvedValueOnce();
       mockStore.dispatch.mockRejectedValueOnce();
-      const wrapper = shallowMount(FirstStop, {
+      const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
       });
-      wrapper.find("[data-test-id=first-stop]").vm.$emit("change", station);
+      wrapper
+        .find("[data-test-id=starting-destination]")
+        .vm.$emit("change", station);
       await flushPromises();
       expect(wrapper.emitted().alert.length).toBe(1);
     });

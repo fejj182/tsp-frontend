@@ -1,6 +1,6 @@
 import { toHoursAndMinutes } from "./durationMapper";
 
-//Note: only used in FirstStop
+//Note: only used in StartingDestination
 export const mapStation = station => {
   return {
     text: station.name,
@@ -29,7 +29,7 @@ export const mapStationByDuration = station => {
   };
 };
 
-//Note: only used in FirstStop
+//Note: only used in StartingDestination
 export const mapStations = stations => {
   return stations
     .sort((a, b) => {

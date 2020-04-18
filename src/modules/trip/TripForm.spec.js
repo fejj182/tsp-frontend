@@ -5,7 +5,7 @@ import _ from "lodash";
 
 import TripForm from "./TripForm.vue";
 import tripApi from "@/api/trip";
-import FirstStop from "@/modules/trip/inputs/FirstStop.vue";
+import StartingDestination from "@/modules/trip/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip/inputs/Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
@@ -62,8 +62,8 @@ describe("TripForm", () => {
     mockReset = jest.fn();
 
     mockStubs = {
-      FirstStop: {
-        name: "FirstStop",
+      StartingDestination: {
+        name: "StartingDestination",
         template: "<span></span>"
       },
       Stop: {
@@ -84,7 +84,7 @@ describe("TripForm", () => {
     };
   });
 
-  describe("FirstStop", () => {
+  describe("StartingDestination", () => {
     it("should have no stations if api call fails", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -100,7 +100,7 @@ describe("TripForm", () => {
         }
       });
       expect(wrapper.find("[data-test-id=alert]").exists()).toBe(false);
-      wrapper.find(FirstStop).vm.$emit("alert");
+      wrapper.find(StartingDestination).vm.$emit("alert");
       Vue.nextTick(() => {
         expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
       });
@@ -284,8 +284,8 @@ describe("TripForm", () => {
       let mockStubs;
       beforeEach(() => {
         mockStubs = {
-          FirstStop: {
-            name: "FirstStop",
+          StartingDestination: {
+            name: "StartingDestination",
             template: "<span></span>"
           },
           Stop: {

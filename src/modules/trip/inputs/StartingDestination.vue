@@ -2,7 +2,7 @@
   <div>
     <v-autocomplete
       label="Start from..."
-      data-test-id="first-stop"
+      data-test-id="starting-destination"
       :items="stations"
       filled
       rounded

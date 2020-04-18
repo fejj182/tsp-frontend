@@ -11,7 +11,7 @@ describe("trip_map", () => {
     cy.get(".marker-purple")
       .first()
       .click();
-    cy.get("[data-test-id=first-stop").should("not.have.value", "");
+    cy.get("[data-test-id=starting-destination").should("not.have.value", "");
     cy.get("[data-test-id=add-to-station]:visible").click();
     cy.get(".marker-red")
       .first()

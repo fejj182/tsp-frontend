@@ -3,7 +3,7 @@
     <v-alert data-test-id="alert" v-if="alert" dismissible type="error">
       Service down. Please try again later.
     </v-alert>
-    <FirstStop @alert="onAlert" />
+    <StartingDestination @alert="onAlert" />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop
@@ -65,13 +65,13 @@
 </template>
 
 <script>
-import FirstStop from "@/modules/trip/inputs/FirstStop.vue";
+import StartingDestination from "@/modules/trip/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip/inputs/Stop.vue";
 import tripApi from "@/api/trip";
 
 export default {
   components: {
-    FirstStop,
+    StartingDestination,
     Stop
   },
   data() {
