@@ -1,5 +1,6 @@
 import { toHoursAndMinutes } from "./durationMapper";
 
+//Note: only used in FirstStop
 export const mapStation = station => {
   return {
     text: station.name,
@@ -21,13 +22,14 @@ export const mapStationByDuration = station => {
       lat: station.lat,
       lng: station.lng,
       duration:
-        station.duration > 0
+        station.duration > 0 // Note: to stop conversion to string twice
           ? toHoursAndMinutes(station.duration)
           : station.duration
     }
   };
 };
 
+//Note: only used in FirstStop
 export const mapStations = stations => {
   return stations
     .sort((a, b) => {

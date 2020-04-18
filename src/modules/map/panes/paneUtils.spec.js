@@ -9,24 +9,31 @@ jest.mock("@/modules/map/panes/paneConfigs", () => jest.fn());
 
 describe("paneUtils", () => {
   describe("getPaneNameFromDuration", () => {
-    it("should return 1st pane name for duration 0", () => {
+    it("should return 1st pane name for duration 1 (duration zero should never exist)", () => {
       paneConfigs.NUMBER_OF_PANES = 1;
       paneConfigs.INTERVAL = 60;
-      const paneName = getPaneNameFromDuration(0);
+      const paneName = getPaneNameFromDuration(1);
       expect(paneName).toBe("p0");
     });
 
-    it("should return last pane name for duration 600", () => {
+    it("should include pane with duration on upper limit", () => {
       paneConfigs.NUMBER_OF_PANES = 3;
       paneConfigs.INTERVAL = 60;
       const paneName = getPaneNameFromDuration(120);
+      expect(paneName).toBe("p1");
+    });
+
+    it("should return next pane for duration above upper limit", () => {
+      paneConfigs.NUMBER_OF_PANES = 3;
+      paneConfigs.INTERVAL = 60;
+      const paneName = getPaneNameFromDuration(121);
       expect(paneName).toBe("p2");
     });
 
-    it("should return last pane name for duration 660", () => {
+    it("should return last pane name duration outside limit", () => {
       paneConfigs.NUMBER_OF_PANES = 3;
       paneConfigs.INTERVAL = 60;
-      const paneName = getPaneNameFromDuration(180);
+      const paneName = getPaneNameFromDuration(240);
       expect(paneName).toBe("p2");
     });
   });

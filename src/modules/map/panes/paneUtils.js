@@ -1,7 +1,7 @@
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 export const getPaneNameFromDuration = duration => {
-  const proposedGroup = Math.floor(duration / paneConfigs.INTERVAL);
+  const proposedGroup = Math.floor((duration - 1) / paneConfigs.INTERVAL);
   const highestGroup = paneConfigs.NUMBER_OF_PANES - 1;
   const givenGroup =
     proposedGroup > highestGroup ? highestGroup : proposedGroup;
