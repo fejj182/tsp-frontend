@@ -78,7 +78,7 @@ export const mutations = {
     const stops = trip.map((station, index) => {
       return {
         readOnly: index < trip.length - 1 ? true : false,
-        selected: station,
+        fixed: station,
         stations: [station]
       };
     });

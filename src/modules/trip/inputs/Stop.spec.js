@@ -36,8 +36,7 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [],
-        stop: {}
+        stations: []
       }
     });
     wrapper.find("[data-test-id=stop").vm.$emit("change", station);
@@ -51,8 +50,7 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [],
-        stop: {}
+        stations: []
       }
     });
     wrapper.find("[data-test-id=stop").vm.$emit("change", station);
@@ -72,9 +70,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: stations,
-        stop: {
-          selected: valencia
-        }
+        fixedStop: valencia
       }
     });
 
@@ -83,7 +79,7 @@ describe("Stop", () => {
     );
   });
 
-  it("should set value of stop from stop selected property even if selectedStop is present in store", () => {
+  it("should set value of stop from fixedStop property even if selectedStop is present in store", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });
     mockStore.state.trip.selectedStop = madrid;
@@ -94,9 +90,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [valencia, madrid],
-        stop: {
-          selected: valencia
-        }
+        fixedStop: valencia
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
@@ -105,7 +99,7 @@ describe("Stop", () => {
     });
   });
 
-  it("should have the value of stop from store if selected property of stop is not present", () => {
+  it("should have the value of stop from store if fixedStop property is not present", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });
     mockStore.state.trip.selectedStop = madrid;
@@ -115,8 +109,7 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [valencia, madrid],
-        stop: {}
+        stations: [valencia, madrid]
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
@@ -134,8 +127,7 @@ describe("Stop", () => {
         $store: mockStore
       },
       propsData: {
-        stations: [valencia, madrid],
-        stop: {}
+        stations: [valencia, madrid]
       }
     });
     mockStore.state.trip.selectedStop = madrid;
@@ -155,8 +147,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        readOnly: true,
-        stop: {}
+        readOnly: true
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().readonly).toEqual(true);

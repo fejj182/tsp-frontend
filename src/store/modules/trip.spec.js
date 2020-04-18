@@ -232,8 +232,8 @@ describe("popups", () => {
         let trip = [barcelona, valencia, madrid];
         module.mutations.LOAD_TRIP(state, trip);
         expect(state.stops).toEqual([
-          { readOnly: true, selected: valencia, stations: [valencia] },
-          { readOnly: false, selected: madrid, stations: [madrid] }
+          { readOnly: true, fixed: valencia, stations: [valencia] },
+          { readOnly: false, fixed: madrid, stations: [madrid] }
         ]);
       });
     });

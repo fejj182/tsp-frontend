@@ -10,7 +10,7 @@
         class="stop"
         :stations="stop.stations"
         :read-only="stop.readOnly"
-        :stop="stop"
+        :fixed-stop="stop.fixed"
         :id="`stop-${index + 1}`"
       />
     </div>

@@ -145,8 +145,8 @@ describe("TripForm", () => {
       expect(wrapper.find(Stop).props().readOnly).toBe(true);
     });
 
-    it("should pass stop", () => {
-      const mockStops = [{}];
+    it("should pass fixedStop", () => {
+      const mockStops = [{ fixed: {} }];
       mockStore.state.trip.stops = mockStops;
       const wrapper = shallowMount(TripForm, {
         mocks: {
@@ -156,7 +156,7 @@ describe("TripForm", () => {
         }
       });
 
-      expect(wrapper.find(Stop).props().stop).toEqual({});
+      expect(wrapper.find(Stop).props().fixedStop).toEqual({});
     });
   });
 

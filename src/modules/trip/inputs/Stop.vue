@@ -41,7 +41,7 @@ export default {
       type: Boolean,
       default: false
     },
-    stop: {
+    fixedStop: {
       type: Object
     },
     id: {
@@ -60,8 +60,8 @@ export default {
       return this.$store.state.trip.selectedStop;
     },
     selected() {
-      if (this.stop.selected) {
-        return mapStationByDuration(this.stop.selected);
+      if (this.fixedStop) {
+        return mapStationByDuration(this.fixedStop);
       }
 
       if (this.readOnly && this.readOnlyValue) {
