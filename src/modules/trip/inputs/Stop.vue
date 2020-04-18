@@ -30,7 +30,7 @@ import { filterStationsOutOfRange } from "@/modules/map/panes/paneUtils";
 export default {
   data() {
     return {
-      readOnlyValue: null
+      lastSelected: null
     };
   },
   props: {
@@ -56,27 +56,27 @@ export default {
       );
       return mapStationsByDuration(stationsInRange);
     },
-    selectedStop() {
+    activeSelectedStop() {
       return this.$store.state.trip.selectedStop;
     },
     selected() {
+      let inputValue = null;
+
       if (this.fixedStop) {
-        return mapStationByDuration(this.fixedStop);
+        inputValue = mapStationByDuration(this.fixedStop);
+      } else if (this.readOnly && this.lastSelected) {
+        inputValue = mapStationByDuration(this.lastSelected);
+      } else if (!this.readOnly && this.activeSelectedStop) {
+        inputValue = mapStationByDuration(this.activeSelectedStop);
       }
 
-      if (this.readOnly && this.readOnlyValue) {
-        return mapStationByDuration(this.readOnlyValue);
-      } else if (!this.readOnly && this.selectedStop) {
-        return mapStationByDuration(this.selectedStop);
-      } else {
-        return null;
-      }
+      return inputValue;
     }
   },
   watch: {
-    selectedStop() {
+    activeSelectedStop() {
       if (!this.readOnly) {
-        this.readOnlyValue = this.selectedStop;
+        this.lastSelected = this.activeSelectedStop;
       }
     }
   },
