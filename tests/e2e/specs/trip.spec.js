@@ -2,6 +2,7 @@ describe("Trip", function() {
   it("should create and update a trip using form", function() {
     cy.server();
     cy.route("POST", "api/stations/connections").as("getConnections");
+    cy.route("POST", "api/trip").as("saveTrip");
     createTrip();
     updateTrip();
   });
@@ -30,10 +31,7 @@ function createTrip() {
     .click();
   cy.get("#stop-2").should("not.have.value", "");
   cy.get("[data-test-id=save-trip]").click();
-
-  // after trip is saved, we reset the form and check that the trip still exists
-  cy.get("[data-test-id=reset-trip]").click();
-  cy.get(".stop").should("not.exist");
+  cy.wait("@saveTrip");
 
   cy.reload();
 
@@ -48,6 +46,7 @@ function createTrip() {
 
 function updateTrip() {
   cy.get("[data-test-id=reset-trip]").click();
+  cy.get(".stop").should("not.exist");
   cy.get("[data-test-id=destination-1]").click();
   cy.get(".v-list-item__content")
     .first()
