@@ -71,18 +71,17 @@ export const mutations = {
     state.savedTrip = [station];
   },
   LOAD_TRIP(state, trip) {
-    const startingStation = trip.shift();
-    state.startingStation = startingStation;
-    state.savedTrip = [startingStation];
+    state.startingStation = trip[0];
+    const stops = trip.slice(1);
 
-    const stops = trip.map((station, index) => {
+    state.stops = stops.map(station => {
       return {
-        readOnly: index < trip.length - 1 ? true : false,
+        readOnly: true,
         fixed: station,
         stations: [station]
       };
     });
-
-    state.stops = stops;
+    state.selectedStop = trip[trip.length - 1];
+    state.savedTrip = trip.slice(0, trip.length - 1);
   }
 };

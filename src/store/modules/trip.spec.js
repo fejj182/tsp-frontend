@@ -211,13 +211,17 @@ describe("popups", () => {
       });
     });
     describe("LOAD_TRIP", () => {
+      let trip, barcelona, valencia, madrid;
+      beforeEach(() => {
+        barcelona = { name: "Barcelona" };
+        valencia = { name: "Valencia" };
+        madrid = { name: "Madrid" };
+        trip = [barcelona, valencia, madrid];
+      });
       it("should add starting station to the state", () => {
         let state = {
           startingStation: null
         };
-        const barcelona = { name: "Barcelona" };
-        const valencia = { name: "Valencia" };
-        let trip = [barcelona, valencia];
         module.mutations.LOAD_TRIP(state, trip);
         expect(state.startingStation).toEqual(barcelona);
       });
@@ -226,15 +230,27 @@ describe("popups", () => {
         let state = {
           stops: []
         };
-        const barcelona = { name: "Barcelona" };
-        const valencia = { name: "Valencia" };
-        const madrid = { name: "Madrid" };
-        let trip = [barcelona, valencia, madrid];
         module.mutations.LOAD_TRIP(state, trip);
         expect(state.stops).toEqual([
           { readOnly: true, fixed: valencia, stations: [valencia] },
-          { readOnly: false, fixed: madrid, stations: [madrid] }
+          { readOnly: true, fixed: madrid, stations: [madrid] }
         ]);
+      });
+
+      it("should add selected stop to the state", () => {
+        let state = {
+          selectedStop: null
+        };
+        module.mutations.LOAD_TRIP(state, trip);
+        expect(state.selectedStop).toEqual(madrid);
+      });
+
+      it("should add savedTrip to state", () => {
+        let state = {
+          savedTrip: []
+        };
+        module.mutations.LOAD_TRIP(state, trip);
+        expect(state.savedTrip).toEqual([barcelona, valencia]);
       });
     });
   });

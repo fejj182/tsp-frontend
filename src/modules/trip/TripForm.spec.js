@@ -278,6 +278,12 @@ describe("TripForm", () => {
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
       });
+
+      it("should change url to home", () => {
+        mockStore.getters.hasStops = true;
+        wrapper.find("[data-test-id=reset-trip]").trigger("click");
+        expect(mockRouter.push).toHaveBeenCalledWith("/");
+      });
     });
 
     describe("Submit", () => {
