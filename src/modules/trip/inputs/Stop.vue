@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :id="id">
     <v-autocomplete
       label="Where next?"
       data-test-id="stop"
@@ -9,7 +9,6 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
-      :id="id"
     >
       <template v-slot:item="{ item }">
         {{ item.text }} -

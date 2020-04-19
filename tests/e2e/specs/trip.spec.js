@@ -16,53 +16,62 @@ function createTrip() {
     .first()
     .click();
 
-  cy.get("#stop-1").click();
-  cy.get(".v-list-item")
+  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1").should("not.have.value", "");
+  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
   cy.get("[data-test-id=add-stop]").click();
 
-  cy.get("#stop-2")
+  cy.get("#stop-2 [data-test-id=stop]")
     .last()
     .click();
-  cy.get(".v-list-item")
+  cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-2").should("not.have.value", "");
+  cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
+
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
 
   cy.reload();
 
   // must assert should exist so cypress will wait before asserting value
-  cy.get("#stop-1")
+  cy.get("#stop-1 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
-  cy.get("#stop-2")
+  cy.get("#stop-2 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
 }
 
 function updateTrip() {
-  cy.get("[data-test-id=reset-trip]").click();
-  cy.get(".stop").should("not.exist");
+  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get(".v-list-item").should("not.exist");
+  cy.get("#stop-1 .v-icon").click();
+  cy.get(".v-list-item").should("not.exist");
+
   cy.get("[data-test-id=starting-destination]").click();
   cy.get(".v-list-item__content")
     .first()
     .click();
 
-  cy.get("#stop-1").click();
-  cy.get(".v-list-item")
+  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1").should("not.have.value", "");
+  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
   cy.reload();
-  cy.get("#stop-1")
+  cy.get("#stop-1 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
-  cy.get("#stop-2").should("not.exist");
+  cy.get("#stop-2 [data-test-id=stop]").should("not.exist");
+
+  // TODO: should show, fix bug
+  cy.get("[data-test-id=reset-trip]").click();
+  cy.reload();
+  cy.get(".stop").should("not.exist");
 }

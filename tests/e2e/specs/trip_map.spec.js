@@ -17,7 +17,7 @@ describe("trip_map", () => {
       .first()
       .click();
     cy.get("[data-test-id=add-to-station]:visible").click();
-    cy.get("#stop-1").should("not.have.value", "");
+    cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("[data-test-id=save-trip]").click();
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
