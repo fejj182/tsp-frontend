@@ -253,6 +253,7 @@ describe("TripForm", () => {
     describe("Reset trip", () => {
       let wrapper;
       beforeEach(() => {
+        mockStore.getters.hasStops = true;
         wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore,
@@ -263,24 +264,32 @@ describe("TripForm", () => {
         });
       });
 
-      it("reset should not exist when component loads", () => {
+      it("reset should not exist if no stops in store", () => {
+        mockStore.getters.hasStops = false;
         expect(wrapper.find("[data-test-id=reset-trip]").exists()).toBe(false);
       });
 
       it("should reset form", () => {
-        mockStore.getters.hasStops = true;
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockReset).toHaveBeenCalled();
       });
 
       it("should dispatch resetTrip action", () => {
-        mockStore.getters.hasStops = true;
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
       });
 
-      it("should change url to home", () => {
-        mockStore.getters.hasStops = true;
+      it("should change url to home when on named route", () => {
+        wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $router: mockRouter,
+            $route: {
+              name: "alias"
+            }
+          },
+          stubs: mockStubs
+        });
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
         expect(mockRouter.push).toHaveBeenCalledWith("/");
       });
