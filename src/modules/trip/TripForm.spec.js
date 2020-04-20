@@ -346,6 +346,23 @@ describe("TripForm", () => {
           );
         });
 
+        it("should not create trip if less than two stops in trip", () => {
+          mockStore.getters.hasStops = true;
+          mockStore.getters.completeTrip = [{}];
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore,
+              $router: mockRouter,
+              $route: mockRoute
+            },
+            stubs: mockStubs
+          });
+          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          expect(tripApi.create).not.toHaveBeenCalledWith(
+            mockStore.getters.completeTrip
+          );
+        });
+
         it("should show success if alias is returned from api call", async () => {
           mockStore.getters.hasStops = true;
           tripApi.create.mockReturnValue({ alias: "alias" });

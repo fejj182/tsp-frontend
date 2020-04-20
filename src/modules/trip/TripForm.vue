@@ -119,13 +119,15 @@ export default {
       }
     },
     async saveTrip() {
-      const response = await tripApi.create(this.$store.getters.completeTrip);
-      if (response && response.alias) {
-        this.alias = response.alias;
-        setTimeout(() => {
-          this.alias = null;
-        }, 7500);
-        this.$router.push("trip/" + response.alias);
+      if (this.$store.getters.completeTrip.length >= 2) {
+        const response = await tripApi.create(this.$store.getters.completeTrip);
+        if (response && response.alias) {
+          this.alias = response.alias;
+          setTimeout(() => {
+            this.alias = null;
+          }, 7500);
+          this.$router.push("trip/" + response.alias);
+        }
       }
     },
     async updateTrip() {
