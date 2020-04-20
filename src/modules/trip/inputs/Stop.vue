@@ -6,6 +6,7 @@
       :items="items"
       filled
       rounded
+      :autofocus="autofocus"
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
@@ -48,6 +49,9 @@ export default {
     }
   },
   computed: {
+    autofocus() {
+      return this.id === "stop-" + this.$store.state.trip.stops.length;
+    },
     items() {
       const stationsInRange = filterStationsOutOfRange(
         this.stations,

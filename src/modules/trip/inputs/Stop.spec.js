@@ -152,4 +152,20 @@ describe("Stop", () => {
     });
     expect(wrapper.find("[data-test-id=stop]").props().readonly).toEqual(true);
   });
+
+  it("should set autofocus if last stop in form", () => {
+    mockStore.state.trip.stops = [{}, {}, {}];
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [],
+        id: "stop-3"
+      }
+    });
+    expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(true);
+    wrapper.setProps({ id: "stop-2" });
+    expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(false);
+  });
 });
