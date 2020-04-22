@@ -93,39 +93,75 @@ describe("Popup", () => {
   });
 
   describe("watch", () => {
-    it("should open popup if state changes", () => {
-      const mockPopup = { openPopup: jest.fn() };
-      mockMarker.bindPopup.mockReturnValue(mockPopup);
-      shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: {
-          marker: mockMarker,
-          station
-        }
+    describe("open", () => {
+      it("should open popup when station is same as in component", () => {
+        const mockPopup = { openPopup: jest.fn() };
+        mockMarker.bindPopup.mockReturnValue(mockPopup);
+        shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: {
+            marker: mockMarker,
+            station
+          }
+        });
+        mockStore.state.popups.openStation = station;
+        expect(mockPopup.openPopup).toHaveBeenCalled();
       });
-      mockStore.state.popups.openStation = station;
-      expect(mockPopup.openPopup).toHaveBeenCalled();
+
+      it("should not open popup when station is not same as in component", () => {
+        const mockPopup = { openPopup: jest.fn() };
+        mockMarker.bindPopup.mockReturnValue(mockPopup);
+        shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: {
+            marker: mockMarker,
+            station
+          }
+        });
+        mockStore.state.popups.openStation = { name: "another" };
+        expect(mockPopup.openPopup).not.toHaveBeenCalled();
+      });
+
+      it("should close popup when station is null", () => {
+        const mockPopup = { closePopup: jest.fn() };
+        mockMarker.bindPopup.mockReturnValue(mockPopup);
+        shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: {
+            marker: mockMarker,
+            station
+          }
+        });
+        mockStore.state.popups.openStation = null;
+        expect(mockPopup.closePopup).toHaveBeenCalled();
+      });
     });
 
-    it("should bind popup if marker prop changes", () => {
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: {
-          marker: mockMarker,
-          station
-        }
+    describe("marker", () => {
+      it("should bind popup", () => {
+        const wrapper = shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: {
+            marker: mockMarker,
+            station
+          }
+        });
+        const popup = wrapper.find(".add-to-trip");
+        const newMarker = { bindPopup: jest.fn() };
+        wrapper.setProps({ marker: newMarker });
+        expect(newMarker.bindPopup).toHaveBeenCalledWith(
+          popup.element,
+          expect.any(Object)
+        );
       });
-      const popup = wrapper.find(".add-to-trip");
-      const newMarker = { bindPopup: jest.fn() };
-      wrapper.setProps({ marker: newMarker });
-      expect(newMarker.bindPopup).toHaveBeenCalledWith(
-        popup.element,
-        expect.any(Object)
-      );
     });
   });
 

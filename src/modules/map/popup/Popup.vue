@@ -41,7 +41,7 @@ export default {
   mounted() {
     this.bindPopup(this.marker);
     if (this.open && this.station.name == this.open.name) {
-      this.openPopup();
+      this.popup.openPopup();
     }
   },
   computed: {
@@ -62,9 +62,6 @@ export default {
         offset: [-3, -2]
       });
     },
-    openPopup() {
-      this.popup.openPopup();
-    },
     addToTrip() {
       if (this.isConnection) {
         this.$store.dispatch("confirmStop", this.station);
@@ -80,12 +77,14 @@ export default {
       // TODO: can remove this component if guaranteed to mount every time
       this.bindPopup(marker);
       if (this.open && this.station.name == this.open.name) {
-        this.openPopup();
+        this.popup.openPopup();
       }
     },
     open(station) {
-      if (this.station.name == station.name) {
-        this.openPopup();
+      if (station === null) {
+        this.popup.closePopup();
+      } else if (this.station.name == station.name) {
+        this.popup.openPopup();
       }
     }
   }

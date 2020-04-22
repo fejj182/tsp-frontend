@@ -98,6 +98,16 @@ describe("popups", () => {
         module.actions.resetTrip({ dispatch, commit });
         expect(dispatch).toHaveBeenCalledWith("resetMap");
       });
+
+      it("should dispatch closePopup action", () => {
+        module.actions.resetTrip({ dispatch, commit });
+        expect(dispatch).toHaveBeenCalledWith("closePopup");
+      });
+
+      it("should dispatch fetchStartingStations action", () => {
+        module.actions.resetTrip({ dispatch, commit });
+        expect(dispatch).toHaveBeenCalledWith("fetchStartingStations");
+      });
     });
     describe("addNewStop", () => {
       it("should commit ADD_NEW_STOP", () => {

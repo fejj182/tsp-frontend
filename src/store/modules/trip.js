@@ -33,6 +33,8 @@ export const actions = {
   },
   resetTrip({ dispatch, commit }) {
     dispatch("resetMap");
+    dispatch("closePopup");
+    dispatch("fetchStartingStations");
     commit("CLEAR_STOPS");
   },
   addNewStop({ commit }, payload) {
