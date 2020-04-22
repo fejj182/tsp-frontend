@@ -38,6 +38,9 @@ export const actions = {
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
+  removeStop({ commit }) {
+    commit("REMOVE_STOP");
+  },
   startTrip({ dispatch }, station) {
     dispatch("resetTrip");
     dispatch("selectStartingInput", station);
@@ -60,11 +63,19 @@ export const mutations = {
       stop.readOnly = true;
       return stop;
     });
-    state.stops = [...prevStops, { stations }];
+    state.stops = [...prevStops, { stations, readOnly: false }];
     if (state.selectedStop) {
       state.savedTrip = [...state.savedTrip, state.selectedStop];
     }
     state.selectedStop = null;
+  },
+  REMOVE_STOP: state => {
+    const stops = state.stops.slice(0, state.stops.length - 1);
+    stops[stops.length - 1].readOnly = false;
+    state.stops = stops;
+
+    state.selectedStop = state.savedTrip[state.savedTrip.length - 1];
+    state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
   },
   SELECT_STARTING_STATION(state, station) {
     state.startingStation = station;

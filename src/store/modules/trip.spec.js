@@ -82,14 +82,14 @@ describe("popups", () => {
       });
     });
     describe("selectStop", () => {
-      it("should commit SELECT_STOP to the store", () => {
+      it("should commit SELECT_STOP", () => {
         let connection = { id: "1" };
         module.actions.selectStop({ dispatch, commit }, connection);
         expect(commit).toHaveBeenCalledWith("SELECT_STOP", connection);
       });
     });
     describe("resetTrip", () => {
-      it("should commit CLEAR_STOPS to the store", () => {
+      it("should commit CLEAR_STOPS", () => {
         module.actions.resetTrip({ dispatch, commit });
         expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
       });
@@ -100,10 +100,16 @@ describe("popups", () => {
       });
     });
     describe("addNewStop", () => {
-      it("should commit ADD_NEW_STOP to the store", () => {
+      it("should commit ADD_NEW_STOP", () => {
         let payload = { stations: {} };
         module.actions.addNewStop({ commit }, payload);
         expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", payload.stations);
+      });
+    });
+    describe("removeStop", () => {
+      it("should commit REMOVE_STOP", () => {
+        module.actions.removeStop({ commit });
+        expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
       });
     });
     describe("startTrip", () => {
@@ -155,13 +161,12 @@ describe("popups", () => {
       });
       it("should add stations for the next stop", () => {
         let state = {
-          stops: [{ stations }],
-          savedTrip: []
+          stops: [{ stations }]
         };
         module.mutations.ADD_NEW_STOP(state, stations);
         expect(state.stops).toEqual([
           { stations, readOnly: true },
-          { stations }
+          { stations, readOnly: false }
         ]);
       });
       it("should add selectedStop to the savedTrip", () => {
@@ -175,7 +180,7 @@ describe("popups", () => {
       });
       it("should not add selectedStop to the savedTrip when it is null", () => {
         let state = {
-          stops: [{ stations }],
+          stops: [],
           savedTrip: [{}],
           selectedStop: null
         };
@@ -190,6 +195,45 @@ describe("popups", () => {
         };
         module.mutations.ADD_NEW_STOP(state, stations);
         expect(state.selectedStop).toBe(null);
+      });
+    });
+    describe("REMOVE_STOP", () => {
+      let stations;
+      beforeEach(() => {
+        stations = [];
+      });
+      it("should remove last stop in state", () => {
+        let state = {
+          stops: [
+            { stations, readOnly: true },
+            { stations, readOnly: true },
+            { stations, readOnly: false }
+          ],
+          savedTrip: [{}, {}, {}, {}]
+        };
+        module.mutations.REMOVE_STOP(state);
+        expect(state.stops).toEqual([
+          { stations, readOnly: true },
+          { stations, readOnly: false }
+        ]);
+      });
+      it("should remove last stop in savedTrip", () => {
+        let state = {
+          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          savedTrip: [{}, {}],
+          selectedStop: {}
+        };
+        module.mutations.REMOVE_STOP(state);
+        expect(state.savedTrip).toEqual([{}]);
+      });
+      it("should load selectedStop with previous last stop in trip", () => {
+        let state = {
+          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          savedTrip: [{}, { name: "lastSavedStop" }],
+          selectedStop: {}
+        };
+        module.mutations.REMOVE_STOP(state, stations);
+        expect(state.selectedStop).toEqual({ name: "lastSavedStop" });
       });
     });
     describe("SELECT_STARTING_STATION", () => {
