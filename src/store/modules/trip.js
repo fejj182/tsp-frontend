@@ -71,7 +71,11 @@ export const mutations = {
   },
   REMOVE_STOP: state => {
     const stops = state.stops.slice(0, state.stops.length - 1);
-    stops[stops.length - 1].readOnly = false;
+    if (stops.length > 0) {
+      stops[stops.length - 1].readOnly = false;
+    } else {
+      state.startingStation = null;
+    }
     state.stops = stops;
 
     state.selectedStop = state.savedTrip[state.savedTrip.length - 1];
