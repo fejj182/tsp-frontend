@@ -89,9 +89,9 @@ describe("popups", () => {
       });
     });
     describe("resetTrip", () => {
-      it("should commit CLEAR_STOPS", () => {
+      it("should commit RESET_TRIP", () => {
         module.actions.resetTrip({ dispatch, commit });
-        expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
+        expect(commit).toHaveBeenCalledWith("RESET_TRIP");
       });
 
       it("should dispatch resetMap action", () => {
@@ -148,15 +148,17 @@ describe("popups", () => {
         expect(state.selectedStop).toEqual(selectedStop);
       });
     });
-    describe("CLEAR_STOPS", () => {
+    describe("RESET_TRIP", () => {
       it("should clear stops from state", () => {
         let state = {
           stops: [{ connections: [] }],
-          selectedStop: 1
+          selectedStop: 1,
+          savedTrip: [{}]
         };
-        module.mutations.CLEAR_STOPS(state);
+        module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
         expect(state.selectedStop).toEqual(null);
+        expect(state.savedTrip).toEqual([]);
       });
     });
     describe("ADD_NEW_STOP", () => {

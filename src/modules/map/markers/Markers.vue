@@ -33,6 +33,9 @@ export default {
     },
     startingStations() {
       return this.$store.state.stations.startingStations;
+    },
+    savedTrip() {
+      return this.$store.state.trip.savedTrip;
     }
   },
   watch: {
@@ -41,16 +44,17 @@ export default {
       if (this.activeStation) {
         this.addActiveMarker(this.activeStation);
       }
-      if (connections.length > 0) {
-        connections.forEach(connection => {
-          this.addConnectionMarker(connection);
-        });
-      } else {
-        this.addStartingMarkers();
-      }
+      connections.forEach(connection => {
+        this.addConnectionMarker(connection);
+      });
     },
     startingStations: function() {
       this.addStartingMarkers();
+    },
+    savedTrip: function(trip) {
+      if (trip.length === 0) {
+        this.addStartingMarkers();
+      }
     }
   },
   methods: {
