@@ -158,7 +158,6 @@ describe("popups", () => {
         module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
         expect(state.selectedStop).toEqual(null);
-        expect(state.savedTrip).toEqual([]);
       });
     });
     describe("ADD_NEW_STOP", () => {
