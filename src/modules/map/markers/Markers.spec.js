@@ -54,8 +54,8 @@ describe("Markers", () => {
       const station = getStation();
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       mockStore.state.stations.activeStation = station;
-      mockStore.state.stations.activeConnections = [];
-      expect(wrapper.findAll(Popup).length).toEqual(1);
+      mockStore.state.stations.activeConnections = [{}];
+      expect(wrapper.findAll(Popup).length).toEqual(2);
       expect(wrapper.find(Popup).props().station).toEqual(station);
       expect(mockMarker.remove).toHaveBeenCalledTimes(2);
     });
@@ -89,8 +89,15 @@ describe("Markers", () => {
   });
 
   describe("Connections", () => {
-    it("should add the connections to the map when the store is updated", () => {
+    it("should add the connections to the map when the connections are set in the store", () => {
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
+      expect(L.marker).toBeCalledTimes(2);
+      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+    });
+
+    it("should add the starting markers to the map when the connections are reset to empty", () => {
+      mockStore.state.stations.activeConnections = [];
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
       expect(L.marker).toBeCalledTimes(2);
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
     });

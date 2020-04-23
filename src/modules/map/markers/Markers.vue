@@ -36,23 +36,30 @@ export default {
     }
   },
   watch: {
-    connections: function() {
+    connections: function(connections) {
       this.resetMarkers();
       if (this.activeStation) {
         this.addActiveMarker(this.activeStation);
       }
-      this.connections.forEach(connection => {
-        this.addConnectionMarker(connection);
-      });
+      if (connections.length > 0) {
+        connections.forEach(connection => {
+          this.addConnectionMarker(connection);
+        });
+      } else {
+        this.addStartingMarkers();
+      }
     },
     startingStations: function() {
+      this.addStartingMarkers();
+    }
+  },
+  methods: {
+    addStartingMarkers() {
       this.startingStations.forEach(station => {
         const marker = this.addActiveMarker(station);
         marker.on("click", () => this.onStartingMarkerClick(station));
       });
-    }
-  },
-  methods: {
+    },
     addActiveMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
         icon: this.generateIcon("purple")

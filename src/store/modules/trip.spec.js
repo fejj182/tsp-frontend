@@ -103,11 +103,6 @@ describe("popups", () => {
         module.actions.resetTrip({ dispatch, commit });
         expect(dispatch).toHaveBeenCalledWith("closePopup");
       });
-
-      it("should dispatch fetchStartingStations action", () => {
-        module.actions.resetTrip({ dispatch, commit });
-        expect(dispatch).toHaveBeenCalledWith("fetchStartingStations");
-      });
     });
     describe("addNewStop", () => {
       it("should commit ADD_NEW_STOP", () => {
