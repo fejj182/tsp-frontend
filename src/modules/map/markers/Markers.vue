@@ -61,9 +61,11 @@ export default {
   methods: {
     addStartingMarkers() {
       this.resetMarkers();
-      this.startingStations.forEach(station => {
-        this.addStartingMarker(station);
-      });
+      setTimeout(() => {
+        this.startingStations.forEach(station => {
+          this.addStartingMarker(station);
+        });
+      }, 0);
     },
     addStartingMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
@@ -85,9 +87,11 @@ export default {
       if (this.activeStation) {
         this.addStartingMarker(this.activeStation);
       }
-      connections.forEach(connection => {
-        this.addConnectionMarker(connection);
-      });
+      setTimeout(() => {
+        connections.forEach(connection => {
+          this.addConnectionMarker(connection);
+        });
+      }, 0);
     },
     addConnectionMarker(station) {
       const marker = L.marker([station.lat, station.lng], {

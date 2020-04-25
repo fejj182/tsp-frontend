@@ -48,7 +48,9 @@ describe("Markers", () => {
         }
       });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
 
     it("should remove the connection markers from the map when the starting stations are set", () => {
@@ -61,7 +63,9 @@ describe("Markers", () => {
       mockStore.state.stations.activeConnections = [{}];
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       mockStore.state.stations.activeStation = station;
-      expect(mockMarker.remove).toHaveBeenCalledTimes(1);
+      setTimeout(() => {
+        expect(mockMarker.remove).toHaveBeenCalledTimes(1);
+      }, 0);
     });
 
     it("should remove the inactive starting station markers from the map when the connections are set", () => {
@@ -74,9 +78,11 @@ describe("Markers", () => {
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       mockStore.state.stations.activeStation = station;
       mockStore.state.stations.activeConnections = [{}];
-      expect(wrapper.findAll(Popup).length).toEqual(2);
-      expect(wrapper.find(Popup).props().station).toEqual(station);
-      expect(mockMarker.remove).toHaveBeenCalledTimes(2);
+      setTimeout(() => {
+        expect(wrapper.findAll(Popup).length).toEqual(2);
+        expect(wrapper.find(Popup).props().station).toEqual(station);
+        expect(mockMarker.remove).toHaveBeenCalledTimes(2);
+      }, 0);
     });
 
     it("should set on click function on marker", () => {
@@ -86,10 +92,12 @@ describe("Markers", () => {
         }
       });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      expect(mockMarker.on.mock.calls).toEqual([
-        ["click", expect.any(Function)],
-        ["click", expect.any(Function)]
-      ]);
+      setTimeout(() => {
+        expect(mockMarker.on.mock.calls).toEqual([
+          ["click", expect.any(Function)],
+          ["click", expect.any(Function)]
+        ]);
+      }, 0);
     });
 
     it("should add them when trip is reset", () => {
@@ -103,7 +111,9 @@ describe("Markers", () => {
         }
       });
       mockStore.state.trip.savedTrip = [];
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
   });
 
@@ -118,8 +128,10 @@ describe("Markers", () => {
         }
       });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(L.marker).toBeCalledTimes(2);
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(L.marker).toBeCalledTimes(2);
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
 
     it("should add the starting markers to the map when the connections are reset to empty", () => {
@@ -133,8 +145,10 @@ describe("Markers", () => {
       });
       mockStore.state.stations.activeConnections = [];
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      expect(L.marker).toBeCalledTimes(2);
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(L.marker).toBeCalledTimes(2);
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
 
     it("should set on click function on marker", () => {
@@ -144,10 +158,12 @@ describe("Markers", () => {
         }
       });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(mockMarker.on.mock.calls).toEqual([
-        ["click", expect.any(Function)],
-        ["click", expect.any(Function)]
-      ]);
+      setTimeout(() => {
+        expect(mockMarker.on.mock.calls).toEqual([
+          ["click", expect.any(Function)],
+          ["click", expect.any(Function)]
+        ]);
+      }, 0);
     });
   });
 
@@ -160,7 +176,9 @@ describe("Markers", () => {
       });
       mockStore.state.stations.activeStation = getStation();
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(L.divIcon).toBeCalledTimes(3);
+      setTimeout(() => {
+        expect(L.divIcon).toBeCalledTimes(3);
+      }, 0);
     });
   });
 
@@ -182,7 +200,9 @@ describe("Markers", () => {
       });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       const popups = wrapper.findAll(Popup);
-      expect(popups.length).toBe(2);
+      setTimeout(() => {
+        expect(popups.length).toBe(2);
+      }, 0);
     });
 
     it("should create connection popups", () => {
@@ -193,10 +213,12 @@ describe("Markers", () => {
       });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
       const popups = wrapper.findAll(Popup);
-      expect(popups.length).toBe(2);
-      popups.wrappers.forEach(popup => {
-        expect(popup.props().isConnection).toBe(true);
-      });
+      setTimeout(() => {
+        expect(popups.length).toBe(2);
+        popups.wrappers.forEach(popup => {
+          expect(popup.props().isConnection).toBe(true);
+        });
+      }, 0);
     });
   });
 
