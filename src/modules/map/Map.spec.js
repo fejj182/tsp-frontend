@@ -1,6 +1,8 @@
 import { shallowMount } from "@vue/test-utils";
 import L from "leaflet";
 import Map from "./Map";
+import Markers from "@/modules/map/markers/Markers.vue";
+import Connections from "@/modules/map/connections/Connections.vue";
 
 jest.mock("leaflet", () => ({
   map: jest.fn(),
@@ -35,6 +37,23 @@ describe("Map", () => {
     });
   });
 
+  it("should contain the markers", () => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(wrapper.find(Markers).exists()).toBe(true);
+  });
+  it("should contain the connections", () => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(wrapper.find(Connections).exists()).toBe(true);
+  });
+
   it("should create map", () => {
     shallowMount(Map, {
       mocks: {
@@ -65,15 +84,6 @@ describe("Map", () => {
       "addPanes",
       wrapper.vm.panes
     );
-  });
-
-  it("should dispatch addMap action", () => {
-    const wrapper = shallowMount(Map, {
-      mocks: {
-        $store: mockStore
-      }
-    });
-    expect(mockStore.dispatch).toHaveBeenCalledWith("addMap", wrapper.vm.myMap);
   });
 
   it("should set z-index of panes", () => {

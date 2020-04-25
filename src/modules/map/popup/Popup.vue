@@ -36,6 +36,9 @@ export default {
     },
     isConnection: {
       type: Boolean
+    },
+    map: {
+      type: Object
     }
   },
   mounted() {
@@ -68,7 +71,7 @@ export default {
       } else {
         this.popup.closePopup();
         this.$store.dispatch("setStartingStation", this.station);
-        this.$store.state.map.map.setZoom(6);
+        this.map.setZoom(6);
       }
     }
   },

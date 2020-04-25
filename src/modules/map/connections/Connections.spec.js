@@ -25,9 +25,6 @@ describe("Connections", () => {
       state: {
         stations: {
           activeConnections: []
-        },
-        map: {
-          map: {}
         }
       }
     };
@@ -55,21 +52,29 @@ describe("Connections", () => {
     });
 
     it("should add geoJson layer to the map", () => {
+      const mockMap = {};
       const wrapper = shallowMount(Connections, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
       wrapper.vm.$store.state.stations.activeConnections = [
         { coords: [fakeCoord(), fakeCoord()] }
       ];
-      expect(geoJSON.addTo).toHaveBeenCalledWith(mockStore.state.map.map);
+      expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
     });
 
     it("should clear layer before adding new connections", () => {
+      const mockMap = {};
       const wrapper = shallowMount(Connections, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
 
@@ -77,7 +82,7 @@ describe("Connections", () => {
       wrapper.vm.$store.state.stations.activeConnections = [
         { coords: [fakeCoord(), fakeCoord()] }
       ];
-      expect(geoJSON.removeFrom).toHaveBeenCalledWith(mockStore.state.map.map);
+      expect(geoJSON.removeFrom).toHaveBeenCalledWith(mockMap);
     });
   });
 

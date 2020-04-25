@@ -28,16 +28,13 @@ describe("Markers", () => {
           activeConnections: [],
           startingStations: []
         },
-        map: {
-          map: {}
-        },
         trip: {
           startingStation: null,
           savedTrip: [{}]
         }
       }
     };
-    mockMap = mockStore.state.map.map;
+    mockMap = {};
   });
 
   describe("Starting markers", () => {
@@ -45,6 +42,9 @@ describe("Markers", () => {
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
@@ -113,6 +113,9 @@ describe("Markers", () => {
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
       mockStore.state.trip.savedTrip = [];
@@ -125,6 +128,9 @@ describe("Markers", () => {
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
@@ -136,6 +142,9 @@ describe("Markers", () => {
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
+        },
+        propsData: {
+          map: mockMap
         }
       });
       mockStore.state.stations.activeConnections = [];

@@ -1,12 +1,21 @@
 <template>
-  <div id="map"></div>
+  <div id="map">
+    <Markers :map="myMap" />
+    <Connections :map="myMap" />
+  </div>
 </template>
 
 <script>
 import L from "leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
+import Markers from "@/modules/map/markers/Markers.vue";
+import Connections from "@/modules/map/connections/Connections.vue";
 
 export default {
+  components: {
+    Markers,
+    Connections
+  },
   data() {
     return {
       centreCoords: [40.7067997, 0.5801695],
@@ -35,7 +44,6 @@ export default {
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
         this.tileOptions
       ).addTo(this.myMap);
-      this.$store.dispatch("addMap", this.myMap);
     },
     createPanes() {
       for (let i = 0; i < paneConfigs.NUMBER_OF_PANES; i++) {

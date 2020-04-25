@@ -6,8 +6,6 @@
       </v-col>
       <v-col :md="9" cols="12">
         <Map />
-        <Markers />
-        <Connections />
       </v-col>
     </v-row>
     <footer>
@@ -18,8 +16,6 @@
 
 <script>
 import Map from "@/modules/map/Map.vue";
-import Markers from "@/modules/map/markers/Markers.vue";
-import Connections from "@/modules/map/connections/Connections.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import CookieBanner from "@/modules/privacy/CookieBanner.vue";
 
@@ -28,8 +24,6 @@ export default {
   components: {
     TripPanel,
     Map,
-    Markers,
-    Connections,
     CookieBanner
   },
   created() {

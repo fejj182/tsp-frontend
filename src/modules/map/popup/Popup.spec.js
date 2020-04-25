@@ -230,6 +230,9 @@ describe("Popup", () => {
 
     it("should dispatch setStartingStation and set zoom if not connection when button is clicked", () => {
       const mockPopup = { closePopup: jest.fn() };
+      const mockMap = {
+        setZoom: jest.fn()
+      };
       mockMarker.bindPopup.mockReturnValue(mockPopup);
       const wrapper = mount(Popup, {
         mocks: {
@@ -238,7 +241,8 @@ describe("Popup", () => {
         propsData: {
           marker: mockMarker,
           station,
-          isConnection: false
+          isConnection: false,
+          map: mockMap
         }
       });
       wrapper.find("[data-test-id=add-to-station]").trigger("click");
@@ -246,7 +250,7 @@ describe("Popup", () => {
         "setStartingStation",
         station
       );
-      expect(mockStore.state.map.map.setZoom).toHaveBeenCalledWith(6);
+      expect(mockMap.setZoom).toHaveBeenCalledWith(6);
     });
   });
 });

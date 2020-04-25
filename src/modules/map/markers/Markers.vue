@@ -5,6 +5,7 @@
         :marker="point.marker"
         :station="point.station"
         :is-connection="!!point.isConnection"
+        :map="map"
       />
     </div>
   </div>
@@ -23,6 +24,11 @@ export default {
     return {
       popups: []
     };
+  },
+  props: {
+    map: {
+      type: Object
+    }
   },
   computed: {
     activeStation() {
@@ -68,7 +74,7 @@ export default {
       const marker = L.marker([station.lat, station.lng], {
         icon: this.generateIcon("purple")
       });
-      marker.addTo(this.$store.state.map.map);
+      marker.addTo(this.map);
       this.popups.push({
         station: station,
         marker
@@ -80,7 +86,7 @@ export default {
         pane: getPaneNameFromDuration(station.duration),
         icon: this.generateIcon("red")
       });
-      marker.addTo(this.$store.state.map.map);
+      marker.addTo(this.map);
       this.popups.push({
         station,
         marker,
