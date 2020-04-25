@@ -107,8 +107,6 @@ export default {
     resetTrip() {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
-      //TODO: can we use the data we already have in a non-blocking way instead of making this call?
-      this.$store.dispatch("fetchStartingStations");
       if (this.$route.name !== "home") {
         this.$router.push("/");
       }

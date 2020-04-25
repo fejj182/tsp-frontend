@@ -107,6 +107,17 @@ describe("Markers", () => {
         station
       );
     });
+
+    it("should add them when trip is reset", () => {
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.trip.savedTrip = [];
+      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+    });
   });
 
   describe("Connections", () => {

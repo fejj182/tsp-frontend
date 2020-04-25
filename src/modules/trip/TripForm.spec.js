@@ -279,13 +279,6 @@ describe("TripForm", () => {
         expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
       });
 
-      it("should dispatch fetchStartingStations action", () => {
-        wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockStore.dispatch).toHaveBeenCalledWith(
-          "fetchStartingStations"
-        );
-      });
-
       it("should change url to home when on named route", () => {
         wrapper = mount(TripForm, {
           mocks: {

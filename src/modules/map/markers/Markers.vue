@@ -50,6 +50,11 @@ export default {
     },
     startingStations: function() {
       this.addStartingMarkers();
+    },
+    savedTrip: function(trip) {
+      if (trip.length === 0) {
+        this.addStartingMarkers();
+      }
     }
   },
   methods: {

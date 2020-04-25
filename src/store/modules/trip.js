@@ -58,6 +58,7 @@ export const mutations = {
   RESET_TRIP: state => {
     state.stops = [];
     state.selectedStop = null;
+    state.savedTrip = [];
   },
   ADD_NEW_STOP: (state, stations) => {
     const prevStops = state.stops.map(stop => {
