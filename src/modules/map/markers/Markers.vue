@@ -63,7 +63,7 @@ export default {
   },
   methods: {
     random(index) {
-      return Math.ceil(Math.random() * index * 1000000);
+      return Math.random() * (index + 1);
     },
     addStartingMarkers() {
       this.resetMarkers();
