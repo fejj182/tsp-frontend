@@ -1,11 +1,10 @@
 <template>
   <div>
-    <div v-for="(point, index) in popups" :key="index">
+    <div v-for="(point, index) in popups" :key="random(index)">
       <Popup
         :marker="point.marker"
         :station="point.station"
         :is-connection="!!point.isConnection"
-        :map="map"
       />
     </div>
   </div>
@@ -47,10 +46,14 @@ export default {
   },
   watch: {
     connections: function(connections) {
-      this.addConnectionMarkers(connections);
+      if (connections.length > 0) {
+        this.addConnectionMarkers(connections);
+      }
     },
-    startingStations: function() {
-      this.addStartingMarkers();
+    startingStations: function(stations) {
+      if (stations.length > 0) {
+        this.addStartingMarkers();
+      }
     },
     savedTrip: function(trip) {
       if (trip.length === 0) {
@@ -59,6 +62,9 @@ export default {
     }
   },
   methods: {
+    random(index) {
+      return Math.ceil(Math.random() * index * 1000000);
+    },
     addStartingMarkers() {
       this.resetMarkers();
       setTimeout(() => {
@@ -76,7 +82,6 @@ export default {
       marker.on("click", () => {
         this.$store.dispatch("selectStartingInput", station);
       });
-
       this.popups.push({
         station: station,
         marker

@@ -9,11 +9,6 @@ export const state = {
 export const getters = {};
 
 export const actions = {
-  async setStartingStation({ dispatch, commit }, station) {
-    commit("CLEAR_ACTIVE_STATION");
-    dispatch("startTrip", station);
-    dispatch("confirmStop", station);
-  },
   async confirmStop({ dispatch, commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     commit("CLEAR_ACTIVE_CONNECTIONS");
@@ -36,9 +31,6 @@ export const mutations = {
   },
   SET_ACTIVE_CONNECTIONS(state, connections) {
     state.activeConnections = connections;
-  },
-  CLEAR_ACTIVE_STATION(state) {
-    state.activeStation = null;
   },
   CLEAR_ACTIVE_CONNECTIONS(state) {
     state.activeConnections = [];

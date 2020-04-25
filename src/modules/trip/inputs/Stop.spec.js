@@ -43,20 +43,6 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
   });
 
-  test("when stop changes, should trigger popup to open in store", () => {
-    const station = fakeStation();
-    const wrapper = shallowMount(Stop, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: {
-        stations: []
-      }
-    });
-    wrapper.find("[data-test-id=stop").vm.$emit("change", station);
-    expect(mockStore.dispatch).toHaveBeenCalledWith("openPopup", station);
-  });
-
   it("should use stations passed as props as autocomplete items", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });

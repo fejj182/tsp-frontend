@@ -98,11 +98,6 @@ describe("popups", () => {
         module.actions.resetTrip({ dispatch, commit });
         expect(dispatch).toHaveBeenCalledWith("resetMap");
       });
-
-      it("should dispatch closePopup action", () => {
-        module.actions.resetTrip({ dispatch, commit });
-        expect(dispatch).toHaveBeenCalledWith("closePopup");
-      });
     });
     describe("addNewStop", () => {
       it("should commit ADD_NEW_STOP", () => {
@@ -118,15 +113,38 @@ describe("popups", () => {
       });
     });
     describe("startTrip", () => {
-      it("should dispatch selectStartingInput", () => {
+      it("should commit SELECT_STARTING_STATION", () => {
         let station = {};
-        module.actions.startTrip({ dispatch }, station);
-        expect(dispatch).toHaveBeenCalledWith("selectStartingInput", station);
+        module.actions.startTrip({ dispatch, commit }, station);
+        expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
       });
       it("should dispatch resetTrip", () => {
         let station = {};
-        module.actions.startTrip({ dispatch }, station);
+        module.actions.startTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("resetTrip");
+      });
+      it("should dispatch confirmStop", () => {
+        let station = {};
+        module.actions.startTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
+      });
+    });
+
+    describe("addToTrip", () => {
+      it("addToTrip should commit SELECT_STARTING_STATION", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
+      });
+      it("addToTripshould dispatch resetTrip", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("resetMap");
+      });
+      it("should dispatch confirmStop", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
       });
     });
     describe("selectStartingInput", () => {

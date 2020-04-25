@@ -81,18 +81,6 @@ describe("StartingDestination", () => {
   });
 
   describe("On change", () => {
-    it("should dispatch confirmStop on change", () => {
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper
-        .find("[data-test-id=starting-destination]")
-        .vm.$emit("change", station);
-      expect(mockStore.dispatch).toBeCalledWith("confirmStop", station);
-    });
-
     it("should dispatch startTrip on change", () => {
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -106,7 +94,6 @@ describe("StartingDestination", () => {
     });
 
     it("should emit an alert if dispatch fails", async () => {
-      mockStore.dispatch.mockResolvedValueOnce();
       mockStore.dispatch.mockRejectedValueOnce();
       const wrapper = shallowMount(StartingDestination, {
         mocks: {

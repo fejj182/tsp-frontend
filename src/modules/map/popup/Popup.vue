@@ -36,14 +36,17 @@ export default {
     },
     isConnection: {
       type: Boolean
-    },
-    map: {
-      type: Object
     }
   },
   mounted() {
     this.bindPopup(this.marker);
-    if (this.open && this.station.name == this.open.name) {
+
+    const activeStation = this.$store.state.stations.activeStation;
+    if (
+      activeStation &&
+      !this.isConnection &&
+      this.station.name === activeStation.name
+    ) {
       this.popup.openPopup();
     }
   },
@@ -57,6 +60,9 @@ export default {
     duration() {
       const duration = this.station.duration;
       return toHoursAndMinutes(duration);
+    },
+    selectedStop() {
+      return this.$store.state.trip.selectedStop;
     }
   },
   methods: {
@@ -66,24 +72,12 @@ export default {
       });
     },
     addToTrip() {
-      if (this.isConnection) {
-        this.$store.dispatch("confirmStop", this.station);
-      } else {
-        this.popup.closePopup();
-        this.$store.dispatch("setStartingStation", this.station);
-        this.map.setZoom(6);
-      }
+      //TODO: should handle api call error in store
+      this.$store.dispatch("addToTrip", this.station);
     }
   },
   watch: {
-    marker(marker) {
-      // TODO: can remove this component if guaranteed to mount every time
-      this.bindPopup(marker);
-      if (this.open && this.station.name == this.open.name) {
-        this.popup.openPopup();
-      }
-    },
-    open(station) {
+    selectedStop(station) {
       if (station === null) {
         this.popup.closePopup();
       } else if (this.station.name == station.name) {

@@ -8,6 +8,7 @@ export const state = {
 };
 
 export const getters = {
+  //TODO: rename to showStopOptions?
   hasStops(state) {
     return (
       state.stops.length > 1 ||
@@ -28,13 +29,19 @@ export const actions = {
       commit("LOAD_TRIP", trip);
     }
   },
-  selectStop({ commit }, station) {
-    commit("SELECT_STOP", station);
-  },
   resetTrip({ dispatch, commit }) {
     dispatch("resetMap");
-    dispatch("closePopup");
     commit("RESET_TRIP");
+  },
+  startTrip({ dispatch, commit }, station) {
+    dispatch("resetTrip");
+    dispatch("confirmStop", station);
+    commit("SELECT_STARTING_STATION", station);
+  },
+  addToTrip({ dispatch, commit }, station) {
+    dispatch("resetMap");
+    dispatch("confirmStop", station);
+    commit("SELECT_STARTING_STATION", station);
   },
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
@@ -42,9 +49,8 @@ export const actions = {
   removeStop({ commit }) {
     commit("REMOVE_STOP");
   },
-  startTrip({ dispatch }, station) {
-    dispatch("resetTrip");
-    dispatch("selectStartingInput", station);
+  selectStop({ commit }, station) {
+    commit("SELECT_STOP", station);
   },
   selectStartingInput({ commit }, station) {
     commit("SELECT_STARTING_STATION", station);

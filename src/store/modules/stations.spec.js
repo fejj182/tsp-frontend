@@ -19,30 +19,6 @@ describe("stations", () => {
   const connections = [];
 
   describe("actions", () => {
-    describe("setStartingStation", () => {
-      let location, dispatch, commit;
-      beforeEach(() => {
-        jest.clearAllMocks();
-        location = {
-          lat: parseFloat(faker.address.latitude()),
-          lng: parseFloat(faker.address.longitude())
-        };
-        dispatch = jest.fn();
-        commit = jest.fn();
-      });
-
-      it("should call dispatch confirmStop", async () => {
-        const station = {};
-        await module.actions.setStartingStation({ dispatch, commit }, station);
-        await flushPromises();
-        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
-      });
-
-      it("should clear the active stations before calling the endpoint", async () => {
-        module.actions.setStartingStation({ dispatch, commit }, location);
-        expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_STATION");
-      });
-    });
     describe("confirmStop", () => {
       let commit, dispatch;
       beforeEach(() => {
@@ -121,13 +97,6 @@ describe("stations", () => {
       };
       module.mutations.SET_ACTIVE_CONNECTIONS(state, connections);
       expect(state.activeConnections).toEqual(connections);
-    });
-    test("CLEAR_ACTIVE_STATION should clear active station", () => {
-      const state = {
-        activeStation: {}
-      };
-      module.mutations.CLEAR_ACTIVE_STATION(state);
-      expect(state.activeStation).toBeNull();
     });
 
     test("CLEAR_ACTIVE_CONNECTIONS should clear active connections", () => {

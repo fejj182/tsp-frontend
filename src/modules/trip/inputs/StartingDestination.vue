@@ -45,9 +45,9 @@ export default {
       }
     },
     async onChangeStation(station) {
-      this.$store.dispatch("startTrip", station);
       try {
-        await this.$store.dispatch("confirmStop", station);
+        //TODO: should handle api call error in store
+        await this.$store.dispatch("startTrip", station);
       } catch (e) {
         this.$emit("alert");
       }

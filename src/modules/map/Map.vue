@@ -39,6 +39,13 @@ export default {
   computed: {
     activeDurationRange() {
       return this.$store.state.filters.activeDurationRange;
+    },
+    tripStarted() {
+      //TODO: could remove condition for stops if change behaviour of starting marker on click
+      return (
+        this.$store.state.trip.savedTrip.length > 0 &&
+        this.$store.state.trip.stops.length > 0
+      );
     }
   },
   methods: {
@@ -66,6 +73,13 @@ export default {
   watch: {
     activeDurationRange(range) {
       displayPanesInRange(this.panes, range);
+    },
+    tripStarted(started) {
+      if (started) {
+        setTimeout(() => {
+          this.myMap.setZoom(6);
+        }, 200);
+      }
     }
   }
 };

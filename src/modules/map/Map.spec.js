@@ -30,6 +30,10 @@ describe("Map", () => {
         },
         filters: {
           activeDurationRange: []
+        },
+        trip: {
+          savedTrip: [],
+          stops: []
         }
       }
     };
