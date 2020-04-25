@@ -3,10 +3,15 @@ import L from "leaflet";
 import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
+import paneUtils from "@/modules/map/panes/paneUtils";
 
 jest.mock("leaflet", () => ({
   map: jest.fn(),
   tileLayer: jest.fn()
+}));
+
+jest.mock("@/modules/map/panes/paneUtils", () => ({
+  displayPanesInRange: jest.fn()
 }));
 
 describe("Map", () => {
@@ -22,6 +27,9 @@ describe("Map", () => {
       state: {
         stations: {
           activeStation: null
+        },
+        filters: {
+          activeDurationRange: []
         }
       }
     };
@@ -64,30 +72,17 @@ describe("Map", () => {
   });
 
   it("should create panes", () => {
-    shallowMount(Map, {
-      mocks: {
-        $store: mockStore
-      }
-    });
-    expect(mockMap.createPane).toHaveBeenCalledTimes(numberOfPaneGroups);
-  });
-
-  it("should dispatch panes object of correct length", () => {
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
     });
-
+    expect(mockMap.createPane).toHaveBeenCalledTimes(numberOfPaneGroups);
     expect(Object.keys(wrapper.vm.panes).length).toBe(numberOfPaneGroups);
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      "addPanes",
-      wrapper.vm.panes
-    );
   });
 
   it("should set z-index of panes", () => {
-    var mockStyle = jest.fn();
+    const mockStyle = jest.fn();
     mockMap.createPane.mockReturnValue({
       style: mockStyle
     });
@@ -98,5 +93,23 @@ describe("Map", () => {
     });
 
     expect(mockStyle.zIndex).toEqual(650);
+  });
+
+  it("should update pane groups when component mounted", () => {
+    const mockStyle = jest.fn();
+    mockMap.createPane.mockReturnValue({
+      style: mockStyle
+    });
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    const mockActiveDurationRange = [1, 2];
+    mockStore.state.filters.activeDurationRange = mockActiveDurationRange;
+    expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
+      wrapper.vm.panes,
+      mockActiveDurationRange
+    );
   });
 });

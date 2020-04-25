@@ -8,6 +8,7 @@
 <script>
 import L from "leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
+import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Connections from "@/modules/map/connections/Connections.vue";
 
@@ -35,6 +36,11 @@ export default {
     this.createMap();
     this.createPanes();
   },
+  computed: {
+    activeDurationRange() {
+      return this.$store.state.filters.activeDurationRange;
+    }
+  },
   methods: {
     createMap() {
       this.myMap = L.map("map");
@@ -55,8 +61,11 @@ export default {
         }
         this.panes[paneName] = pane;
       }
-
-      this.$store.dispatch("addPanes", this.panes);
+    }
+  },
+  watch: {
+    activeDurationRange(range) {
+      displayPanesInRange(this.panes, range);
     }
   }
 };
