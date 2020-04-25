@@ -258,7 +258,8 @@ describe("popups", () => {
     describe("SELECT_STARTING_STATION", () => {
       it("should add starting station", () => {
         let state = {
-          startingStation: null
+          startingStation: null,
+          savedTrip: []
         };
         const station = {};
         module.mutations.SELECT_STARTING_STATION(state, station);
@@ -270,6 +271,16 @@ describe("popups", () => {
         };
         const station = {};
         module.mutations.SELECT_STARTING_STATION(state, station);
+        expect(state.savedTrip).toEqual([station]);
+      });
+      it("should do nothing if trip already started", () => {
+        let state = {
+          startingStation: null,
+          savedTrip: [{}]
+        };
+        const station = {};
+        module.mutations.SELECT_STARTING_STATION(state, station);
+        expect(state.startingStation).toEqual(null);
         expect(state.savedTrip).toEqual([station]);
       });
     });

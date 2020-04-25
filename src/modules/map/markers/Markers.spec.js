@@ -51,6 +51,19 @@ describe("Markers", () => {
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
     });
 
+    it("should remove the connection markers from the map when the starting stations are set", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      const station = getStation();
+      mockStore.state.stations.activeConnections = [{}];
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      mockStore.state.stations.activeStation = station;
+      expect(mockMarker.remove).toHaveBeenCalledTimes(1);
+    });
+
     it("should remove the inactive starting station markers from the map when the connections are set", () => {
       const wrapper = shallowMount(Markers, {
         mocks: {
@@ -77,35 +90,6 @@ describe("Markers", () => {
         ["click", expect.any(Function)],
         ["click", expect.any(Function)]
       ]);
-    });
-
-    it("should dispatch selectStartingInput when onStartingMarkerClick called and station not starting station", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      const station = getStation();
-      wrapper.vm.onStartingMarkerClick(station);
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        "selectStartingInput",
-        station
-      );
-    });
-
-    it("should not dispatch selectStartingInput when onStartingMarkerClick called and station is starting station", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      const station = getStation();
-      mockStore.state.trip.startingStation = station;
-      wrapper.vm.onStartingMarkerClick(station);
-      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
-        "selectStartingInput",
-        station
-      );
     });
 
     it("should add them when trip is reset", () => {
@@ -153,29 +137,6 @@ describe("Markers", () => {
       expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
     });
 
-    it("should remove the inactive old markers when connections change", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-
-      const activeStation = {
-        marker: { remove: jest.fn() },
-        station: getStation()
-      };
-      const inactiveStation = {
-        marker: { remove: jest.fn() },
-        station: getStation()
-      };
-
-      mockStore.state.stations.activeStation = activeStation.station;
-      wrapper.vm.popups = [activeStation, inactiveStation];
-      mockStore.state.stations.activeConnections = [getStation()];
-
-      expect(inactiveStation.marker.remove).toBeCalledTimes(1);
-    });
-
     it("should set on click function on marker", () => {
       shallowMount(Markers, {
         mocks: {
@@ -187,46 +148,6 @@ describe("Markers", () => {
         ["click", expect.any(Function)],
         ["click", expect.any(Function)]
       ]);
-    });
-
-    it("should dispatch selectStop when onMarkerClick called if connection not selected", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      const connection = getStation();
-      wrapper.vm.onConnectionMarkerClick(connection);
-      expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", connection);
-    });
-
-    it("should not dispatch selectStop when onMarkerClick called if connection selected", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      const connection = getStation();
-      mockStore.state.trip.selectedStop = connection;
-      wrapper.vm.onConnectionMarkerClick(connection);
-      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
-        "selectStop",
-        connection
-      );
-    });
-
-    it("should reset click handlers of other connections", () => {
-      const wrapper = shallowMount(Markers, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      wrapper.vm.onConnectionMarkerClick(
-        wrapper.vm.$store.state.stations.activeConnections[0]
-      );
-      //TODO: can we be more strict with the assertion expect.any(Function)
-      expect(mockMarker.on).toHaveBeenCalledWith("click", expect.any(Function));
     });
   });
 

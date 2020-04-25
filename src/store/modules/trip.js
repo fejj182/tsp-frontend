@@ -84,8 +84,10 @@ export const mutations = {
     state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
   },
   SELECT_STARTING_STATION(state, station) {
-    state.startingStation = station;
-    state.savedTrip = [station];
+    if (state.savedTrip.length === 0) {
+      state.startingStation = station;
+      state.savedTrip = [station];
+    }
   },
   LOAD_TRIP(state, trip) {
     state.startingStation = trip[0];

@@ -22,7 +22,8 @@ export default {
   },
   data: function() {
     return {
-      popups: []
+      popups: [],
+      markers: []
     };
   },
   props: {
@@ -46,13 +47,7 @@ export default {
   },
   watch: {
     connections: function(connections) {
-      this.resetMarkers();
-      if (this.activeStation) {
-        this.addActiveMarker(this.activeStation);
-      }
-      connections.forEach(connection => {
-        this.addConnectionMarker(connection);
-      });
+      this.addConnectionMarkers(connections);
     },
     startingStations: function() {
       this.addStartingMarkers();
@@ -65,21 +60,34 @@ export default {
   },
   methods: {
     addStartingMarkers() {
+      this.resetMarkers();
       this.startingStations.forEach(station => {
-        const marker = this.addActiveMarker(station);
-        marker.on("click", () => this.onStartingMarkerClick(station));
+        this.addStartingMarker(station);
       });
     },
-    addActiveMarker(station) {
+    addStartingMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
         icon: this.generateIcon("purple")
       });
       marker.addTo(this.map);
+      this.markers.push(marker);
+      marker.on("click", () => {
+        this.$store.dispatch("selectStartingInput", station);
+      });
+
       this.popups.push({
         station: station,
         marker
       });
-      return marker;
+    },
+    addConnectionMarkers(connections) {
+      this.resetMarkers();
+      if (this.activeStation) {
+        this.addStartingMarker(this.activeStation);
+      }
+      connections.forEach(connection => {
+        this.addConnectionMarker(connection);
+      });
     },
     addConnectionMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
@@ -87,12 +95,14 @@ export default {
         icon: this.generateIcon("red")
       });
       marker.addTo(this.map);
+      this.markers.push(marker);
+
+      marker.on("click", () => this.$store.dispatch("selectStop", station));
       this.popups.push({
         station,
         marker,
         isConnection: true
       });
-      marker.on("click", () => this.onConnectionMarkerClick(station));
     },
     generateIcon(colour) {
       return L.divIcon({
@@ -103,20 +113,11 @@ export default {
       });
     },
     resetMarkers() {
-      this.popups.forEach(station => {
-        station.marker.remove();
+      this.markers.forEach(marker => {
+        marker.remove();
       });
+      this.markers = [];
       this.popups = [];
-    },
-    onStartingMarkerClick(station) {
-      if (this.$store.state.trip.startingStation !== station) {
-        this.$store.dispatch("selectStartingInput", station);
-      }
-    },
-    onConnectionMarkerClick(connection) {
-      if (this.$store.state.trip.selectedStop !== connection) {
-        this.$store.dispatch("selectStop", connection);
-      }
     }
   }
 };
