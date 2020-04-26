@@ -15,7 +15,7 @@
       </v-alert>
     </v-fade-transition>
     <v-expansion-panels focusable v-model="panel" multiple>
-      <v-expansion-panel v-if="connectionsExist" data-test-id="filter-panel">
+      <v-expansion-panel v-if="tripStarted" data-test-id="filter-panel">
         <v-expansion-panel-header>
           Filter
         </v-expansion-panel-header>
@@ -61,6 +61,13 @@ export default {
   computed: {
     connectionsExist() {
       return this.$store.state.stations.activeConnections.length > 0;
+    },
+    tripStarted() {
+      //TODO: change here and in Map.vue
+      return (
+        this.$store.state.trip.savedTrip.length > 0 &&
+        this.$store.state.trip.stops.length > 0
+      );
     }
   }
 };

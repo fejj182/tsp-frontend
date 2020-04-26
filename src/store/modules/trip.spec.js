@@ -269,17 +269,6 @@ describe("popups", () => {
         ]);
       });
 
-      it("should remove last stop in state - no stop selected yet ", () => {
-        let state = {
-          startingStation: {},
-          stops: [{ stations, readOnly: false }],
-          savedTrip: [{}]
-        };
-        module.mutations.REMOVE_STOP(state);
-        expect(state.stops).toEqual([]);
-        expect(state.startingStation).toEqual(null);
-      });
-
       it("should remove last stop in savedTrip", () => {
         let state = {
           stops: [{ stations, readOnly: true }, { stations, readOnly: false }],

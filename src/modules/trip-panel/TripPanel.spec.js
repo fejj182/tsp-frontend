@@ -15,7 +15,11 @@ describe("Trip Panel", () => {
   beforeEach(() => {
     mockStore = {
       state: {
-        stations: _.cloneDeep(stations)
+        stations: _.cloneDeep(stations),
+        trip: {
+          savedTrip: [],
+          stops: []
+        }
       }
     };
     mockRoute = {
@@ -36,7 +40,8 @@ describe("Trip Panel", () => {
     });
 
     it("should contain first panel and filters when connections are in the store", () => {
-      mockStore.state.stations.activeConnections = [{}];
+      mockStore.state.trip.savedTrip = [{}];
+      mockStore.state.trip.stops = [{}];
       const wrapper = shallowMount(TripPanel, {
         mocks: {
           $store: mockStore,
@@ -66,9 +71,11 @@ describe("Trip Panel", () => {
           }
         }
       });
-      expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(true);
+      expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(
+        true
+      );
       expect(wrapper.find(TripForm).exists()).toBe(true);
-    })
+    });
   });
 
   describe("Info alert", () => {
