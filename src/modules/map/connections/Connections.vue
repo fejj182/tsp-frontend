@@ -11,9 +11,14 @@ export default {
       geoJsonLayer: null
     };
   },
+  props: {
+    map: {
+      type: Object
+    }
+  },
   methods: {
     initGeoJSONLayer() {
-      const map = this.$store.state.map.map;
+      const map = this.map;
       if (this.geoJsonLayer) {
         this.geoJsonLayer.removeFrom(map);
       }

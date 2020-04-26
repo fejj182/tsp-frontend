@@ -17,8 +17,6 @@
 </template>
 
 <script>
-import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
-
 export default {
   data() {
     return {
@@ -27,7 +25,7 @@ export default {
     };
   },
   mounted() {
-    this.updateStationsByDuration();
+    this.$store.dispatch("updateDurationRange", this.paneGroupRange);
   },
   computed: {
     paneGroupRange() {
@@ -36,11 +34,6 @@ export default {
   },
   methods: {
     onSlide() {
-      this.updateStationsByDuration();
-    },
-    updateStationsByDuration() {
-      const panes = this.$store.state.map.panes;
-      displayPanesInRange(panes, this.paneGroupRange);
       this.$store.dispatch("updateDurationRange", this.paneGroupRange);
     },
     thumbLabel(value) {

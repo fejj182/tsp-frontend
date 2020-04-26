@@ -6,10 +6,12 @@
       :items="items"
       filled
       rounded
-      :autofocus="autofocus"
+      :autofocus="isLastStop"
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
+      :append-outer-icon="isLastStop ? 'mdi-close' : ''"
+      @click:append-outer="removeStop"
     >
       <template v-slot:item="{ item }">
         {{ item.text }} -
@@ -49,7 +51,7 @@ export default {
     }
   },
   computed: {
-    autofocus() {
+    isLastStop() {
       return this.id === "stop-" + this.$store.state.trip.stops.length;
     },
     items() {
@@ -86,7 +88,9 @@ export default {
   methods: {
     onChangeStation(station) {
       this.$store.dispatch("selectStop", station);
-      this.$store.dispatch("openPopup", station);
+    },
+    removeStop() {
+      this.$store.dispatch("removeStop");
     }
   }
 };

@@ -1,7 +1,6 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import paneUtils from "@/modules/map/panes/paneUtils";
 
 import ConnectionFilters from "./ConnectionFilters.vue";
 
@@ -36,10 +35,6 @@ describe("ConnectionFilters", () => {
         $store: mockStore
       }
     });
-    expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
-      mockPanes,
-      wrapper.vm.paneGroupRange
-    );
     expect(mockStore.dispatch).toHaveBeenCalledWith(
       "updateDurationRange",
       wrapper.vm.paneGroupRange
@@ -52,8 +47,10 @@ describe("ConnectionFilters", () => {
       }
     });
     wrapper.find("input").trigger("click");
-    expect(paneUtils.displayPanesInRange).toHaveBeenCalledTimes(2);
-    expect(mockStore.dispatch).toHaveBeenCalledTimes(2);
+    expect(mockStore.dispatch.mock.calls).toEqual([
+      ["updateDurationRange", wrapper.vm.paneGroupRange],
+      ["updateDurationRange", wrapper.vm.paneGroupRange]
+    ]);
   });
 
   it("should show thumb label", () => {

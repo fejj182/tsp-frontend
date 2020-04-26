@@ -10,7 +10,7 @@ jest.mock("leaflet", () => ({
 }));
 
 describe("Markers", () => {
-  let mockStore, wrapper, mockMap;
+  let mockStore, mockMap;
   const mockMarker = {
     addTo: jest.fn(),
     remove: jest.fn(),
@@ -28,150 +28,215 @@ describe("Markers", () => {
           activeConnections: [],
           startingStations: []
         },
-        map: {
-          map: {}
-        },
         trip: {
-          startingStation: null
+          startingStation: null,
+          savedTrip: []
         }
       }
     };
-    mockMap = mockStore.state.map.map;
-    wrapper = shallowMount(Markers, {
-      mocks: {
-        $store: mockStore
-      }
-    });
+    mockMap = {};
   });
 
   describe("Starting markers", () => {
-    it("should add the starting station markers to the map when the store is updated", () => {
+    it("should add the starting station markers to the map when the store is updated", done => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+        done();
+      }, 0);
+    });
+
+    it("should not add the starting station markers to the map when there is a saved trip", done => {
+      mockStore.state.trip.savedTrip = [{}];
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).not.toEqual([[mockMap], [mockMap]]);
+        done();
+      }, 0);
+    });
+
+    it("should remove the connection markers from the map when the starting stations are set", () => {
+      mockStore.state.stations.activeConnections = [{}];
+      const station = getStation();
+      mockStore.state.stations.activeStation = station;
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      setTimeout(() => {
+        expect(mockMarker.remove).toHaveBeenCalledTimes(1);
+      }, 0);
     });
 
     it("should remove the inactive starting station markers from the map when the connections are set", () => {
+      const wrapper = shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       const station = getStation();
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       mockStore.state.stations.activeStation = station;
-      mockStore.state.stations.activeConnections = [];
-      expect(wrapper.findAll(Popup).length).toEqual(1);
-      expect(wrapper.find(Popup).props().station).toEqual(station);
-      expect(mockMarker.remove).toHaveBeenCalledTimes(2);
+      mockStore.state.stations.activeConnections = [{}];
+      setTimeout(() => {
+        expect(wrapper.findAll(Popup).length).toEqual(2);
+        expect(wrapper.find(Popup).props().station).toEqual(station);
+        expect(mockMarker.remove).toHaveBeenCalledTimes(2);
+      }, 0);
     });
 
     it("should set on click function on marker", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      expect(mockMarker.on.mock.calls).toEqual([
-        ["click", expect.any(Function)],
-        ["click", expect.any(Function)]
-      ]);
+      setTimeout(() => {
+        expect(mockMarker.on.mock.calls).toEqual([
+          ["click", expect.any(Function)],
+          ["click", expect.any(Function)]
+        ]);
+      }, 0);
     });
 
-    it("should dispatch selectStartingInput when onStartingMarkerClick called and station not starting station", () => {
-      const station = getStation();
-      wrapper.vm.onStartingMarkerClick(station);
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        "selectStartingInput",
-        station
-      );
-    });
-
-    it("should not dispatch selectStartingInput when onStartingMarkerClick called and station is starting station", () => {
-      const station = getStation();
-      mockStore.state.trip.startingStation = station;
-      wrapper.vm.onStartingMarkerClick(station);
-      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
-        "selectStartingInput",
-        station
-      );
+    it("should add them when trip is reset", () => {
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
+      mockStore.state.trip.savedTrip = [];
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
   });
 
   describe("Connections", () => {
-    it("should add the connections to the map when the store is updated", () => {
+    it("should add the connections to the map when the connections are set in the store", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(L.marker).toBeCalledTimes(2);
-      expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      setTimeout(() => {
+        expect(L.marker).toBeCalledTimes(2);
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
 
-    it("should remove the inactive old markers when connections change", () => {
-      const activeStation = {
-        marker: { remove: jest.fn() },
-        station: getStation()
-      };
-      const inactiveStation = {
-        marker: { remove: jest.fn() },
-        station: getStation()
-      };
-
-      mockStore.state.stations.activeStation = activeStation.station;
-      wrapper.vm.popups = [activeStation, inactiveStation];
-      mockStore.state.stations.activeConnections = [getStation()];
-
-      expect(inactiveStation.marker.remove).toBeCalledTimes(1);
+    it("should add the starting markers to the map when the connections are reset to empty", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
+      mockStore.state.stations.activeConnections = [];
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      setTimeout(() => {
+        expect(L.marker).toBeCalledTimes(2);
+        expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+      }, 0);
     });
 
     it("should set on click function on marker", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(mockMarker.on.mock.calls).toEqual([
-        ["click", expect.any(Function)],
-        ["click", expect.any(Function)]
-      ]);
-    });
-
-    it("should dispatch selectStop when onMarkerClick called if connection not selected", () => {
-      const connection = getStation();
-      wrapper.vm.onConnectionMarkerClick(connection);
-      expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", connection);
-    });
-
-    it("should not dispatch selectStop when onMarkerClick called if connection selected", () => {
-      const connection = getStation();
-      mockStore.state.trip.selectedStop = connection;
-      wrapper.vm.onConnectionMarkerClick(connection);
-      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
-        "selectStop",
-        connection
-      );
-    });
-
-    it("should reset click handlers of other connections", () => {
-      mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      wrapper.vm.onConnectionMarkerClick(
-        wrapper.vm.$store.state.stations.activeConnections[0]
-      );
-      //TODO: can we be more strict with the assertion expect.any(Function)
-      expect(mockMarker.on).toHaveBeenCalledWith("click", expect.any(Function));
+      setTimeout(() => {
+        expect(mockMarker.on.mock.calls).toEqual([
+          ["click", expect.any(Function)],
+          ["click", expect.any(Function)]
+        ]);
+      }, 0);
     });
   });
 
   describe("Icons", () => {
     it("should be generated when a marker is generated", () => {
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       mockStore.state.stations.activeStation = getStation();
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
-      expect(L.divIcon).toBeCalledTimes(3);
+      setTimeout(() => {
+        expect(L.divIcon).toBeCalledTimes(3);
+      }, 0);
     });
   });
 
   describe("Popups", () => {
     it("should not create Popups if there are no markers", () => {
+      const wrapper = shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       expect(wrapper.find(Popup).exists()).toBe(false);
     });
 
     it("should create starting station popups", () => {
+      const wrapper = shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       const popups = wrapper.findAll(Popup);
-      expect(popups.length).toBe(2);
+      setTimeout(() => {
+        expect(popups.length).toBe(2);
+      }, 0);
     });
 
     it("should create connection popups", () => {
+      const wrapper = shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        }
+      });
       mockStore.state.stations.activeConnections = [getStation(), getStation()];
       const popups = wrapper.findAll(Popup);
-      expect(popups.length).toBe(2);
-      popups.wrappers.forEach(popup => {
-        expect(popup.props().isConnection).toBe(true);
-      });
+      setTimeout(() => {
+        expect(popups.length).toBe(2);
+        popups.wrappers.forEach(popup => {
+          expect(popup.props().isConnection).toBe(true);
+        });
+      }, 0);
     });
   });
 

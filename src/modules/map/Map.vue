@@ -1,12 +1,22 @@
 <template>
-  <div id="map"></div>
+  <div id="map">
+    <Markers :map="myMap" />
+    <Connections :map="myMap" />
+  </div>
 </template>
 
 <script>
 import L from "leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
+import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
+import Markers from "@/modules/map/markers/Markers.vue";
+import Connections from "@/modules/map/connections/Connections.vue";
 
 export default {
+  components: {
+    Markers,
+    Connections
+  },
   data() {
     return {
       centreCoords: [40.7067997, 0.5801695],
@@ -26,6 +36,18 @@ export default {
     this.createMap();
     this.createPanes();
   },
+  computed: {
+    activeDurationRange() {
+      return this.$store.state.filters.activeDurationRange;
+    },
+    tripStarted() {
+      //TODO: could remove condition for stops if change behaviour of starting marker on click
+      return (
+        this.$store.state.trip.savedTrip.length > 0 &&
+        this.$store.state.trip.stops.length > 0
+      );
+    }
+  },
   methods: {
     createMap() {
       this.myMap = L.map("map");
@@ -35,7 +57,6 @@ export default {
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
         this.tileOptions
       ).addTo(this.myMap);
-      this.$store.dispatch("addMap", this.myMap);
     },
     createPanes() {
       for (let i = 0; i < paneConfigs.NUMBER_OF_PANES; i++) {
@@ -47,8 +68,18 @@ export default {
         }
         this.panes[paneName] = pane;
       }
-
-      this.$store.dispatch("addPanes", this.panes);
+    }
+  },
+  watch: {
+    activeDurationRange(range) {
+      displayPanesInRange(this.panes, range);
+    },
+    tripStarted(started) {
+      if (started) {
+        setTimeout(() => {
+          this.myMap.setZoom(6);
+        }, 200);
+      }
     }
   }
 };

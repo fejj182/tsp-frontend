@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="(point, index) in popups" :key="index">
+    <div v-for="(point, index) in popups" :key="random(index)">
       <Popup
         :marker="point.marker"
         :station="point.station"
@@ -21,8 +21,14 @@ export default {
   },
   data: function() {
     return {
-      popups: []
+      popups: [],
+      markers: []
     };
+  },
+  props: {
+    map: {
+      type: Object
+    }
   },
   computed: {
     activeStation() {
@@ -33,49 +39,86 @@ export default {
     },
     startingStations() {
       return this.$store.state.stations.startingStations;
+    },
+    savedTrip() {
+      return this.$store.state.trip.savedTrip;
     }
   },
   watch: {
-    connections: function() {
-      this.resetMarkers();
-      if (this.activeStation) {
-        this.addActiveMarker(this.activeStation);
+    connections: function(connections) {
+      if (connections.length > 0) {
+        this.addConnectionMarkers(connections);
       }
-      this.connections.forEach(connection => {
-        this.addConnectionMarker(connection);
-      });
     },
-    startingStations: function() {
-      this.startingStations.forEach(station => {
-        const marker = this.addActiveMarker(station);
-        marker.on("click", () => this.onStartingMarkerClick(station));
-      });
+    startingStations: function(stations) {
+      if (stations.length > 0 && this.savedTrip.length === 0) {
+        this.addStartingMarkers();
+      }
+    },
+    savedTrip: function(trip) {
+      if (trip.length === 0) {
+        this.addStartingMarkers();
+      }
     }
   },
   methods: {
-    addActiveMarker(station) {
+    random(index) {
+      return Math.random() * (index + 1);
+    },
+    resetMarkers() {
+      this.markers.forEach(marker => {
+        marker.remove();
+      });
+      this.markers = [];
+      this.popups = [];
+    },
+    addStartingMarkers() {
+      this.resetMarkers();
+      setTimeout(() => {
+        this.startingStations.forEach(station => {
+          this.addStartingMarker(station);
+        });
+      }, 0);
+    },
+    addStartingMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
         icon: this.generateIcon("purple")
       });
-      marker.addTo(this.$store.state.map.map);
+      marker.addTo(this.map);
+      this.markers.push(marker);
+      marker.on("click", () => {
+        this.$store.dispatch("selectStartingInput", station);
+      });
       this.popups.push({
         station: station,
         marker
       });
-      return marker;
+    },
+    addConnectionMarkers(connections) {
+      this.resetMarkers();
+      if (this.activeStation) {
+        this.addStartingMarker(this.activeStation);
+      }
+      setTimeout(() => {
+        connections.forEach(connection => {
+          this.addConnectionMarker(connection);
+        });
+      }, 0);
     },
     addConnectionMarker(station) {
       const marker = L.marker([station.lat, station.lng], {
         pane: getPaneNameFromDuration(station.duration),
         icon: this.generateIcon("red")
       });
-      marker.addTo(this.$store.state.map.map);
+      marker.addTo(this.map);
+      this.markers.push(marker);
+
+      marker.on("click", () => this.$store.dispatch("selectStop", station));
       this.popups.push({
         station,
         marker,
         isConnection: true
       });
-      marker.on("click", () => this.onConnectionMarkerClick(station));
     },
     generateIcon(colour) {
       return L.divIcon({
@@ -84,22 +127,6 @@ export default {
         iconSize: [13.5, 18],
         className: `div-icon-${colour}`
       });
-    },
-    resetMarkers() {
-      this.popups.forEach(station => {
-        station.marker.remove();
-      });
-      this.popups = [];
-    },
-    onStartingMarkerClick(station) {
-      if (this.$store.state.trip.startingStation !== station) {
-        this.$store.dispatch("selectStartingInput", station);
-      }
-    },
-    onConnectionMarkerClick(connection) {
-      if (this.$store.state.trip.selectedStop !== connection) {
-        this.$store.dispatch("selectStop", connection);
-      }
     }
   }
 };

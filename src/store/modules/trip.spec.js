@@ -65,9 +65,14 @@ describe("popups", () => {
       dispatch = jest.fn();
     });
     describe("fetchTrip", () => {
+      it("should dispatch fetchStartingStations", () => {
+        let tripAlias = { alias: "some-alias" };
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
+        expect(dispatch).toBeCalledWith("fetchStartingStations");
+      });
       it("should call tripApi", () => {
         let tripAlias = { alias: "some-alias" };
-        module.actions.fetchTrip({ commit }, tripAlias);
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
         expect(tripApi.get).toHaveBeenCalledWith("some-alias");
       });
       it("should put first station in startingStation", async () => {
@@ -76,22 +81,22 @@ describe("popups", () => {
         let trip = [barcelona, valencia];
         tripApi.get.mockReturnValue(trip);
         let tripAlias = { alias: "some-alias" };
-        module.actions.fetchTrip({ commit }, tripAlias);
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith("LOAD_TRIP", trip);
       });
     });
     describe("selectStop", () => {
-      it("should commit SELECT_STOP to the store", () => {
+      it("should commit SELECT_STOP", () => {
         let connection = { id: "1" };
         module.actions.selectStop({ dispatch, commit }, connection);
         expect(commit).toHaveBeenCalledWith("SELECT_STOP", connection);
       });
     });
     describe("resetTrip", () => {
-      it("should commit CLEAR_STOPS to the store", () => {
+      it("should commit RESET_TRIP", () => {
         module.actions.resetTrip({ dispatch, commit });
-        expect(commit).toHaveBeenCalledWith("CLEAR_STOPS");
+        expect(commit).toHaveBeenCalledWith("RESET_TRIP");
       });
 
       it("should dispatch resetMap action", () => {
@@ -100,22 +105,72 @@ describe("popups", () => {
       });
     });
     describe("addNewStop", () => {
-      it("should commit ADD_NEW_STOP to the store", () => {
+      it("should commit ADD_NEW_STOP", () => {
         let payload = { stations: {} };
         module.actions.addNewStop({ commit }, payload);
         expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", payload.stations);
       });
     });
+    describe("removeStop", () => {
+      it("should commit REMOVE_STOP", () => {
+        let state = {
+          savedTrip: []
+        };
+        module.actions.removeStop({ commit, dispatch, state });
+        expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
+        expect(dispatch).not.toHaveBeenCalledWith(
+          "reloadConnections",
+          expect.any(Object)
+        );
+      });
+
+      it("should dispatch reloadConnections if savedTrip contains more than 1 station", () => {
+        const startingDestination = {};
+        const prevStations = [{}, {}];
+        let state = {
+          savedTrip: [startingDestination, {}],
+          stops: [{ stations: prevStations }, { stations: [] }]
+        };
+        module.actions.removeStop({ commit, dispatch, state });
+        expect(dispatch).toHaveBeenCalledWith("reloadConnections", {
+          station: startingDestination,
+          connections: prevStations
+        });
+      });
+    });
     describe("startTrip", () => {
-      it("should dispatch selectStartingInput", () => {
+      it("should commit ADD_STARTING_STATION", () => {
         let station = {};
-        module.actions.startTrip({ dispatch }, station);
-        expect(dispatch).toHaveBeenCalledWith("selectStartingInput", station);
+        module.actions.startTrip({ dispatch, commit }, station);
+        expect(commit).toHaveBeenCalledWith("ADD_STARTING_STATION", station);
       });
       it("should dispatch resetTrip", () => {
         let station = {};
-        module.actions.startTrip({ dispatch }, station);
+        module.actions.startTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("resetTrip");
+      });
+      it("should dispatch confirmStop", () => {
+        let station = {};
+        module.actions.startTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
+      });
+    });
+
+    describe("addToTrip", () => {
+      it("addToTrip should commit ADD_STARTING_STATION", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(commit).toHaveBeenCalledWith("ADD_STARTING_STATION", station);
+      });
+      it("addToTripshould dispatch resetTrip", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("resetMap");
+      });
+      it("should dispatch confirmStop", () => {
+        let station = {};
+        module.actions.addToTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
       });
     });
     describe("selectStartingInput", () => {
@@ -137,15 +192,17 @@ describe("popups", () => {
         expect(state.selectedStop).toEqual(selectedStop);
       });
     });
-    describe("CLEAR_STOPS", () => {
+    describe("RESET_TRIP", () => {
       it("should clear stops from state", () => {
         let state = {
           stops: [{ connections: [] }],
-          selectedStop: 1
+          selectedStop: 1,
+          savedTrip: [{}]
         };
-        module.mutations.CLEAR_STOPS(state);
+        module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
         expect(state.selectedStop).toEqual(null);
+        expect(state.savedTrip).toEqual([]);
       });
     });
     describe("ADD_NEW_STOP", () => {
@@ -155,13 +212,12 @@ describe("popups", () => {
       });
       it("should add stations for the next stop", () => {
         let state = {
-          stops: [{ stations }],
-          savedTrip: []
+          stops: [{ stations }]
         };
         module.mutations.ADD_NEW_STOP(state, stations);
         expect(state.stops).toEqual([
           { stations, readOnly: true },
-          { stations }
+          { stations, readOnly: false }
         ]);
       });
       it("should add selectedStop to the savedTrip", () => {
@@ -175,7 +231,7 @@ describe("popups", () => {
       });
       it("should not add selectedStop to the savedTrip when it is null", () => {
         let state = {
-          stops: [{ stations }],
+          stops: [],
           savedTrip: [{}],
           selectedStop: null
         };
@@ -192,22 +248,86 @@ describe("popups", () => {
         expect(state.selectedStop).toBe(null);
       });
     });
-    describe("SELECT_STARTING_STATION", () => {
-      it("should add starting station", () => {
-        let state = {
-          startingStation: null
-        };
-        const station = {};
-        module.mutations.SELECT_STARTING_STATION(state, station);
-        expect(state.startingStation).toEqual(station);
+    describe("REMOVE_STOP", () => {
+      let stations;
+      beforeEach(() => {
+        stations = [];
       });
+      it("should remove last stop in state", () => {
+        let state = {
+          stops: [
+            { stations, readOnly: true },
+            { stations, readOnly: true },
+            { stations, readOnly: false }
+          ],
+          savedTrip: [{}, {}, {}, {}]
+        };
+        module.mutations.REMOVE_STOP(state);
+        expect(state.stops).toEqual([
+          { stations, readOnly: true },
+          { stations, readOnly: false }
+        ]);
+      });
+
+      it("should remove last stop in state - no stop selected yet ", () => {
+        let state = {
+          startingStation: {},
+          stops: [{ stations, readOnly: false }],
+          savedTrip: [{}]
+        };
+        module.mutations.REMOVE_STOP(state);
+        expect(state.stops).toEqual([]);
+        expect(state.startingStation).toEqual(null);
+      });
+
+      it("should remove last stop in savedTrip", () => {
+        let state = {
+          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          savedTrip: [{}, {}],
+          selectedStop: {}
+        };
+        module.mutations.REMOVE_STOP(state);
+        expect(state.savedTrip).toEqual([{}]);
+      });
+      it("should load selectedStop with previous last stop in trip", () => {
+        let state = {
+          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          savedTrip: [{}, { name: "lastSavedStop" }],
+          selectedStop: {}
+        };
+        module.mutations.REMOVE_STOP(state, stations);
+        expect(state.selectedStop).toEqual({ name: "lastSavedStop" });
+      });
+    });
+    describe("ADD_STARTING_STATION", () => {
       it("should create new savedTrip", () => {
         let state = {
           savedTrip: []
         };
         const station = {};
-        module.mutations.SELECT_STARTING_STATION(state, station);
+        module.mutations.ADD_STARTING_STATION(state, station);
         expect(state.savedTrip).toEqual([station]);
+      });
+      it("should do nothing if trip already started", () => {
+        let state = {
+          startingStation: null,
+          savedTrip: [{}]
+        };
+        const station = {};
+        module.mutations.ADD_STARTING_STATION(state, station);
+        expect(state.startingStation).toEqual(null);
+        expect(state.savedTrip).toEqual([station]);
+      });
+    });
+    describe("SELECT_STARTING_STATION", () => {
+      it("should select starting station", () => {
+        let state = {
+          startingStation: null,
+          savedTrip: []
+        };
+        const station = {};
+        module.mutations.SELECT_STARTING_STATION(state, station);
+        expect(state.startingStation).toEqual(station);
       });
     });
     describe("LOAD_TRIP", () => {

@@ -8,6 +8,7 @@ export const state = {
 };
 
 export const getters = {
+  //TODO: rename to showStopOptions?
   hasStops(state) {
     return (
       state.stops.length > 1 ||
@@ -22,28 +23,46 @@ export const getters = {
 };
 
 export const actions = {
-  async fetchTrip({ commit }, payload) {
+  async fetchTrip({ commit, dispatch }, payload) {
+    dispatch("fetchStartingStations");
     const trip = await tripApi.get(payload.alias);
     if (trip && trip.length > 0) {
       commit("LOAD_TRIP", trip);
     }
   },
-  selectStop({ commit }, station) {
-    commit("SELECT_STOP", station);
-  },
   resetTrip({ dispatch, commit }) {
     dispatch("resetMap");
-    commit("CLEAR_STOPS");
+    commit("RESET_TRIP");
+  },
+  startTrip({ dispatch, commit }, station) {
+    dispatch("resetTrip");
+    dispatch("confirmStop", station);
+    commit("ADD_STARTING_STATION", station);
+  },
+  addToTrip({ dispatch, commit }, station) {
+    dispatch("resetMap");
+    dispatch("confirmStop", station);
+    commit("ADD_STARTING_STATION", station);
+  },
+  selectStartingInput({ commit }, station) {
+    commit("SELECT_STARTING_STATION", station);
   },
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
-  startTrip({ dispatch }, station) {
-    dispatch("resetTrip");
-    dispatch("selectStartingInput", station);
+  removeStop({ commit, dispatch, state }) {
+    const savedTrip = state.savedTrip;
+    const tripStops = state.stops;
+    if (savedTrip.length > 1 && tripStops.length > 1) {
+      dispatch("reloadConnections", {
+        station: savedTrip[savedTrip.length - 2],
+        connections: tripStops[tripStops.length - 2].stations
+      });
+    }
+    commit("REMOVE_STOP");
   },
-  selectStartingInput({ commit }, station) {
-    commit("SELECT_STARTING_STATION", station);
+  selectStop({ commit }, station) {
+    commit("SELECT_STOP", station);
   }
 };
 
@@ -51,24 +70,43 @@ export const mutations = {
   SELECT_STOP: (state, station) => {
     state.selectedStop = station;
   },
-  CLEAR_STOPS: state => {
+  RESET_TRIP: state => {
     state.stops = [];
     state.selectedStop = null;
+    state.savedTrip = [];
   },
   ADD_NEW_STOP: (state, stations) => {
     const prevStops = state.stops.map(stop => {
       stop.readOnly = true;
       return stop;
     });
-    state.stops = [...prevStops, { stations }];
+    state.stops = [...prevStops, { stations, readOnly: false }];
     if (state.selectedStop) {
       state.savedTrip = [...state.savedTrip, state.selectedStop];
     }
     state.selectedStop = null;
   },
+  REMOVE_STOP: state => {
+    const stops = state.stops.slice(0, state.stops.length - 1);
+    if (stops.length > 0) {
+      stops[stops.length - 1].readOnly = false;
+    } else {
+      state.startingStation = null;
+    }
+    state.stops = stops;
+
+    state.selectedStop = state.savedTrip[state.savedTrip.length - 1];
+    state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
+  },
+  ADD_STARTING_STATION(state, station) {
+    if (state.savedTrip.length === 0) {
+      state.savedTrip = [station];
+    }
+  },
   SELECT_STARTING_STATION(state, station) {
-    state.startingStation = station;
-    state.savedTrip = [station];
+    if (state.savedTrip.length === 0) {
+      state.startingStation = station;
+    }
   },
   LOAD_TRIP(state, trip) {
     state.startingStation = trip[0];

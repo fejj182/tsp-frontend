@@ -9,11 +9,7 @@ export const state = {
 export const getters = {};
 
 export const actions = {
-  async setStartingStation({ dispatch, commit }, station) {
-    commit("CLEAR_ACTIVE_STATION");
-    dispatch("startTrip", station);
-    dispatch("confirmStop", station);
-  },
+  //TODO: rename to fetchConnections?
   async confirmStop({ dispatch, commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     commit("CLEAR_ACTIVE_CONNECTIONS");
@@ -21,7 +17,13 @@ export const actions = {
     commit("SET_ACTIVE_CONNECTIONS", connections);
     dispatch("addNewStop", { stations: connections });
   },
+  async reloadConnections({ commit }, { station, connections }) {
+    commit("SET_ACTIVE_STATION", station);
+    commit("CLEAR_ACTIVE_CONNECTIONS");
+    commit("SET_ACTIVE_CONNECTIONS", connections);
+  },
   async fetchStartingStations({ commit }) {
+    //TODO: add error handling
     const stations = await stationsApi.getStations();
     commit("SET_STARTING_STATIONS", stations);
   },
@@ -36,9 +38,6 @@ export const mutations = {
   },
   SET_ACTIVE_CONNECTIONS(state, connections) {
     state.activeConnections = connections;
-  },
-  CLEAR_ACTIVE_STATION(state) {
-    state.activeStation = null;
   },
   CLEAR_ACTIVE_CONNECTIONS(state) {
     state.activeConnections = [];

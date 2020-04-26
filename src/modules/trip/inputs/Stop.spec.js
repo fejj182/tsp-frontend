@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import _ from "lodash";
@@ -41,20 +41,6 @@ describe("Stop", () => {
     });
     wrapper.find("[data-test-id=stop").vm.$emit("change", station);
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
-  });
-
-  test("when stop changes, should trigger popup to open in store", () => {
-    const station = fakeStation();
-    const wrapper = shallowMount(Stop, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: {
-        stations: []
-      }
-    });
-    wrapper.find("[data-test-id=stop").vm.$emit("change", station);
-    expect(mockStore.dispatch).toHaveBeenCalledWith("openPopup", station);
   });
 
   it("should use stations passed as props as autocomplete items", () => {
@@ -167,5 +153,41 @@ describe("Stop", () => {
     expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(true);
     wrapper.setProps({ id: "stop-2" });
     expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(false);
+  });
+
+  it("should appear closeable icon if last stop in form", () => {
+    mockStore.state.trip.stops = [{}, {}, {}];
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [],
+        id: "stop-3"
+      }
+    });
+    expect(wrapper.find("[data-test-id=stop]").props().appendOuterIcon).toBe(
+      "mdi-close"
+    );
+    wrapper.setProps({ id: "stop-2" });
+    expect(wrapper.find("[data-test-id=stop]").props().appendOuterIcon).toBe(
+      ""
+    );
+  });
+
+  it("should dispatch remove stop action when click close", () => {
+    mockStore.state.trip.stops = [{}, {}, {}];
+    const wrapper = mount(Stop, {
+      vuetify: new Vuetify(),
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [],
+        id: "stop-3"
+      }
+    });
+    wrapper.find(".mdi-close").trigger("click");
+    expect(mockStore.dispatch).toHaveBeenCalledWith("removeStop");
   });
 });

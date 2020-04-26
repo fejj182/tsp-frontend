@@ -22,31 +22,24 @@ describe("StartingDestination", () => {
     jest.resetAllMocks();
     station = fakeStation();
     enabledStations = [fakeStation(), fakeStation(), fakeStation()];
-    stationsApi.getStations.mockResolvedValue(enabledStations);
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        trip: _.cloneDeep(trip)
+        trip: _.cloneDeep(trip),
+        stations: {
+          startingStations: []
+        }
       }
     };
   });
-  describe("on component loading", () => {
-    it("should get stations when component mounted", () => {
-      shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(stationsApi.getStations).toHaveBeenCalledTimes(1);
-    });
-
-    it("should load stations from api into props", async () => {
+  describe("Autocomplete items", () => {
+    it("should load stations into props", async () => {
+      mockStore.state.stations.startingStations = enabledStations;
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
       });
-      await flushPromises();
       const mappedStations = enabledStations.map(station =>
         mapStation(station)
       );
@@ -55,44 +48,19 @@ describe("StartingDestination", () => {
       ).toEqual(mappedStations);
     });
 
-    it("should have no stations if api call fails", async () => {
-      stationsApi.getStations.mockRejectedValue("Failed");
-
+    it("should not load stations into props", async () => {
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore
         }
       });
-      await flushPromises();
-      expect(wrapper.vm.stations).toEqual([]);
-    });
-
-    it("should emit an alert if getStations fails", async () => {
-      stationsApi.getStations.mockRejectedValue("Failed");
-
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      await flushPromises();
-      expect(wrapper.emitted().alert.length).toBe(1);
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().items.length
+      ).toBe(0);
     });
   });
 
   describe("On change", () => {
-    it("should dispatch confirmStop on change", () => {
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper
-        .find("[data-test-id=starting-destination]")
-        .vm.$emit("change", station);
-      expect(mockStore.dispatch).toBeCalledWith("confirmStop", station);
-    });
-
     it("should dispatch startTrip on change", () => {
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -106,7 +74,6 @@ describe("StartingDestination", () => {
     });
 
     it("should emit an alert if dispatch fails", async () => {
-      mockStore.dispatch.mockResolvedValueOnce();
       mockStore.dispatch.mockRejectedValueOnce();
       const wrapper = shallowMount(StartingDestination, {
         mocks: {

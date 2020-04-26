@@ -40,8 +40,14 @@ export default {
   },
   mounted() {
     this.bindPopup(this.marker);
-    if (this.open && this.station.name == this.open.name) {
-      this.openPopup();
+
+    const activeStation = this.$store.state.stations.activeStation;
+    if (
+      activeStation &&
+      !this.isConnection &&
+      this.station.name === activeStation.name
+    ) {
+      this.popup.openPopup();
     }
   },
   computed: {
@@ -54,6 +60,9 @@ export default {
     duration() {
       const duration = this.station.duration;
       return toHoursAndMinutes(duration);
+    },
+    selectedStop() {
+      return this.$store.state.trip.selectedStop;
     }
   },
   methods: {
@@ -62,30 +71,17 @@ export default {
         offset: [-3, -2]
       });
     },
-    openPopup() {
-      this.popup.openPopup();
-    },
     addToTrip() {
-      if (this.isConnection) {
-        this.$store.dispatch("confirmStop", this.station);
-      } else {
-        this.popup.closePopup();
-        this.$store.dispatch("setStartingStation", this.station);
-        this.$store.state.map.map.setZoom(6);
-      }
+      //TODO: should handle api call error in store
+      this.$store.dispatch("addToTrip", this.station);
     }
   },
   watch: {
-    marker(marker) {
-      // TODO: can remove this component if guaranteed to mount every time
-      this.bindPopup(marker);
-      if (this.open && this.station.name == this.open.name) {
-        this.openPopup();
-      }
-    },
-    open(station) {
-      if (this.station.name == station.name) {
-        this.openPopup();
+    selectedStop(station) {
+      if (station === null) {
+        this.popup.closePopup();
+      } else if (this.station.name == station.name) {
+        this.popup.openPopup();
       }
     }
   }
