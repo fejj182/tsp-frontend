@@ -51,7 +51,7 @@ export default {
       }
     },
     startingStations: function(stations) {
-      if (stations.length > 0) {
+      if (stations.length > 0 && this.savedTrip.length === 0) {
         this.addStartingMarkers();
       }
     },
@@ -64,6 +64,13 @@ export default {
   methods: {
     random(index) {
       return Math.random() * (index + 1);
+    },
+    resetMarkers() {
+      this.markers.forEach(marker => {
+        marker.remove();
+      });
+      this.markers = [];
+      this.popups = [];
     },
     addStartingMarkers() {
       this.resetMarkers();
@@ -120,13 +127,6 @@ export default {
         iconSize: [13.5, 18],
         className: `div-icon-${colour}`
       });
-    },
-    resetMarkers() {
-      this.markers.forEach(marker => {
-        marker.remove();
-      });
-      this.markers = [];
-      this.popups = [];
     }
   }
 };

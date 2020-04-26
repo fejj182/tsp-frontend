@@ -65,9 +65,14 @@ describe("popups", () => {
       dispatch = jest.fn();
     });
     describe("fetchTrip", () => {
+      it("should dispatch fetchStartingStations", () => {
+        let tripAlias = { alias: "some-alias" };
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
+        expect(dispatch).toBeCalledWith("fetchStartingStations");
+      });
       it("should call tripApi", () => {
         let tripAlias = { alias: "some-alias" };
-        module.actions.fetchTrip({ commit }, tripAlias);
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
         expect(tripApi.get).toHaveBeenCalledWith("some-alias");
       });
       it("should put first station in startingStation", async () => {
@@ -76,7 +81,7 @@ describe("popups", () => {
         let trip = [barcelona, valencia];
         tripApi.get.mockReturnValue(trip);
         let tripAlias = { alias: "some-alias" };
-        module.actions.fetchTrip({ commit }, tripAlias);
+        module.actions.fetchTrip({ commit, dispatch }, tripAlias);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith("LOAD_TRIP", trip);
       });
@@ -134,10 +139,10 @@ describe("popups", () => {
       });
     });
     describe("startTrip", () => {
-      it("should commit SELECT_STARTING_STATION", () => {
+      it("should commit ADD_STARTING_STATION", () => {
         let station = {};
         module.actions.startTrip({ dispatch, commit }, station);
-        expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
+        expect(commit).toHaveBeenCalledWith("ADD_STARTING_STATION", station);
       });
       it("should dispatch resetTrip", () => {
         let station = {};
@@ -152,10 +157,10 @@ describe("popups", () => {
     });
 
     describe("addToTrip", () => {
-      it("addToTrip should commit SELECT_STARTING_STATION", () => {
+      it("addToTrip should commit ADD_STARTING_STATION", () => {
         let station = {};
         module.actions.addToTrip({ dispatch, commit }, station);
-        expect(commit).toHaveBeenCalledWith("SELECT_STARTING_STATION", station);
+        expect(commit).toHaveBeenCalledWith("ADD_STARTING_STATION", station);
       });
       it("addToTripshould dispatch resetTrip", () => {
         let station = {};
@@ -294,22 +299,13 @@ describe("popups", () => {
         expect(state.selectedStop).toEqual({ name: "lastSavedStop" });
       });
     });
-    describe("SELECT_STARTING_STATION", () => {
-      it("should add starting station", () => {
-        let state = {
-          startingStation: null,
-          savedTrip: []
-        };
-        const station = {};
-        module.mutations.SELECT_STARTING_STATION(state, station);
-        expect(state.startingStation).toEqual(station);
-      });
+    describe("ADD_STARTING_STATION", () => {
       it("should create new savedTrip", () => {
         let state = {
           savedTrip: []
         };
         const station = {};
-        module.mutations.SELECT_STARTING_STATION(state, station);
+        module.mutations.ADD_STARTING_STATION(state, station);
         expect(state.savedTrip).toEqual([station]);
       });
       it("should do nothing if trip already started", () => {
@@ -318,9 +314,20 @@ describe("popups", () => {
           savedTrip: [{}]
         };
         const station = {};
-        module.mutations.SELECT_STARTING_STATION(state, station);
+        module.mutations.ADD_STARTING_STATION(state, station);
         expect(state.startingStation).toEqual(null);
         expect(state.savedTrip).toEqual([station]);
+      });
+    });
+    describe("SELECT_STARTING_STATION", () => {
+      it("should select starting station", () => {
+        let state = {
+          startingStation: null,
+          savedTrip: []
+        };
+        const station = {};
+        module.mutations.SELECT_STARTING_STATION(state, station);
+        expect(state.startingStation).toEqual(station);
       });
     });
     describe("LOAD_TRIP", () => {

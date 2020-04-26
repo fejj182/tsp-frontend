@@ -23,7 +23,8 @@ export const getters = {
 };
 
 export const actions = {
-  async fetchTrip({ commit }, payload) {
+  async fetchTrip({ commit, dispatch }, payload) {
+    dispatch("fetchStartingStations");
     const trip = await tripApi.get(payload.alias);
     if (trip && trip.length > 0) {
       commit("LOAD_TRIP", trip);
@@ -36,11 +37,14 @@ export const actions = {
   startTrip({ dispatch, commit }, station) {
     dispatch("resetTrip");
     dispatch("confirmStop", station);
-    commit("SELECT_STARTING_STATION", station);
+    commit("ADD_STARTING_STATION", station);
   },
   addToTrip({ dispatch, commit }, station) {
     dispatch("resetMap");
     dispatch("confirmStop", station);
+    commit("ADD_STARTING_STATION", station);
+  },
+  selectStartingInput({ commit }, station) {
     commit("SELECT_STARTING_STATION", station);
   },
   addNewStop({ commit }, payload) {
@@ -59,9 +63,6 @@ export const actions = {
   },
   selectStop({ commit }, station) {
     commit("SELECT_STOP", station);
-  },
-  selectStartingInput({ commit }, station) {
-    commit("SELECT_STARTING_STATION", station);
   }
 };
 
@@ -97,10 +98,14 @@ export const mutations = {
     state.selectedStop = state.savedTrip[state.savedTrip.length - 1];
     state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
   },
+  ADD_STARTING_STATION(state, station) {
+    if (state.savedTrip.length === 0) {
+      state.savedTrip = [station];
+    }
+  },
   SELECT_STARTING_STATION(state, station) {
     if (state.savedTrip.length === 0) {
       state.startingStation = station;
-      state.savedTrip = [station];
     }
   },
   LOAD_TRIP(state, trip) {

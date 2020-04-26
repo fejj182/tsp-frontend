@@ -23,6 +23,7 @@ export const actions = {
     commit("SET_ACTIVE_CONNECTIONS", connections);
   },
   async fetchStartingStations({ commit }) {
+    //TODO: add error handling
     const stations = await stationsApi.getStations();
     commit("SET_STARTING_STATIONS", stations);
   },

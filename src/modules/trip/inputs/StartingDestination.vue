@@ -13,15 +13,9 @@
 </template>
 
 <script>
-import stationsApi from "@/api/stations";
 import { mapStation, mapStations } from "@/mappers/stationFormMapper";
 
 export default {
-  data() {
-    return {
-      stations: []
-    };
-  },
   computed: {
     startingStation() {
       let station = this.$store.state.trip.startingStation;
@@ -29,21 +23,16 @@ export default {
         station = mapStation(station);
       }
       return station;
+    },
+    stations() {
+      let stations = this.$store.state.stations.startingStations;
+      if (stations.length > 0) {
+        stations = mapStations(stations);
+      }
+      return stations;
     }
   },
-  created() {
-    this.fetchStations();
-  },
   methods: {
-    async fetchStations() {
-      this.stations = [];
-      try {
-        const stations = await stationsApi.getStations();
-        this.stations = mapStations(stations);
-      } catch (e) {
-        this.$emit("alert");
-      }
-    },
     async onChangeStation(station) {
       try {
         //TODO: should handle api call error in store

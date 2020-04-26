@@ -30,7 +30,7 @@ describe("Markers", () => {
         },
         trip: {
           startingStation: null,
-          savedTrip: [{}]
+          savedTrip: []
         }
       }
     };
@@ -38,7 +38,7 @@ describe("Markers", () => {
   });
 
   describe("Starting markers", () => {
-    it("should add the starting station markers to the map when the store is updated", () => {
+    it("should add the starting station markers to the map when the store is updated", done => {
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
@@ -50,19 +50,37 @@ describe("Markers", () => {
       mockStore.state.stations.startingStations = [getStation(), getStation()];
       setTimeout(() => {
         expect(mockMarker.addTo.mock.calls).toEqual([[mockMap], [mockMap]]);
+        done();
+      }, 0);
+    });
+
+    it("should not add the starting station markers to the map when there is a saved trip", done => {
+      mockStore.state.trip.savedTrip = [{}];
+      shallowMount(Markers, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap
+        }
+      });
+      mockStore.state.stations.startingStations = [getStation(), getStation()];
+      setTimeout(() => {
+        expect(mockMarker.addTo.mock.calls).not.toEqual([[mockMap], [mockMap]]);
+        done();
       }, 0);
     });
 
     it("should remove the connection markers from the map when the starting stations are set", () => {
+      mockStore.state.stations.activeConnections = [{}];
+      const station = getStation();
+      mockStore.state.stations.activeStation = station;
       shallowMount(Markers, {
         mocks: {
           $store: mockStore
         }
       });
-      const station = getStation();
-      mockStore.state.stations.activeConnections = [{}];
       mockStore.state.stations.startingStations = [getStation(), getStation()];
-      mockStore.state.stations.activeStation = station;
       setTimeout(() => {
         expect(mockMarker.remove).toHaveBeenCalledTimes(1);
       }, 0);
