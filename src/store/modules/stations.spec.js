@@ -1,6 +1,5 @@
 import * as module from "./stations";
 import stationsApi from "@/api/stations";
-import faker from "faker";
 import flushPromises from "flush-promises";
 
 jest.mock("@/api/stations", () => ({
@@ -10,13 +9,8 @@ jest.mock("@/api/stations", () => ({
 }));
 
 describe("stations", () => {
-  let barcelona = {
-    id: 1,
-    name: "Barcelona-Sants",
-    lat: 41.37952,
-    lng: 2.140624
-  };
-  const connections = [];
+  let station = {};
+  const connections = [{}, {}];
 
   describe("actions", () => {
     describe("confirmStop", () => {
@@ -26,23 +20,23 @@ describe("stations", () => {
         dispatch = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.confirmStop({ dispatch, commit }, barcelona);
-        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", barcelona);
+        module.actions.confirmStop({ dispatch, commit }, station);
+        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", station);
       });
 
       it("should clear the active connections before calling the endpoint", async () => {
-        module.actions.confirmStop({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, station);
         expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
       });
 
       it("should get the connections for starting station", () => {
-        module.actions.confirmStop({ dispatch, commit }, barcelona);
-        expect(stationsApi.getConnections).toHaveBeenCalledWith(barcelona.id);
+        module.actions.confirmStop({ dispatch, commit }, station);
+        expect(stationsApi.getConnections).toHaveBeenCalledWith(station.id);
       });
 
       it("should dispatch addNewStop", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.confirmStop({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, station);
         await flushPromises();
         expect(dispatch).toHaveBeenCalledWith("addNewStop", {
           stations: connections
@@ -51,12 +45,40 @@ describe("stations", () => {
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.confirmStop({ dispatch, commit }, barcelona);
+        module.actions.confirmStop({ dispatch, commit }, station);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",
           connections
         );
+      });
+      describe("reloadConnections", () => {
+        it("should commit SET_ACTIVE_STATION", () => {
+          module.actions.reloadConnections(
+            { commit },
+            { station, connections }
+          );
+          expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", station);
+        });
+
+        it("should commit CLEAR_ACTIVE_CONNECTIONS", () => {
+          module.actions.reloadConnections(
+            { commit },
+            { station, connections }
+          );
+          expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
+        });
+
+        it("should commit SET_ACTIVE_CONNECTIONS", () => {
+          module.actions.reloadConnections(
+            { commit },
+            { station, connections }
+          );
+          expect(commit).toHaveBeenCalledWith(
+            "SET_ACTIVE_CONNECTIONS",
+            connections
+          );
+        });
       });
       describe("fetchStartingStations", () => {
         it("should call the stationsApi and commit stations to state", async () => {
@@ -88,8 +110,8 @@ describe("stations", () => {
       const state = {
         activeStation: null
       };
-      module.mutations.SET_ACTIVE_STATION(state, barcelona);
-      expect(state.activeStation).toEqual(barcelona);
+      module.mutations.SET_ACTIVE_STATION(state, station);
+      expect(state.activeStation).toEqual(station);
     });
     test("SET_ACTIVE_CONNECTIONS should add the connections to the state", () => {
       const state = {

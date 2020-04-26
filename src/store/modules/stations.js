@@ -9,12 +9,18 @@ export const state = {
 export const getters = {};
 
 export const actions = {
+  //TODO: rename to fetchConnections?
   async confirmStop({ dispatch, commit }, station) {
     commit("SET_ACTIVE_STATION", station);
     commit("CLEAR_ACTIVE_CONNECTIONS");
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_CONNECTIONS", connections);
     dispatch("addNewStop", { stations: connections });
+  },
+  async reloadConnections({ commit }, { station, connections }) {
+    commit("SET_ACTIVE_STATION", station);
+    commit("CLEAR_ACTIVE_CONNECTIONS");
+    commit("SET_ACTIVE_CONNECTIONS", connections);
   },
   async fetchStartingStations({ commit }) {
     const stations = await stationsApi.getStations();

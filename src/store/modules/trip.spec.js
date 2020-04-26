@@ -108,8 +108,29 @@ describe("popups", () => {
     });
     describe("removeStop", () => {
       it("should commit REMOVE_STOP", () => {
-        module.actions.removeStop({ commit });
+        let state = {
+          savedTrip: []
+        };
+        module.actions.removeStop({ commit, dispatch, state });
         expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
+        expect(dispatch).not.toHaveBeenCalledWith(
+          "reloadConnections",
+          expect.any(Object)
+        );
+      });
+
+      it("should dispatch reloadConnections if savedTrip contains more than 1 station", () => {
+        const startingDestination = {};
+        const prevStations = [{}, {}];
+        let state = {
+          savedTrip: [startingDestination, {}],
+          stops: [{ stations: prevStations }, { stations: [] }]
+        };
+        module.actions.removeStop({ commit, dispatch, state });
+        expect(dispatch).toHaveBeenCalledWith("reloadConnections", {
+          station: startingDestination,
+          connections: prevStations
+        });
       });
     });
     describe("startTrip", () => {

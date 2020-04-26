@@ -46,7 +46,15 @@ export const actions = {
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
-  removeStop({ commit }) {
+  removeStop({ commit, dispatch, state }) {
+    const savedTrip = state.savedTrip;
+    const tripStops = state.stops;
+    if (savedTrip.length > 1 && tripStops.length > 1) {
+      dispatch("reloadConnections", {
+        station: savedTrip[savedTrip.length - 2],
+        connections: tripStops[tripStops.length - 2].stations
+      });
+    }
     commit("REMOVE_STOP");
   },
   selectStop({ commit }, station) {
