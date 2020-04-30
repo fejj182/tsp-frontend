@@ -25,20 +25,7 @@ function createTrip() {
   cy.get("[data-test-id=add-stop]").click();
 
   cy.get("#stop-2 [data-test-id=stop]")
-    .last()
-    .click();
-  cy.get(".v-list-item:visible")
     .first()
-    .click();
-  cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
-
-  cy.get("#stop-2 .mdi-close").click();
-  cy.get("#stop-2").should("not.exist");
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("[data-test-id=add-stop]").click();
-
-  cy.get("#stop-2 [data-test-id=stop]")
-    .last()
     .click();
   cy.get(".v-list-item:visible")
     .first()
