@@ -41,11 +41,7 @@ export default {
       return this.$store.state.filters.activeDurationRange;
     },
     tripStarted() {
-      //TODO: could remove condition for stops if change behaviour of starting marker on click
-      return (
-        this.$store.state.trip.savedTrip.length > 0 &&
-        this.$store.state.trip.stops.length > 0
-      );
+      return this.$store.state.trip.savedTrip.length > 0;
     }
   },
   methods: {
@@ -75,9 +71,14 @@ export default {
       displayPanesInRange(this.panes, range);
     },
     tripStarted(started) {
+      // no tests as likely to change
       if (started) {
         setTimeout(() => {
           this.myMap.setZoom(6);
+        }, 200);
+      } else {
+        setTimeout(() => {
+          this.myMap.setZoom(7);
         }, 200);
       }
     }

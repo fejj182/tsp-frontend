@@ -48,6 +48,7 @@ describe("trip_map", () => {
       .click();
 
     cy.get("[data-test-id=reset-trip]").click();
+    cy.wait(250);
     cy.get(".marker-purple").should("exist");
     cy.get(".leaflet-popup").should("not.exist");
     cy.get(".marker-purple:visible")
