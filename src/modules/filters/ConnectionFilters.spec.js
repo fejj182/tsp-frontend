@@ -64,7 +64,7 @@ describe("ConnectionFilters", () => {
         .findAll(".v-slider__thumb-label")
         .at(1)
         .text()
-    ).toBe("5");
+    ).toBe("10+");
   });
 
   describe("thumbLabel", () => {

@@ -20,7 +20,7 @@
 export default {
   data() {
     return {
-      sliderRange: [0, 50],
+      sliderRange: [0, 100],
       sliderSteps: 10
     };
   },
