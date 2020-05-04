@@ -4,7 +4,7 @@ describe("TripForm", function() {
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
     cy.get("[data-test-id=starting-destination]").click();
-    cy.get(".v-list-item__content")
+    cy.get(".v-list-item")
       .first()
       .click();
 

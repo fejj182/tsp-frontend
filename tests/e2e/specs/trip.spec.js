@@ -13,7 +13,7 @@ describe("Trip", function() {
 
 function createTrip() {
   cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item__content")
+  cy.get(".v-list-item")
     .first()
     .click();
 
@@ -116,7 +116,7 @@ function assertStopCanBeAdded() {
 
 function assertTripCanBeRebuilt() {
   cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item__content")
+  cy.get(".v-list-item")
     .first()
     .click();
 
