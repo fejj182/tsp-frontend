@@ -9,7 +9,13 @@
       rounded
       @change="onChangeStation"
       :value="startingStation"
-    ></v-autocomplete>
+    >
+      <!-- use template to stop .v-list-item__mask class being used, which was causing items 
+      with diacritics to be highlighted in full https://github.com/vuetifyjs/vuetify/pull/9618/files -->
+      <template v-slot:item="{ item }">
+        {{ item.text }}
+      </template>
+    </v-autocomplete>
   </div>
 </template>
 
