@@ -4,6 +4,7 @@
       label="Where next?"
       data-test-id="stop"
       :items="items"
+      :filter="autocompleteFilter"
       filled
       rounded
       :autofocus="isLastStop"
@@ -29,6 +30,8 @@ import {
   mapStationsByDuration
 } from "@/mappers/stationFormMapper";
 import { filterStationsOutOfRange } from "@/modules/map/panes/paneUtils";
+import _ from "lodash";
+
 export default {
   data() {
     return {
@@ -95,6 +98,14 @@ export default {
       } else {
         this.$store.dispatch("resetTrip");
       }
+    },
+    autocompleteFilter(item, queryText, itemText) {
+      // same as default but adding _.deburr
+      return (
+        _.deburr(itemText)
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      );
     }
   }
 };

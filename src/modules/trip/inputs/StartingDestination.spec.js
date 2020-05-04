@@ -5,7 +5,6 @@ import flushPromises from "flush-promises";
 import _ from "lodash";
 
 import StartingDestination from "./StartingDestination.vue";
-import stationsApi from "@/api/stations";
 import { mapStation } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";

@@ -4,6 +4,7 @@
       label="Start from..."
       data-test-id="starting-destination"
       :items="stations"
+      :filter="autocompleteFilter"
       filled
       rounded
       @change="onChangeStation"
@@ -14,6 +15,7 @@
 
 <script>
 import { mapStation, mapStations } from "@/mappers/stationFormMapper";
+import _ from "lodash";
 
 export default {
   computed: {
@@ -35,11 +37,19 @@ export default {
   methods: {
     async onChangeStation(station) {
       try {
-        //TODO: should handle api call error in store
+        // TODO: should handle api call error in store
         await this.$store.dispatch("startTrip", station);
       } catch (e) {
         this.$emit("alert");
       }
+    },
+    autocompleteFilter(item, queryText, itemText) {
+      // same as default but adding _.deburr
+      return (
+        _.deburr(itemText)
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
+      );
     }
   }
 };
