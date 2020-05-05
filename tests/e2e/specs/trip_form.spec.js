@@ -7,7 +7,7 @@ describe("TripForm", function() {
     cy.get(".v-list-item")
       .first()
       .click();
-
+    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").click();
     cy.get(".v-list-item:visible")
       .first()
@@ -15,9 +15,7 @@ describe("TripForm", function() {
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("[data-test-id=add-stop]").click();
 
-    cy.get("#stop-2 [data-test-id=stop]")
-      .last()
-      .click();
+    cy.get("#stop-2 [data-test-id=stop]").click();
     cy.get(".v-list-item:visible")
       .first()
       .click();
