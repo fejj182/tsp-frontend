@@ -46,6 +46,10 @@ export default {
   },
   watch: {
     connections: function(connections) {
+      this.resetMarkers();
+      if (this.activeStation) {
+        this.addStartingMarker(this.activeStation);
+      }
       if (connections.length > 0) {
         this.addConnectionMarkers(connections);
       }
@@ -95,10 +99,6 @@ export default {
       });
     },
     addConnectionMarkers(connections) {
-      this.resetMarkers();
-      if (this.activeStation) {
-        this.addStartingMarker(this.activeStation);
-      }
       setTimeout(() => {
         connections.forEach(connection => {
           this.addConnectionMarker(connection);
