@@ -1,6 +1,6 @@
 <template>
   <div v-if="showMarkers">
-    <div v-for="(marker, index) in markers" :key="random(index)">
+    <div v-for="(marker, index) in markers" :key="Math.random() + index">
       <DummyMarker
         :marker="marker.marker"
         :station="marker.station"
@@ -11,8 +11,8 @@
 </template>
 
 <script>
-import L from "leaflet";
-import { STARTING } from "./markerTypes";
+import { generateMarker } from "@/plugins/leaflet";
+import { STARTING, PURPLE } from "./markerTypes";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -48,39 +48,18 @@ export default {
     startingStations(stations) {
       this.markers = [];
       stations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {
-          icon: this.generateIcon("purple")
-        });
-        marker.addTo(this.map);
-        marker.on("click", () => {
-          this.$store.dispatch("selectStartingInput", station);
-        });
+        const marker = generateMarker(
+          station,
+          this.map,
+          () => this.$store.dispatch("selectStartingInput", station),
+          PURPLE
+        );
         this.markers.push({
           marker,
           station
         });
       });
     }
-  },
-  methods: {
-    random(index) {
-      return Math.random() * (index + 1);
-    },
-    generateIcon(colour) {
-      return L.divIcon({
-        html: `<i class="fas fa-map-marker-alt marker-${colour}"></i>`,
-        iconAnchor: [6.75, 18],
-        iconSize: [13.5, 18],
-        className: `div-icon-${colour}`
-      });
-    }
   }
 };
 </script>
-
-<style lang="scss">
-.marker-purple {
-  color: #6633ff;
-  font-size: 18px;
-}
-</style>

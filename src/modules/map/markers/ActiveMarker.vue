@@ -10,8 +10,8 @@
 </template>
 
 <script>
-import L from "leaflet";
-import { ACTIVE } from "./markerTypes";
+import { generateMarker } from "@/plugins/leaflet";
+import { ACTIVE, PURPLE } from "./markerTypes";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -38,36 +38,18 @@ export default {
     activeStation(station) {
       if (station) {
         this.marker = null;
-        const marker = L.marker([station.lat, station.lng], {
-          icon: this.generateIcon("purple")
-        });
-        marker.addTo(this.map);
-        marker.on("click", () => {
-          this.$store.dispatch("selectStartingInput", station);
-        });
+        const marker = generateMarker(
+          station,
+          this.map,
+          () => this.$store.dispatch("selectStartingInput", station),
+          PURPLE
+        );
         this.marker = {
           station: station,
           marker
         };
       }
     }
-  },
-  methods: {
-    generateIcon(colour) {
-      return L.divIcon({
-        html: `<i class="fas fa-map-marker-alt marker-${colour}"></i>`,
-        iconAnchor: [6.75, 18],
-        iconSize: [13.5, 18],
-        className: `div-icon-${colour}`
-      });
-    }
   }
 };
 </script>
-
-<style lang="scss">
-.marker-purple {
-  color: #6633ff;
-  font-size: 18px;
-}
-</style>

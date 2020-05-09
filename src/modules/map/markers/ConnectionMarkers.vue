@@ -1,6 +1,6 @@
 <template>
   <div v-if="showConnections">
-    <div v-for="(marker, index) in markers" :key="random(index)">
+    <div v-for="(marker, index) in markers" :key="Math.random() + index">
       <DummyMarker
         :marker="marker.marker"
         :station="marker.station"
@@ -11,10 +11,9 @@
 </template>
 
 <script>
-import L from "leaflet";
-import { CONNECTION } from "./markerTypes";
+import { generateMarker } from "@/plugins/leaflet";
+import { CONNECTION, RED } from "./markerTypes";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
-import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 
 export default {
   components: {
@@ -43,38 +42,18 @@ export default {
     connections(stations) {
       this.markers = [];
       stations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {
-          pane: getPaneNameFromDuration(station.duration),
-          icon: this.generateIcon("red")
-        });
-        marker.addTo(this.map);
-        marker.on("click", () => this.$store.dispatch("selectStop", station));
+        const marker = generateMarker(
+          station,
+          this.map,
+          () => this.$store.dispatch("selectStop", station),
+          RED
+        );
         this.markers.push({
           station: station,
           marker
         });
       });
     }
-  },
-  methods: {
-    random(index) {
-      return Math.random() * (index + 1);
-    },
-    generateIcon(colour) {
-      return L.divIcon({
-        html: `<i class="fas fa-map-marker-alt marker-${colour}"></i>`,
-        iconAnchor: [6.75, 18],
-        iconSize: [13.5, 18],
-        className: `div-icon-${colour}`
-      });
-    }
   }
 };
 </script>
-
-<style lang="scss">
-.marker-red {
-  color: #ff0066;
-  font-size: 18px;
-}
-</style>

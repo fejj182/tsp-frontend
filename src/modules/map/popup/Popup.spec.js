@@ -7,9 +7,8 @@ import Vuetify from "vuetify";
 Vue.use(Vuetify);
 
 describe("Popup", () => {
-  let station, mockMarker, mockStore, mockProps;
+  let mockMarker, mockStore, mockProps;
   beforeEach(() => {
-    station = { name: faker.address.city() };
     mockMarker = {
       bindPopup: jest.fn()
     };
@@ -28,7 +27,7 @@ describe("Popup", () => {
     };
     mockProps = {
       marker: mockMarker,
-      station,
+      station: { name: faker.address.city() },
       type: null
     };
   });
@@ -63,7 +62,7 @@ describe("Popup", () => {
       },
       propsData: mockProps
     });
-    expect(wrapper.find("h1").text()).toBe(station.name);
+    expect(wrapper.find("h1").text()).toBe(mockProps.station.name);
   });
 
   it("should not auto-open popup", () => {
@@ -81,7 +80,7 @@ describe("Popup", () => {
   it("should auto-open popup if is active", () => {
     const mockPopup = { openPopup: jest.fn() };
     mockMarker.bindPopup.mockReturnValue(mockPopup);
-    mockStore.state.stations.activeStation = station;
+    mockStore.state.stations.activeStation = mockProps.station;
     mockProps.type = "ACTIVE";
     shallowMount(Popup, {
       mocks: {
@@ -103,7 +102,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        mockStore.state.trip.selectedStop = station;
+        mockStore.state.trip.selectedStop = mockProps.station;
         expect(mockPopup.openPopup).toHaveBeenCalled();
       });
 
@@ -195,7 +194,10 @@ describe("Popup", () => {
         propsData: mockProps
       });
       wrapper.find("[data-test-id=add-to-station]").trigger("click");
-      expect(mockStore.dispatch).toHaveBeenCalledWith("addToTrip", station);
+      expect(mockStore.dispatch).toHaveBeenCalledWith(
+        "addToTrip",
+        mockProps.station
+      );
     });
   });
 });

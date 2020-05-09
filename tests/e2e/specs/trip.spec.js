@@ -31,6 +31,9 @@ function createTrip() {
     .first()
     .click();
   cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
+  // TODO: should be added in other places?
+  cy.get(".marker-purple:visible");
+
 
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");

@@ -77,9 +77,11 @@ export default {
     }
   },
   watch: {
-    selectedStop(station) {
-      if (this.station.name == station.name) {
-        this.popup.openPopup();
+    selectedStop(selectedStation) {
+      if (this.station && selectedStation) {
+        if (this.station.name == selectedStation.name) {
+          this.popup.openPopup();
+        }
       }
     },
     activeStation(station) {
