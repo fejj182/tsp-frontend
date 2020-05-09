@@ -12,7 +12,7 @@
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { CONNECTION, RED } from "./markerTypes";
+import { CONNECTION, RED } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {

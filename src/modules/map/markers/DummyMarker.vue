@@ -11,7 +11,7 @@
 
 <script>
 import Popup from "@/modules/map/popup/Popup.vue";
-import { CONNECTION } from "./markerTypes";
+import { CONNECTION } from "./types";
 
 export default {
   components: {

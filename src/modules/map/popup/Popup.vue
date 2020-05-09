@@ -21,7 +21,7 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
-import { ACTIVE, CONNECTION } from "@/modules/map/markers/markerTypes";
+import { ACTIVE, CONNECTION } from "@/modules/map/markers/types";
 
 export default {
   data: function() {
