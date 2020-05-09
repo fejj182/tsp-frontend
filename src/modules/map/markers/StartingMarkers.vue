@@ -36,38 +36,37 @@ export default {
   },
   computed: {
     startingStations() {
-      return this.$store.state.stations.startingStations;
+      if (this.$store.state.trip.savedTrip.length == 0) {
+        return this.$store.state.stations.startingStations;
+      } else {
+        return [];
+      }
     },
     showMarkers() {
-      return (
-        this.markers.length > 0 &&
-        this.$store.state.stations.activeConnections.length == 0
-      );
+      return this.$store.state.stations.activeConnections.length == 0;
     }
   },
   watch: {
     startingStations(stations) {
-      stations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {
-          icon: this.generateIcon("purple")
+      if (stations.length > 0) {
+        stations.forEach(station => {
+          const marker = L.marker([station.lat, station.lng], {
+            icon: this.generateIcon("purple")
+          });
+          marker.addTo(this.map);
+          this.markers.push(marker);
+          marker.on("click", () => {
+            this.$store.dispatch("selectStartingInput", station);
+          });
+          this.popups.push({
+            station: station,
+            marker
+          });
         });
-        marker.addTo(this.map);
-        this.markers.push(marker);
-        marker.on("click", () => {
-          this.$store.dispatch("selectStartingInput", station);
-        });
-        this.popups.push({
-          station: station,
-          marker
-        });
-      });
+      }
     }
   },
   methods: {
-    resetMarkers() {
-      this.markers = [];
-      this.popups = [];
-    },
     random(index) {
       return Math.random() * (index + 1);
     },

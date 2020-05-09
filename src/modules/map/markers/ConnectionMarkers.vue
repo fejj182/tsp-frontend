@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="showConnections">
     <div v-for="(marker, index) in markers" :key="random(index)">
       <DummyMarker :marker="marker" />
     </div>
@@ -38,24 +38,29 @@ export default {
   computed: {
     connections() {
       return this.$store.state.stations.activeConnections;
+    },
+    showConnections() {
+      return this.$store.state.stations.activeConnections.length > 0;
     }
   },
   watch: {
     connections(stations) {
-      stations.forEach(station => {
-        const marker = L.marker([station.lat, station.lng], {
-          pane: getPaneNameFromDuration(station.duration),
-          icon: this.generateIcon("red")
+      if (stations.length > 0) {
+        stations.forEach(station => {
+          const marker = L.marker([station.lat, station.lng], {
+            pane: getPaneNameFromDuration(station.duration),
+            icon: this.generateIcon("red")
+          });
+          marker.addTo(this.map);
+          this.markers.push(marker);
+          marker.on("click", () => this.$store.dispatch("selectStop", station));
+          this.popups.push({
+            station: station,
+            marker,
+            isConnection: true
+          });
         });
-        marker.addTo(this.map);
-        this.markers.push(marker);
-        marker.on("click", () => this.$store.dispatch("selectStop", station));
-        this.popups.push({
-          station: station,
-          marker,
-          isConnection: true
-        });
-      });
+      }
     }
   },
   methods: {
