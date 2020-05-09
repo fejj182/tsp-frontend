@@ -1,17 +1,11 @@
 <template>
   <div>
-    <Popup
-      :marker="marker"
-      :station="station"
-      :is-connection="isConnection"
-      :type="type"
-    />
+    <Popup :marker="marker" :station="station" :type="type" />
   </div>
 </template>
 
 <script>
 import Popup from "@/modules/map/popup/Popup.vue";
-import { CONNECTION } from "./types";
 
 export default {
   components: {
@@ -26,11 +20,6 @@ export default {
     },
     type: {
       type: String
-    }
-  },
-  computed: {
-    isConnection() {
-      return this.type == CONNECTION;
     }
   },
   destroyed() {

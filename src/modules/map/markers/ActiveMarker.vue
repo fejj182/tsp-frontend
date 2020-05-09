@@ -1,6 +1,6 @@
 <template>
   <!-- TODO: do we need this to still pass e2e tests -->
-  <div v-if="marker">
+  <div v-if="marker" data-test-id="active-marker">
     <DummyMarker
       :key="Math.random()"
       :marker="marker.marker"

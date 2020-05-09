@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showMarkers">
+  <div v-if="showMarkers" data-test-id="starting-markers">
     <div v-for="(marker, index) in markers" :key="Math.random() + index">
       <DummyMarker
         :marker="marker.marker"

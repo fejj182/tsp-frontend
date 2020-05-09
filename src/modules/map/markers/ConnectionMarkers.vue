@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showConnections">
+  <div v-if="showConnections" data-test-id="connection-markers">
     <div v-for="(marker, index) in markers" :key="Math.random() + index">
       <DummyMarker
         :marker="marker.marker"
