@@ -21,12 +21,7 @@ describe("stations", () => {
       });
       it("should commit the station to the store", () => {
         module.actions.confirmStop({ dispatch, commit }, station);
-        expect(commit).toHaveBeenCalledWith("SET_ACTIVE_STATION", station);
-      });
-
-      it("should clear the active connections before calling the endpoint", async () => {
-        module.actions.confirmStop({ dispatch, commit }, station);
-        expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
+        expect(commit).toHaveBeenCalledWith("RESET_MAP");
       });
 
       it("should get the connections for starting station", () => {

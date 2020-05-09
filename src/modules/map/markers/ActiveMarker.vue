@@ -1,5 +1,6 @@
 <template>
-  <div v-if="active">
+  <!-- TODO: do we need this to still pass e2e tests -->
+  <div v-if="marker">
     <DummyMarker
       :marker="marker.marker"
       :station="marker.station"
@@ -31,9 +32,6 @@ export default {
   computed: {
     activeStation() {
       return this.$store.state.stations.activeStation;
-    },
-    active() {
-      return this.activeStation && this.marker;
     }
   },
   watch: {

@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Popup :marker="marker" :station="station" :is-connection="isConnection" />
+    <Popup
+      :marker="marker"
+      :station="station"
+      :is-connection="isConnection"
+      :type="type"
+    />
   </div>
 </template>
 

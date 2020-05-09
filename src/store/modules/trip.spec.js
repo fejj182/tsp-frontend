@@ -283,11 +283,11 @@ describe("popups", () => {
       it("should load selectedStop with previous last stop in trip", () => {
         let state = {
           stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
-          savedTrip: [{ name: "lastSavedStop" }, {}],
+          savedTrip: [{}, {}],
           selectedStop: {}
         };
         module.mutations.REMOVE_STOP(state, stations);
-        expect(state.selectedStop).toEqual({ name: "lastSavedStop" });
+        expect(state.selectedStop).toBeNull();
       });
     });
     describe("ADD_STARTING_STATION", () => {

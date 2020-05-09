@@ -95,7 +95,7 @@ export const mutations = {
     }
     state.stops = stops;
 
-    state.selectedStop = state.savedTrip[state.savedTrip.length - 2];
+    state.selectedStop = null;
     state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
   },
   ADD_STARTING_STATION(state, station) {
