@@ -3,13 +3,14 @@
     <DummyMarker
       :marker="marker.marker"
       :station="marker.station"
-      :is-connection="false"
+      :type="markerType"
     />
   </div>
 </template>
 
 <script>
 import L from "leaflet";
+import { ACTIVE } from "./markerTypes";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -23,7 +24,8 @@ export default {
   },
   data() {
     return {
-      marker: null
+      marker: null,
+      markerType: ACTIVE
     };
   },
   computed: {
@@ -37,6 +39,7 @@ export default {
   watch: {
     activeStation(station) {
       if (station) {
+        this.marker = null;
         const marker = L.marker([station.lat, station.lng], {
           icon: this.generateIcon("purple")
         });

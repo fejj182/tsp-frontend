@@ -4,7 +4,7 @@
       <DummyMarker
         :marker="marker.marker"
         :station="marker.station"
-        :is-connection="true"
+        :type="markerType"
       />
     </div>
   </div>
@@ -12,6 +12,7 @@
 
 <script>
 import L from "leaflet";
+import { CONNECTION } from "./markerTypes";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 
@@ -26,7 +27,8 @@ export default {
   },
   data: function() {
     return {
-      markers: []
+      markers: [],
+      markerType: CONNECTION
     };
   },
   computed: {
@@ -39,6 +41,7 @@ export default {
   },
   watch: {
     connections(stations) {
+      this.markers = [];
       stations.forEach(station => {
         const marker = L.marker([station.lat, station.lng], {
           pane: getPaneNameFromDuration(station.duration),

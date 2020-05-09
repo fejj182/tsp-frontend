@@ -6,6 +6,7 @@
 
 <script>
 import Popup from "@/modules/map/popup/Popup.vue";
+import { CONNECTION } from "./markerTypes";
 
 export default {
   components: {
@@ -18,8 +19,13 @@ export default {
     station: {
       type: Object
     },
-    isConnection: {
-      type: Boolean
+    type: {
+      type: String
+    }
+  },
+  computed: {
+    isConnection() {
+      return this.type == CONNECTION;
     }
   },
   destroyed() {
