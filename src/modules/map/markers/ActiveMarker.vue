@@ -2,6 +2,7 @@
   <!-- TODO: do we need this to still pass e2e tests -->
   <div v-if="marker">
     <DummyMarker
+      :key="Math.random()"
       :marker="marker.marker"
       :station="marker.station"
       :type="markerType"
