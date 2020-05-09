@@ -1,23 +1,20 @@
 <template>
   <div v-if="active">
-    <DummyMarker :marker="marker" />
-    <Popup
-      :marker="popup.marker"
-      :station="popup.station"
-      :is-connection="!!popup.isConnection"
+    <DummyMarker
+      :marker="marker.marker"
+      :station="marker.station"
+      :is-connection="false"
     />
   </div>
 </template>
 
 <script>
 import L from "leaflet";
-import Popup from "@/modules/map/popup/Popup.vue";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
   components: {
-    DummyMarker,
-    Popup
+    DummyMarker
   },
   props: {
     map: {
@@ -26,7 +23,6 @@ export default {
   },
   data() {
     return {
-      popup: null,
       marker: null
     };
   },
@@ -45,11 +41,10 @@ export default {
           icon: this.generateIcon("purple")
         });
         marker.addTo(this.map);
-        this.marker = marker;
         marker.on("click", () => {
           this.$store.dispatch("selectStartingInput", station);
         });
-        this.popup = {
+        this.marker = {
           station: station,
           marker
         };

@@ -1,13 +1,10 @@
 <template>
   <div v-if="showMarkers">
     <div v-for="(marker, index) in markers" :key="random(index)">
-      <DummyMarker :marker="marker" />
-    </div>
-    <div v-for="(point, index) in popups" :key="random(index)">
-      <Popup
-        :marker="point.marker"
-        :station="point.station"
-        :is-connection="!!point.isConnection"
+      <DummyMarker
+        :marker="marker.marker"
+        :station="marker.station"
+        :is-connection="false"
       />
     </div>
   </div>
@@ -15,13 +12,11 @@
 
 <script>
 import L from "leaflet";
-import Popup from "@/modules/map/popup/Popup.vue";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
   components: {
-    DummyMarker,
-    Popup
+    DummyMarker
   },
   props: {
     map: {
@@ -30,40 +25,38 @@ export default {
   },
   data() {
     return {
-      popups: [],
       markers: []
     };
   },
   computed: {
     startingStations() {
-      if (this.$store.state.trip.savedTrip.length == 0) {
-        return this.$store.state.stations.startingStations;
-      } else {
-        return [];
-      }
+      return this.$store.state.trip.savedTrip.length == 0
+        ? this.$store.state.stations.startingStations
+        : [];
     },
     showMarkers() {
-      return this.$store.state.stations.activeConnections.length == 0;
+      return (
+        this.$store.state.stations.startingStations.length > 0 &&
+        this.$store.state.stations.activeConnections.length == 0 &&
+        this.$store.state.trip.savedTrip.length == 0
+      );
     }
   },
   watch: {
     startingStations(stations) {
-      if (stations.length > 0) {
-        stations.forEach(station => {
-          const marker = L.marker([station.lat, station.lng], {
-            icon: this.generateIcon("purple")
-          });
-          marker.addTo(this.map);
-          this.markers.push(marker);
-          marker.on("click", () => {
-            this.$store.dispatch("selectStartingInput", station);
-          });
-          this.popups.push({
-            station: station,
-            marker
-          });
+      stations.forEach(station => {
+        const marker = L.marker([station.lat, station.lng], {
+          icon: this.generateIcon("purple")
         });
-      }
+        marker.addTo(this.map);
+        marker.on("click", () => {
+          this.$store.dispatch("selectStartingInput", station);
+        });
+        this.markers.push({
+          marker,
+          station
+        });
+      });
     }
   },
   methods: {
