@@ -59,8 +59,8 @@ export const actions = {
         station: savedTrip[savedTrip.length - 2],
         connections: tripStops[tripStops.length - 2].stations
       });
+      commit("REMOVE_STOP");
     }
-    commit("REMOVE_STOP");
   },
   selectStop({ commit }, station) {
     commit("SELECT_STOP", station);
@@ -95,7 +95,7 @@ export const mutations = {
     }
     state.stops = stops;
 
-    state.selectedStop = state.savedTrip[state.savedTrip.length - 1];
+    state.selectedStop = state.savedTrip[state.savedTrip.length - 2];
     state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
   },
   ADD_STARTING_STATION(state, station) {
