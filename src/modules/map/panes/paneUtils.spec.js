@@ -9,6 +9,16 @@ jest.mock("@/modules/map/panes/paneConfigs", () => jest.fn());
 
 describe("paneUtils", () => {
   describe("getPaneNameFromDuration", () => {
+    it("should return p0 when undefined", () => {
+      const paneName = getPaneNameFromDuration(undefined);
+      expect(paneName).toBe("p0");
+    });
+
+    it("should return p0 when receives string", () => {
+      const paneName = getPaneNameFromDuration("60m");
+      expect(paneName).toBe("p0");
+    });
+
     it("should return 1st pane name for duration 1 (duration zero should never exist)", () => {
       paneConfigs.NUMBER_OF_PANES = 1;
       paneConfigs.INTERVAL = 60;

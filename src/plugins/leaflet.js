@@ -1,11 +1,9 @@
+import L from "leaflet";
 import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 
 export const generateMarker = (station, map, onClick, colour) => {
-  const paneName =
-    station.duration > 0 ? getPaneNameFromDuration(station.duration) : "p0";
-
   const marker = L.marker([station.lat, station.lng], {
-    pane: paneName,
+    pane: getPaneNameFromDuration(station.duration),
     icon: generateIcon(colour)
   });
 

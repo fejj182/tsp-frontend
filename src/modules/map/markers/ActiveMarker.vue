@@ -38,7 +38,6 @@ export default {
   watch: {
     activeStation(station) {
       if (station) {
-        this.marker = null;
         const marker = generateMarker(
           station,
           this.map,
