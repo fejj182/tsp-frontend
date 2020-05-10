@@ -1,21 +1,11 @@
 import { shallowMount } from "@vue/test-utils";
 import Lines from "./Lines.vue";
-import L from "leaflet";
+import CoordLine from "./CoordLine.vue";
 import { fakeStation } from "@/helpers/tests";
 
-jest.mock("leaflet", () => ({
-  geoJSON: jest.fn()
-}));
-
-describe("Connections", () => {
-  let geoJSON, mockStore;
+describe("Lines", () => {
+  let mockStore;
   beforeEach(() => {
-    geoJSON = {
-      addTo: jest.fn(),
-      addData: jest.fn(),
-      removeFrom: jest.fn()
-    };
-    L.geoJSON.mockReturnValue(geoJSON);
     mockStore = {
       state: {
         trip: {
@@ -24,41 +14,17 @@ describe("Connections", () => {
       }
     };
   });
-  describe("GeoJSON layer", () => {
-    it("should initialize geoJson layer", () => {
-      shallowMount(Lines, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      expect(L.geoJSON).toHaveBeenCalled();
-    });
-
-    it("should add geoJson layer to the map", () => {
-      const mockMap = {};
-      shallowMount(Lines, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: {
-          map: mockMap
-        }
-      });
-      expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
-    });
-  });
 
   describe("watch", () => {
     describe("trip", () => {
-      it("should add 1 line to geoJson layer if there are at least two stops in trip", () => {
-        shallowMount(Lines, {
+      it("should contain 1 Line if there are 2 stops in trip", () => {
+        mockStore.state.trip.savedTrip = [fakeStation(), fakeStation()];
+        const wrapper = shallowMount(Lines, {
           mocks: {
             $store: mockStore
           }
         });
-
-        mockStore.state.trip.savedTrip = [fakeStation(), fakeStation()];
-        expect(geoJSON.addData).toHaveBeenCalledTimes(1);
+        expect(wrapper.findAll(CoordLine).length).toBe(1);
       });
     });
   });
