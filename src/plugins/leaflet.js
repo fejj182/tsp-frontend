@@ -13,10 +13,10 @@ export const generateMarker = (station, map, onClick, colour) => {
 };
 
 const generateIcon = colour => {
-  return L.divIcon({
-    html: `<i class="fas fa-map-marker-alt marker-${colour}"></i>`,
-    iconAnchor: [6.75, 18],
-    iconSize: [13.5, 18],
-    className: `div-icon-${colour}`
+  return L.icon({
+    iconUrl: `pin-${colour}.png`,
+    iconAnchor: [0, 20],
+    iconSize: [20, 20],
+    className: `marker-${colour}`
   });
 };

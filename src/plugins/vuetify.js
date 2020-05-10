@@ -16,3 +16,6 @@ export default new Vuetify({
     }
   }
 });
+
+// purple-pin: #6633ff
+// red-pin: #ff2400
