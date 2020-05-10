@@ -28,3 +28,5 @@ describe("TripForm", function() {
     cy.get(".leaflet-popup").should("not.exist");
   });
 });
+
+// TODO: Check popups in right places
