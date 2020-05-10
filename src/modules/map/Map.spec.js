@@ -2,7 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import L from "leaflet";
 import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
-import Connections from "@/modules/map/connections/Connections.vue";
+import Lines from "@/modules/map/lines/Lines.vue";
 import paneUtils from "@/modules/map/panes/paneUtils";
 
 jest.mock("leaflet", () => ({
@@ -58,13 +58,13 @@ describe("Map", () => {
     });
     expect(wrapper.find(Markers).exists()).toBe(true);
   });
-  it("should contain the connections", () => {
+  xit("should contain the lines", () => {
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
     });
-    expect(wrapper.find(Connections).exists()).toBe(true);
+    expect(wrapper.find(Lines).exists()).toBe(true);
   });
 
   it("should create map", () => {

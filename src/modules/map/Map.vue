@@ -1,7 +1,7 @@
 <template>
   <div id="map">
     <Markers :map="myMap" />
-    <Connections :map="myMap" />
+    <Lines v-if="false" :map="myMap" />
   </div>
 </template>
 
@@ -10,12 +10,12 @@ import L from "leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
-import Connections from "@/modules/map/connections/Connections.vue";
+import Lines from "@/modules/map/lines/Lines.vue";
 
 export default {
   components: {
     Markers,
-    Connections
+    Lines
   },
   data() {
     return {
@@ -42,6 +42,9 @@ export default {
     },
     savedTrip() {
       return this.$store.state.trip.savedTrip;
+    },
+    tripStarted() {
+      return this.$store.state.trip.savedTrip.length > 0;
     }
   },
   methods: {
