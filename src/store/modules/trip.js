@@ -4,7 +4,8 @@ export const state = {
   startingStation: null,
   selectedStop: null,
   stops: [],
-  savedTrip: []
+  savedTrip: [],
+  tripReset: false
 };
 
 export const getters = {
@@ -76,6 +77,7 @@ export const mutations = {
     state.selectedStop = null;
     state.savedTrip = [];
     state.startingStation = null;
+    state.tripReset = true;
   },
   ADD_NEW_STOP: (state, stations) => {
     const prevStops = state.stops.map(stop => {

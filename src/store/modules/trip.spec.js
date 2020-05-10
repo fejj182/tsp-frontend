@@ -199,12 +199,16 @@ describe("popups", () => {
         let state = {
           stops: [{ connections: [] }],
           selectedStop: 1,
-          savedTrip: [{}]
+          savedTrip: [{}],
+          startingStation: {},
+          tripReset: false
         };
         module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
-        expect(state.selectedStop).toEqual(null);
+        expect(state.selectedStop).toBeNull();
         expect(state.savedTrip).toEqual([]);
+        expect(state.startingStation).toBeNull();
+        expect(state.tripReset).toBe(true);
       });
     });
     describe("ADD_NEW_STOP", () => {

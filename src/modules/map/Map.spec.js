@@ -41,7 +41,8 @@ describe("Map", () => {
       setView: jest.fn(),
       on: mockOn,
       off: mockOff,
-      createPane: jest.fn()
+      createPane: jest.fn(),
+      flyTo: jest.fn()
     };
     L.map.mockReturnValue(mockMap);
     L.tileLayer.mockReturnValue({
@@ -114,6 +115,31 @@ describe("Map", () => {
     expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
       wrapper.vm.panes,
       mockActiveDurationRange
+    );
+  });
+
+  it("should flyTo last stop on trip", () => {
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    mockStore.state.trip.savedTrip = [{ lat: 1, lng: 2 }];
+    expect(mockMap.flyTo).toHaveBeenCalledWith([1, 2], 6, expect.any(Object));
+  });
+
+  it("should flyTo centre if trip reset", () => {
+    mockStore.state.trip.savedTrip = [{ lat: 1, lng: 2 }];
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    mockStore.state.trip.savedTrip = [];
+    expect(mockMap.flyTo).toHaveBeenCalledWith(
+      wrapper.vm.centreCoords,
+      7,
+      expect.any(Object)
     );
   });
 });

@@ -40,8 +40,8 @@ export default {
     activeDurationRange() {
       return this.$store.state.filters.activeDurationRange;
     },
-    tripStarted() {
-      return this.$store.state.trip.savedTrip.length > 0;
+    savedTrip() {
+      return this.$store.state.trip.savedTrip;
     }
   },
   methods: {
@@ -70,16 +70,19 @@ export default {
     activeDurationRange(range) {
       displayPanesInRange(this.panes, range);
     },
-    tripStarted(started) {
-      // no tests as likely to change
-      if (started) {
-        setTimeout(() => {
-          this.myMap.setZoom(6);
-        }, 200);
+    savedTrip(trip) {
+      if (trip.length > 0) {
+        const stop = trip[trip.length - 1];
+        const coords = [stop.lat, stop.lng];
+        this.myMap.flyTo(coords, 6, {
+          duration: 1.5,
+          easeLinearity: 0.1
+        });
       } else {
-        setTimeout(() => {
-          this.myMap.setZoom(7);
-        }, 200);
+        this.myMap.flyTo(this.centreCoords, 7, {
+          duration: 2.5,
+          easeLinearity: 0.1
+        });
       }
     }
   }
@@ -89,7 +92,7 @@ export default {
 <style scoped>
 #map {
   width: 100%;
-  height: 100%;
+  height: calc(100vh - 64px - 8px);
 }
 
 @media only screen and (max-width: 600px) {

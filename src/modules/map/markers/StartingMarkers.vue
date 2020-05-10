@@ -12,7 +12,7 @@
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { STARTING, PURPLE } from "./types";
+import { STARTING, PURPLE, VERY_SLOW, IMMEDIATE } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -47,18 +47,23 @@ export default {
   watch: {
     startingStations(stations) {
       this.markers = [];
-      stations.forEach(station => {
-        const marker = generateMarker(
-          station,
-          this.map,
-          () => this.$store.dispatch("selectStartingInput", station),
-          PURPLE
-        );
-        this.markers.push({
-          marker,
-          station
-        });
-      });
+      setTimeout(
+        () => {
+          stations.forEach(station => {
+            const marker = generateMarker(
+              station,
+              this.map,
+              () => this.$store.dispatch("selectStartingInput", station),
+              PURPLE
+            );
+            this.markers.push({
+              marker,
+              station
+            });
+          });
+        },
+        this.$store.state.trip.tripReset ? VERY_SLOW : IMMEDIATE
+      );
     }
   }
 };

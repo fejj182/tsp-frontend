@@ -1,9 +1,18 @@
 import { shallowMount } from "@vue/test-utils";
 import ConnectionMarkers from "./ConnectionMarkers.vue";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
+import {} from "./types";
 import { generateMarker } from "@/plugins/leaflet";
 
 jest.mock("@/plugins/leaflet");
+jest.mock("./types", () => ({
+  get SLOW() {
+    return 0;
+  },
+  get CONNECTION() {
+    return "mockConnection";
+  }
+}));
 
 describe("ConnectionMarkers", () => {
   let mockState;
@@ -30,22 +39,30 @@ describe("ConnectionMarkers", () => {
   });
 
   describe("DummyMarker", () => {
-    test("should be same number as markers", () => {
+    test("should be same number as markers", done => {
       generateMarker.mockReturnValue({});
       const wrapper = getWrapper();
       mockState.stations.activeConnections = [{}, {}];
-      expect(wrapper.findAll(DummyMarker).length).toBe(2);
+      setTimeout(() => {
+        expect(wrapper.findAll(DummyMarker).length).toBe(2);
+        done();
+      }, 0);
     });
 
-    test("should have correct props", () => {
+    test("should have correct props", done => {
       const mockMarker = { position: "earth" };
       const mockStation = { name: "station" };
       generateMarker.mockReturnValue(mockMarker);
       const wrapper = getWrapper();
       mockState.stations.activeConnections = [mockStation];
-      expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
-      expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
-      expect(wrapper.find(DummyMarker).props().type).toEqual("CONNECTION");
+      setTimeout(() => {
+        expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
+        expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
+        expect(wrapper.find(DummyMarker).props().type).toEqual(
+          "mockConnection"
+        );
+        done();
+      }, 0);
     });
   });
 

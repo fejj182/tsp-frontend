@@ -32,11 +32,14 @@ describe("StartingMarkers", () => {
   });
 
   describe("DummyMarker", () => {
-    test("should be same number as markers", () => {
+    test("should be same number as markers", done => {
       generateMarker.mockReturnValue({});
       const wrapper = getWrapper();
       mockState.stations.startingStations = [{}, {}];
-      expect(wrapper.findAll(DummyMarker).length).toBe(2);
+      setTimeout(() => {
+        expect(wrapper.findAll(DummyMarker).length).toBe(2);
+        done();
+      }, 0);
     });
 
     test("should have correct props", () => {
@@ -45,9 +48,11 @@ describe("StartingMarkers", () => {
       generateMarker.mockReturnValue(mockMarker);
       const wrapper = getWrapper();
       mockState.stations.startingStations = [mockStation];
-      expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
-      expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
-      expect(wrapper.find(DummyMarker).props().type).toEqual("STARTING");
+      setTimeout(() => {
+        expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
+        expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
+        expect(wrapper.find(DummyMarker).props().type).toEqual("STARTING");
+      }, 0);
     });
   });
 
