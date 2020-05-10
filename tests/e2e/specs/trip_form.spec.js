@@ -21,10 +21,12 @@ describe("TripForm", function() {
       .click();
     cy.get("#stop-2 .mdi-close").click();
     cy.get("#stop-2").should("not.exist");
-    cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+    cy.get("#stop-1 [data-test-id=stop]").should("have.value", "");
     cy.get("#stop-1 .mdi-close").click();
     cy.get("#stop-1 [data-test-id=stop]").should("not.exist");
     cy.get("[data-test-id=starting-destination]").should("have.value", "");
     cy.get(".leaflet-popup").should("not.exist");
   });
 });
+
+// TODO: Check popups in right places

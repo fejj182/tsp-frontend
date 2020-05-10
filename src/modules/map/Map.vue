@@ -98,3 +98,15 @@ export default {
   }
 }
 </style>
+
+<style>
+.marker-purple {
+  color: #6633ff;
+  font-size: 18px;
+}
+
+.marker-red {
+  color: #ff0066;
+  font-size: 18px;
+}
+</style>

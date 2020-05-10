@@ -21,6 +21,8 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
+import { ACTIVE, CONNECTION } from "@/modules/map/markers/types";
+
 export default {
   data: function() {
     return {
@@ -34,25 +36,17 @@ export default {
     station: {
       type: Object
     },
-    isConnection: {
-      type: Boolean
+    // TODO: change name to markerType
+    type: {
+      type: String
     }
   },
   mounted() {
-    this.bindPopup(this.marker);
-
-    const activeStation = this.$store.state.stations.activeStation;
-    if (
-      activeStation &&
-      !this.isConnection &&
-      this.station.name === activeStation.name
-    ) {
-      this.popup.openPopup();
-    }
+    this.bindPopup();
   },
   computed: {
-    open() {
-      return this.$store.state.popups.openStation;
+    isConnection() {
+      return this.type == CONNECTION;
     },
     tripNotBegun() {
       return this.$store.state.trip.stops.length === 0;
@@ -63,13 +57,19 @@ export default {
     },
     selectedStop() {
       return this.$store.state.trip.selectedStop;
+    },
+    activeStation() {
+      return this.$store.state.stations.activeStation;
     }
   },
   methods: {
-    bindPopup(marker) {
-      this.popup = marker.bindPopup(this.$refs.content, {
+    bindPopup() {
+      this.popup = this.marker.bindPopup(this.$refs.content, {
         offset: [-3, -2]
       });
+      if (this.type == ACTIVE) {
+        this.popup.openPopup();
+      }
     },
     addToTrip() {
       //TODO: should handle api call error in store
@@ -77,13 +77,23 @@ export default {
     }
   },
   watch: {
-    selectedStop(station) {
-      if (station === null) {
-        this.popup.closePopup();
-      } else if (this.station.name == station.name) {
-        this.popup.openPopup();
+    selectedStop(selectedStation) {
+      if (this.station && selectedStation) {
+        if (this.station.name == selectedStation.name) {
+          this.popup.openPopup();
+        }
+      }
+    },
+    activeStation(station) {
+      if (station) {
+        this.bindPopup();
+      } else {
+        this.popup.remove();
       }
     }
+  },
+  destroyed() {
+    this.popup.remove();
   }
 };
 </script>

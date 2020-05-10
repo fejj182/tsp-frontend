@@ -112,19 +112,7 @@ describe("popups", () => {
       });
     });
     describe("removeStop", () => {
-      it("should commit REMOVE_STOP", () => {
-        let state = {
-          savedTrip: []
-        };
-        module.actions.removeStop({ commit, dispatch, state });
-        expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
-        expect(dispatch).not.toHaveBeenCalledWith(
-          "reloadConnections",
-          expect.any(Object)
-        );
-      });
-
-      it("should dispatch reloadConnections if savedTrip contains more than 1 station", () => {
+      test("when trip valid", () => {
         const startingDestination = {};
         const prevStations = [{}, {}];
         let state = {
@@ -136,6 +124,20 @@ describe("popups", () => {
           station: startingDestination,
           connections: prevStations
         });
+        expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
+      });
+      it("when trip not valid", () => {
+        let state = {
+          savedTrip: [],
+          stops: []
+        };
+        module.actions.removeStop({ commit, dispatch, state });
+
+        expect(dispatch).not.toHaveBeenCalledWith(
+          "reloadConnections",
+          expect.any(Object)
+        );
+        expect(commit).not.toHaveBeenCalledWith("REMOVE_STOP");
       });
     });
     describe("startTrip", () => {
@@ -281,11 +283,11 @@ describe("popups", () => {
       it("should load selectedStop with previous last stop in trip", () => {
         let state = {
           stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
-          savedTrip: [{}, { name: "lastSavedStop" }],
+          savedTrip: [{}, {}],
           selectedStop: {}
         };
         module.mutations.REMOVE_STOP(state, stations);
-        expect(state.selectedStop).toEqual({ name: "lastSavedStop" });
+        expect(state.selectedStop).toBeNull();
       });
     });
     describe("ADD_STARTING_STATION", () => {
