@@ -24,13 +24,17 @@ export default {
     },
     tripCoords() {
       if (this.trip.length > 1) {
-        const destination = this.trip[this.trip.length - 1];
-        const destinationCoord = [destination.lng, destination.lat];
+        const coords = [];
+        for (let i = 0; i < this.trip.length - 1; i++) {
+          const start = this.trip[i];
+          const startCoord = [start.lng, start.lat];
 
-        const start = this.trip[this.trip.length - 2];
-        const startCoord = [start.lng, start.lat];
+          const destination = this.trip[i + 1];
+          const destinationCoord = [destination.lng, destination.lat];
 
-        return [[startCoord, destinationCoord]];
+          coords.push([startCoord, destinationCoord]);
+        }
+        return coords;
       } else {
         return [];
       }
