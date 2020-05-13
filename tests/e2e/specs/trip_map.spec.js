@@ -41,8 +41,12 @@ describe("trip_map", () => {
     cy.get(".marker-purple:visible")
       .first()
       .click();
+    cy.clock();
     cy.get("[data-test-id=add-to-station]:visible").click();
-    cy.wait(1000);
+    cy.wait("@getConnections");
+    cy.tick(1000).then(clock => {
+      clock.restore();
+    });
 
     // using trip form here instead of marker as causes state change
     cy.get("#stop-1 [data-test-id=stop]").click();
