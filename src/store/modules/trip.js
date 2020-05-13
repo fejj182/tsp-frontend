@@ -121,7 +121,6 @@ export const mutations = {
         stations: [station]
       };
     });
-    state.selectedStop = trip[trip.length - 1];
-    state.savedTrip = trip.slice(0, trip.length - 1);
+    state.savedTrip = trip;
   }
 };

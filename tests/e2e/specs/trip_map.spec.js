@@ -46,7 +46,7 @@ describe("trip_map", () => {
     cy.get(".v-list-item:visible")
       .first()
       .click();
-    cy.get(".leaflet-popup").should("have.length", 1);
+    cy.get(".leaflet-popup").should("have.length", 0);
 
     cy.get("[data-test-id=reset-trip]").click();
     cy.wait(300);

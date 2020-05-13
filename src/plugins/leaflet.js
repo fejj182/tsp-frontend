@@ -20,8 +20,8 @@ export const generateMarker = (station, map, onClick, colour) => {
 export const generateTripMarker = (station, map, position) => {
   const marker = L.marker([station.lat, station.lng], {
     icon: L.icon({
-      iconUrl: require(`@/assets/badge-${position}.png`),
-      iconAnchor: [15, 4],
+      iconUrl: require("@/assets/badge-" + position + ".png"),
+      iconAnchor: [15, 15],
       iconSize: [30, 30]
     })
   });

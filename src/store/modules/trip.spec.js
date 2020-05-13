@@ -352,20 +352,12 @@ describe("popups", () => {
         ]);
       });
 
-      it("should add selected stop to the state", () => {
-        let state = {
-          selectedStop: null
-        };
-        module.mutations.LOAD_TRIP(state, trip);
-        expect(state.selectedStop).toEqual(madrid);
-      });
-
       it("should add savedTrip to state", () => {
         let state = {
           savedTrip: []
         };
         module.mutations.LOAD_TRIP(state, trip);
-        expect(state.savedTrip).toEqual([barcelona, valencia]);
+        expect(state.savedTrip).toEqual([barcelona, valencia, madrid]);
       });
     });
   });

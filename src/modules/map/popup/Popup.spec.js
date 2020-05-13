@@ -77,20 +77,6 @@ describe("Popup", () => {
     expect(mockPopup.openPopup).not.toHaveBeenCalled();
   });
 
-  it("should auto-open popup if is active", () => {
-    const mockPopup = { openPopup: jest.fn() };
-    mockMarker.bindPopup.mockReturnValue(mockPopup);
-    mockStore.state.stations.activeStation = mockProps.station;
-    mockProps.type = "ACTIVE";
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
-    expect(mockPopup.openPopup).toHaveBeenCalled();
-  });
-
   describe("watch", () => {
     describe("selectedStop", () => {
       it("should open popup when station is same as in component", () => {

@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Markers from "./Markers.vue";
 import StartingMarkers from "./StartingMarkers.vue";
-import ActiveMarker from "./ActiveMarker.vue";
+import TripMarkers from "./trip/TripMarkers.vue";
 import ConnectionMarkers from "./ConnectionMarkers.vue";
 
 describe("Markers", () => {
@@ -16,15 +16,15 @@ describe("Markers", () => {
     expect(wrapper.find(StartingMarkers).props().map).toEqual(mockMap);
   });
 
-  test("should contain ActiveMarker", () => {
+  test("should contain TripMarkers", () => {
     const mockMap = {};
     const wrapper = shallowMount(Markers, {
       propsData: {
         map: mockMap
       }
     });
-    expect(wrapper.find(ActiveMarker).exists()).toBe(true);
-    expect(wrapper.find(ActiveMarker).props().map).toEqual(mockMap);
+    expect(wrapper.find(TripMarkers).exists()).toBe(true);
+    expect(wrapper.find(TripMarkers).props().map).toEqual(mockMap);
   });
 
   test("should contain ConnectionMarkers", () => {

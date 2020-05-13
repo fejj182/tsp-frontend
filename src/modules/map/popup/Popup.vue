@@ -21,7 +21,7 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
-import { ACTIVE, CONNECTION } from "@/modules/map/markers/types";
+import { CONNECTION } from "@/modules/map/markers/types";
 
 export default {
   data: function() {
@@ -67,9 +67,6 @@ export default {
       this.popup = this.marker.bindPopup(this.$refs.content, {
         offset: [-3, -2]
       });
-      if (this.type == ACTIVE) {
-        this.popup.openPopup();
-      }
     },
     addToTrip() {
       //TODO: should handle api call error in store

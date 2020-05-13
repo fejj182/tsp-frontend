@@ -1,7 +1,7 @@
 <template>
   <div id="map">
     <Markers :map="myMap" />
-    <Lines v-if="false" :map="myMap" />
+    <Lines v-if="tripStarted" :map="myMap" />
   </div>
 </template>
 

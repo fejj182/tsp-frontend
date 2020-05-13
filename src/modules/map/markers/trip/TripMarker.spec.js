@@ -14,12 +14,12 @@ describe("TripMarker", () => {
       }
     };
   });
-  test("should not load anything into dom on mount", () => {
+  test("should not load anything into dom if marker not returned", () => {
     const wrapper = getWrapper();
     expect(wrapper.find("[data-test-id=trip-marker]").exists()).toBe(false);
   });
 
-  test("should load everything into dom when state is correct", () => {
+  test("should load DummyMarker into dom if marker is returned", () => {
     const mockMarker = {};
     generateTripMarker.mockReturnValue(mockMarker);
     const wrapper = getWrapper();

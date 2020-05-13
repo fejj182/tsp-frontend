@@ -1,6 +1,11 @@
 <template>
   <div v-if="marker" data-test-id="trip-marker">
-    <DummyMarker :key="Math.random()" :marker="marker" />
+    <DummyMarker
+      :key="Math.random()"
+      :marker="marker"
+      :station="station"
+      type="ACTIVE"
+    />
   </div>
 </template>
 

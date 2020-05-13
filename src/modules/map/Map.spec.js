@@ -58,7 +58,8 @@ describe("Map", () => {
     });
     expect(wrapper.find(Markers).exists()).toBe(true);
   });
-  xit("should contain the lines", () => {
+  it("should contain the lines", () => {
+    mockStore.state.trip.savedTrip = [{}, {}];
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
