@@ -40,11 +40,11 @@ export default {
     activeDurationRange() {
       return this.$store.state.filters.activeDurationRange;
     },
-    savedTrip() {
-      return this.$store.state.trip.savedTrip;
+    completeTrip() {
+      return this.$store.getters.completeTrip;
     },
     tripStarted() {
-      return this.$store.state.trip.savedTrip.length > 0;
+      return this.$store.getters.completeTrip.length > 0;
     }
   },
   methods: {
@@ -73,7 +73,7 @@ export default {
     activeDurationRange(range) {
       displayPanesInRange(this.panes, range);
     },
-    savedTrip(trip) {
+    completeTrip(trip) {
       if (trip.length > 0) {
         const stop = trip[trip.length - 1];
         const coords = [stop.lat, stop.lng];

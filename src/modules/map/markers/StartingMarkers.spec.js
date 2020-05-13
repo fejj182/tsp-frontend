@@ -6,7 +6,7 @@ import { generateMarker } from "@/plugins/leaflet";
 jest.mock("@/plugins/leaflet");
 
 describe("StartingMarkers", () => {
-  let mockState;
+  let mockState, mockGetters;
   beforeEach(() => {
     mockState = {
       stations: {
@@ -14,8 +14,11 @@ describe("StartingMarkers", () => {
         activeConnections: []
       },
       trip: {
-        savedTrip: []
+        tripReset: false
       }
+    };
+    mockGetters = {
+      completeTrip: []
     };
   });
   test("should not load anything into dom on mount", () => {
@@ -60,7 +63,8 @@ describe("StartingMarkers", () => {
     const wrapper = shallowMount(StartingMarkers, {
       mocks: {
         $store: {
-          state: mockState
+          state: mockState,
+          getters: mockGetters
         }
       }
     });

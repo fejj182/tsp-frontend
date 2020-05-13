@@ -32,9 +32,11 @@ describe("Map", () => {
           activeDurationRange: []
         },
         trip: {
-          savedTrip: [],
           stops: []
         }
+      },
+      getters: {
+        completeTrip: []
       }
     };
     mockMap = {
@@ -59,7 +61,7 @@ describe("Map", () => {
     expect(wrapper.find(Markers).exists()).toBe(true);
   });
   it("should contain the lines", () => {
-    mockStore.state.trip.savedTrip = [{}, {}];
+    mockStore.getters.completeTrip = [{}, {}];
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
@@ -125,7 +127,7 @@ describe("Map", () => {
         $store: mockStore
       }
     });
-    mockStore.state.trip.savedTrip = [{ lat: 1, lng: 2 }];
+    mockStore.getters.completeTrip = [{ lat: 1, lng: 2 }];
     expect(mockMap.flyTo).toHaveBeenCalledWith([1, 2], 6, expect.any(Object));
   });
 
@@ -136,7 +138,7 @@ describe("Map", () => {
         $store: mockStore
       }
     });
-    mockStore.state.trip.savedTrip = [];
+    mockStore.getters.completeTrip = [];
     expect(mockMap.flyTo).toHaveBeenCalledWith(
       wrapper.vm.centreCoords,
       7,

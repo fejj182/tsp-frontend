@@ -25,6 +25,9 @@ describe("Stop", () => {
         stations: _.cloneDeep(stations),
         trip: _.cloneDeep(trip),
         filters: _.cloneDeep(filters)
+      },
+      getters: {
+        completeTrip: []
       }
     };
     filterStationsOutOfRange.mockReturnValue([]);
@@ -177,7 +180,7 @@ describe("Stop", () => {
 
   it("should dispatch removeStop action when click cross", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
-    mockStore.state.trip.savedTrip = [{}, {}];
+    mockStore.getters.completeTrip = [{}, {}];
     const wrapper = mount(Stop, {
       vuetify: new Vuetify(),
       mocks: {
@@ -194,7 +197,7 @@ describe("Stop", () => {
 
   it("should dispatch remove resetTrip action when click cross and only starting destination selected", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
-    mockStore.state.trip.savedTrip = [{}];
+    mockStore.getters.completeTrip = [{}];
     const wrapper = mount(Stop, {
       vuetify: new Vuetify(),
       mocks: {

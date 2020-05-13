@@ -32,7 +32,7 @@ export default {
   },
   computed: {
     startingStations() {
-      return this.$store.state.trip.savedTrip.length == 0
+      return this.$store.getters.completeTrip.length == 0
         ? this.$store.state.stations.startingStations
         : [];
     },
@@ -40,7 +40,7 @@ export default {
       return (
         this.$store.state.stations.startingStations.length > 0 &&
         this.$store.state.stations.activeConnections.length == 0 &&
-        this.$store.state.trip.savedTrip.length == 0
+        this.$store.getters.completeTrip.length == 0
       );
     }
   },

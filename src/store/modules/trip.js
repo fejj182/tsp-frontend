@@ -17,9 +17,9 @@ export const getters = {
     );
   },
   completeTrip(state) {
-    return state.selectedStop
-      ? [...state.savedTrip, state.selectedStop]
-      : state.savedTrip;
+    return state.savedTrip.filter(station => {
+      return station != null;
+    });
   }
 };
 
@@ -52,12 +52,12 @@ export const actions = {
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
-  removeStop({ commit, dispatch, state }) {
-    const savedTrip = state.savedTrip;
+  removeStop({ commit, dispatch, state, getters }) {
+    const completeTrip = getters.completeTrip;
     const tripStops = state.stops;
-    if (savedTrip.length > 1 && tripStops.length > 1) {
+    if (completeTrip.length > 1 && tripStops.length > 1) {
       dispatch("reloadConnections", {
-        station: savedTrip[savedTrip.length - 2],
+        station: completeTrip[completeTrip.length - 2],
         connections: tripStops[tripStops.length - 2].stations
       });
       commit("REMOVE_STOP");
@@ -71,6 +71,10 @@ export const actions = {
 export const mutations = {
   SELECT_STOP: (state, station) => {
     state.selectedStop = station;
+    state.savedTrip = [
+      ...state.savedTrip.slice(0, state.savedTrip.length - 1),
+      station
+    ];
   },
   RESET_TRIP: state => {
     state.stops = [];
@@ -85,9 +89,7 @@ export const mutations = {
       return stop;
     });
     state.stops = [...prevStops, { stations, readOnly: false }];
-    if (state.selectedStop) {
-      state.savedTrip = [...state.savedTrip, state.selectedStop];
-    }
+    state.savedTrip = [...state.savedTrip, null];
     state.selectedStop = null;
   },
   REMOVE_STOP: state => {
@@ -98,7 +100,10 @@ export const mutations = {
     state.stops = stops;
 
     state.selectedStop = null;
-    state.savedTrip = state.savedTrip.slice(0, state.savedTrip.length - 1);
+    state.savedTrip = [
+      ...state.savedTrip.slice(0, state.savedTrip.length - 2),
+      null
+    ];
   },
   ADD_STARTING_STATION(state, station) {
     if (state.savedTrip.length === 0) {
@@ -121,6 +126,7 @@ export const mutations = {
         stations: [station]
       };
     });
+    state.selectedStop = trip[trip.length - 1];
     state.savedTrip = trip;
   }
 };

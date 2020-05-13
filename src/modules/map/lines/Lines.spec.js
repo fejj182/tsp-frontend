@@ -7,10 +7,8 @@ describe("Lines", () => {
   let mockStore;
   beforeEach(() => {
     mockStore = {
-      state: {
-        trip: {
-          savedTrip: []
-        }
+      getters: {
+        savedTrip: []
       }
     };
   });
@@ -19,7 +17,7 @@ describe("Lines", () => {
     it("should contain 1 line if there are 2 stops in trip", () => {
       const firstStation = fakeStation();
       const secondStation = fakeStation();
-      mockStore.state.trip.savedTrip = [firstStation, secondStation];
+      mockStore.getters.completeTrip = [firstStation, secondStation];
       const wrapper = shallowMount(Lines, {
         mocks: {
           $store: mockStore
@@ -33,7 +31,7 @@ describe("Lines", () => {
     });
 
     it("should contain 2 lines if there are 3 stops in trip", () => {
-      mockStore.state.trip.savedTrip = [
+      mockStore.getters.completeTrip = [
         fakeStation(),
         fakeStation(),
         fakeStation()

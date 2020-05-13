@@ -44,10 +44,9 @@ describe("popups", () => {
     describe("completeTrip", () => {
       it("should add selectedStop to savedTrip", () => {
         let state = {
-          savedTrip: [{}],
-          selectedStop: {}
+          savedTrip: [{}, null]
         };
-        expect(module.getters.completeTrip(state)).toEqual([{}, {}]);
+        expect(module.getters.completeTrip(state)).toEqual([{}]);
       });
       it("should return savedTrip if selectedStop is null", () => {
         let state = {
@@ -116,10 +115,12 @@ describe("popups", () => {
         const startingDestination = {};
         const prevStations = [{}, {}];
         let state = {
-          savedTrip: [startingDestination, {}],
           stops: [{ stations: prevStations }, { stations: [] }]
         };
-        module.actions.removeStop({ commit, dispatch, state });
+        let getters = {
+          completeTrip: [startingDestination, {}]
+        };
+        module.actions.removeStop({ commit, dispatch, state, getters });
         expect(dispatch).toHaveBeenCalledWith("reloadConnections", {
           station: startingDestination,
           connections: prevStations
@@ -128,10 +129,12 @@ describe("popups", () => {
       });
       it("when trip not valid", () => {
         let state = {
-          savedTrip: [],
           stops: []
         };
-        module.actions.removeStop({ commit, dispatch, state });
+        let getters = {
+          completeTrip: []
+        };
+        module.actions.removeStop({ commit, dispatch, state, getters });
 
         expect(dispatch).not.toHaveBeenCalledWith(
           "reloadConnections",
@@ -185,13 +188,24 @@ describe("popups", () => {
   });
   describe("mutations", () => {
     describe("SELECT_STOP", () => {
-      it("should set the connection id", () => {
+      it("should set the selectedStop", () => {
         let state = {
-          selectedStop: null
+          selectedStop: null,
+          savedTrip: [{}, null]
         };
-        let selectedStop = 1;
+        let selectedStop = {};
         module.mutations.SELECT_STOP(state, selectedStop);
         expect(state.selectedStop).toEqual(selectedStop);
+      });
+
+      it("should set the savedTrip", () => {
+        let state = {
+          selectedStop: null,
+          savedTrip: [{}, null]
+        };
+        let selectedStop = {};
+        module.mutations.SELECT_STOP(state, selectedStop);
+        expect(state.savedTrip).toEqual([{}, {}]);
       });
     });
     describe("RESET_TRIP", () => {
@@ -218,7 +232,8 @@ describe("popups", () => {
       });
       it("should add stations for the next stop", () => {
         let state = {
-          stops: [{ stations }]
+          stops: [{ stations }],
+          savedTrip: []
         };
         module.mutations.ADD_NEW_STOP(state, stations);
         expect(state.stops).toEqual([
@@ -229,20 +244,10 @@ describe("popups", () => {
       it("should add selectedStop to the savedTrip", () => {
         let state = {
           stops: [{ stations }],
-          savedTrip: [{}],
-          selectedStop: {}
+          savedTrip: [{}]
         };
         module.mutations.ADD_NEW_STOP(state, stations);
-        expect(state.savedTrip).toEqual([{}, {}]);
-      });
-      it("should not add selectedStop to the savedTrip when it is null", () => {
-        let state = {
-          stops: [],
-          savedTrip: [{}],
-          selectedStop: null
-        };
-        module.mutations.ADD_NEW_STOP(state, stations);
-        expect(state.savedTrip).toEqual([{}]);
+        expect(state.savedTrip).toEqual([{}, null]);
       });
       it("should clear selectedStop", () => {
         let state = {
@@ -278,11 +283,11 @@ describe("popups", () => {
       it("should remove last stop in savedTrip", () => {
         let state = {
           stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
-          savedTrip: [{}, {}],
+          savedTrip: [{}, {}, {}],
           selectedStop: {}
         };
         module.mutations.REMOVE_STOP(state);
-        expect(state.savedTrip).toEqual([{}]);
+        expect(state.savedTrip).toEqual([{}, null]);
       });
       it("should load selectedStop with previous last stop in trip", () => {
         let state = {

@@ -7,17 +7,15 @@ describe("TripMarkers", () => {
   let mockStore;
   beforeEach(() => {
     mockStore = {
-      state: {
-        trip: {
-          savedTrip: []
-        }
+      getters: {
+        completeTrip: []
       }
     };
   });
 
   it("should contain as many markers as stations in the tip", () => {
     const firstStation = fakeStation();
-    mockStore.state.trip.savedTrip = [firstStation, fakeStation()];
+    mockStore.getters.completeTrip = [firstStation, fakeStation()];
     const wrapper = shallowMount(TripMarkers, {
       mocks: {
         $store: mockStore

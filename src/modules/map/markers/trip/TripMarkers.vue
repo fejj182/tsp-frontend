@@ -20,7 +20,7 @@ export default {
   },
   computed: {
     trip() {
-      return this.$store.state.trip.savedTrip;
+      return this.$store.getters.completeTrip;
     }
   }
 };

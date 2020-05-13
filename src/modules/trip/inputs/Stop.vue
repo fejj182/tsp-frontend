@@ -93,7 +93,7 @@ export default {
       this.$store.dispatch("selectStop", station);
     },
     removeStop() {
-      if (this.$store.state.trip.savedTrip.length > 1) {
+      if (this.$store.getters.completeTrip.length > 1) {
         this.$store.dispatch("removeStop");
       } else {
         this.$store.dispatch("resetTrip");
