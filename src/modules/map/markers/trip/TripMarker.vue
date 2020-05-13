@@ -11,7 +11,7 @@
 
 <script>
 import DummyMarker from "@/modules/map/markers/DummyMarker";
-import { generateTripMarker } from "@/plugins/leaflet";
+import { generatePositionMarker } from "@/plugins/leaflet";
 
 export default {
   components: {
@@ -34,7 +34,7 @@ export default {
     }
   },
   mounted() {
-    this.marker = generateTripMarker(this.station, this.map, this.position);
+    this.marker = generatePositionMarker(this.station, this.map, this.position);
   }
 };
 </script>
