@@ -21,7 +21,6 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
-import { CONNECTION } from "@/modules/map/markers/types";
 
 export default {
   data: function() {
@@ -46,10 +45,11 @@ export default {
   },
   computed: {
     isConnection() {
-      return this.type == CONNECTION;
+      const savedTrip = this.$store.state.trip.savedTrip;
+      return this.station == savedTrip[savedTrip.length - 1];
     },
     tripNotBegun() {
-      return this.$store.state.trip.stops.length === 0;
+      return this.$store.state.trip.savedTrip.length === 0;
     },
     duration() {
       const duration = this.station.duration;

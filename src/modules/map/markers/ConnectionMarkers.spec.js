@@ -8,9 +8,6 @@ jest.mock("@/plugins/leaflet");
 jest.mock("./types", () => ({
   get SLOW() {
     return 0;
-  },
-  get CONNECTION() {
-    return "mockConnection";
   }
 }));
 
@@ -57,10 +54,6 @@ describe("ConnectionMarkers", () => {
       mockState.stations.activeConnections = [mockStation];
       setTimeout(() => {
         expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
-        expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
-        expect(wrapper.find(DummyMarker).props().type).toEqual(
-          "mockConnection"
-        );
         done();
       }, 0);
     });

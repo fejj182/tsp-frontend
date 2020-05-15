@@ -1,18 +1,14 @@
 <template>
   <div v-if="showConnections" data-test-id="connection-markers">
     <div v-for="(marker, index) in markers" :key="Math.random() + index">
-      <DummyMarker
-        :marker="marker.marker"
-        :station="marker.station"
-        :type="markerType"
-      />
+      <DummyMarker :marker="marker.marker" />
     </div>
   </div>
 </template>
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { CONNECTION, RED, SLOW } from "./types";
+import { RED, SLOW } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -26,8 +22,7 @@ export default {
   },
   data: function() {
     return {
-      markers: [],
-      markerType: CONNECTION
+      markers: []
     };
   },
   computed: {

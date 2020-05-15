@@ -25,6 +25,8 @@ describe("trip_map", () => {
     cy.get("g .leaflet-interactive").should("exist");
     cy.get(".leaflet-popup").should("exist");
     cy.get(".position-2").should("exist");
+    cy.get("#duration").should("exist");
+    cy.get("[data-test-id=add-to-station]:visible").click();
 
     cy.get("[data-test-id=save-trip]").click();
     cy.get("[data-test-id=success-alias]").should("exist");

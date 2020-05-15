@@ -15,6 +15,24 @@ describe("DummyMarker", () => {
     expect(wrapper.find(Popup).exists()).toBe(true);
   });
 
+  test("should not contain a popup if dont have station", () => {
+    const wrapper = shallowMount(DummyMarker, {
+      propsData: {
+        type: mockType
+      }
+    });
+    expect(wrapper.find(Popup).exists()).toBe(false);
+  });
+
+  test("should not contain a popup if dont have type", () => {
+    const wrapper = shallowMount(DummyMarker, {
+      propsData: {
+        station: {}
+      }
+    });
+    expect(wrapper.find(Popup).exists()).toBe(false);
+  });
+
   test("should remove marker on destroy", () => {
     const mockRemove = jest.fn();
     const wrapper = shallowMount(DummyMarker, {
