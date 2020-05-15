@@ -1,5 +1,5 @@
 <template>
-  <div v-if="loadPopup">
+  <div>
     <Popup :marker="marker" :station="station" :type="type" />
   </div>
 </template>
@@ -20,11 +20,6 @@ export default {
     },
     type: {
       type: String
-    }
-  },
-  computed: {
-    loadPopup() {
-      return this.station && this.type;
     }
   },
   destroyed() {

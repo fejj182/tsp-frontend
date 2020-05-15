@@ -82,13 +82,13 @@ describe("Popup", () => {
       it("should open popup when station is same as in component", () => {
         const mockPopup = { openPopup: jest.fn() };
         mockMarker.bindPopup.mockReturnValue(mockPopup);
+        mockStore.state.trip.selectedStop = mockProps.station;
         shallowMount(Popup, {
           mocks: {
             $store: mockStore
           },
           propsData: mockProps
         });
-        mockStore.state.trip.selectedStop = mockProps.station;
         expect(mockPopup.openPopup).toHaveBeenCalled();
       });
 

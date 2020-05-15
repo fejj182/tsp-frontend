@@ -77,13 +77,14 @@ export default {
       if (trip.length > 0) {
         const stop = trip[trip.length - 1];
         const coords = [stop.lat, stop.lng];
+        const durationSecs = trip.length == 1 ? 0.75 : 1.5;
         this.myMap.flyTo(coords, 6, {
-          duration: 1.5,
+          duration: durationSecs,
           easeLinearity: 0.1
         });
       } else {
         this.myMap.flyTo(this.centreCoords, 7, {
-          duration: 2.5,
+          duration: 1.5,
           easeLinearity: 0.1
         });
       }

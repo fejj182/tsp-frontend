@@ -67,6 +67,9 @@ export default {
       this.popup = this.marker.bindPopup(this.$refs.content, {
         offset: [-3, -2]
       });
+      if (this.selectedStop && this.station.name == this.selectedStop.name) {
+        this.popup.openPopup();
+      }
     },
     addToTrip() {
       //TODO: should handle api call error in store
@@ -74,13 +77,6 @@ export default {
     }
   },
   watch: {
-    selectedStop(selectedStation) {
-      if (this.station && selectedStation) {
-        if (this.station.name == selectedStation.name) {
-          this.popup.openPopup();
-        }
-      }
-    },
     activeStation(station) {
       if (station) {
         this.bindPopup();

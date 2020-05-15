@@ -4,6 +4,7 @@ describe("trip_map", () => {
     cy.route("POST", "api/trip", {
       alias: "some-alias"
     });
+    cy.route("POST", "api/stations/connections").as("getConnections");
 
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
@@ -14,6 +15,7 @@ describe("trip_map", () => {
     cy.get(".leaflet-popup").should("exist");
     cy.get("[data-test-id=starting-destination").should("not.have.value", "");
     cy.get("[data-test-id=add-to-station]:visible").click();
+    cy.wait("@getConnections");
 
     cy.get(".position-1").click();
     cy.get(".leaflet-popup").should("exist");
@@ -41,12 +43,7 @@ describe("trip_map", () => {
     cy.get(".marker-purple:visible")
       .first()
       .click();
-    cy.clock();
     cy.get("[data-test-id=add-to-station]:visible").click();
-    cy.wait("@getConnections");
-    cy.tick(1000).then(clock => {
-      clock.restore();
-    });
 
     // using trip form here instead of marker as causes state change
     cy.get("#stop-1 [data-test-id=stop]").click();
