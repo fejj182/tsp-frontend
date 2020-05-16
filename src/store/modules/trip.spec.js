@@ -110,8 +110,15 @@ describe("popups", () => {
         expect(commit).toHaveBeenCalledWith("ADD_NEW_STOP", payload.stations);
       });
     });
+    describe("reloadStop", () => {
+      it("should commit RELOAD_STOP", () => {
+        const stations = {};
+        module.actions.reloadStop({ commit }, stations);
+        expect(commit).toHaveBeenCalledWith("RELOAD_STOP", stations);
+      });
+    });
     describe("removeStop", () => {
-      test("when trip valid", () => {
+      test("dispatch reloadConnections and commit REMOVE_STOP", () => {
         const startingDestination = {};
         const prevStations = [{}, {}];
         let state = {
@@ -127,20 +134,20 @@ describe("popups", () => {
         });
         expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
       });
-      it("when trip not valid", () => {
+    });
+    describe("removeStopAndFetchConnections", () => {
+      test("get connections for first stop in savedTrip and dispatch REMOVE_STOP", () => {
+        const firstStop = { name: "firstStop" };
         let state = {
-          stops: []
+          savedTrip: [firstStop, {}, {}]
         };
-        let getters = {
-          completeTrip: []
-        };
-        module.actions.removeStop({ commit, dispatch, state, getters });
-
-        expect(dispatch).not.toHaveBeenCalledWith(
-          "reloadConnections",
-          expect.any(Object)
-        );
-        expect(commit).not.toHaveBeenCalledWith("REMOVE_STOP");
+        module.actions.removeStopAndFetchConnections({
+          commit,
+          dispatch,
+          state
+        });
+        expect(dispatch).toHaveBeenCalledWith("refreshConnections", firstStop);
+        expect(commit).toHaveBeenCalledWith("REMOVE_STOP");
       });
     });
     describe("startTrip", () => {
@@ -257,6 +264,20 @@ describe("popups", () => {
         };
         module.mutations.ADD_NEW_STOP(state, stations);
         expect(state.selectedStop).toBe(null);
+      });
+    });
+    describe("RELOAD_STOP", () => {
+      const stations = [];
+      it("should replace last stop with new stations", () => {
+        let state = {
+          stops: [{ stations }, { stations }, { stations }]
+        };
+        module.mutations.RELOAD_STOP(state, [{}, {}]);
+        expect(state.stops).toEqual([
+          { stations, readOnly: true },
+          { stations, readOnly: true },
+          { stations: [{}, {}], readOnly: false }
+        ]);
       });
     });
     describe("REMOVE_STOP", () => {

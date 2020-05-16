@@ -195,6 +195,25 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("removeStop");
   });
 
+  it("should dispatch removeStopAndFetchConnections action when stop before has no connections", () => {
+    mockStore.state.trip.stops = [{}, { fixed: true }, {}];
+    mockStore.state.trip.savedTrip = [{}, {}, {}];
+    const wrapper = mount(Stop, {
+      vuetify: new Vuetify(),
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: [],
+        id: "stop-3"
+      }
+    });
+    wrapper.find(".mdi-close").trigger("click");
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      "removeStopAndFetchConnections"
+    );
+  });
+
   it("should dispatch remove resetTrip action when click cross and only starting destination selected", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
     mockStore.getters.completeTrip = [{}];

@@ -94,7 +94,12 @@ export default {
     },
     removeStop() {
       if (this.$store.state.trip.savedTrip.length > 2) {
-        this.$store.dispatch("removeStop");
+        const tripStops = this.$store.state.trip.stops;
+        if (tripStops[tripStops.length - 2].fixed) {
+          this.$store.dispatch("removeStopAndFetchConnections");
+        } else {
+          this.$store.dispatch("removeStop");
+        }
       } else {
         this.$store.dispatch("resetTrip");
       }

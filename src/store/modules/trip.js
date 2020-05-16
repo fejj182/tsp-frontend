@@ -52,16 +52,22 @@ export const actions = {
   addNewStop({ commit }, payload) {
     commit("ADD_NEW_STOP", payload.stations);
   },
+  reloadStop({ commit }, stations) {
+    commit("RELOAD_STOP", stations);
+  },
   removeStop({ commit, dispatch, state, getters }) {
     const completeTrip = getters.completeTrip;
     const tripStops = state.stops;
-    if (completeTrip.length > 1 && tripStops.length > 1) {
-      dispatch("reloadConnections", {
-        station: completeTrip[completeTrip.length - 2],
-        connections: tripStops[tripStops.length - 2].stations
-      });
-      commit("REMOVE_STOP");
-    }
+    dispatch("reloadConnections", {
+      station: completeTrip[completeTrip.length - 2],
+      connections: tripStops[tripStops.length - 2].stations
+    });
+    commit("REMOVE_STOP");
+  },
+  removeStopAndFetchConnections({ commit, dispatch, state }) {
+    const savedTrip = state.savedTrip;
+    dispatch("refreshConnections", savedTrip[savedTrip.length - 3]);
+    commit("REMOVE_STOP");
   },
   selectStop({ commit }, station) {
     commit("SELECT_STOP", station);
@@ -91,6 +97,13 @@ export const mutations = {
     state.stops = [...prevStops, { stations, readOnly: false }];
     state.savedTrip = [...state.savedTrip, null];
     state.selectedStop = null;
+  },
+  RELOAD_STOP: (state, stations) => {
+    const prevStops = state.stops.slice(0, state.stops.length - 1).map(stop => {
+      stop.readOnly = true;
+      return stop;
+    });
+    state.stops = [...prevStops, { stations, readOnly: false }];
   },
   REMOVE_STOP: state => {
     const stops = state.stops.slice(0, state.stops.length - 1);

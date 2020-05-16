@@ -75,6 +75,25 @@ describe("stations", () => {
           );
         });
       });
+      describe("refreshConnections", () => {
+        it("should commit CLEAR_ACTIVE_CONNECTIONS and SET_ACTIVE_CONNECTIONS", async () => {
+          stationsApi.getConnections.mockResolvedValue(connections);
+          module.actions.refreshConnections({ commit, dispatch }, station);
+          await flushPromises();
+          expect(commit).toHaveBeenCalledWith("CLEAR_ACTIVE_CONNECTIONS");
+          expect(commit).toHaveBeenCalledWith(
+            "SET_ACTIVE_CONNECTIONS",
+            connections
+          );
+        });
+
+        it("should dispatch reloadStop", async () => {
+          stationsApi.getConnections.mockResolvedValue(connections);
+          module.actions.refreshConnections({ commit, dispatch }, station);
+          await flushPromises();
+          expect(dispatch).toHaveBeenCalledWith("reloadStop", connections);
+        });
+      });
       describe("fetchStartingStations", () => {
         it("should call the stationsApi and commit stations to state", async () => {
           const mockStations = [{}, {}];

@@ -22,6 +22,12 @@ export const actions = {
     commit("CLEAR_ACTIVE_CONNECTIONS");
     commit("SET_ACTIVE_CONNECTIONS", connections);
   },
+  async refreshConnections({ commit, dispatch }, station) {
+    const connections = await stationsApi.getConnections(station.id);
+    commit("CLEAR_ACTIVE_CONNECTIONS");
+    commit("SET_ACTIVE_CONNECTIONS", connections);
+    dispatch("reloadStop", connections);
+  },
   async fetchStartingStations({ commit }) {
     //TODO: add error handling
     const stations = await stationsApi.getStations();
