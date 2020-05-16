@@ -9,7 +9,6 @@ export const state = {
 export const getters = {};
 
 export const actions = {
-  //TODO: rename to fetchConnections?
   async fetchConnections({ dispatch, commit }, station) {
     commit("RESET_MAP");
     const connections = await stationsApi.getConnections(station.id);
@@ -29,7 +28,6 @@ export const actions = {
     dispatch("reloadStop", connections);
   },
   async fetchStartingStations({ commit }) {
-    //TODO: add error handling
     const stations = await stationsApi.getStations();
     commit("SET_STARTING_STATIONS", stations);
   },

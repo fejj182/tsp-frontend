@@ -102,5 +102,3 @@ function assertStateAfterRemoveStop2() {
   cy.get(".position-3").should("not.exist");
   cy.get(".marker-red:visible").should("exist");
 }
-
-// TODO: Check popups in right places
