@@ -58,6 +58,7 @@ function resetTrip() {
 }
 
 function assertReloadedTripInCorrectState() {
+  cy.get(".leaflet-popup").should("not.exist");
   cy.get("[data-test-id=starting-destination]")
     .should("exist")
     .should("not.have.value", "");

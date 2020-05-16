@@ -58,6 +58,9 @@ export default {
     selectedStop() {
       return this.$store.state.trip.selectedStop;
     },
+    activeConnections() {
+      return this.$store.state.stations.activeConnections;
+    },
     activeStation() {
       return this.$store.state.stations.activeStation;
     }
@@ -67,7 +70,11 @@ export default {
       this.popup = this.marker.bindPopup(this.$refs.content, {
         offset: [-3, -2]
       });
-      if (this.selectedStop && this.station.name == this.selectedStop.name) {
+      if (
+        this.selectedStop &&
+        this.activeConnections.length > 0 &&
+        this.station.name == this.selectedStop.name
+      ) {
         this.popup.openPopup();
       }
     },

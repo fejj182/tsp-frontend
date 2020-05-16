@@ -57,6 +57,15 @@ describe("StartingMarkers", () => {
         expect(wrapper.find(DummyMarker).props().type).toEqual("STARTING");
       }, 0);
     });
+
+    test("should reload markers when if starting stations change", done => {
+      const wrapper = getWrapper();
+      mockState.stations.startingStations = [{}, {}, {}];
+      setTimeout(() => {
+        expect(wrapper.findAll(DummyMarker).length).toBe(3);
+        done();
+      }, 0);
+    });
   });
 
   const getWrapper = () => {

@@ -1,7 +1,9 @@
 <template>
   <div id="map">
-    <Markers :map="myMap" />
-    <Lines v-if="tripStarted" :map="myMap" />
+    <div v-if="myMap">
+      <Markers :map="myMap" />
+      <Lines v-if="tripStarted" :map="myMap" />
+    </div>
   </div>
 </template>
 
@@ -33,7 +35,13 @@ export default {
     };
   },
   mounted() {
-    this.createMap();
+    const trip = this.completeTrip;
+    if (trip.length > 0) {
+      const centreStop = trip[Math.floor((trip.length - 1) / 2)];
+      this.createMap([centreStop.lat, centreStop.lng], 6);
+    } else {
+      this.createMap(this.centreCoords, this.zoomLevel);
+    }
     this.createPanes();
   },
   computed: {
@@ -48,9 +56,9 @@ export default {
     }
   },
   methods: {
-    createMap() {
+    createMap(centreCoords, zoomLevel) {
       this.myMap = L.map("map");
-      this.myMap.setView(this.centreCoords, this.zoomLevel);
+      this.myMap.setView(centreCoords, zoomLevel);
 
       L.tileLayer(
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",

@@ -32,7 +32,6 @@ export const actions = {
     }
   },
   resetTrip({ dispatch, commit }) {
-    console.log("here");
     dispatch("resetMap");
     commit("RESET_TRIP");
   },

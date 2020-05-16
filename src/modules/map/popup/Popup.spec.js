@@ -22,7 +22,8 @@ describe("Popup", () => {
           savedTrip: []
         },
         stations: {
-          activeStation: null
+          activeStation: null,
+          activeConnections: []
         }
       }
     };
@@ -82,6 +83,7 @@ describe("Popup", () => {
     const mockPopup = { openPopup: jest.fn() };
     mockMarker.bindPopup.mockReturnValue(mockPopup);
     mockStore.state.trip.selectedStop = mockProps.station;
+    mockStore.state.stations.activeConnections = [{}];
     shallowMount(Popup, {
       mocks: {
         $store: mockStore
@@ -91,10 +93,25 @@ describe("Popup", () => {
     expect(mockPopup.openPopup).toHaveBeenCalled();
   });
 
+  it("should not open popup when station is same as in component and no connections", () => {
+    const mockPopup = { openPopup: jest.fn() };
+    mockMarker.bindPopup.mockReturnValue(mockPopup);
+    mockStore.state.trip.selectedStop = mockProps.station;
+    mockStore.state.stations.activeConnections = [];
+    shallowMount(Popup, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: mockProps
+    });
+    expect(mockPopup.openPopup).not.toHaveBeenCalled();
+  });
+
   it("should not open popup when station doesnt have same name", () => {
     const mockPopup = { openPopup: jest.fn() };
     mockMarker.bindPopup.mockReturnValue(mockPopup);
     mockStore.state.trip.selectedStop = { name: "another" };
+    mockStore.state.stations.activeConnections = [{}];
     shallowMount(Popup, {
       mocks: {
         $store: mockStore

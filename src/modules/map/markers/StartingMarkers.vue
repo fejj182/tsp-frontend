@@ -30,6 +30,9 @@ export default {
       markerType: STARTING
     };
   },
+  mounted() {
+    this.generateMarkers(this.startingStations);
+  },
   computed: {
     startingStations() {
       return this.$store.getters.completeTrip.length == 0
@@ -44,8 +47,8 @@ export default {
       );
     }
   },
-  watch: {
-    startingStations(stations) {
+  methods: {
+    generateMarkers(stations) {
       this.markers = [];
       setTimeout(
         () => {
@@ -64,6 +67,11 @@ export default {
         },
         this.$store.state.trip.tripReset ? VERY_SLOW : IMMEDIATE
       );
+    }
+  },
+  watch: {
+    startingStations(stations) {
+      this.generateMarkers(stations);
     }
   }
 };

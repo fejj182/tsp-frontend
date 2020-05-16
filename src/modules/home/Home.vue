@@ -5,7 +5,7 @@
         <TripPanel />
       </v-col>
       <v-col :md="9" cols="12">
-        <Map />
+        <Map v-if="dataLoaded" />
       </v-col>
     </v-row>
     <footer>
@@ -26,12 +26,21 @@ export default {
     Map,
     CookieBanner
   },
+  data() {
+    return {
+      dataLoaded: false
+    };
+  },
   created() {
     if (this.$route.name === "alias") {
-      this.$store.dispatch("fetchTrip", { alias: this.$route.params.alias });
+      this.$store
+        .dispatch("fetchTrip", { alias: this.$route.params.alias })
+        .then(() => (this.dataLoaded = true));
     }
     if (this.$route.name === "home") {
-      this.$store.dispatch("fetchStartingStations");
+      this.$store
+        .dispatch("fetchStartingStations")
+        .then(() => (this.dataLoaded = true));
     }
   }
 };
