@@ -93,7 +93,7 @@ export default {
     onAddStop() {
       if (this.$store.state.trip.selectedStop) {
         this.$store.dispatch(
-          "confirmStop",
+          "fetchConnections",
           this.$store.state.trip.selectedStop
         );
       } else {

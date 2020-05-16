@@ -37,13 +37,13 @@ export const actions = {
   },
   startTrip({ dispatch, commit }, station) {
     dispatch("resetTrip");
-    dispatch("confirmStop", station);
+    dispatch("fetchConnections", station);
     commit("SELECT_STARTING_STATION", station);
     commit("ADD_STARTING_STATION", station);
   },
   addToTrip({ dispatch, commit }, station) {
     dispatch("resetMap");
-    dispatch("confirmStop", station);
+    dispatch("fetchConnections", station);
     commit("ADD_STARTING_STATION", station);
   },
   selectStartingInput({ commit }, station) {

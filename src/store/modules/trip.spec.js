@@ -161,10 +161,10 @@ describe("popups", () => {
         module.actions.startTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("resetTrip");
       });
-      it("should dispatch confirmStop", () => {
+      it("should dispatch fetchConnections", () => {
         let station = {};
         module.actions.startTrip({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
+        expect(dispatch).toHaveBeenCalledWith("fetchConnections", station);
       });
     });
 
@@ -179,10 +179,10 @@ describe("popups", () => {
         module.actions.addToTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("resetMap");
       });
-      it("should dispatch confirmStop", () => {
+      it("should dispatch fetchConnections", () => {
         let station = {};
         module.actions.addToTrip({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("confirmStop", station);
+        expect(dispatch).toHaveBeenCalledWith("fetchConnections", station);
       });
     });
     describe("selectStartingInput", () => {

@@ -10,7 +10,7 @@ export const getters = {};
 
 export const actions = {
   //TODO: rename to fetchConnections?
-  async confirmStop({ dispatch, commit }, station) {
+  async fetchConnections({ dispatch, commit }, station) {
     commit("RESET_MAP");
     const connections = await stationsApi.getConnections(station.id);
     commit("SET_ACTIVE_STATION", station);

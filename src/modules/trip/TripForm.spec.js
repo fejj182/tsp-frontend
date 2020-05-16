@@ -199,7 +199,7 @@ describe("TripForm", () => {
         expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(false);
       });
 
-      it("should dispatch confirmStop action onClick", () => {
+      it("should dispatch fetchConnections action onClick", () => {
         mockStore.state.trip.selectedStop = barcelona;
         mockStore.getters.hasStops = true;
         const wrapper = mount(TripForm, {
@@ -211,7 +211,10 @@ describe("TripForm", () => {
           stubs: mockStubs
         });
         wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(mockStore.dispatch).toBeCalledWith("confirmStop", barcelona);
+        expect(mockStore.dispatch).toBeCalledWith(
+          "fetchConnections",
+          barcelona
+        );
       });
 
       it("should not dispatch action if selectedStop is null", () => {
@@ -226,7 +229,7 @@ describe("TripForm", () => {
           stubs: mockStubs
         });
         wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(mockStore.dispatch).not.toBeCalledWith("confirmStop", null);
+        expect(mockStore.dispatch).not.toBeCalledWith("fetchConnections", null);
       });
 
       it("should show invalid alert if selectedStop is null", () => {

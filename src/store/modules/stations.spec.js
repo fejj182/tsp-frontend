@@ -13,25 +13,25 @@ describe("stations", () => {
   const connections = [{}, {}];
 
   describe("actions", () => {
-    describe("confirmStop", () => {
+    describe("fetchConnections", () => {
       let commit, dispatch;
       beforeEach(() => {
         commit = jest.fn();
         dispatch = jest.fn();
       });
       it("should commit the station to the store", () => {
-        module.actions.confirmStop({ dispatch, commit }, station);
+        module.actions.fetchConnections({ dispatch, commit }, station);
         expect(commit).toHaveBeenCalledWith("RESET_MAP");
       });
 
       it("should get the connections for starting station", () => {
-        module.actions.confirmStop({ dispatch, commit }, station);
+        module.actions.fetchConnections({ dispatch, commit }, station);
         expect(stationsApi.getConnections).toHaveBeenCalledWith(station.id);
       });
 
       it("should dispatch addNewStop", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.confirmStop({ dispatch, commit }, station);
+        module.actions.fetchConnections({ dispatch, commit }, station);
         await flushPromises();
         expect(dispatch).toHaveBeenCalledWith("addNewStop", {
           stations: connections
@@ -40,7 +40,7 @@ describe("stations", () => {
 
       it("should commit the connections to the store", async () => {
         stationsApi.getConnections.mockResolvedValue(connections);
-        module.actions.confirmStop({ dispatch, commit }, station);
+        module.actions.fetchConnections({ dispatch, commit }, station);
         await flushPromises();
         expect(commit).toHaveBeenCalledWith(
           "SET_ACTIVE_CONNECTIONS",
