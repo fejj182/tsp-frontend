@@ -17,11 +17,9 @@ describe("Trip Panel", () => {
       state: {
         stations: _.cloneDeep(stations),
         trip: {
-          stops: []
+          stops: [],
+          savedTrip: []
         }
-      },
-      getters: {
-        completeTrip: []
       }
     };
     mockRoute = {
@@ -42,7 +40,7 @@ describe("Trip Panel", () => {
     });
 
     it("should contain first panel and filters when connections are in the store", () => {
-      mockStore.getters.completeTrip = [{}];
+      mockStore.state.trip.savedTrip = [{}];
       mockStore.state.trip.stops = [{}];
       const wrapper = shallowMount(TripPanel, {
         mocks: {

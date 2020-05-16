@@ -52,7 +52,7 @@ export default {
       return this.$store.getters.completeTrip;
     },
     tripStarted() {
-      return this.$store.getters.completeTrip.length > 0;
+      return this.$store.state.trip.savedTrip.length > 0;
     }
   },
   methods: {

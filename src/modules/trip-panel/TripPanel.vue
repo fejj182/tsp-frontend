@@ -63,11 +63,7 @@ export default {
       return this.$store.state.stations.activeConnections.length > 0;
     },
     tripStarted() {
-      //TODO: change here and in Map.vue
-      return (
-        this.$store.getters.completeTrip.length > 0 &&
-        this.$store.state.trip.stops.length > 0
-      );
+      return this.$store.state.trip.savedTrip.length > 0;
     }
   }
 };

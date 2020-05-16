@@ -33,7 +33,8 @@ describe("Map", () => {
           activeDurationRange: []
         },
         trip: {
-          stops: []
+          stops: [],
+          savedTrip: []
         }
       },
       getters: {
@@ -64,7 +65,7 @@ describe("Map", () => {
     });
   });
   it("should contain the lines", () => {
-    mockStore.getters.completeTrip = [{}, {}];
+    mockStore.state.trip.savedTrip = [{}, {}];
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
