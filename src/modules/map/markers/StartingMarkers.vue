@@ -30,9 +30,12 @@ export default {
       markerType: STARTING
     };
   },
+  mounted() {
+    this.generateMarkers(this.startingStations);
+  },
   computed: {
     startingStations() {
-      return this.$store.state.trip.savedTrip.length == 0
+      return this.$store.getters.completeTrip.length == 0
         ? this.$store.state.stations.startingStations
         : [];
     },
@@ -40,12 +43,12 @@ export default {
       return (
         this.$store.state.stations.startingStations.length > 0 &&
         this.$store.state.stations.activeConnections.length == 0 &&
-        this.$store.state.trip.savedTrip.length == 0
+        this.$store.getters.completeTrip.length == 0
       );
     }
   },
-  watch: {
-    startingStations(stations) {
+  methods: {
+    generateMarkers(stations) {
       this.markers = [];
       setTimeout(
         () => {
@@ -64,6 +67,11 @@ export default {
         },
         this.$store.state.trip.tripReset ? VERY_SLOW : IMMEDIATE
       );
+    }
+  },
+  watch: {
+    startingStations(stations) {
+      this.generateMarkers(stations);
     }
   }
 };

@@ -65,7 +65,7 @@ export default {
     tripStarted() {
       //TODO: change here and in Map.vue
       return (
-        this.$store.state.trip.savedTrip.length > 0 &&
+        this.$store.getters.completeTrip.length > 0 &&
         this.$store.state.trip.stops.length > 0
       );
     }

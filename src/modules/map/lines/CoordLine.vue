@@ -14,11 +14,6 @@ export default {
       type: Array
     }
   },
-  computed: {
-    trip() {
-      return this.$store.state.trip.savedTrip;
-    }
-  },
   mounted() {
     this.geoJsonLayer = L.geoJSON({
       type: "LineString",

@@ -5,24 +5,24 @@ export const generateMarker = (station, map, onClick, colour) => {
   const marker = L.marker([station.lat, station.lng], {
     pane: getPaneNameFromDuration(station.duration),
     icon: L.icon({
-      iconUrl: `pin-${colour}.png`,
+      iconUrl: require("@/assets/pin-" + colour + ".png"),
       iconAnchor: [0, 20],
       iconSize: [20, 20],
       className: `marker-${colour}`
     })
   });
-
   marker.addTo(map);
   marker.on("click", onClick);
   return marker;
 };
 
-export const generateTripMarker = (station, map, position) => {
+export const generatePositionMarker = (station, map, position) => {
   const marker = L.marker([station.lat, station.lng], {
     icon: L.icon({
-      iconUrl: `badge-${position}.png`,
-      iconAnchor: [15, 4],
-      iconSize: [30, 30]
+      iconUrl: require("@/assets/badge-" + position + ".png"),
+      iconAnchor: [15, 15],
+      iconSize: [30, 30],
+      className: `position-${position}`
     })
   });
   marker.addTo(map);

@@ -12,11 +12,12 @@ describe("Home", () => {
   describe("children", () => {
     let wrapper;
     beforeEach(() => {
+      let mockStore = {
+        dispatch: jest.fn().mockResolvedValue({})
+      };
       wrapper = shallowMount(Home, {
         mocks: {
-          $store: {
-            dispatch: jest.fn()
-          },
+          $store: mockStore,
           $route: {
             name: "home"
           }
@@ -24,7 +25,7 @@ describe("Home", () => {
       });
     });
 
-    it("should contain the map", () => {
+    it("should contain the map", async () => {
       expect(wrapper.find(Map).exists()).toBe(true);
     });
     it("should contain the trip panel", () => {
@@ -39,7 +40,7 @@ describe("Home", () => {
     let mockStore;
     beforeEach(() => {
       mockStore = {
-        dispatch: jest.fn()
+        dispatch: jest.fn().mockResolvedValue({})
       };
     });
     it("should fetch starting stations '/'", () => {

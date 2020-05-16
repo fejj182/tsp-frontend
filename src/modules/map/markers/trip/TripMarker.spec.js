@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import TripMarker from "./TripMarker.vue";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
-import { generateTripMarker } from "@/plugins/leaflet";
+import { generatePositionMarker } from "@/plugins/leaflet";
 
 jest.mock("@/plugins/leaflet");
 
@@ -14,14 +14,14 @@ describe("TripMarker", () => {
       }
     };
   });
-  test("should not load anything into dom on mount", () => {
+  test("should not load anything into dom if marker not returned", () => {
     const wrapper = getWrapper();
     expect(wrapper.find("[data-test-id=trip-marker]").exists()).toBe(false);
   });
 
-  test("should load everything into dom when state is correct", () => {
+  test("should load DummyMarker into dom if marker is returned", () => {
     const mockMarker = {};
-    generateTripMarker.mockReturnValue(mockMarker);
+    generatePositionMarker.mockReturnValue(mockMarker);
     const wrapper = getWrapper();
     expect(wrapper.find("[data-test-id=trip-marker]").exists()).toBe(true);
     expect(wrapper.find(DummyMarker).exists()).toBe(true);

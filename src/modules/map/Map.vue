@@ -1,7 +1,9 @@
 <template>
   <div id="map">
-    <Markers :map="myMap" />
-    <Lines v-if="false" :map="myMap" />
+    <div v-if="myMap">
+      <Markers :map="myMap" />
+      <Lines v-if="tripStarted" :map="myMap" />
+    </div>
   </div>
 </template>
 
@@ -33,24 +35,30 @@ export default {
     };
   },
   mounted() {
-    this.createMap();
+    const trip = this.completeTrip;
+    if (trip.length > 0) {
+      const centreStop = trip[Math.floor((trip.length - 1) / 2)];
+      this.createMap([centreStop.lat, centreStop.lng], 6);
+    } else {
+      this.createMap(this.centreCoords, this.zoomLevel);
+    }
     this.createPanes();
   },
   computed: {
     activeDurationRange() {
       return this.$store.state.filters.activeDurationRange;
     },
-    savedTrip() {
-      return this.$store.state.trip.savedTrip;
+    completeTrip() {
+      return this.$store.getters.completeTrip;
     },
     tripStarted() {
-      return this.$store.state.trip.savedTrip.length > 0;
+      return this.$store.getters.completeTrip.length > 0;
     }
   },
   methods: {
-    createMap() {
+    createMap(centreCoords, zoomLevel) {
       this.myMap = L.map("map");
-      this.myMap.setView(this.centreCoords, this.zoomLevel);
+      this.myMap.setView(centreCoords, zoomLevel);
 
       L.tileLayer(
         "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
@@ -73,17 +81,18 @@ export default {
     activeDurationRange(range) {
       displayPanesInRange(this.panes, range);
     },
-    savedTrip(trip) {
+    completeTrip(trip) {
       if (trip.length > 0) {
         const stop = trip[trip.length - 1];
         const coords = [stop.lat, stop.lng];
+        const durationSecs = trip.length == 1 ? 0.75 : 1.5;
         this.myMap.flyTo(coords, 6, {
-          duration: 1.5,
+          duration: durationSecs,
           easeLinearity: 0.1
         });
       } else {
         this.myMap.flyTo(this.centreCoords, 7, {
-          duration: 2.5,
+          duration: 1.5,
           easeLinearity: 0.1
         });
       }

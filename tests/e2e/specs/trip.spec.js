@@ -6,7 +6,8 @@ describe("Trip", function() {
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
     createTrip();
-    updateTrip();
+    assertStopCanBeAdded();
+    assertTripCanBeRebuilt();
     resetTrip();
   });
 });
@@ -16,14 +17,18 @@ function createTrip() {
   cy.get(".v-list-item")
     .first()
     .click();
+  cy.get(".position-1").should("exist");
 
   cy.get("#stop-1 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
   cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("[data-test-id=add-stop]").click();
+  cy.get(".position-2").should("exist");
+  cy.get("g .leaflet-interactive").should("exist");
+  cy.get(".leaflet-popup").should("exist");
 
+  cy.get("[data-test-id=add-stop]").click();
   cy.get("#stop-2 [data-test-id=stop]")
     .first()
     .click();
@@ -31,54 +36,29 @@ function createTrip() {
     .first()
     .click();
   cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
-  // TODO: should be added in other places?
-  cy.get(".marker-purple:visible");
-
 
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
 
   cy.reload();
+  assertReloadedTripInCorrectState();
 
-  cy.get("[data-test-id=starting-destination]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-2 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
-}
+  cy.get("[data-test-id=save-trip]").click();
+  cy.get("[data-test-id=success-updated]").should("exist");
 
-function updateTrip() {
-  assertFixedStopNotClickable();
-  assertTripReloadedAfterUpdate();
-  assertStopCanBeAdded();
-  assertTripCanBeRebuilt();
+  cy.reload();
+  assertReloadedTripInCorrectState();
 }
 
 function resetTrip() {
-  cy.reload();
   cy.get("[data-test-id=reset-trip]").click();
   cy.get(".stop").should("not.exist");
   cy.reload();
   cy.get(".stop").should("not.exist");
 }
 
-function assertFixedStopNotClickable() {
-  cy.get("#stop-1 [data-test-id=stop]").click();
-  cy.get(".v-list-item").should("not.exist");
-  cy.get("#stop-1 .v-icon").click();
-  cy.get(".v-list-item").should("not.exist");
-}
-
-function assertTripReloadedAfterUpdate() {
-  cy.reload();
-  cy.get("[data-test-id=save-trip]").click();
-  cy.get("[data-test-id=success-updated]").should("exist");
-  cy.reload();
-
+function assertReloadedTripInCorrectState() {
+  cy.get(".leaflet-popup").should("not.exist");
   cy.get("[data-test-id=starting-destination]")
     .should("exist")
     .should("not.have.value", "");
@@ -88,10 +68,19 @@ function assertTripReloadedAfterUpdate() {
   cy.get("#stop-2 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
+  cy.get(".position-1").should("exist");
+  cy.get(".position-2").should("exist");
+  cy.get(".position-3").should("exist");
+  cy.get("g .leaflet-interactive").should("have.length", 2);
+  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get(".v-list-item").should("not.exist");
+  cy.get("#stop-1 .v-icon").click();
+  cy.get(".v-list-item").should("not.exist");
 }
 
 function assertStopCanBeAdded() {
   cy.get("[data-test-id=add-stop]").click();
+  cy.get(".marker-red:visible").should("exist");
   cy.get("#stop-3 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
     .first()
@@ -131,4 +120,10 @@ function assertTripCanBeRebuilt() {
 
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
+  cy.get("[data-test-id=starting-destination]")
+    .should("exist")
+    .should("not.have.value", "");
+  cy.get("#stop-1 [data-test-id=stop]")
+    .should("exist")
+    .should("not.have.value", "");
 }

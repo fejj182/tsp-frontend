@@ -21,7 +21,6 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
-import { ACTIVE, CONNECTION } from "@/modules/map/markers/types";
 
 export default {
   data: function() {
@@ -46,10 +45,11 @@ export default {
   },
   computed: {
     isConnection() {
-      return this.type == CONNECTION;
+      const savedTrip = this.$store.state.trip.savedTrip;
+      return this.station == savedTrip[savedTrip.length - 1];
     },
     tripNotBegun() {
-      return this.$store.state.trip.stops.length === 0;
+      return this.$store.state.trip.savedTrip.length === 0;
     },
     duration() {
       const duration = this.station.duration;
@@ -57,6 +57,9 @@ export default {
     },
     selectedStop() {
       return this.$store.state.trip.selectedStop;
+    },
+    activeConnections() {
+      return this.$store.state.stations.activeConnections;
     },
     activeStation() {
       return this.$store.state.stations.activeStation;
@@ -67,7 +70,11 @@ export default {
       this.popup = this.marker.bindPopup(this.$refs.content, {
         offset: [-3, -2]
       });
-      if (this.type == ACTIVE) {
+      if (
+        this.selectedStop &&
+        this.activeConnections.length > 0 &&
+        this.station.name == this.selectedStop.name
+      ) {
         this.popup.openPopup();
       }
     },
@@ -77,13 +84,6 @@ export default {
     }
   },
   watch: {
-    selectedStop(selectedStation) {
-      if (this.station && selectedStation) {
-        if (this.station.name == selectedStation.name) {
-          this.popup.openPopup();
-        }
-      }
-    },
     activeStation(station) {
       if (station) {
         this.bindPopup();

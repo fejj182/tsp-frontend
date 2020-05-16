@@ -1,7 +1,7 @@
 <template>
   <div>
     <StartingMarkers :map="map" />
-    <ActiveMarker :map="map" />
+    <TripMarkers :map="map" />
     <ConnectionMarkers :map="map" />
   </div>
 </template>
@@ -9,13 +9,13 @@
 <script>
 import StartingMarkers from "./StartingMarkers";
 import ConnectionMarkers from "./ConnectionMarkers";
-import ActiveMarker from "./ActiveMarker";
+import TripMarkers from "./trip/TripMarkers";
 
 export default {
   components: {
     StartingMarkers,
     ConnectionMarkers,
-    ActiveMarker
+    TripMarkers
   },
   props: {
     map: {

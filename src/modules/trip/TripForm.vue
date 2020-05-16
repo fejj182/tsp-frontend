@@ -88,6 +88,9 @@ export default {
     },
     hasStops() {
       return this.$store.getters.hasStops;
+    },
+    completeTrip() {
+      return this.$store.getters.completeTrip;
     }
   },
   methods: {
@@ -119,8 +122,8 @@ export default {
       }
     },
     async saveTrip() {
-      if (this.$store.getters.completeTrip.length >= 2) {
-        const response = await tripApi.create(this.$store.getters.completeTrip);
+      if (this.completeTrip.length >= 2) {
+        const response = await tripApi.create(this.completeTrip);
         if (response && response.alias) {
           this.alias = response.alias;
           setTimeout(() => {
@@ -133,7 +136,7 @@ export default {
     async updateTrip() {
       const response = await tripApi.update(
         this.$route.params.alias,
-        this.$store.getters.completeTrip
+        this.completeTrip
       );
       if (response) {
         this.updated = true;

@@ -1,4 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
+import Vue from "vue";
 import L from "leaflet";
 import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
@@ -32,9 +33,11 @@ describe("Map", () => {
           activeDurationRange: []
         },
         trip: {
-          savedTrip: [],
           stops: []
         }
+      },
+      getters: {
+        completeTrip: []
       }
     };
     mockMap = {
@@ -56,9 +59,12 @@ describe("Map", () => {
         $store: mockStore
       }
     });
-    expect(wrapper.find(Markers).exists()).toBe(true);
+    Vue.nextTick(() => {
+      expect(wrapper.find(Markers).exists()).toBe(true);
+    });
   });
-  xit("should contain the lines", () => {
+  it("should contain the lines", () => {
+    mockStore.getters.completeTrip = [{}, {}];
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
@@ -74,6 +80,47 @@ describe("Map", () => {
       }
     });
     expect(L.map).toBeCalledWith("map");
+  });
+
+  it("should setView", () => {
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockMap.setView).toBeCalledWith(
+      expect.any(Array),
+      expect.any(Number)
+    );
+  });
+
+  it("should setView with data from middle stop on trip", () => {
+    mockStore.getters.completeTrip = [
+      { lat: 0, lng: 1 },
+      { lat: 1, lng: 2 },
+      { lat: 2, lng: 3 }
+    ];
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockMap.setView).toBeCalledWith([1, 2], 6);
+  });
+
+  it("should setView with data from middle stop on trip even number", () => {
+    mockStore.getters.completeTrip = [
+      { lat: 0, lng: 1 },
+      { lat: 1, lng: 2 },
+      { lat: 2, lng: 3 },
+      { lat: 3, lng: 4 }
+    ];
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockMap.setView).toBeCalledWith([1, 2], 6);
   });
 
   it("should create panes", () => {
@@ -124,20 +171,21 @@ describe("Map", () => {
         $store: mockStore
       }
     });
-    mockStore.state.trip.savedTrip = [{ lat: 1, lng: 2 }];
+    mockStore.getters.completeTrip = [{ lat: 1, lng: 2 }];
     expect(mockMap.flyTo).toHaveBeenCalledWith([1, 2], 6, expect.any(Object));
   });
 
   it("should flyTo centre if trip reset", () => {
     mockStore.state.trip.savedTrip = [{ lat: 1, lng: 2 }];
-    const wrapper = shallowMount(Map, {
+    shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
     });
-    mockStore.state.trip.savedTrip = [];
+    mockStore.getters.completeTrip = [];
+
     expect(mockMap.flyTo).toHaveBeenCalledWith(
-      wrapper.vm.centreCoords,
+      expect.any(Array),
       7,
       expect.any(Object)
     );
