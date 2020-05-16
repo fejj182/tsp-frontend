@@ -180,7 +180,7 @@ describe("Stop", () => {
 
   it("should dispatch removeStop action when click cross", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
-    mockStore.getters.completeTrip = [{}, {}];
+    mockStore.state.trip.savedTrip = [{}, {}, {}];
     const wrapper = mount(Stop, {
       vuetify: new Vuetify(),
       mocks: {
