@@ -1,5 +1,5 @@
 import stations from "./stations";
-import { get } from "@/helpers/request.js";
+import { get, post } from "@/helpers/request.js";
 jest.mock("@/helpers/request.js");
 
 describe("stations", () => {
@@ -8,11 +8,18 @@ describe("stations", () => {
   });
 
   describe("getStations", () => {
-    it("should call the endpoint", () => {
+    it("should call the stations endpoint", () => {
       stations.getStations();
       expect(get).toHaveBeenCalledWith("test/stations");
     });
   });
 
-  //TODO: Add test for getConnections
+  describe("getConnections", () => {
+    it("should call the connections endpoint", () => {
+      stations.getConnections(1);
+      expect(post).toHaveBeenCalledWith("test/stations/connections", {
+        stationId: 1
+      });
+    });
+  });
 });
