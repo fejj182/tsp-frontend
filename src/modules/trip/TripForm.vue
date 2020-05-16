@@ -1,9 +1,6 @@
 <template>
   <v-form ref="form" @submit.prevent="onSubmit">
-    <v-alert data-test-id="alert" v-if="alert" dismissible type="error">
-      Service down. Please try again later.
-    </v-alert>
-    <StartingDestination @alert="onAlert" />
+    <StartingDestination />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop
@@ -76,7 +73,6 @@ export default {
   },
   data() {
     return {
-      alert: false,
       invalid: false,
       alias: null,
       updated: false
@@ -103,9 +99,6 @@ export default {
       } else {
         this.invalid = true;
       }
-    },
-    onAlert() {
-      this.alert = true;
     },
     resetTrip() {
       this.$refs.form.reset();

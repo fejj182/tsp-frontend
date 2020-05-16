@@ -42,12 +42,7 @@ export default {
   },
   methods: {
     async onChangeStation(station) {
-      try {
-        // TODO: should handle api call error in store
-        await this.$store.dispatch("startTrip", station);
-      } catch (e) {
-        this.$emit("alert");
-      }
+      await this.$store.dispatch("startTrip", station);
     },
     autocompleteFilter(item, queryText, itemText) {
       // same as default but adding _.deburr

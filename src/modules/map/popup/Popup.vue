@@ -75,7 +75,6 @@ export default {
       }
     },
     addToTrip() {
-      //TODO: should handle api call error in store
       this.$store.dispatch("addToTrip", this.station);
     }
   },

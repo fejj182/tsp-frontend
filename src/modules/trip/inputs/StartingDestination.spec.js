@@ -71,19 +71,5 @@ describe("StartingDestination", () => {
         .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
     });
-
-    it("should emit an alert if dispatch fails", async () => {
-      mockStore.dispatch.mockRejectedValueOnce();
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore
-        }
-      });
-      wrapper
-        .find("[data-test-id=starting-destination]")
-        .vm.$emit("change", station);
-      await flushPromises();
-      expect(wrapper.emitted().alert.length).toBe(1);
-    });
   });
 });

@@ -85,7 +85,7 @@ describe("TripForm", () => {
   });
 
   describe("StartingDestination", () => {
-    it("should have no stations if api call fails", () => {
+    it("should be included", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore,
@@ -99,11 +99,7 @@ describe("TripForm", () => {
           }
         }
       });
-      expect(wrapper.find("[data-test-id=alert]").exists()).toBe(false);
-      wrapper.find(StartingDestination).vm.$emit("alert");
-      Vue.nextTick(() => {
-        expect(wrapper.find("[data-test-id=alert]").exists()).toBe(true);
-      });
+      expect(wrapper.find(StartingDestination).exists()).toBe(true);
     });
   });
   describe("Stops", () => {
