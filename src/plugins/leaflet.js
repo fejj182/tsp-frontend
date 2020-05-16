@@ -5,13 +5,12 @@ export const generateMarker = (station, map, onClick, colour) => {
   const marker = L.marker([station.lat, station.lng], {
     pane: getPaneNameFromDuration(station.duration),
     icon: L.icon({
-      iconUrl: `pin-${colour}.png`,
+      iconUrl: require("@/assets/pin-" + colour + ".png"),
       iconAnchor: [0, 20],
       iconSize: [20, 20],
       className: `marker-${colour}`
     })
   });
-
   marker.addTo(map);
   marker.on("click", onClick);
   return marker;

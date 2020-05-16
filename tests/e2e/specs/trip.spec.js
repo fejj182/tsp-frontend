@@ -80,6 +80,7 @@ function assertReloadedTripInCorrectState() {
 
 function assertStopCanBeAdded() {
   cy.get("[data-test-id=add-stop]").click();
+  cy.get(".marker-red:visible").should("exist");
   cy.get("#stop-3 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
     .first()
