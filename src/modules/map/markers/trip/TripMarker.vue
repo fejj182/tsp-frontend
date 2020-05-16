@@ -4,7 +4,7 @@
       :key="Math.random()"
       :marker="marker"
       :station="station"
-      type="ACTIVE"
+      type="TRIP"
     />
   </div>
 </template>

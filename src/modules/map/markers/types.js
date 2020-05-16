@@ -1,4 +1,4 @@
-export const ACTIVE = "ACTIVE";
+export const TRIP = "TRIP";
 export const STARTING = "STARTING";
 
 export const RED = "red";
