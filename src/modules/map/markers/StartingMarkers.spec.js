@@ -45,7 +45,7 @@ describe("StartingMarkers", () => {
       }, 0);
     });
 
-    test("should have correct props", () => {
+    test("should have correct props", done => {
       const mockMarker = { position: "earth" };
       const mockStation = { name: "station" };
       generateMarker.mockReturnValue(mockMarker);
@@ -54,7 +54,7 @@ describe("StartingMarkers", () => {
       setTimeout(() => {
         expect(wrapper.find(DummyMarker).props().marker).toEqual(mockMarker);
         expect(wrapper.find(DummyMarker).props().station).toEqual(mockStation);
-        expect(wrapper.find(DummyMarker).props().type).toEqual("STARTING");
+        done();
       }, 0);
     });
 

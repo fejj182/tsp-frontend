@@ -1,18 +1,14 @@
 <template>
   <div v-if="showMarkers" data-test-id="starting-markers">
     <div v-for="(marker, index) in markers" :key="Math.random() + index">
-      <DummyMarker
-        :marker="marker.marker"
-        :station="marker.station"
-        :type="markerType"
-      />
+      <DummyMarker :marker="marker.marker" :station="marker.station" />
     </div>
   </div>
 </template>
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { STARTING, PURPLE, VERY_SLOW, IMMEDIATE } from "./types";
+import { PURPLE, VERY_SLOW, IMMEDIATE } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -26,8 +22,7 @@ export default {
   },
   data() {
     return {
-      markers: [],
-      markerType: STARTING
+      markers: []
     };
   },
   mounted() {

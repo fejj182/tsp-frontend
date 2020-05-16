@@ -34,10 +34,6 @@ export default {
     },
     station: {
       type: Object
-    },
-    // TODO: change name to markerType
-    type: {
-      type: String
     }
   },
   mounted() {
