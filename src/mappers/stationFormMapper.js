@@ -21,10 +21,7 @@ export const mapStationByDuration = station => {
       name: station.name,
       lat: station.lat,
       lng: station.lng,
-      duration:
-        station.duration > 0 // Note: to stop conversion to string twice
-          ? toHoursAndMinutes(station.duration)
-          : station.duration
+      duration: toHoursAndMinutes(station.duration)
     }
   };
 };

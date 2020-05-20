@@ -1,6 +1,7 @@
 import {
   mapStation,
   mapStations,
+  mapStationByDuration,
   mapStationsByDuration
 } from "./stationFormMapper";
 import faker from "faker";
@@ -17,6 +18,19 @@ describe("stationFormMapper", () => {
     expect(mapStation(station)).toEqual({
       text: station.name,
       value: station
+    });
+  });
+  it("should map a single station with duration", () => {
+    const station = {
+      id: 1,
+      name: "Barcelona",
+      lat: faker.address.latitude(),
+      lng: faker.address.longitude(),
+      duration: 90
+    };
+    expect(mapStationByDuration(station)).toEqual({
+      text: station.name,
+      value: { ...station, duration: "1h 30m" }
     });
   });
 

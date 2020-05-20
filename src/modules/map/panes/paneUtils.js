@@ -18,7 +18,8 @@ export const filterStationsOutOfRange = (stations, range) => {
     return (
       (station.duration > range[0] * interval &&
         station.duration <= range[1] * interval) ||
-      (range[1] == highestPane && station.duration > highestPane * interval)
+      (range[1] == highestPane && station.duration > highestPane * interval) ||
+      !station.duration
     );
   });
 };

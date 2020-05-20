@@ -1,10 +1,10 @@
 describe("trip_map", () => {
   it("should create trip using map", () => {
     cy.server();
-    cy.route("POST", "api/trip", {
+    cy.route("POST", "api/trip-destinations", {
       alias: "some-alias"
     });
-    cy.route("POST", "api/stations/connections").as("getConnections");
+    cy.route("POST", "api/destinations/connections").as("getConnections");
 
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
@@ -38,7 +38,7 @@ describe("trip_map", () => {
 
   it("should be able to reset a trip and not break UI", () => {
     cy.server();
-    cy.route("POST", "api/stations/connections").as("getConnections");
+    cy.route("POST", "api/destinations/connections").as("getConnections");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
 

@@ -10,15 +10,15 @@ describe("stations", () => {
   describe("getStations", () => {
     it("should call the stations endpoint", () => {
       stations.getStations();
-      expect(get).toHaveBeenCalledWith("test/stations");
+      expect(get).toHaveBeenCalledWith("test/destinations");
     });
   });
 
   describe("getConnections", () => {
     it("should call the connections endpoint", () => {
       stations.getConnections(1);
-      expect(post).toHaveBeenCalledWith("test/stations/connections", {
-        stationId: 1
+      expect(post).toHaveBeenCalledWith("test/destinations/connections", {
+        destinationId: 1
       });
     });
   });

@@ -80,6 +80,14 @@ describe("paneUtils", () => {
       const filteredStations = filterStationsOutOfRange(stations, [0, 2]);
       expect(filteredStations).toEqual([{ duration: 15 }]);
     });
+
+    test("when station has no duration defined, do not filter it out", () => {
+      const stations = [{ noDuration: true }];
+      paneConfigs.NUMBER_OF_PANES = 3;
+      paneConfigs.INTERVAL = 10;
+      const filteredStations = filterStationsOutOfRange(stations, [0, 2]);
+      expect(filteredStations).toEqual(stations);
+    });
   });
 
   describe("displayPanesInRange", () => {
