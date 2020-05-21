@@ -1,11 +1,10 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import flushPromises from "flush-promises";
 import _ from "lodash";
 
 import StartingDestination from "./StartingDestination.vue";
-import { mapStation } from "@/mappers/stationFormMapper";
+import { mapStations } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 
@@ -39,9 +38,7 @@ describe("StartingDestination", () => {
           $store: mockStore
         }
       });
-      const mappedStations = enabledStations.map(station =>
-        mapStation(station)
-      );
+      const mappedStations = mapStations(enabledStations);
       expect(
         wrapper.find("[data-test-id=starting-destination]").props().items
       ).toEqual(mappedStations);
