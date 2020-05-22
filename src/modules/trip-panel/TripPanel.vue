@@ -1,19 +1,5 @@
 <template>
   <v-container>
-    <v-fade-transition>
-      <v-alert
-        data-test-id="info"
-        color="teal"
-        v-if="info"
-        dark
-        text
-        dense
-        icon="mdi-school"
-        dismissible
-      >
-        Click on a station to get started.
-      </v-alert>
-    </v-fade-transition>
     <v-expansion-panels focusable v-model="panel" multiple>
       <v-expansion-panel v-if="tripStarted" data-test-id="filter-panel">
         <v-expansion-panel-header>

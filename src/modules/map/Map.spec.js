@@ -21,6 +21,7 @@ describe("Map", () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    window.innerWidth = 1000;
     mockOn = jest.fn();
     mockOff = jest.fn();
     mockStore = {
@@ -89,10 +90,17 @@ describe("Map", () => {
         $store: mockStore
       }
     });
-    expect(mockMap.setView).toBeCalledWith(
-      expect.any(Array),
-      expect.any(Number)
-    );
+    expect(mockMap.setView).toBeCalledWith(expect.any(Array), 7);
+  });
+
+  it("should setView with zoom 6 on mobile", () => {
+    window.innerWidth = 500;
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockMap.setView).toBeCalledWith(expect.any(Array), 6);
   });
 
   it("should setView with data from middle stop on trip", () => {

@@ -159,21 +159,10 @@ describe("Popup", () => {
         },
         propsData: mockProps
       });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
+      expect(wrapper.find("[data-test-id=add-to-trip]").exists()).toBe(true);
     });
 
-    it("should show button to add station to trip if isConnection", () => {
-      mockStore.state.trip.savedTrip = [mockProps.station];
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
-      });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
-    });
-
-    it("should not show button to add station to trip if the last stop on trip is not station in props", () => {
+    it("should not show button to add station to more than one stop in trip", () => {
       mockStore.state.trip.savedTrip = [{}];
       const wrapper = shallowMount(Popup, {
         mocks: {
@@ -181,9 +170,7 @@ describe("Popup", () => {
         },
         propsData: mockProps
       });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(
-        false
-      );
+      expect(wrapper.find("[data-test-id=add-to-trip]").exists()).toBe(false);
     });
 
     it("should dispatch addToTrip", () => {
@@ -195,7 +182,7 @@ describe("Popup", () => {
         },
         propsData: mockProps
       });
-      wrapper.find("[data-test-id=add-to-station]").trigger("click");
+      wrapper.find("[data-test-id=add-to-trip]").trigger("click");
       expect(mockStore.dispatch).toHaveBeenCalledWith(
         "addToTrip",
         mockProps.station

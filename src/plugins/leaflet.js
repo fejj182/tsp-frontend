@@ -8,7 +8,7 @@ export const generateMarker = (station, map, onClick, colour) => {
       iconUrl: require("@/assets/pin-" + colour + ".png"),
       iconAnchor: [0, 20],
       iconSize: [20, 20],
-      className: `marker-${colour}`
+      className: `marker-${colour} marker-${colour}-${station.slug}`
     })
   });
   marker.addTo(map);

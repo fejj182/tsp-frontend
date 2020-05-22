@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       centreCoords: [40.7067997, 0.5801695],
-      zoomLevel: 7,
+      zoomLevel: window.innerWidth > 600 ? 7 : 6,
       myMap: null,
       tileOptions: {
         attribution:
@@ -111,7 +111,7 @@ export default {
 
 @media only screen and (max-width: 600px) {
   #map {
-    height: 70vh;
+    height: calc(100vh - 56px);
   }
 }
 </style>

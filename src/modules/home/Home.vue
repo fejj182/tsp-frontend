@@ -1,7 +1,7 @@
 <template>
-  <v-container fluid class="grey lighten-5 pa-1">
+  <v-container fluid class="grey lighten-5" id="home">
     <v-row no-gutters>
-      <v-col :md="3" cols="12">
+      <v-col v-if="!mobile" :md="3" cols="12">
         <TripPanel />
       </v-col>
       <v-col :md="9" cols="12">
@@ -28,7 +28,8 @@ export default {
   },
   data() {
     return {
-      dataLoaded: false
+      dataLoaded: false,
+      mobile: window.innerWidth < 600
     };
   },
   created() {
@@ -50,5 +51,15 @@ export default {
 .container,
 .row {
   height: 100%;
+}
+
+#home {
+  padding: 4px;
+}
+
+@media only screen and (max-width: 600px) {
+  #home {
+    padding: 0;
+  }
 }
 </style>

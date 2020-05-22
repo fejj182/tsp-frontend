@@ -1,20 +1,20 @@
 <template>
   <div v-show="false">
     <div class="add-to-trip" ref="content">
+      <h1 id="station-name">{{ station.name }}</h1>
+      <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
-        v-if="isConnection || tripNotBegun"
-        data-test-id="add-to-station"
+        v-if="tripNotBegun"
+        data-test-id="add-to-trip"
         @click="addToTrip"
         color="indigo"
         fab
         x-small
         outlined
       >
-        <v-icon>mdi-plus</v-icon>
-        <label>Add to station</label>
+        <v-icon>mdi-play</v-icon>
+        <label>Add to trip</label>
       </v-btn>
-      <h1 id="station-name">{{ station.name }}</h1>
-      <p id="duration" v-if="isConnection">{{ duration }}</p>
     </div>
   </div>
 </template>
