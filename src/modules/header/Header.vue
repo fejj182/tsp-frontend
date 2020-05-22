@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="primary" dark id="header">
       <header>
         <a href="/">
           <img id="logo" src="@/assets/Logo-1.png" alt="trainspotter-logo" />
@@ -102,7 +102,7 @@ span {
 
 #logo {
   margin-top: 0.5rem;
-  width: 80%;
+  width: 70%;
 }
 
 .pin {
@@ -117,10 +117,18 @@ span {
   display: flex;
   justify-content: space-between;
 }
+
+@media only screen and (max-width: 600px) {
+  #logo {
+    width: 90%;
+  }
+}
 </style>
 
 <style>
-#header .v-toolbar__content {
-  padding: 4px;
+@media only screen and (max-width: 600px) {
+  #header .v-toolbar__content {
+    padding: 4px;
+  }
 }
 </style>
