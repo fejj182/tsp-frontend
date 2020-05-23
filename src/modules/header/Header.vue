@@ -28,6 +28,7 @@
         <v-card>
           <v-card-title class="headline">Tips:</v-card-title>
           <v-card-text>
+            <v-icon class="icon-info">mdi-information-outline</v-icon>
             Click on a
             <img
               :src="pinUrl('purple')"
@@ -35,18 +36,21 @@
               class="pin"
               alt="purple-pin"
             />
-            to select a starting destination and
-            <v-icon aria-label="play">mdi-play-circle</v-icon>
+            and then
+            <v-icon aria-label="play" color="primary">mdi-play-circle</v-icon>
             to begin your trip.
           </v-card-text>
           <v-card-text>
+            <v-icon class="icon-info">mdi-information-outline</v-icon>
             Click on a
-            <img :src="pinUrl('red')" width="20" class="pin" alt="red-pin" /> to
-            select a connected destination.
+            <img :src="pinUrl('red')" width="20" class="pin" alt="red-pin" />
+            and then <v-icon color="primary">mdi-clipboard-plus-outline</v-icon>
+            to add a stop to your itinerary
+            <v-icon v-if="mobile" color="primary">mdi-clipboard-list</v-icon>
           </v-card-text>
           <v-card-text>
-            Durations between destinations are for direct connections and may
-            vary.
+            <v-icon class="icon-info">mdi-information-outline</v-icon>
+            The filter is active while selecting your next stop.
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -91,10 +95,6 @@ export default {
   src: url("../../assets/Helvetica-bold-italic.ttf") format("truetype");
 }
 
-i {
-  padding: 0.75rem;
-}
-
 span {
   display: none;
 }
@@ -113,12 +113,16 @@ span {
 }
 
 .v-icon {
-  padding: 0;
+  padding: 0.125rem;
 }
 
 #bar {
   display: flex;
   justify-content: space-between;
+}
+
+.icon-info {
+  font-size: 20px;
 }
 
 @media only screen and (max-width: 600px) {
