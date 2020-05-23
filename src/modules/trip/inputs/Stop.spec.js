@@ -124,11 +124,11 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        id: "stop-3"
+        stopNumber: 3
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(true);
-    wrapper.setProps({ id: "stop-2" });
+    wrapper.setProps({ stopNumber: 2 });
     expect(wrapper.find("[data-test-id=stop]").props().autofocus).toBe(false);
   });
 
@@ -140,13 +140,13 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        id: "stop-3"
+        stopNumber: 3
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().appendOuterIcon).toBe(
       "mdi-close"
     );
-    wrapper.setProps({ id: "stop-2" });
+    wrapper.setProps({ stopNumber: 2 });
     expect(wrapper.find("[data-test-id=stop]").props().appendOuterIcon).toBe(
       ""
     );
@@ -162,7 +162,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        id: "stop-3"
+        stopNumber: 3
       }
     });
     wrapper.find(".mdi-close").trigger("click");
@@ -179,7 +179,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        id: "stop-3"
+        stopNumber: 3
       }
     });
     wrapper.find(".mdi-close").trigger("click");
@@ -198,7 +198,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [],
-        id: "stop-3"
+        stopNumber: 3
       }
     });
     wrapper.find(".mdi-close").trigger("click");

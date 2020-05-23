@@ -1,5 +1,5 @@
 <template>
-  <div :id="id">
+  <div :id="stopId">
     <v-autocomplete
       label="Where next?"
       data-test-id="stop"
@@ -50,16 +50,16 @@ export default {
     fixedStop: {
       type: Object
     },
-    id: {
-      type: String
-    },
     stopNumber: {
       type: Number
     }
   },
   computed: {
+    stopId() {
+      return `stop-${this.stopNumber}`;
+    },
     isLastStop() {
-      return this.id === "stop-" + this.$store.state.trip.stops.length;
+      return this.stopNumber === this.$store.state.trip.stops.length;
     },
     items() {
       const stationsInRange = filterStationsOutOfRange(
