@@ -77,44 +77,4 @@ describe("Trip Panel", () => {
       expect(wrapper.find(TripForm).exists()).toBe(true);
     });
   });
-
-  describe("Info alert", () => {
-    it("should be present when component loads", async () => {
-      const wrapper = shallowMount(TripPanel, {
-        mocks: {
-          $store: mockStore,
-          $route: mockRoute
-        },
-        stubs: {
-          VFadeTransition: {
-            name: "v-fade-transition",
-            template: "<span><slot></slot></span>"
-          }
-        }
-      });
-      await Vue.nextTick();
-      expect(wrapper.find("[data-test-id=info]").exists()).toBe(true);
-    });
-
-    it("should not be present if alias route", () => {
-      const wrapper = shallowMount(TripPanel, {
-        mocks: {
-          $store: mockStore,
-          $route: {
-            name: "alias",
-            params: {
-              alias: "some-alias"
-            }
-          }
-        },
-        stubs: {
-          VFadeTransition: {
-            name: "v-fade-transition",
-            template: "<span><slot></slot></span>"
-          }
-        }
-      });
-      expect(wrapper.find("[data-test-id=info]").exists()).toBe(false);
-    });
-  });
 });

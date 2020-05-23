@@ -10,9 +10,10 @@ Vue.use(Vuetify);
 
 describe("Home", () => {
   describe("children", () => {
-    let wrapper;
+    let wrapper, mockStore;
     beforeEach(() => {
-      let mockStore = {
+      window.innerWidth = 1000;
+      mockStore = {
         dispatch: jest.fn().mockResolvedValue({})
       };
       wrapper = shallowMount(Home, {
@@ -28,8 +29,22 @@ describe("Home", () => {
     it("should contain the map", async () => {
       expect(wrapper.find(Map).exists()).toBe(true);
     });
+
     it("should contain the trip panel", () => {
       expect(wrapper.find(TripPanel).exists()).toBe(true);
+    });
+
+    it("should not contain the trip panel on mobile", () => {
+      window.innerWidth = 500;
+      wrapper = shallowMount(Home, {
+        mocks: {
+          $store: mockStore,
+          $route: {
+            name: "home"
+          }
+        }
+      });
+      expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
     it("should contain the cookie banner", () => {
       expect(wrapper.find(CookieBanner).exists()).toBe(true);

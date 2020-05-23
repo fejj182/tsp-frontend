@@ -1,4 +1,5 @@
 import { toHoursAndMinutes } from "./durationMapper";
+import _ from "lodash";
 
 //Note: only used in StartingDestination
 export const mapStation = station => {
@@ -28,7 +29,7 @@ export const mapStationByDuration = station => {
 
 //Note: only used in StartingDestination
 export const mapStations = stations => {
-  return stations
+  return _.cloneDeep(stations)
     .sort((a, b) => {
       if (a.name < b.name) {
         return -1;
@@ -52,7 +53,7 @@ export const mapStations = stations => {
 };
 
 export const mapStationsByDuration = stations => {
-  return stations
+  return _.cloneDeep(stations)
     .sort((a, b) => {
       if (a.duration < b.duration) {
         return -1;

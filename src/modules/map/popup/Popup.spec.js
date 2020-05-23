@@ -40,7 +40,7 @@ describe("Popup", () => {
       },
       propsData: mockProps
     });
-    const popup = wrapper.find(".add-to-trip");
+    const popup = wrapper.find("#add-to-trip");
     expect(mockMarker.bindPopup).toHaveBeenCalledWith(
       popup.element,
       expect.any(Object)
@@ -54,7 +54,7 @@ describe("Popup", () => {
       },
       propsData: mockProps
     });
-    expect(wrapper.find(".add-to-trip").isVisible()).toBe(false);
+    expect(wrapper.find("#add-to-trip").isVisible()).toBe(false);
   });
 
   it("should have station name as an h1", () => {
@@ -151,55 +151,89 @@ describe("Popup", () => {
     });
   });
 
-  describe("Add to station button", () => {
-    it("should show button to add station to trip if not started yet", () => {
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
+  describe("Buttons", () => {
+    describe("begin trip", () => {
+      it("should show begin trip button if trip if not started yet", () => {
+        const wrapper = shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        expect(wrapper.find("[data-test-id=btn-begin-trip]").exists()).toBe(
+          true
+        );
       });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
+
+      it("should not show begin trip button if more than one stop in trip", () => {
+        mockStore.state.trip.savedTrip = [{}];
+        const wrapper = shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        expect(wrapper.find("[data-test-id=btn-begin-trip]").exists()).toBe(
+          false
+        );
+      });
+
+      it("should dispatch addToTrip action if click begin trip", () => {
+        const mockPopup = { remove: jest.fn() };
+        mockMarker.bindPopup.mockReturnValue(mockPopup);
+        const wrapper = mount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        wrapper.find("[data-test-id=btn-begin-trip]").trigger("click");
+        expect(mockStore.dispatch).toHaveBeenCalledWith(
+          "addToTrip",
+          mockProps.station
+        );
+      });
     });
 
-    it("should show button to add station to trip if isConnection", () => {
-      mockStore.state.trip.savedTrip = [mockProps.station];
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
+    describe("add to trip", () => {
+      it("should show begin trip button if trip started and is a connection", () => {
+        mockStore.state.trip.savedTrip = [mockProps.station];
+        const wrapper = shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        expect(wrapper.find(".btn-add").exists()).toBe(true);
       });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(true);
-    });
 
-    it("should not show button to add station to trip if the last stop on trip is not station in props", () => {
-      mockStore.state.trip.savedTrip = [{}];
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
+      it("should not show begin trip button if station is not last stop in saved trip", () => {
+        mockStore.state.trip.savedTrip = [mockProps.station, {}];
+        const wrapper = shallowMount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        expect(wrapper.find(".btn-add").exists()).toBe(false);
       });
-      expect(wrapper.find("[data-test-id=add-to-station]").exists()).toBe(
-        false
-      );
-    });
 
-    it("should dispatch addToTrip", () => {
-      const mockPopup = { remove: jest.fn() };
-      mockMarker.bindPopup.mockReturnValue(mockPopup);
-      const wrapper = mount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
+      it("should dispatch addToTrip action if click add to trip", () => {
+        mockStore.state.trip.savedTrip = [mockProps.station];
+        const mockPopup = { remove: jest.fn() };
+        mockMarker.bindPopup.mockReturnValue(mockPopup);
+        const wrapper = mount(Popup, {
+          mocks: {
+            $store: mockStore
+          },
+          propsData: mockProps
+        });
+        wrapper.find(".btn-add").trigger("click");
+        expect(mockStore.dispatch).toHaveBeenCalledWith(
+          "addToTrip",
+          mockProps.station
+        );
       });
-      wrapper.find("[data-test-id=add-to-station]").trigger("click");
-      expect(mockStore.dispatch).toHaveBeenCalledWith(
-        "addToTrip",
-        mockProps.station
-      );
     });
   });
 
