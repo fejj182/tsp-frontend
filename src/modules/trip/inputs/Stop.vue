@@ -62,11 +62,14 @@ export default {
       return this.stopNumber === this.$store.state.trip.stops.length;
     },
     items() {
-      const stationsInRange = filterStationsOutOfRange(
-        this.stations,
-        this.$store.state.filters.activeDurationRange
-      );
-      return mapStationsByDuration(stationsInRange);
+      if (this.isLastStop) {
+        const stationsInRange = filterStationsOutOfRange(
+          this.stations,
+          this.$store.state.filters.activeDurationRange
+        );
+        return mapStationsByDuration(stationsInRange);
+      }
+      return mapStationsByDuration(this.stations);
     },
     activeSelectedStop() {
       return this.$store.state.trip.selectedStop;

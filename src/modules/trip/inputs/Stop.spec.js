@@ -46,12 +46,13 @@ describe("Stop", () => {
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
   });
 
-  it("should use stations passed as props as autocomplete items", () => {
+  it("should use filtered stations as items prop in autocomplete if last stop", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });
 
     const stations = [valencia, madrid];
-    filterStationsOutOfRange.mockReturnValue(stations);
+    mockStore.state.trip.stops = [{}, {}];
+    filterStationsOutOfRange.mockReturnValue([valencia]);
 
     const wrapper = shallowMount(Stop, {
       mocks: {
@@ -59,7 +60,32 @@ describe("Stop", () => {
       },
       propsData: {
         stations: stations,
-        fixedStop: valencia
+        fixedStop: valencia,
+        stopNumber: 2
+      }
+    });
+
+    expect(wrapper.find("[data-test-id=stop]").props().items).toEqual(
+      mapStationsByDuration([valencia])
+    );
+  });
+
+  it("should use unfiltered stations as items prop in autocomplete if not last stop", () => {
+    const valencia = fakeStation({ name: "valencia" });
+    const madrid = fakeStation({ name: "madrid" });
+
+    const stations = [valencia, madrid];
+    mockStore.state.trip.stops = [{}, {}];
+    filterStationsOutOfRange.mockReturnValue([valencia]);
+
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations: stations,
+        fixedStop: valencia,
+        stopNumber: 1
       }
     });
 
