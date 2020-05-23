@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" @submit.prevent="onSubmit">
+  <v-form ref="form" @submit.prevent="onSubmit" id="trip-form">
     <StartingDestination />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
@@ -41,10 +41,10 @@
     <div class="btn-row">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-plus</v-icon>
-        <span>Add stop</span>
+        <span>{{ add }}</span>
       </v-btn>
       <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
-        Reset Trip
+        {{ reset }}
       </v-btn>
     </div>
     <div class="btn-row">
@@ -55,7 +55,7 @@
         color="primary"
         block
       >
-        Save Trip
+        {{ save }}
       </v-btn>
     </div>
   </v-form>
@@ -87,6 +87,15 @@ export default {
     },
     completeTrip() {
       return this.$store.getters.completeTrip;
+    },
+    add() {
+      return window.innerWidth < 600 ? "Add" : "Add stop";
+    },
+    reset() {
+      return window.innerWidth < 600 ? "Reset" : "Reset trip";
+    },
+    save() {
+      return window.innerWidth < 600 ? "Save" : "Save for later";
     }
   },
   methods: {
@@ -156,6 +165,22 @@ export default {
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
+  }
+}
+</style>
+
+<style lang="scss">
+#trip-form {
+  .v-input {
+    margin-bottom: 2rem;
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  #trip-form {
+    .v-input {
+      margin-bottom: 1.5rem;
+    }
   }
 }
 </style>

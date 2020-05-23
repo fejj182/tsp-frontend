@@ -7,6 +7,7 @@
       :filter="autocompleteFilter"
       filled
       rounded
+      hide-details
       :autofocus="isLastStop"
       :readonly="readOnly"
       @change="onChangeStation"

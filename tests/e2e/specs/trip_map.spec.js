@@ -14,7 +14,7 @@ describe("trip_map", () => {
       .click();
     cy.get(".leaflet-popup").should("exist");
     cy.get("[data-test-id=starting-destination").should("not.have.value", "");
-    cy.get("[data-test-id=add-to-trip]:visible").click();
+    cy.get("[data-test-id=btn-begin-trip]:visible").click();
     cy.wait("@getConnections");
 
     cy.get(".position-1").click();
@@ -44,7 +44,7 @@ describe("trip_map", () => {
     cy.get(".marker-purple-barcelona")
       .first()
       .click();
-    cy.get("[data-test-id=add-to-trip]:visible").click();
+    cy.get("[data-test-id=btn-begin-trip]:visible").click();
 
     // using trip form here instead of marker as causes state change
     cy.get("#stop-1 [data-test-id=stop]").click();

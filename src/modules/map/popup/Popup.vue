@@ -1,18 +1,28 @@
 <template>
   <div v-show="false">
-    <div class="add-to-trip" ref="content">
+    <div id="add-to-trip" ref="content">
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
         v-if="tripNotBegun"
-        data-test-id="add-to-trip"
+        data-test-id="btn-begin-trip"
         @click="addToTrip"
         color="indigo"
         fab
         x-small
-        outlined
       >
         <v-icon>mdi-play</v-icon>
+        <label>Add to trip</label>
+      </v-btn>
+      <v-btn
+        v-if="isConnection"
+        class="btn-add"
+        @click="addToTrip"
+        color="indigo"
+        fab
+        x-small
+      >
+        <v-icon>mdi-clipboard-plus-outline</v-icon>
         <label>Add to trip</label>
       </v-btn>
     </div>
@@ -46,6 +56,9 @@ export default {
     },
     tripNotBegun() {
       return this.$store.state.trip.savedTrip.length === 0;
+    },
+    mobile() {
+      return window.innerWidth < 600;
     },
     duration() {
       const duration = this.station.duration;
@@ -94,21 +107,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.add-to-trip {
+#add-to-trip {
   display: flex;
   align-items: center;
+  i {
+    color: white;
+  }
 }
+
 #station-name {
   margin: 0 0.5rem;
 }
+
 label {
   display: none;
 }
+
 h1,
 #duration {
   font-size: 16px;
 }
+
 #duration {
   margin: 0;
+}
+
+button {
+  margin: 0 2px;
+}
+
+.btn-add {
+  margin-left: 0.75rem;
 }
 </style>

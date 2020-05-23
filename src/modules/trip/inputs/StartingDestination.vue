@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="starting-destination">
     <v-autocomplete
       label="Start from..."
       data-test-id="starting-destination"
@@ -7,6 +7,7 @@
       :filter="autocompleteFilter"
       filled
       rounded
+      hide-details
       @change="onChangeStation"
       :value="startingStation"
     >
@@ -59,5 +60,15 @@ export default {
 <style lang="scss" scoped>
 .v-autocomplete {
   z-index: 1500;
+}
+</style>
+
+<style lang="scss">
+@media only screen and (max-width: 600px) {
+  #starting-destination {
+    .v-input {
+      margin-top: 1rem;
+    }
+  }
 }
 </style>

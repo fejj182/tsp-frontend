@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container id="trip-panel">
     <v-expansion-panels focusable v-model="panel" multiple>
       <v-expansion-panel v-if="tripStarted" data-test-id="filter-panel">
         <v-expansion-panel-header>
@@ -58,5 +58,15 @@ export default {
 <style lang="scss" scoped>
 .v-expansion-panel-header {
   min-height: 32px !important;
+}
+</style>
+
+<style lang="scss">
+@media only screen and (max-width: 600px) {
+  #trip-panel {
+    .v-expansion-panel-content__wrap {
+      padding: 0 18px 16px;
+    }
+  }
 }
 </style>

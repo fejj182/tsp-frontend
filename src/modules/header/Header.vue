@@ -10,7 +10,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-dialog v-if="mobile" v-model="listDialog" width="500">
+      <v-dialog v-if="mobile" v-model="listDialog" :width="dialogWidth">
         <template v-slot:activator="{ on }">
           <v-btn class="mx-2" fab dark small color="secondary" v-on="on">
             <v-icon>mdi-clipboard-list</v-icon>
@@ -19,7 +19,7 @@
         <TripPanel />
       </v-dialog>
 
-      <v-dialog v-model="helpDialog" width="550">
+      <v-dialog v-model="helpDialog" :width="dialogWidth">
         <template v-slot:activator="{ on }">
           <v-btn class="mx-2" icon small v-on="on">
             <v-icon>mdi-help-circle</v-icon>
@@ -72,6 +72,9 @@ export default {
       return this.$store.getters.completeTrip.length > 0
         ? this.$store.getters.completeTrip.length
         : "";
+    },
+    dialogWidth() {
+      return 550;
     }
   },
   methods: {
@@ -129,6 +132,10 @@ span {
 @media only screen and (max-width: 600px) {
   #header .v-toolbar__content {
     padding: 4px;
+  }
+
+  .v-dialog .container {
+    padding: 0;
   }
 }
 </style>
