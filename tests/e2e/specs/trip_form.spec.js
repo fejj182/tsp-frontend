@@ -27,11 +27,13 @@ function assertFirstStopAddAndClose() {
 }
 
 function assertStateAfterReset() {
+  cy.wait(250);
+  cy.get(".marker-purple").should("exist");
+  cy.get(".marker-red").should("not.exist");
   cy.get("#stop-1 [data-test-id=stop]").should("not.exist");
   cy.get("[data-test-id=starting-destination]").should("have.value", "");
   cy.get(".position-1").should("not.exist");
   cy.get(".leaflet-popup").should("not.exist");
-  cy.get(".marker-purple").should("exist");
 }
 
 function assertFullFlowAddAndClose() {
@@ -84,6 +86,7 @@ function add3Stops() {
 }
 
 function assertStateAfterRemoveStop3() {
+  cy.wait(250);
   cy.get("#stop-3").should("not.exist");
   cy.get("#stop-2 [data-test-id=stop]").should("have.value", "");
   cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
@@ -95,6 +98,7 @@ function assertStateAfterRemoveStop3() {
 }
 
 function assertStateAfterRemoveStop2() {
+  cy.wait(250);
   cy.get("#stop-2").should("not.exist");
   cy.get("#stop-1 [data-test-id=stop]").should("have.value", "");
   cy.get(".position-1").should("exist");

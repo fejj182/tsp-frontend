@@ -68,10 +68,10 @@ describe("Stop", () => {
     );
   });
 
-  it("should set value of stop from fixedStop property even if selectedStop is present in store", () => {
+  it("should set value of stop from correct stop in savedTrip", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });
-    mockStore.state.trip.selectedStop = madrid;
+    mockStore.state.trip.savedTrip = [madrid, valencia];
 
     const wrapper = shallowMount(Stop, {
       mocks: {
@@ -79,7 +79,7 @@ describe("Stop", () => {
       },
       propsData: {
         stations: [valencia, madrid],
-        fixedStop: valencia
+        stopNumber: 1
       }
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
@@ -88,26 +88,7 @@ describe("Stop", () => {
     });
   });
 
-  it("should have the value of stop from store if fixedStop property is not present", () => {
-    const valencia = fakeStation({ name: "valencia" });
-    const madrid = fakeStation({ name: "madrid" });
-    mockStore.state.trip.selectedStop = madrid;
-
-    const wrapper = shallowMount(Stop, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: {
-        stations: [valencia, madrid]
-      }
-    });
-    expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
-      text: madrid.name,
-      value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }
-    });
-  });
-
-  it("should persist last value from store when changed to read-only", () => {
+  it("should have value null if there are no stations in the store", () => {
     const valencia = fakeStation({ name: "valencia" });
     const madrid = fakeStation({ name: "madrid" });
 
@@ -119,14 +100,7 @@ describe("Stop", () => {
         stations: [valencia, madrid]
       }
     });
-    mockStore.state.trip.selectedStop = madrid;
-    wrapper.setProps({ readOnly: true });
-    mockStore.state.trip.selectedStop = valencia;
-
-    expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
-      text: madrid.name,
-      value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }
-    });
+    expect(wrapper.find("[data-test-id=stop]").props().value).toBeNull();
   });
 
   it("should have readonly property set from the prop", () => {

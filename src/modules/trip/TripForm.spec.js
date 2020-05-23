@@ -154,6 +154,20 @@ describe("TripForm", () => {
 
       expect(wrapper.find(Stop).props().fixedStop).toEqual({});
     });
+
+    it("should pass stop number", () => {
+      const mockStops = [{ fixed: {} }];
+      mockStore.state.trip.stops = mockStops;
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore,
+          $router: mockRouter,
+          $route: mockRoute
+        }
+      });
+
+      expect(wrapper.find(Stop).props().stopNumber).toEqual(1);
+    });
   });
 
   describe("Multi destinations", () => {

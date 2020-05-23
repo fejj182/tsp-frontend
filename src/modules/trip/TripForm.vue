@@ -9,6 +9,7 @@
         :read-only="stop.readOnly"
         :fixed-stop="stop.fixed"
         :id="`stop-${index + 1}`"
+        :stop-number="parseInt(index) + 1"
       />
     </div>
     <v-alert

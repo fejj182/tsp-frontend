@@ -52,6 +52,9 @@ export default {
     },
     id: {
       type: String
+    },
+    stopNumber: {
+      type: Number
     }
   },
   computed: {
@@ -69,17 +72,8 @@ export default {
       return this.$store.state.trip.selectedStop;
     },
     selected() {
-      let inputValue = null;
-
-      if (this.fixedStop) {
-        inputValue = mapStationByDuration(this.fixedStop);
-      } else if (this.readOnly && this.lastSelected) {
-        inputValue = mapStationByDuration(this.lastSelected);
-      } else if (!this.readOnly && this.activeSelectedStop) {
-        inputValue = mapStationByDuration(this.activeSelectedStop);
-      }
-
-      return inputValue;
+      const stop = this.$store.state.trip.savedTrip[this.stopNumber];
+      return stop ? mapStationByDuration(stop) : null;
     }
   },
   watch: {
