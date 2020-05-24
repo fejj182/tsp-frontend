@@ -17,7 +17,7 @@
       <v-dialog v-if="mobile" v-model="listDialog" :width="dialogWidth">
         <template v-slot:activator="{ on }">
           <v-btn class="mx-2" fab dark small color="secondary" v-on="on">
-            <v-icon>mdi-clipboard-list</v-icon>
+            <v-icon data-test-id="icon-itinerary">mdi-clipboard-list</v-icon>
           </v-btn>
         </template>
         <TripPanel />
