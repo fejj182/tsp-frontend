@@ -2,12 +2,7 @@
   <v-container class="fill-height">
     <v-row class=" mt-n12" justify="center">
       <v-col class="text-center" cols="auto">
-        <v-img
-          class="mb-12"
-          contain
-          height="256"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-light.png"
-        />
+        <v-img class="mb-12" contain height="256" :src="graphicUrl" />
         <h1 class="display-4 font-weight-bold mb-6">
           Oops! 404
         </h1>
@@ -27,3 +22,15 @@
     </v-row>
   </v-container>
 </template>
+
+<script>
+export default {
+  computed: {
+    graphicUrl() {
+      return require("@/assets/Logo-2-graphic.png");
+    }
+  }
+};
+</script>
+
+<style lang="scss" scoped></style>
