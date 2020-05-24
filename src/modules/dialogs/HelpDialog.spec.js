@@ -31,4 +31,19 @@ describe("HelpDialog", () => {
       "Build, save and share your route across Europe by train."
     );
   });
+
+  it("should contain clipboard-list icon if mobile", async () => {
+    const wrapper = mount(HelpDialog, {
+      stubs: mockStubs
+    });
+    expect(wrapper.find("[data-test-id=icon-clipboard-list]").exists()).toBe(
+      false
+    );
+    window.innerWidth = 500;
+    await Vue.nextTick(() => {
+      expect(wrapper.find("[data-test-id=icon-clipboard-list]").exists()).toBe(
+        true
+      );
+    });
+  });
 });

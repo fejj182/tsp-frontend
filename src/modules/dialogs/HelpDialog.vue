@@ -26,7 +26,9 @@
         <img :src="pinUrl('red')" width="20" class="pin" alt="red-pin" />
         and then <v-icon color="primary">mdi-clipboard-plus-outline</v-icon>
         to add a stop to your itinerary
-        <v-icon v-if="mobile" color="primary">mdi-clipboard-list</v-icon>
+        <v-icon v-if="mobile" data-test-id="icon-clipboard-list" color="primary"
+          >mdi-clipboard-list</v-icon
+        >
       </v-card-text>
       <v-card-text>
         <v-icon class="icon-info">mdi-information-outline</v-icon>
@@ -40,7 +42,8 @@
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
+      mobile: window.innerWidth < 600
     };
   },
   computed: {
