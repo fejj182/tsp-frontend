@@ -1,6 +1,7 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import VueClipboard from "vue-clipboard2";
 import _ from "lodash";
 
 import TripForm from "./TripForm.vue";
@@ -18,6 +19,7 @@ jest.mock("@/api/trip", () => ({
 }));
 
 Vue.use(Vuetify);
+Vue.use(VueClipboard);
 
 describe("TripForm", () => {
   let mockStore,

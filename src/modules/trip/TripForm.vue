@@ -25,26 +25,35 @@
     <v-alert
       v-if="alias"
       data-test-id="success-alias"
-      type="success"
+      dense
+      text
       dismissible
+      type="success"
     >
-      Trip {{ alias }} created! Bookmark your personal URL.
+      Your trip has been created at your personal URL!
     </v-alert>
     <v-alert
       v-if="updated"
       data-test-id="success-updated"
+      dense
+      text
       type="success"
-      dismissible
     >
       Trip {{ alias }} updated!
     </v-alert>
+    <v-alert v-if="copySucceeded === true" dense text color="indigo">
+      <v-icon color="indigo" left>mdi-share-variant</v-icon> Link copied to
+      clipboard.
+    </v-alert>
+    <v-alert v-if="copySucceeded === false" dense type="error">
+      Agh the copy action failed, check your URL instead.
+    </v-alert>
     <div class="btn-row">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
-        <v-icon left>mdi-plus</v-icon>
-        <span>{{ add }}</span>
+        <v-icon left>mdi-clipboard-plus-outline</v-icon>Add
       </v-btn>
       <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
-        {{ reset }}
+        <v-icon left>mdi-restore</v-icon>Reset
       </v-btn>
     </div>
     <div class="btn-row">
@@ -53,9 +62,19 @@
         v-if="hasStops"
         data-test-id="save-trip"
         color="primary"
-        block
+        :block="!tripSaved"
       >
-        {{ save }}
+        <v-icon left>mdi-bookmark</v-icon>{{ save }}
+      </v-btn>
+
+      <v-btn
+        v-if="tripSaved"
+        v-clipboard:copy="url"
+        v-clipboard:success="onCopySuccess"
+        v-clipboard:error="onCopyFailure"
+        data-test-id="save-trip"
+      >
+        <v-icon left>mdi-content-copy</v-icon> Share
       </v-btn>
     </div>
   </v-form>
@@ -75,7 +94,8 @@ export default {
     return {
       invalid: false,
       alias: null,
-      updated: false
+      updated: false,
+      copySucceeded: null
     };
   },
   computed: {
@@ -88,14 +108,14 @@ export default {
     completeTrip() {
       return this.$store.getters.completeTrip;
     },
-    add() {
-      return window.innerWidth < 600 ? "Add" : "Add stop";
-    },
-    reset() {
-      return window.innerWidth < 600 ? "Reset" : "Reset trip";
-    },
     save() {
-      return window.innerWidth < 600 ? "Save" : "Save for later";
+      return this.$route.name != "alias" ? "Save" : "Update";
+    },
+    tripSaved() {
+      return this.$route.name === "alias";
+    },
+    url() {
+      return window.location.href;
     }
   },
   methods: {
@@ -144,8 +164,20 @@ export default {
         this.updated = true;
         setTimeout(() => {
           this.updated = false;
-        }, 7500);
+        }, 2000);
       }
+    },
+    onCopySuccess() {
+      this.copySucceeded = true;
+      setTimeout(() => {
+        this.copySucceeded = null;
+      }, 2000);
+    },
+    onCopyFailure() {
+      this.copySucceeded = false;
+      setTimeout(() => {
+        this.copySucceeded = null;
+      }, 2000);
     }
   }
 };
@@ -154,6 +186,10 @@ export default {
 <style lang="scss" scoped>
 .v-form {
   padding-top: 16px;
+}
+
+#trip-form .v-btn {
+  min-width: 125px;
 }
 
 .btn-row {
@@ -165,6 +201,10 @@ export default {
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
+  }
+
+  #trip-form .v-btn {
+    min-width: 110px;
   }
 }
 </style>
