@@ -8,7 +8,7 @@
       </a>
       <!-- </header> -->
 
-      <h1 v-if="!mobile">
+      <h1 v-show="!mobile">
         Build, save and share your route across Europe by train.
       </h1>
 
@@ -29,8 +29,13 @@
             <v-icon>mdi-help-circle</v-icon>
           </v-btn>
         </template>
+
         <v-card>
-          <v-card-title class="headline">Tips:</v-card-title>
+          <h1 id="title">
+            <v-card-title>
+              Build, save and share your route across Europe by train.
+            </v-card-title>
+          </h1>
           <v-card-text>
             <v-icon class="icon-info">mdi-information-outline</v-icon>
             Click on a
@@ -94,7 +99,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-h1 {
+#header h1 {
   font-family: Courier;
   font-size: 20px;
   margin-left: -3em;
@@ -138,6 +143,12 @@ span {
 @media only screen and (max-width: 600px) {
   #logo {
     width: 90%;
+  }
+
+  .v-card__title {
+    font-family: Courier;
+    font-size: 14px;
+    word-break: normal;
   }
 }
 </style>
