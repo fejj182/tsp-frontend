@@ -33,7 +33,7 @@
         <v-card>
           <h1 id="title">
             <v-card-title>
-              Build, save and share your route across Europe by train.
+              {{ infoDialogTitle }}
             </v-card-title>
           </h1>
           <v-card-text>
@@ -88,6 +88,11 @@ export default {
     },
     dialogWidth() {
       return 550;
+    },
+    infoDialogTitle() {
+      return window.innerWidth < 600
+        ? "Build, save and share your route across Europe by train."
+        : "Tips:";
     }
   },
   methods: {
@@ -142,13 +147,17 @@ span {
 
 @media only screen and (max-width: 600px) {
   #logo {
-    width: 90%;
+    width: 80%;
   }
 
   .v-card__title {
     font-family: Courier;
-    font-size: 14px;
+    font-size: 16px;
     word-break: normal;
+  }
+
+  .v-dialog > .v-card > .v-card__text {
+    padding: 0 18px 20px;
   }
 }
 </style>
