@@ -1,12 +1,16 @@
 <template>
   <div>
     <v-app-bar app color="primary" dark id="header">
-      <header>
-        <a href="/">
-          <img id="logo" src="@/assets/Logo-1.png" alt="trainspotter-logo" />
-          <span> Click to return to home </span>
-        </a>
-      </header>
+      <!-- <header> -->
+      <a href="/">
+        <img id="logo" src="@/assets/Logo-1.png" alt="trainspotter-logo" />
+        <span> Click to return to home </span>
+      </a>
+      <!-- </header> -->
+
+      <h1 v-if="!mobile">
+        Build, save and share your route across Europe by train.
+      </h1>
 
       <v-spacer></v-spacer>
 
@@ -90,6 +94,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h1 {
+  font-family: Courier;
+  font-size: 20px;
+  margin-left: -3em;
+}
+
 @font-face {
   font-family: "Helvetica Bold Italic";
   src: url("../../assets/Helvetica-bold-italic.ttf") format("truetype");
