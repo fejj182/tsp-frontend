@@ -1,9 +1,6 @@
 describe("trip_map", () => {
   it("should create trip using map", () => {
     cy.server();
-    cy.route("POST", "api/trip-destinations", {
-      alias: "some-alias"
-    });
     cy.route("POST", "api/destinations/connections").as("getConnections");
 
     cy.visit("http://localhost:8080/");
@@ -37,7 +34,7 @@ describe("trip_map", () => {
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
       "contain.text",
-      "some-alias"
+      "created"
     );
   });
   it("should be able to reset a trip and not break UI", () => {
@@ -66,9 +63,6 @@ describe("trip_map", () => {
   it("should create trip using map on mobile", () => {
     cy.server();
     cy.route("POST", "api/destinations/connections").as("getConnections");
-    cy.route("POST", "api/trip-destinations", {
-      alias: "some-alias"
-    });
     cy.viewport("iphone-6");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
@@ -99,7 +93,7 @@ describe("trip_map", () => {
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
       "contain.text",
-      "some-alias"
+      "created"
     );
   });
 });

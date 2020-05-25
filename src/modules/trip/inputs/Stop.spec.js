@@ -181,10 +181,17 @@ describe("Stop", () => {
   it("should dispatch removeStop action when click cross", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
     mockStore.state.trip.savedTrip = [{}, {}, {}];
+    const routerPush = jest.fn();
     const wrapper = mount(Stop, {
       vuetify: new Vuetify(),
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: {
+          name: "alias"
+        },
+        $router: {
+          push: routerPush
+        }
       },
       propsData: {
         stations: [],
@@ -193,6 +200,7 @@ describe("Stop", () => {
     });
     wrapper.find(".mdi-close").trigger("click");
     expect(mockStore.dispatch).toHaveBeenCalledWith("removeStop");
+    expect(routerPush).not.toHaveBeenCalled();
   });
 
   it("should dispatch removeStopAndFetchConnections action when stop before has no connections", () => {
@@ -214,13 +222,20 @@ describe("Stop", () => {
     );
   });
 
-  it("should dispatch remove resetTrip action when click cross and only starting destination selected", () => {
+  it("should dispatch remove resetTrip action when click cross only one station in trip", () => {
     mockStore.state.trip.stops = [{}, {}, {}];
-    mockStore.getters.completeTrip = [{}];
+    mockStore.state.trip.savedTrip = [{}];
+    const routerPush = jest.fn();
     const wrapper = mount(Stop, {
       vuetify: new Vuetify(),
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: {
+          name: "alias"
+        },
+        $router: {
+          push: routerPush
+        }
       },
       propsData: {
         stations: [],
@@ -229,5 +244,6 @@ describe("Stop", () => {
     });
     wrapper.find(".mdi-close").trigger("click");
     expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
+    expect(routerPush).toHaveBeenCalledWith("/");
   });
 });

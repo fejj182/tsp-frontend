@@ -1,6 +1,7 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import VueClipboard from "vue-clipboard2";
 import _ from "lodash";
 
 import TripForm from "./TripForm.vue";
@@ -18,6 +19,7 @@ jest.mock("@/api/trip", () => ({
 }));
 
 Vue.use(Vuetify);
+Vue.use(VueClipboard);
 
 describe("TripForm", () => {
   let mockStore,
@@ -474,6 +476,32 @@ describe("TripForm", () => {
             true
           );
         });
+      });
+    });
+    describe("Copy button", () => {
+      it("should appear only if trip has been saved", () => {
+        mockStore.getters.hasStops = true;
+        mockRoute.name = "alias";
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $router: mockRouter,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(true);
+      });
+      it("should not appear if trip has not been saved", () => {
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $router: mockRouter,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(false);
       });
     });
   });

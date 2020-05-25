@@ -4,6 +4,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store/store";
 import vuetify from "./plugins/vuetify";
+import VueClipboard from "vue-clipboard2";
 
 Vue.use(
   VueGtag,
@@ -13,6 +14,8 @@ Vue.use(
   },
   router
 );
+VueClipboard.config.autoSetContainer = true;
+Vue.use(VueClipboard);
 Vue.config.productionTip = false;
 
 new Vue({
