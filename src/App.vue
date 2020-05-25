@@ -23,7 +23,7 @@ export default {
         content: "Trainspotter"
       },
       {
-        name: "og:description",
+        property: "og:description",
         content: "Build, save and share your route across Europe by train."
       },
       {
