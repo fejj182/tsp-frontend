@@ -1,0 +1,45 @@
+[
+  {
+    "country": "ES",
+    "id": "e976a554-02c9-4105-97e6-7a12862974fe",
+    "lat": 39.466932,
+    "lng": -0.377151,
+    "name": "Valencia",
+    "slug": "valencia",
+    "stations": [
+      {
+        "id": "96201090-2393-490e-b077-c43a7c1d014d",
+        "lat": 39.458015,
+        "lng": -0.381762,
+        "name": "Valencia Joaquín Sorolla",
+        "slug": "valencia-joaquin-sorolla"
+      },
+      {
+        "id": "8e7b1c35-940c-435b-a6b7-93fd066b5dac",
+        "lat": 39.466932,
+        "lng": -0.377151,
+        "name": "Valencia Estaciò Nord",
+        "slug": "valencia-estacio-nord"
+      }
+    ]
+  },
+  {
+    "country": "ES",
+    "duration": 27,
+    "id": "0308d789-2232-4ef8-bef0-cdbae592d98d",
+    "lat": 40.910609,
+    "lng": -4.09571,
+    "name": "Segovia",
+    "slug": "segovia",
+    "stations": [
+      {
+        "duration": 27,
+        "id": "d7433c34-57a6-4892-8c89-052142ad4865",
+        "lat": 40.910609,
+        "lng": -4.09571,
+        "name": "Segovia Guiomar",
+        "slug": "segovia-guiomar"
+      }
+    ]
+  }
+]
