@@ -58,21 +58,22 @@
     </div>
     <div class="btn-row">
       <v-btn
-        type="submit"
         v-if="hasStops"
-        data-test-id="save-trip"
+        type="submit"
         color="primary"
         :block="!tripSaved"
+        data-test-id="save-trip"
       >
         <v-icon left>mdi-bookmark</v-icon>{{ save }}
       </v-btn>
 
       <v-btn
         v-if="tripSaved"
+        color="primary"
         v-clipboard:copy="url"
         v-clipboard:success="onCopySuccess"
         v-clipboard:error="onCopyFailure"
-        data-test-id="save-trip"
+        data-test-id="copy-url"
       >
         <v-icon left>mdi-content-copy</v-icon> Share
       </v-btn>
@@ -112,7 +113,7 @@ export default {
       return this.$route.name != "alias" ? "Save" : "Update";
     },
     tripSaved() {
-      return this.$route.name === "alias";
+      return this.$route.name === "alias" && this.hasStops;
     },
     url() {
       return window.location.href;

@@ -478,5 +478,31 @@ describe("TripForm", () => {
         });
       });
     });
+    describe("Copy button", () => {
+      it("should appear only if trip has been saved", () => {
+        mockStore.getters.hasStops = true;
+        mockRoute.name = "alias";
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $router: mockRouter,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(true);
+      });
+      it("should not appear if trip has not been saved", () => {
+        const wrapper = mount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $router: mockRouter,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(false);
+      });
+    });
   });
 });
