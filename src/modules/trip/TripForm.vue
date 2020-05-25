@@ -149,9 +149,6 @@ export default {
         const response = await tripApi.create(this.completeTrip);
         if (response && response.alias) {
           this.alias = response.alias;
-          setTimeout(() => {
-            this.alias = null;
-          }, 7500);
           this.$router.push("trip/" + response.alias);
         }
       }
