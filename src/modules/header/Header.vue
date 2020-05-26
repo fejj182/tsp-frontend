@@ -1,8 +1,13 @@
 <template>
-  <div>
+  <div v-show="logoLoaded">
     <v-app-bar app color="primary" dark id="header">
       <a href="/">
-        <img id="logo" src="@/assets/Logo-1.png" alt="trainspotter-logo" />
+        <img
+          id="logo"
+          src="@/assets/Logo-1.png"
+          alt="trainspotter-logo"
+          @load="onLogoLoad"
+        />
         <span> Click to return to home </span>
       </a>
       <h1 v-show="!mobile">
@@ -25,8 +30,14 @@ export default {
   },
   data() {
     return {
-      mobile: window.innerWidth < 600
+      mobile: window.innerWidth < 600,
+      logoLoaded: false
     };
+  },
+  methods: {
+    onLogoLoad() {
+      this.logoLoaded = true;
+    }
   }
 };
 </script>
@@ -48,6 +59,7 @@ span {
 
 #logo {
   margin-top: 0.5rem;
+  min-width: 70%;
   width: 70%;
 }
 
