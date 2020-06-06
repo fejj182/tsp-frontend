@@ -1,4 +1,4 @@
-import { mount } from "@vue/test-utils";
+import { mount, shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import HelpDialog from "./HelpDialog";
@@ -32,18 +32,22 @@ describe("HelpDialog", () => {
     );
   });
 
-  it("should contain clipboard-list icon if mobile", async () => {
-    const wrapper = mount(HelpDialog, {
+  it("should contain clipboard-list icon if mobile", () => {
+    window.innerWidth = 500;
+    const wrapper = shallowMount(HelpDialog, {
+      stubs: mockStubs
+    });
+    expect(wrapper.find("[data-test-id=icon-clipboard-list]").exists()).toBe(
+      true
+    );
+  });
+
+  it("should not contain clipboard-list icon if not mobile", () => {
+    const wrapper = shallowMount(HelpDialog, {
       stubs: mockStubs
     });
     expect(wrapper.find("[data-test-id=icon-clipboard-list]").exists()).toBe(
       false
     );
-    window.innerWidth = 500;
-    await Vue.nextTick(() => {
-      expect(wrapper.find("[data-test-id=icon-clipboard-list]").exists()).toBe(
-        true
-      );
-    });
   });
 });
