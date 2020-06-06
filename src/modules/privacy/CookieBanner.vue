@@ -50,6 +50,10 @@ export default {
   color: white;
 }
 
+#cookie-banner .Cookie__buttons {
+  flex-direction: row;
+}
+
 #cookie-banner .Cookie__button,
 #cookie-banner .Cookie__button--decline {
   padding: 0.5em 1.75em;
