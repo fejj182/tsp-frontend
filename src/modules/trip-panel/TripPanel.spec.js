@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
@@ -15,7 +15,7 @@ describe("Trip Panel", () => {
   beforeEach(() => {
     mockStore = {
       state: {
-        stations: _.cloneDeep(stations),
+        stations: cloneDeep(stations),
         trip: {
           stops: [],
           savedTrip: []

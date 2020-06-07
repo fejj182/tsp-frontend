@@ -31,7 +31,7 @@ import {
   mapStationsByDuration
 } from "@/mappers/stationFormMapper";
 import { filterStationsOutOfRange } from "@/modules/map/panes/paneUtils";
-import _ from "lodash";
+import deburr from "lodash/deburr";
 
 export default {
   data() {
@@ -106,9 +106,9 @@ export default {
       }
     },
     autocompleteFilter(item, queryText, itemText) {
-      // same as default but adding _.deburr
+      // same as default but adding deburr
       return (
-        _.deburr(itemText)
+        deburr(itemText)
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );

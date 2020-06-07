@@ -22,7 +22,7 @@
 
 <script>
 import { mapStation, mapStations } from "@/mappers/stationFormMapper";
-import _ from "lodash";
+import deburr from "lodash/deburr";
 
 export default {
   computed: {
@@ -48,7 +48,7 @@ export default {
     autocompleteFilter(item, queryText, itemText) {
       // same as default but adding _.deburr
       return (
-        _.deburr(itemText)
+        deburr(itemText)
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );

@@ -2,7 +2,7 @@ import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import VueClipboard from "vue-clipboard2";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 import TripForm from "./TripForm.vue";
 import tripApi from "@/api/trip";
@@ -44,8 +44,8 @@ describe("TripForm", () => {
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        stations: _.cloneDeep(stations),
-        trip: _.cloneDeep(trip)
+        stations: cloneDeep(stations),
+        trip: cloneDeep(trip)
       },
       getters: {
         hasStops: false,

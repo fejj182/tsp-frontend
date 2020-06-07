@@ -1,7 +1,7 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 import Stop from "./Stop.vue";
 import { fakeStation } from "@/helpers/tests";
@@ -22,9 +22,9 @@ describe("Stop", () => {
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        stations: _.cloneDeep(stations),
-        trip: _.cloneDeep(trip),
-        filters: _.cloneDeep(filters)
+        stations: cloneDeep(stations),
+        trip: cloneDeep(trip),
+        filters: cloneDeep(filters)
       },
       getters: {
         completeTrip: []

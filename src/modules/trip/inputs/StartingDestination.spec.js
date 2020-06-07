@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import _ from "lodash";
+import cloneDeep from "lodash/cloneDeep";
 
 import StartingDestination from "./StartingDestination.vue";
 import { mapStations } from "@/mappers/stationFormMapper";
@@ -23,7 +23,7 @@ describe("StartingDestination", () => {
     mockStore = {
       dispatch: jest.fn(),
       state: {
-        trip: _.cloneDeep(trip),
+        trip: cloneDeep(trip),
         stations: {
           startingStations: []
         }
