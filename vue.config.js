@@ -9,5 +9,8 @@ module.exports = {
         analyzerMode: "station"
       })
     ]
+  },
+  chainWebpack: config => {
+    config.plugins.delete("prefetch");
   }
 };
