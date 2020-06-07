@@ -1,8 +1,9 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import Home from "@/modules/home/Home.vue";
-import PrivacyPolicy from "@/modules/privacy/PrivacyPolicy.vue";
-import NotFound from "@/components/NotFound.vue";
+
+const Home = () => import("@/modules/home/Home.vue");
+const PrivacyPolicy = () => import("@/modules/privacy/PrivacyPolicy.vue");
+const NotFound = () => import("@/components/NotFound.vue");
 
 Vue.use(VueRouter);
 
