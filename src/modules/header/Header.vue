@@ -21,8 +21,9 @@
 </template>
 
 <script>
-import ListDialog from "@/modules/dialogs/ListDialog";
-import HelpDialog from "@/modules/dialogs/HelpDialog";
+const ListDialog = () => import("@/modules/dialogs/ListDialog");
+const HelpDialog = () => import("@/modules/dialogs/HelpDialog");
+
 export default {
   components: {
     ListDialog,

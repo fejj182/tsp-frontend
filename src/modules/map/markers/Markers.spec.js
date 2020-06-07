@@ -1,40 +1,66 @@
-import { shallowMount } from "@vue/test-utils";
+// shallowMount() behaves like mount() when components are lazy loaded
+// https://github.com/vuejs/vue-test-utils/issues/1279
+
+import { mount } from "@vue/test-utils";
 import Markers from "./Markers.vue";
-import StartingMarkers from "./StartingMarkers.vue";
-import TripMarkers from "./trip/TripMarkers.vue";
-import ConnectionMarkers from "./ConnectionMarkers.vue";
 
 describe("Markers", () => {
-  test("should contain StartingMarkers", () => {
-    const mockMap = {};
-    const wrapper = shallowMount(Markers, {
-      propsData: {
-        map: mockMap
+  let mockStubs = {};
+  beforeEach(() => {
+    jest.resetModules();
+    mockStubs = {
+      StartingMarkers: {
+        name: "StartingMarkers",
+        template: "<span></span>"
+      },
+      TripMarkers: {
+        name: "TripMarkers",
+        template: "<span></span>"
+      },
+      ConnectionMarkers: {
+        name: "ConnectionMarkers",
+        template: "<span></span>"
       }
+    };
+  });
+  test("should contain StartingMarkers", () => {
+    const wrapper = mount(Markers, {
+      propsData: {
+        map: {}
+      },
+      stubs: mockStubs
     });
-    expect(wrapper.find(StartingMarkers).exists()).toBe(true);
-    expect(wrapper.find(StartingMarkers).props().map).toEqual(mockMap);
+    expect(wrapper.find("[data-test-id=starting-markers]").exists()).toBe(true);
+    expect(
+      wrapper.find("[data-test-id=starting-markers]").vm.$attrs.map
+    ).toEqual({});
   });
 
   test("should contain TripMarkers", () => {
-    const mockMap = {};
-    const wrapper = shallowMount(Markers, {
+    const wrapper = mount(Markers, {
       propsData: {
-        map: mockMap
-      }
+        map: {}
+      },
+      stubs: mockStubs
     });
-    expect(wrapper.find(TripMarkers).exists()).toBe(true);
-    expect(wrapper.find(TripMarkers).props().map).toEqual(mockMap);
+    expect(wrapper.find("[data-test-id=trip-markers]").exists()).toBe(true);
+    expect(wrapper.find("[data-test-id=trip-markers]").vm.$attrs.map).toEqual(
+      {}
+    );
   });
 
   test("should contain ConnectionMarkers", () => {
-    const mockMap = {};
-    const wrapper = shallowMount(Markers, {
+    const wrapper = mount(Markers, {
       propsData: {
-        map: mockMap
-      }
+        map: {}
+      },
+      stubs: mockStubs
     });
-    expect(wrapper.find(ConnectionMarkers).exists()).toBe(true);
-    expect(wrapper.find(ConnectionMarkers).props().map).toEqual(mockMap);
+    expect(wrapper.find("[data-test-id=connection-markers]").exists()).toBe(
+      true
+    );
+    expect(
+      wrapper.find("[data-test-id=connection-markers]").vm.$attrs.map
+    ).toEqual({});
   });
 });
