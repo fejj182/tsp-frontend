@@ -49,7 +49,7 @@ export default {
   computed: {
     title() {
       return window.innerWidth < 600
-        ? "Build, save and share your route across Europe by train."
+        ? "Multiple journey planner for train travel in Europe."
         : "Tips:";
     }
   },
@@ -76,7 +76,7 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .v-card__title {
-    font-family: Courier;
+    font-family: Raleway;
     font-size: 16px;
     word-break: normal;
   }

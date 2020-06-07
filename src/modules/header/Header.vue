@@ -11,7 +11,7 @@
         <span> Click to return to home </span>
       </a>
       <h1 v-show="!mobile">
-        Build, save and share your route across Europe by train.
+        Multiple journey planner for train travel in Europe.
       </h1>
       <v-spacer></v-spacer>
       <ListDialog v-if="mobile" />
@@ -44,7 +44,7 @@ export default {
 
 <style lang="scss" scoped>
 #header h1 {
-  font-family: Courier;
+  font-family: Raleway;
   font-size: 20px;
   margin-left: -3em;
 }

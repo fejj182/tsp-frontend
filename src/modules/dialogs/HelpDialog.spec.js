@@ -28,7 +28,7 @@ describe("HelpDialog", () => {
       stubs: mockStubs
     });
     expect(wrapper.find(".v-card__title").text()).toBe(
-      "Build, save and share your route across Europe by train."
+      "Multiple journey planner for train travel in Europe."
     );
   });
 

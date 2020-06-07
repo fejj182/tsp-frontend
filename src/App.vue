@@ -16,7 +16,7 @@ export default {
     meta: [
       {
         name: "description",
-        content: "Build, save and share your route across Europe by train."
+        content: "Multiple journey planner for train travel in Europe."
       },
       {
         property: "og:title",
@@ -24,7 +24,7 @@ export default {
       },
       {
         property: "og:description",
-        content: "Build, save and share your route across Europe by train."
+        content: "Multiple journey planner for train travel in Europe."
       },
       {
         property: "og:image",
