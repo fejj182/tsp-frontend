@@ -6,7 +6,7 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new BundleAnalyzerPlugin({
-        analyzerMode: "station"
+        analyzerMode: "disabled"
       })
     ]
   }
