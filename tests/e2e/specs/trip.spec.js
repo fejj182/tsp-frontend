@@ -2,7 +2,7 @@ describe("Trip", function() {
   it("should create and update a trip using form", function() {
     cy.server();
     cy.route("POST", "api/destinations/connections").as("getConnections");
-    cy.route("POST", "api/trip-destinations").as("saveTrip");
+    cy.route("POST", "api/trip").as("saveTrip");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
     createTrip();

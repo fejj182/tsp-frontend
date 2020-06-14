@@ -11,7 +11,7 @@ describe("trip", () => {
         1: "Madrid"
       };
       tripApi.create(trip);
-      expect(post).toHaveBeenCalledWith("test/trip-destinations", { trip });
+      expect(post).toHaveBeenCalledWith("test/trip", { trip });
     });
   });
 
@@ -20,7 +20,7 @@ describe("trip", () => {
       process.env.VUE_APP_API_BASE_URL = "test";
       const alias = "some-alias";
       tripApi.get(alias);
-      expect(get).toHaveBeenCalledWith(`test/trip-destinations/${alias}`);
+      expect(get).toHaveBeenCalledWith(`test/trip/${alias}`);
     });
   });
 
@@ -33,7 +33,7 @@ describe("trip", () => {
         1: "Madrid"
       };
       tripApi.update(alias, trip);
-      expect(post).toHaveBeenCalledWith(`test/trip-destinations/${alias}`, {
+      expect(post).toHaveBeenCalledWith(`test/trip/${alias}`, {
         trip
       });
     });
