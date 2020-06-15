@@ -1,6 +1,7 @@
 describe("Trip", function() {
   it("should create and update a trip using form", function() {
     cy.server();
+    cy.route("GET", "api/destinations").as("getDestinations");
     cy.route("POST", "api/destinations/connections").as("getConnections");
     cy.route("POST", "api/trip").as("saveTrip");
     cy.visit("http://localhost:8080/");
@@ -13,6 +14,7 @@ describe("Trip", function() {
 });
 
 function createTrip() {
+  cy.wait("@getDestinations");
   cy.get("[data-test-id=starting-destination]").click();
   cy.get(".v-list-item")
     .first()

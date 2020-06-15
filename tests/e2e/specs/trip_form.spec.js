@@ -1,6 +1,7 @@
 describe("TripForm", function() {
   it("remove button should work", function() {
     cy.server();
+    cy.route("GET", "api/destinations").as("getDestinations");
     cy.route("POST", "api/trip").as("saveTrip");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
@@ -11,6 +12,7 @@ describe("TripForm", function() {
 });
 
 function assertFirstStopAddAndClose() {
+  cy.wait("@getDestinations");
   cy.get("[data-test-id=starting-destination]").click();
   cy.get(".v-list-item")
     .first()
