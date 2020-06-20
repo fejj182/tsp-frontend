@@ -166,6 +166,11 @@ describe("popups", () => {
         module.actions.startTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("fetchConnections", station);
       });
+      it("should dispatch tripStarted", () => {
+        let station = {};
+        module.actions.startTrip({ dispatch, commit }, station);
+        expect(dispatch).toHaveBeenCalledWith("tripStarted");
+      });
     });
 
     describe("addToTrip", () => {
@@ -221,16 +226,21 @@ describe("popups", () => {
           stops: [{ connections: [] }],
           selectedStop: 1,
           savedTrip: [{}],
-          startingStation: {},
-          tripReset: false
+          startingStation: {}
         };
         module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
         expect(state.selectedStop).toBeNull();
         expect(state.savedTrip).toEqual([]);
         expect(state.startingStation).toBeNull();
-        expect(state.tripReset).toBe(true);
       });
+    });
+    describe("TRIP_STARTED", () => {
+      let state = {
+        tripStarted: false
+      };
+      module.mutations.TRIP_STARTED(state);
+      expect(state.tripStarted).toEqual(true);
     });
     describe("ADD_NEW_STOP", () => {
       let stations;

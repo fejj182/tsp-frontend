@@ -14,7 +14,7 @@ describe("StartingMarkers", () => {
         activeConnections: []
       },
       trip: {
-        tripReset: false
+        tripStarted: false
       }
     };
     mockGetters = {

@@ -5,7 +5,7 @@ export const state = {
   selectedStop: null,
   stops: [],
   savedTrip: [],
-  tripReset: false
+  tripStarted: false
 };
 
 export const getters = {
@@ -37,6 +37,7 @@ export const actions = {
   },
   startTrip({ dispatch, commit }, station) {
     dispatch("resetTrip");
+    dispatch("tripStarted");
     dispatch("fetchConnections", station);
     commit("SELECT_STARTING_STATION", station);
     commit("ADD_STARTING_STATION", station);
@@ -87,7 +88,9 @@ export const mutations = {
     state.selectedStop = null;
     state.savedTrip = [];
     state.startingStation = null;
-    state.tripReset = true;
+  },
+  TRIP_STARTED: state => {
+    state.tripStarted = true;
   },
   ADD_NEW_STOP: (state, stations) => {
     const prevStops = state.stops.map(stop => {

@@ -60,7 +60,7 @@ export default {
             });
           });
         },
-        this.$store.state.trip.tripReset ? VERY_SLOW : IMMEDIATE
+        this.$store.state.trip.tripStarted ? VERY_SLOW : IMMEDIATE
       );
     }
   },
