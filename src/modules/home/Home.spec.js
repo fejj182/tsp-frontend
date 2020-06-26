@@ -11,7 +11,7 @@ import flushPromises from "flush-promises";
 Vue.use(Vuetify);
 
 describe("Home", () => {
-  let mockStore;
+  let mockStore, mockFeatures;
 
   beforeEach(() => {
     mockStore = {
@@ -22,13 +22,13 @@ describe("Home", () => {
         }
       }
     };
+    mockFeatures = jest.fn().mockImplementation(() => true);
   });
 
   describe("children", () => {
     let wrapper;
     beforeEach(() => {
       window.innerWidth = 1000;
-      process.env = { VUE_APP_FT_WELCOME_PANEL_ACTIVE: true };
     });
 
     it("should contain the map", async () => {
@@ -49,9 +49,15 @@ describe("Home", () => {
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
 
+    it("should contain the welcome panel if trip has not started", () => {
+      mockStore.state.trip.tripStarted = false;
+      wrapper = shallowMountHome();
+      expect(wrapper.find(Welcome).exists()).toBe(true);
+    });
+
     it("should not contain the welcome panel if trip has not started and FT is off", () => {
       mockStore.state.trip.tripStarted = false;
-      process.env = { VUE_APP_FT_WELCOME_PANEL_ACTIVE: false };
+      mockFeatures = jest.fn().mockImplementation(() => false);
       wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(false);
     });
@@ -61,6 +67,13 @@ describe("Home", () => {
       wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
+
+    it("should contain the welcome panel on mobile if trip not started", () => {
+      window.innerWidth = 500;
+      wrapper = shallowMountHome();
+      expect(wrapper.find(Welcome).exists()).toBe(true);
+    });
+
     it("should contain the cookie banner", () => {
       expect(wrapper.find(CookieBanner).exists()).toBe(true);
     });
@@ -81,7 +94,8 @@ describe("Home", () => {
               alias: "some-alias"
             }
           },
-          $store: mockStore
+          $store: mockStore,
+          $feature: jest.fn()
         }
       });
       expect(mockStore.dispatch).toHaveBeenCalledWith("fetchTrip", {
@@ -96,7 +110,8 @@ describe("Home", () => {
         $route: {
           name: "home"
         },
-        $store: mockStore
+        $store: mockStore,
+        $feature: mockFeatures
       }
     });
   };

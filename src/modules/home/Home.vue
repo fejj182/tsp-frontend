@@ -6,7 +6,8 @@
         <TripPanel v-else />
       </v-col>
       <v-col :md="9" cols="12">
-        <Map v-if="dataLoaded" />
+        <Welcome v-if="mobile && shouldWelcome" />
+        <Map v-else />
       </v-col>
     </v-row>
     <footer>
@@ -38,8 +39,7 @@ export default {
   computed: {
     shouldWelcome() {
       return (
-        !this.$store.state.trip.tripStarted &&
-        process.env.VUE_APP_FT_WELCOME_PANEL_ACTIVE
+        !this.$store.state.trip.tripStarted && this.$feature("welcomePanel")
       );
     }
   },
