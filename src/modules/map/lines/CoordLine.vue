@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import L from "leaflet";
+import { createLine } from "@/plugins/leaflet.js";
 
 export default {
   props: {
@@ -15,10 +15,7 @@ export default {
     }
   },
   mounted() {
-    this.geoJsonLayer = L.geoJSON({
-      type: "LineString",
-      coordinates: [this.coordSet[0], this.coordSet[1]]
-    }).addTo(this.map);
+    this.geoJsonLayer = createLine(this.map, this.coordSet);
   },
   destroyed() {
     this.geoJsonLayer.remove();

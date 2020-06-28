@@ -139,7 +139,7 @@ describe("Map", () => {
       }
     });
     expect(mockMap.createPane).toHaveBeenCalledTimes(numberOfPaneGroups);
-    expect(Object.keys(wrapper.vm.panes).length).toBe(numberOfPaneGroups);
+    expect(Object.keys(wrapper.vm.mapPanes).length).toBe(numberOfPaneGroups);
   });
 
   it("should set z-index of panes", () => {
@@ -169,7 +169,7 @@ describe("Map", () => {
     const mockActiveDurationRange = [1, 2];
     mockStore.state.filters.activeDurationRange = mockActiveDurationRange;
     expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
-      wrapper.vm.panes,
+      wrapper.vm.mapPanes,
       mockActiveDurationRange
     );
   });

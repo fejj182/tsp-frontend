@@ -8,8 +8,7 @@
 </template>
 
 <script>
-import L from "leaflet";
-import paneConfigs from "@/modules/map/panes/paneConfigs";
+import { createMap, createPanes, flyTo } from "@/plugins/leaflet.js";
 import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
@@ -21,30 +20,14 @@ export default {
   },
   data() {
     return {
-      centreCoords: [40.7067997, 0.5801695],
-      zoomLevel: window.innerWidth > 600 ? 7 : 6,
+      defaultCentre: [40.7067997, 0.5801695],
       myMap: null,
-      tileOptions: {
-        attribution:
-          'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        minZoom: 5,
-        // TODO: minZoom 6 causes big performance issues
-        maxZoom: 10,
-        id: "mapbox.streets",
-        accessToken: process.env.VUE_APP_OPEN_STREET_MAPS_KEY
-      },
-      panes: {}
+      mapPanes: {}
     };
   },
   mounted() {
-    const trip = this.completeTrip;
-    if (trip.length > 0) {
-      const centreStop = trip[Math.floor((trip.length - 1) / 2)];
-      this.createMap([centreStop.lat, centreStop.lng], 6);
-    } else {
-      this.createMap(this.centreCoords, this.zoomLevel);
-    }
-    this.createPanes();
+    this.myMap = createMap(this.mapCentre, this.mapZoom);
+    this.mapPanes = createPanes(this.myMap);
   },
   computed: {
     activeDurationRange() {
@@ -55,48 +38,37 @@ export default {
     },
     tripStarted() {
       return this.$store.state.trip.savedTrip.length > 0;
-    }
-  },
-  methods: {
-    createMap(centreCoords, zoomLevel) {
-      this.myMap = L.map("map");
-      this.myMap.setView(centreCoords, zoomLevel);
-
-      L.tileLayer(
-        "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}",
-        this.tileOptions
-      ).addTo(this.myMap);
     },
-    createPanes() {
-      for (let i = 0; i < paneConfigs.NUMBER_OF_PANES; i++) {
-        const paneName = `p${i}`;
-        const pane = this.myMap.createPane(paneName);
-        // https://leafletjs.com/reference-1.6.0.html#map-pane - set z index in between 600 and 700
-        if (pane) {
-          pane.style.zIndex = 650;
-        }
-        this.panes[paneName] = pane;
+    mapCentre() {
+      if (this.completeTrip.length > 0) {
+        const middleStop = this.completeTrip[
+          Math.floor((this.completeTrip.length - 1) / 2)
+        ];
+        return [middleStop.lat, middleStop.lng];
+      } else {
+        return this.defaultCentre;
+      }
+    },
+    mapZoom() {
+      if (this.completeTrip.length > 0) {
+        return 6;
+      } else {
+        return window.innerWidth > 600 ? 7 : 6;
       }
     }
   },
   watch: {
     activeDurationRange(range) {
-      displayPanesInRange(this.panes, range);
+      displayPanesInRange(this.mapPanes, range);
     },
     completeTrip(trip) {
       if (trip.length > 0) {
         const stop = trip[trip.length - 1];
         const coords = [stop.lat, stop.lng];
         const durationSecs = trip.length == 1 ? 0.75 : 1.5;
-        this.myMap.flyTo(coords, 6, {
-          duration: durationSecs,
-          easeLinearity: 0.1
-        });
+        flyTo(this.myMap, 6, coords, durationSecs);
       } else {
-        this.myMap.flyTo(this.centreCoords, 7, {
-          duration: 1.5,
-          easeLinearity: 0.1
-        });
+        flyTo(this.myMap, 7, this.defaultCentre, 1.5);
       }
     }
   }
