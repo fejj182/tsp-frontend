@@ -34,7 +34,7 @@ describe("Header", () => {
     const wrapper = shallowMount(Header, {
       mocks: mockStubs
     });
-    wrapper.find("#logo").trigger("load")
+    wrapper.find("#logo").trigger("load");
     expect(wrapper.find("h1").isVisible()).toBe(true);
   });
 
