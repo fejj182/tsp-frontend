@@ -54,5 +54,18 @@ describe("CoordLine", () => {
       });
       expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
     });
+
+    it("should save line to local data", () => {
+      const wrapper = shallowMount(CoordLine, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          map: mockMap,
+          coordSet: []
+        }
+      });
+      expect(wrapper.vm.geoJsonLayer).toEqual(geoJSON);
+    });
   });
 });

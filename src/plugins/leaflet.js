@@ -36,10 +36,12 @@ export const createPanes = map => {
 };
 
 export const createLine = (map, coordSet) => {
-  L.geoJSON({
+  const line = L.geoJSON({
     type: "LineString",
     coordinates: [coordSet[0], coordSet[1]]
-  }).addTo(map);
+  });
+  line.addTo(map);
+  return line;
 };
 
 export const generateMarker = (station, map, onClick, colour) => {

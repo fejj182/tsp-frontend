@@ -36,6 +36,7 @@ function assertStateAfterReset() {
   cy.get("[data-test-id=starting-destination]").should("have.value", "");
   cy.get(".position-1").should("not.exist");
   cy.get(".leaflet-popup").should("not.exist");
+  cy.get("g .leaflet-interactive").should("not.exist");
 }
 
 function assertFullFlowAddAndClose() {
