@@ -11,8 +11,7 @@ describe("CoordLine", () => {
   beforeEach(() => {
     geoJSON = {
       addTo: jest.fn(),
-      addData: jest.fn(),
-      removeFrom: jest.fn()
+      remove: jest.fn()
     };
     L.geoJSON.mockReturnValue(geoJSON);
     mockStore = {
@@ -65,7 +64,8 @@ describe("CoordLine", () => {
           coordSet: []
         }
       });
-      expect(wrapper.vm.geoJsonLayer).toEqual(geoJSON);
+      wrapper.destroy();
+      expect(geoJSON.remove).toHaveBeenCalled();
     });
   });
 });
