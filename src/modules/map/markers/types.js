@@ -1,8 +1,5 @@
-export const TRIP = "TRIP";
-export const STARTING = "STARTING";
-
-export const RED = "red";
-export const PURPLE = "purple";
+export const STARTING = "starting";
+export const CONNECTION = "connection";
 
 export const IMMEDIATE = 0;
 export const SLOW = 250;

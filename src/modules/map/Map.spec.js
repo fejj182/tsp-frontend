@@ -3,8 +3,9 @@ import Vue from "vue";
 import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
+import Legend from "@/modules/map/legend/Legend.vue";
 import paneUtils from "@/modules/map/panes/paneUtils";
-import { createLegend, createMap, createPanes, flyTo } from "@/plugins/leaflet";
+import { createMap, createPanes, flyTo } from "@/plugins/leaflet";
 
 jest.mock("leaflet", () => ({
   map: jest.fn(),
@@ -16,7 +17,6 @@ jest.mock("@/modules/map/panes/paneUtils", () => ({
 }));
 
 jest.mock("@/plugins/leaflet", () => ({
-  createLegend: jest.fn(),
   createMap: jest.fn(),
   createPanes: jest.fn(),
   flyTo: jest.fn()
@@ -58,7 +58,7 @@ describe("Map", () => {
     createMap.mockReturnValue(mockMap);
   });
 
-  it("should contain the markers", () => {
+  it("should contain the markers", done => {
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
@@ -66,6 +66,8 @@ describe("Map", () => {
     });
     Vue.nextTick(() => {
       expect(wrapper.find(Markers).exists()).toBe(true);
+      expect(wrapper.find(Markers).props().map).toEqual(mockMap);
+      done();
     });
   });
   it("should contain the lines", done => {
@@ -77,6 +79,32 @@ describe("Map", () => {
     });
     Vue.nextTick(() => {
       expect(wrapper.find(Lines).exists()).toBe(true);
+      expect(wrapper.find(Lines).props().map).toEqual(mockMap);
+      done();
+    });
+  });
+
+  it("should not contain the lines", done => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find(Lines).exists()).toBe(false);
+      done();
+    });
+  });
+
+  it("should contain the legend", done => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find(Legend).exists()).toBe(true);
+      expect(wrapper.find(Legend).props().map).toEqual(mockMap);
       done();
     });
   });

@@ -30,8 +30,8 @@ function assertFirstStopAddAndClose() {
 
 function assertStateAfterReset() {
   cy.wait(250);
-  cy.get(".marker-purple").should("exist");
-  cy.get(".marker-red").should("not.exist");
+  cy.get(".marker-starting").should("exist");
+  cy.get(".marker-connection").should("not.exist");
   cy.get("#stop-1 [data-test-id=stop]").should("not.exist");
   cy.get("[data-test-id=starting-destination]").should("have.value", "");
   cy.get(".position-1").should("not.exist");
@@ -97,7 +97,7 @@ function assertStateAfterRemoveStop3() {
   cy.get(".position-2").should("exist");
   cy.get(".position-3").should("not.exist");
   cy.get(".position-4").should("not.exist");
-  cy.get(".marker-red:visible").should("exist");
+  cy.get(".marker-connection:visible").should("exist");
 }
 
 function assertStateAfterRemoveStop2() {
@@ -107,5 +107,5 @@ function assertStateAfterRemoveStop2() {
   cy.get(".position-1").should("exist");
   cy.get(".position-2").should("not.exist");
   cy.get(".position-3").should("not.exist");
-  cy.get(".marker-red:visible").should("exist");
+  cy.get(".marker-connection:visible").should("exist");
 }

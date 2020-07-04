@@ -8,7 +8,7 @@
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { RED, SLOW } from "./types";
+import { SLOW, CONNECTION } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -42,7 +42,7 @@ export default {
             station,
             this.map,
             () => this.$store.dispatch("selectStop", station),
-            RED
+            CONNECTION
           );
           this.markers.push({
             station: station,

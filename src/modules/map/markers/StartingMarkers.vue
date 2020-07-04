@@ -8,7 +8,7 @@
 
 <script>
 import { generateMarker } from "@/plugins/leaflet";
-import { PURPLE, VERY_SLOW, IMMEDIATE } from "./types";
+import { VERY_SLOW, IMMEDIATE, STARTING } from "./types";
 import DummyMarker from "@/modules/map/markers/DummyMarker.vue";
 
 export default {
@@ -52,7 +52,7 @@ export default {
               station,
               this.map,
               () => this.$store.dispatch("selectStartingInput", station),
-              PURPLE
+              STARTING
             );
             this.markers.push({
               marker,

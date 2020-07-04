@@ -3,6 +3,7 @@
     <div v-if="myMap">
       <Markers :map="myMap" />
       <Lines v-if="tripStarted" :map="myMap" />
+      <Legend :map="myMap" />
     </div>
   </div>
 </template>
@@ -12,11 +13,13 @@ import { createMap, createPanes, flyTo } from "@/plugins/leaflet.js";
 import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
+import Legend from "@/modules/map/legend/Legend.vue";
 
 export default {
   components: {
     Markers,
-    Lines
+    Lines,
+    Legend
   },
   data() {
     return {

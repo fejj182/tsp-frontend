@@ -49,14 +49,24 @@ export const flyTo = (map, zoom, coords, duration) => {
   });
 };
 
-export const generateMarker = (station, map, onClick, colour) => {
+export const createLegend = (map, html) => {
+  const legend = L.control({ position: "bottomright" });
+  legend.onAdd = function() {
+    var div = L.DomUtil.create("div", "legend");
+    div.innerHTML = html.$el.outerHTML;
+    return div;
+  };
+  legend.addTo(map);
+};
+
+export const generateMarker = (station, map, onClick, type) => {
   const marker = L.marker([station.lat, station.lng], {
     pane: getPaneNameFromDuration(station.duration),
     icon: L.icon({
-      iconUrl: require("@/assets/pin-" + colour + ".png"),
+      iconUrl: require("@/assets/pin-purple.png"),
       iconAnchor: [0, 20],
       iconSize: [20, 20],
-      className: `marker-${colour} marker-${colour}-${station.slug}`
+      className: `marker-${type} marker-${type}-${station.slug}`
     })
   });
   marker.addTo(map);
@@ -68,8 +78,8 @@ export const generatePositionMarker = (station, map, position) => {
   const marker = L.marker([station.lat, station.lng], {
     icon: L.icon({
       iconUrl: require("@/assets/badge-" + position + ".png"),
-      iconAnchor: [15, 15],
-      iconSize: [30, 30],
+      iconAnchor: [8, 8],
+      iconSize: [16, 16],
       className: `position-${position}`
     })
   });

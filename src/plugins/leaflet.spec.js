@@ -1,5 +1,5 @@
 import L from "leaflet";
-import { createMap, createPanes, flyTo } from "./leaflet";
+import { createMap, createPanes, createLegend, flyTo } from "./leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 jest.mock("leaflet", () => ({
@@ -82,5 +82,18 @@ describe("leaflet plugin", () => {
         easeLinearity: 0.1
       });
     });
+  });
+
+  describe("create legend", () => {});
+  it("should add legend to the map ", () => {
+    const mockLegend = {
+      addTo: jest.fn()
+    };
+    L.control.mockReturnValue(mockLegend);
+
+    const map = {};
+    const mockHTML = {};
+    createLegend(map, mockHTML);
+    expect(mockLegend.addTo).toHaveBeenCalledWith(map);
   });
 });
