@@ -2,8 +2,8 @@ import L from "leaflet";
 import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 
-export const createMap = (centreCoords, zoomLevel) => {
-  const map = L.map("map");
+export const createMap = (mapId, centreCoords, zoomLevel) => {
+  const map = L.map(mapId);
   map.setView(centreCoords, zoomLevel);
 
   L.tileLayer(
@@ -27,9 +27,7 @@ export const createPanes = map => {
     const paneName = `p${i}`;
     const pane = map.createPane(paneName);
     // https://leafletjs.com/reference-1.6.0.html#map-pane - set z index in between 600 and 700
-    if (pane) {
-      pane.style.zIndex = 650;
-    }
+    pane.style.zIndex = 650;
     panes[paneName] = pane;
   }
   return panes;
@@ -42,6 +40,13 @@ export const createLine = (map, coordSet) => {
   });
   line.addTo(map);
   return line;
+};
+
+export const flyTo = (map, zoom, coords, duration) => {
+  map.flyTo(coords, zoom, {
+    duration: duration,
+    easeLinearity: 0.1
+  });
 };
 
 export const generateMarker = (station, map, onClick, colour) => {
@@ -70,11 +75,4 @@ export const generatePositionMarker = (station, map, position) => {
   });
   marker.addTo(map);
   return marker;
-};
-
-export const flyTo = (map, zoom, coords, duration) => {
-  map.flyTo(coords, zoom, {
-    duration: duration,
-    easeLinearity: 0.1
-  });
 };

@@ -22,11 +22,15 @@ export default {
     return {
       defaultCentre: [40.7067997, 0.5801695],
       myMap: null,
-      mapPanes: {}
+      mapPanes: {},
+      lowZoom: 6,
+      regularZoom: 7,
+      fastFly: 0.75,
+      slowFly: 1.5
     };
   },
   mounted() {
-    this.myMap = createMap(this.mapCentre, this.mapZoom);
+    this.myMap = createMap("map", this.mapCentre, this.mapZoom);
     this.mapPanes = createPanes(this.myMap);
   },
   computed: {
@@ -51,9 +55,22 @@ export default {
     },
     mapZoom() {
       if (this.completeTrip.length > 0) {
-        return 6;
+        return this.lowZoom;
       } else {
-        return window.innerWidth > 600 ? 7 : 6;
+        return window.innerWidth > 600 ? this.regularZoom : this.lowZoom;
+      }
+    }
+  },
+  methods: {
+    flySpeed(trip) {
+      return trip.length == 1 ? this.fastFly : this.slowFly;
+    },
+    flyCoords(trip) {
+      if (trip.length > 0) {
+        const stop = trip[trip.length - 1];
+        return [stop.lat, stop.lng];
+      } else {
+        return this.defaultCentre;
       }
     }
   },
@@ -62,14 +79,12 @@ export default {
       displayPanesInRange(this.mapPanes, range);
     },
     completeTrip(trip) {
-      if (trip.length > 0) {
-        const stop = trip[trip.length - 1];
-        const coords = [stop.lat, stop.lng];
-        const durationSecs = trip.length == 1 ? 0.75 : 1.5;
-        flyTo(this.myMap, 6, coords, durationSecs);
-      } else {
-        flyTo(this.myMap, 7, this.defaultCentre, 1.5);
-      }
+      flyTo(
+        this.myMap,
+        this.mapZoom,
+        this.flyCoords(trip),
+        this.flySpeed(trip)
+      );
     }
   }
 };

@@ -111,21 +111,6 @@ describe("paneUtils", () => {
         }
       };
     });
-    it("should style to none if pane is lower than range", () => {
-      paneConfigs.NUMBER_OF_PANES = 1;
-      let mockStyle = {
-        display: "block"
-      };
-      const panes = {
-        p0: {
-          style: mockStyle
-        }
-      };
-      const range = [5, 10];
-      displayPanesInRange(panes, range);
-      expect(mockStyle.display).toBe("none");
-    });
-
     it("should style to none if pane is higher than range", () => {
       paneConfigs.NUMBER_OF_PANES = 3;
       const range = [0, 1];
