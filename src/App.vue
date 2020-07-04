@@ -45,4 +45,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss">
+@media only screen and (max-width: 600px) {
+  // "--vh" property is set in Map component
+  #app .v-application--wrap {
+    min-height: calc(100vh - 56px);
+    min-height: calc(var(--vh, 1vh) * 100 - 56px);
+  }
+}
+</style>

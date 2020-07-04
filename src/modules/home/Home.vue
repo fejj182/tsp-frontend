@@ -59,11 +59,6 @@ export default {
 </script>
 
 <style scoped>
-.container,
-.row {
-  height: 100%;
-}
-
 #home {
   padding: 4px;
 }

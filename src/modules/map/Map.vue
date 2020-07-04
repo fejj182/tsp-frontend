@@ -35,6 +35,7 @@ export default {
   mounted() {
     this.myMap = createMap("map", this.mapCentre, this.mapZoom);
     this.mapPanes = createPanes(this.myMap);
+    this.setMobileMapHeight();
   },
   computed: {
     activeDurationRange() {
@@ -75,6 +76,10 @@ export default {
       } else {
         return this.defaultCentre;
       }
+    },
+    setMobileMapHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }
   },
   watch: {
@@ -102,6 +107,7 @@ export default {
 @media only screen and (max-width: 600px) {
   #map {
     height: calc(100vh - 56px);
+    height: calc(var(--vh, 1vh) * 100 - 56px);
   }
 }
 </style>
