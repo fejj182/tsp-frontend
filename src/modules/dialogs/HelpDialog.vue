@@ -15,15 +15,7 @@
       <v-card-text>
         <v-icon class="icon-info">mdi-information-outline</v-icon>
         Click on a
-        <img :src="pinUrl('purple')" width="20" class="pin" alt="purple-pin" />
-        and then
-        <v-icon aria-label="play" color="primary">mdi-play-circle</v-icon>
-        to begin your trip.
-      </v-card-text>
-      <v-card-text>
-        <v-icon class="icon-info">mdi-information-outline</v-icon>
-        Click on a
-        <img :src="pinUrl('red')" width="20" class="pin" alt="red-pin" />
+        <img :src="pinUrl()" width="20" class="pin" alt="red-pin" />
         and then <v-icon color="primary">mdi-clipboard-plus-outline</v-icon>
         to add a stop to your itinerary
         <v-icon v-if="mobile" data-test-id="icon-clipboard-list" color="primary"
@@ -54,8 +46,8 @@ export default {
     }
   },
   methods: {
-    pinUrl(colour) {
-      return require("@/assets/pin-" + colour + ".png");
+    pinUrl() {
+      return require("@/assets/pin-purple.png");
     }
   }
 };

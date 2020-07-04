@@ -4,19 +4,8 @@
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
-        v-if="tripNotBegun"
-        data-test-id="btn-begin-trip"
-        @click="addToTrip"
-        color="indigo"
-        fab
-        x-small
-      >
-        <v-icon>mdi-play</v-icon>
-        <label>Add to trip</label>
-      </v-btn>
-      <v-btn
-        v-if="isConnection"
-        class="btn-add"
+        v-if="tripNotBegun || isConnection"
+        data-test-id="btn-add"
         @click="addToTrip"
         color="indigo"
         fab
@@ -113,10 +102,13 @@ export default {
   i {
     color: white;
   }
+  button {
+    margin: 0 0.25rem;
+  }
 }
 
 #station-name {
-  margin: 0 0.5rem;
+  margin: 0 0.25rem;
 }
 
 label {
@@ -129,14 +121,6 @@ h1,
 }
 
 #duration {
-  margin: 0;
-}
-
-button {
-  margin: 0 2px;
-}
-
-.btn-add {
-  margin-left: 0.75rem;
+  margin: 0 0.5rem 0 0.25rem;
 }
 </style>

@@ -8,9 +8,9 @@ describe("trip_map", () => {
 
     cy.get(".marker-starting-barcelona").click();
     cy.get(".leaflet-popup").should("exist");
-    cy.get("[data-test-id=starting-destination").should("not.have.value", "");
+    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
 
-    cy.get("[data-test-id=btn-begin-trip]:visible").click();
+    cy.get("[data-test-id=btn-add]:visible").click();
     cy.wait("@getConnections");
     cy.get("#stop-1 [data-test-id=stop]").should("exist");
 
@@ -18,15 +18,15 @@ describe("trip_map", () => {
     cy.get(".leaflet-popup").should("exist");
 
     cy.get(".marker-connection-zaragoza").click();
-    cy.get("[data-test-id=starting-destination").should("not.have.value", "");
+    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("g .leaflet-interactive").should("exist");
     cy.get(".leaflet-popup").should("exist");
     cy.get(".position-2").should("exist");
     cy.get("#duration").should("exist");
 
-    cy.get(".btn-add").click();
-    cy.get("[data-test-id=starting-destination").should("not.have.value", "");
+    cy.get("[data-test-id=btn-add]").click();
+    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("#stop-2 [data-test-id=stop]").should("exist");
 
@@ -44,7 +44,7 @@ describe("trip_map", () => {
     cy.get(".Cookie__button").click();
 
     cy.get(".marker-starting-barcelona").click();
-    cy.get("[data-test-id=btn-begin-trip]:visible").click();
+    cy.get("[data-test-id=btn-add]:visible").click();
 
     // using trip form here instead of marker as causes state change
     cy.get("#stop-1 [data-test-id=stop]").click();
@@ -70,7 +70,7 @@ describe("trip_map", () => {
     cy.get(".marker-starting-barcelona").click();
     cy.get(".leaflet-popup").should("exist");
 
-    cy.get("[data-test-id=btn-begin-trip]:visible").click();
+    cy.get("[data-test-id=btn-add]:visible").click();
     cy.wait("@getConnections");
 
     cy.get(".position-1").click();
@@ -82,10 +82,10 @@ describe("trip_map", () => {
     cy.get(".position-2").should("exist");
     cy.get("#duration").should("exist");
 
-    cy.get(".btn-add").click();
+    cy.get("[data-test-id=btn-add]").click();
     cy.get("[data-test-id=icon-itinerary]").click();
 
-    cy.get("[data-test-id=starting-destination").should("not.have.value", "");
+    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("#stop-2 [data-test-id=stop]").should("exist");
 

@@ -160,9 +160,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        expect(wrapper.find("[data-test-id=btn-begin-trip]").exists()).toBe(
-          true
-        );
+        expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
       });
 
       it("should not show begin trip button if more than one stop in trip", () => {
@@ -173,9 +171,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        expect(wrapper.find("[data-test-id=btn-begin-trip]").exists()).toBe(
-          false
-        );
+        expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
       });
 
       it("should dispatch addToTrip action if click begin trip", () => {
@@ -187,7 +183,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        wrapper.find("[data-test-id=btn-begin-trip]").trigger("click");
+        wrapper.find("[data-test-id=btn-add]").trigger("click");
         expect(mockStore.dispatch).toHaveBeenCalledWith(
           "addToTrip",
           mockProps.station
@@ -204,7 +200,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        expect(wrapper.find(".btn-add").exists()).toBe(true);
+        expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
       });
 
       it("should not show begin trip button if station is not last stop in saved trip", () => {
@@ -215,7 +211,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        expect(wrapper.find(".btn-add").exists()).toBe(false);
+        expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
       });
 
       it("should dispatch addToTrip action if click add to trip", () => {
@@ -228,7 +224,7 @@ describe("Popup", () => {
           },
           propsData: mockProps
         });
-        wrapper.find(".btn-add").trigger("click");
+        wrapper.find("[data-test-id=btn-add]").trigger("click");
         expect(mockStore.dispatch).toHaveBeenCalledWith(
           "addToTrip",
           mockProps.station

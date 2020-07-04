@@ -23,6 +23,12 @@
                 </td>
                 <td>Stop number</td>
               </tr>
+              <tr>
+                <td>
+                  <v-icon>mdi-clipboard-plus-outline</v-icon>
+                </td>
+                <td>Add to trip</td>
+              </tr>
             </tbody>
           </template>
         </v-simple-table>
@@ -68,10 +74,15 @@ export default {
 
   img {
     margin-top: 0.25rem;
+    margin-left: 0.2rem;
   }
 
   .v-data-table td {
     height: 32px;
+  }
+
+  i {
+    color: #3f51b5;
   }
 }
 
