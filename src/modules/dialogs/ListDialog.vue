@@ -1,8 +1,12 @@
 <template>
   <v-dialog v-model="dialog" :width="550">
     <template v-slot:activator="{ on }">
-      <v-btn class="mx-2" fab dark small color="secondary" v-on="on">
-        <v-icon data-test-id="icon-itinerary">mdi-clipboard-list</v-icon>
+      <v-btn class="mx-2" fab small color="secondary" v-on="on">
+        <img
+          :data-test-id="clipboardId"
+          :src="clipboardUrl"
+          alt="clipboard with number of stops"
+        />
       </v-btn>
     </template>
     <TripPanel />
@@ -19,8 +23,23 @@ export default {
     return {
       dialog: false
     };
+  },
+  computed: {
+    numberOfStops() {
+      return this.$store.getters.completeTrip.length;
+    },
+    clipboardId() {
+      return "clipboard-" + this.numberOfStops;
+    },
+    clipboardUrl() {
+      return require("@/assets/clipboard-" + this.numberOfStops + ".png");
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+img {
+  width: 2.5em;
+}
+</style>

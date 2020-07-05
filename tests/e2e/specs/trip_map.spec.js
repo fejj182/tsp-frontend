@@ -83,7 +83,7 @@ describe("trip_map", () => {
     cy.get("#duration").should("exist");
 
     cy.get("[data-test-id=btn-add]").click();
-    cy.get("[data-test-id=icon-itinerary]").click();
+    cy.get("[data-test-id=clipboard-2]").click();
 
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
