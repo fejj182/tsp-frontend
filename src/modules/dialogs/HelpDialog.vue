@@ -18,7 +18,10 @@
         <img :src="pinUrl()" width="20" class="pin" alt="red-pin" />
         and then <v-icon color="primary">mdi-clipboard-plus-outline</v-icon>
         to add a stop to your itinerary
-        <v-icon v-if="mobile" data-test-id="icon-clipboard-list" color="primary"
+        <v-icon
+          v-if="isMobile"
+          data-test-id="icon-clipboard-list"
+          color="primary"
           >mdi-clipboard-list</v-icon
         >
       </v-card-text>
@@ -34,8 +37,7 @@
 export default {
   data() {
     return {
-      dialog: false,
-      mobile: window.innerWidth < 600
+      dialog: false
     };
   },
   computed: {
@@ -43,6 +45,9 @@ export default {
       return window.innerWidth < 600
         ? "Multiple journey planner for train travel in Europe."
         : "Tips:";
+    },
+    isMobile() {
+      return window.innerWidth < 600;
     }
   },
   methods: {

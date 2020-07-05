@@ -10,11 +10,11 @@
         />
         <span> Click to return to home </span>
       </a>
-      <h1 v-show="!mobile">
+      <h1 v-show="!isMobile">
         Multiple journey planner for train travel in Europe.
       </h1>
       <v-spacer></v-spacer>
-      <ListDialog v-if="mobile" />
+      <ListDialog v-if="isMobile" />
       <HelpDialog />
     </v-app-bar>
   </div>
@@ -31,9 +31,13 @@ export default {
   },
   data() {
     return {
-      mobile: window.innerWidth < 600,
       logoLoaded: false
     };
+  },
+  computed: {
+    isMobile() {
+      return window.innerWidth < 600;
+    }
   },
   methods: {
     onLogoLoad() {

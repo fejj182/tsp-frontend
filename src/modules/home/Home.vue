@@ -1,12 +1,12 @@
 <template>
   <v-container fluid class="grey lighten-5" id="home">
     <v-row no-gutters>
-      <v-col v-if="!mobile" :md="3" cols="12">
+      <v-col v-if="!isMobile" :md="3" cols="12">
         <Welcome v-if="shouldWelcome" />
         <TripPanel v-else />
       </v-col>
       <v-col :md="9" cols="12">
-        <Welcome v-if="mobile && shouldWelcome" />
+        <Welcome v-if="isMobile && shouldWelcome" />
         <Map v-else />
       </v-col>
     </v-row>
@@ -32,8 +32,7 @@ export default {
   },
   data() {
     return {
-      dataLoaded: false,
-      mobile: window.innerWidth < 600
+      dataLoaded: false
     };
   },
   computed: {
@@ -41,6 +40,9 @@ export default {
       return (
         !this.$store.state.trip.tripStarted && this.$feature("welcomePanel")
       );
+    },
+    isMobile() {
+      return window.innerWidth < 600;
     }
   },
   created() {
