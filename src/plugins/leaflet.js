@@ -49,14 +49,15 @@ export const flyTo = (map, zoom, coords, duration) => {
   });
 };
 
-export const createLegend = (map, html) => {
-  const legend = L.control({ position: "bottomright" });
+export const createLegend = (map, html, position) => {
+  const legend = L.control({ position: position });
   legend.onAdd = function() {
     var div = L.DomUtil.create("div", "legend");
     div.innerHTML = html.$el.outerHTML;
     return div;
   };
   legend.addTo(map);
+  return legend;
 };
 
 export const generateMarker = (station, map, onClick, type) => {

@@ -11,6 +11,24 @@ jest.mock("@/plugins/leaflet", () => ({
 }));
 
 describe("Legend", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it("markup should not exists in DOM", done => {
+    const mockMap = {};
+    createLegend.mockReturnValue({});
+    const wrapper = shallowMount(Legend, {
+      propsData: {
+        map: mockMap
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find("#legend").exists()).toBe(false);
+      done();
+    });
+  });
+
   it("should create legend", () => {
     const mockMap = {};
     const wrapper = shallowMount(Legend, {
@@ -18,6 +36,10 @@ describe("Legend", () => {
         map: mockMap
       }
     });
-    expect(createLegend).toBeCalledWith(mockMap, wrapper.vm.$refs.legend);
+    expect(createLegend).toHaveBeenCalledWith(
+      mockMap,
+      wrapper.vm.$refs.legend,
+      "bottomright"
+    );
   });
 });

@@ -84,16 +84,26 @@ describe("leaflet plugin", () => {
     });
   });
 
-  describe("create legend", () => {});
-  it("should add legend to the map ", () => {
-    const mockLegend = {
-      addTo: jest.fn()
-    };
-    L.control.mockReturnValue(mockLegend);
+  describe("create legend", () => {
+    let map, mockHTML, mockPosition, mockLegend;
+    beforeEach(() => {
+      map = {};
+      mockHTML = {};
+      mockPosition = "topright";
+      mockLegend = {
+        addTo: jest.fn()
+      };
+      L.control.mockReturnValue(mockLegend);
+    });
+    it("should add legend to the map ", () => {
+      createLegend(map, mockHTML, mockPosition);
+      expect(L.control).toHaveBeenCalledWith({ position: mockPosition });
+      expect(mockLegend.addTo).toHaveBeenCalledWith(map);
+    });
 
-    const map = {};
-    const mockHTML = {};
-    createLegend(map, mockHTML);
-    expect(mockLegend.addTo).toHaveBeenCalledWith(map);
+    it("should return legend after creation", () => {
+      const legend = createLegend(map, mockHTML, mockPosition);
+      expect(legend).toEqual(mockLegend);
+    });
   });
 });

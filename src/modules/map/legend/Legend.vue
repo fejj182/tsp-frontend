@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!legend">
     <v-card id="legend" max-width="375" outlined ref="legend">
       <v-card-text>
         <div class="overline mb-1">Legend</div>
@@ -39,14 +39,20 @@
 
 <script>
 import { createLegend } from "@/plugins/leaflet.js";
+import { LEGEND_BOTTOMRIGHT } from "@/modules/map/markers/types";
 export default {
   props: {
     map: {
       type: Object
     }
   },
+  data() {
+    return {
+      legend: null
+    };
+  },
   mounted() {
-    createLegend(this.map, this.$refs.legend);
+    this.legend = createLegend(this.map, this.$refs.legend, LEGEND_BOTTOMRIGHT);
   },
   methods: {
     pinUrl() {
