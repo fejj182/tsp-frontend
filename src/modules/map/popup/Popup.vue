@@ -1,5 +1,5 @@
 <template>
-  <div v-show="false">
+  <div v-show="!popup">
     <div id="add-to-trip" ref="content">
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>

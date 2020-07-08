@@ -48,12 +48,14 @@ describe("Popup", () => {
   });
 
   it("should not show popup content as markup only injected into real popup", () => {
+    mockMarker.bindPopup.mockReturnValue({});
     const wrapper = shallowMount(Popup, {
       mocks: {
         $store: mockStore
       },
       propsData: mockProps
     });
+    expect(wrapper.find("#add-to-trip").exists()).toBe(true);
     expect(wrapper.find("#add-to-trip").isVisible()).toBe(false);
   });
 
@@ -175,8 +177,6 @@ describe("Popup", () => {
       });
 
       it("should dispatch addToTrip action if click begin trip", () => {
-        const mockPopup = { remove: jest.fn() };
-        mockMarker.bindPopup.mockReturnValue(mockPopup);
         const wrapper = mount(Popup, {
           mocks: {
             $store: mockStore
@@ -216,8 +216,6 @@ describe("Popup", () => {
 
       it("should dispatch addToTrip action if click add to trip", () => {
         mockStore.state.trip.savedTrip = [mockProps.station];
-        const mockPopup = { remove: jest.fn() };
-        mockMarker.bindPopup.mockReturnValue(mockPopup);
         const wrapper = mount(Popup, {
           mocks: {
             $store: mockStore
