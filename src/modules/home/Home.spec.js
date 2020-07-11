@@ -19,6 +19,9 @@ describe("Home", () => {
       state: {
         trip: {
           tripStarted: null
+        },
+        stations: {
+          activeConnections: []
         }
       }
     };
@@ -26,56 +29,71 @@ describe("Home", () => {
   });
 
   describe("children", () => {
-    let wrapper;
-    beforeEach(() => {
-      window.innerWidth = 1000;
-    });
-
     it("should contain the map", async () => {
-      wrapper = shallowMountHome();
+      const wrapper = shallowMountHome();
       await flushPromises();
       expect(wrapper.find(Map).exists()).toBe(true);
     });
 
-    it("should contain the trip panel if trip has started", () => {
-      wrapper = shallowMountHome();
+    it("should contain the cookie banner", () => {
+      const wrapper = shallowMountHome();
+      expect(wrapper.find(CookieBanner).exists()).toBe(true);
+    });
+  });
+
+  describe("Trip Panel", () => {
+    beforeEach(() => {
+      window.innerWidth = 1000;
       mockStore.state.trip.tripStarted = true;
+    });
+
+    it("should contain the trip panel if trip has started", () => {
+      const wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(true);
     });
 
     it("should not contain the trip panel if trip has not started", () => {
-      wrapper = shallowMountHome();
+      const wrapper = shallowMountHome();
       mockStore.state.trip.tripStarted = false;
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
 
+    it("should not contain the trip panel on mobile", () => {
+      window.innerWidth = 500;
+      const wrapper = shallowMountHome();
+      expect(wrapper.find(TripPanel).exists()).toBe(false);
+    });
+
+    it("should show filters when connections in store", () => {
+      mockStore.state.stations.activeConnections = [{}];
+      const wrapper = shallowMountHome();
+      expect(wrapper.find(TripPanel).props().showFilters).toBe(true);
+    });
+
+    it("should show form", () => {
+      const wrapper = shallowMountHome();
+      expect(wrapper.find(TripPanel).props().showForm).toBe(true);
+    });
+  });
+
+  describe("Welcome Panel", () => {
     it("should contain the welcome panel if trip has not started", () => {
       mockStore.state.trip.tripStarted = false;
-      wrapper = shallowMountHome();
+      const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(true);
     });
 
     it("should not contain the welcome panel if trip has not started and FT is off", () => {
       mockStore.state.trip.tripStarted = false;
       mockFeatures = jest.fn().mockImplementation(() => false);
-      wrapper = shallowMountHome();
+      const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(false);
-    });
-
-    it("should not contain the trip panel on mobile", () => {
-      window.innerWidth = 500;
-      wrapper = shallowMountHome();
-      expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
 
     it("should contain the welcome panel on mobile if trip not started", () => {
       window.innerWidth = 500;
-      wrapper = shallowMountHome();
+      const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(true);
-    });
-
-    it("should contain the cookie banner", () => {
-      expect(wrapper.find(CookieBanner).exists()).toBe(true);
     });
   });
 

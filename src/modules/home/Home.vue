@@ -3,7 +3,7 @@
     <v-row no-gutters>
       <v-col v-if="!isMobile" :md="3" cols="12">
         <Welcome v-if="shouldWelcome" />
-        <TripPanel v-else />
+        <TripPanel v-else :showForm="true" :showFilters="connectionsExist" />
       </v-col>
       <v-col :md="9" cols="12">
         <Welcome v-if="isMobile && shouldWelcome" />
@@ -37,9 +37,13 @@ export default {
   },
   computed: {
     shouldWelcome() {
+      //TODO: tripStarted no longer exists
       return (
         !this.$store.state.trip.tripStarted && this.$feature("welcomePanel")
       );
+    },
+    connectionsExist() {
+      return this.$store.state.stations.activeConnections.length > 0;
     },
     isMobile() {
       return window.innerWidth < 600;

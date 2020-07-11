@@ -1,7 +1,7 @@
 <template>
   <v-container id="trip-panel">
     <v-expansion-panels focusable v-model="panel" multiple>
-      <v-expansion-panel v-if="tripStarted" data-test-id="filter-panel">
+      <v-expansion-panel v-if="showFilters" data-test-id="filter-panel">
         <v-expansion-panel-header>
           Filter
         </v-expansion-panel-header>
@@ -9,7 +9,7 @@
           <ConnectionFilters />
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel data-test-id="trip-form-panel">
+      <v-expansion-panel v-if="showForm" data-test-id="trip-form-panel">
         <v-expansion-panel-header>
           Trip Plan
         </v-expansion-panel-header>
@@ -32,24 +32,17 @@ export default {
   },
   data() {
     return {
-      panel: [0, 1],
-      info: false
+      panel: [0, 1]
     };
   },
-  mounted() {
-    if (this.$route.name === "home") {
-      this.info = true;
-      setTimeout(() => {
-        this.info = false;
-      }, 7500);
-    }
-  },
-  computed: {
-    connectionsExist() {
-      return this.$store.state.stations.activeConnections.length > 0;
+  props: {
+    showFilters: {
+      type: Boolean,
+      default: false
     },
-    tripStarted() {
-      return this.$store.state.trip.savedTrip.length > 0;
+    showForm: {
+      type: Boolean,
+      default: false
     }
   }
 };
