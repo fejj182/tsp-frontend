@@ -166,11 +166,6 @@ describe("popups", () => {
         module.actions.startTrip({ dispatch, commit }, station);
         expect(dispatch).toHaveBeenCalledWith("fetchConnections", station);
       });
-      it("should dispatch tripStarted", () => {
-        let station = {};
-        module.actions.startTrip({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("tripStarted");
-      });
     });
 
     describe("addToTrip", () => {
@@ -226,21 +221,16 @@ describe("popups", () => {
           stops: [{ connections: [] }],
           selectedStop: 1,
           savedTrip: [{}],
-          startingStation: {}
+          startingStation: {},
+          tripReset: false
         };
         module.mutations.RESET_TRIP(state);
         expect(state.stops).toEqual([]);
         expect(state.selectedStop).toBeNull();
         expect(state.savedTrip).toEqual([]);
         expect(state.startingStation).toBeNull();
+        expect(state.tripReset).toBe(true);
       });
-    });
-    describe("TRIP_STARTED", () => {
-      let state = {
-        tripStarted: false
-      };
-      module.mutations.TRIP_STARTED(state);
-      expect(state.tripStarted).toEqual(true);
     });
     describe("ADD_NEW_STOP", () => {
       let stations;
@@ -313,7 +303,10 @@ describe("popups", () => {
 
       it("should remove last stop in savedTrip", () => {
         let state = {
-          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          stops: [
+            { stations, readOnly: true },
+            { stations, readOnly: false }
+          ],
           savedTrip: [{}, {}, {}],
           selectedStop: {}
         };
@@ -322,7 +315,10 @@ describe("popups", () => {
       });
       it("should load selectedStop with previous last stop in trip", () => {
         let state = {
-          stops: [{ stations, readOnly: true }, { stations, readOnly: false }],
+          stops: [
+            { stations, readOnly: true },
+            { stations, readOnly: false }
+          ],
           savedTrip: [{}, {}],
           selectedStop: {}
         };
