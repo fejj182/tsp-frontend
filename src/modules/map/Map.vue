@@ -4,6 +4,7 @@
       <Markers :map="myMap" />
       <Lines v-if="tripStarted" :map="myMap" />
       <Legend :map="myMap" />
+      <MobileFilters v-if="showFilters" :map="myMap" />
     </div>
   </div>
 </template>
@@ -14,12 +15,14 @@ import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
 import Legend from "@/modules/map/legend/Legend.vue";
+import MobileFilters from "@/modules/filters/MobileFilters.vue";
 
 export default {
   components: {
     Markers,
     Lines,
-    Legend
+    Legend,
+    MobileFilters
   },
   data() {
     return {
@@ -63,6 +66,15 @@ export default {
       } else {
         return window.innerWidth > 600 ? this.regularZoom : this.lowZoom;
       }
+    },
+    showFilters() {
+      return this.connectionsExist && this.isMobile;
+    },
+    connectionsExist() {
+      return this.$store.state.stations.activeConnections.length > 0;
+    },
+    isMobile() {
+      return window.innerWidth < 600;
     }
   },
   methods: {

@@ -5,7 +5,10 @@ import paneConfigs from "@/modules/map/panes/paneConfigs";
 jest.mock("leaflet", () => ({
   map: jest.fn(),
   tileLayer: jest.fn(),
-  control: jest.fn()
+  control: jest.fn(),
+  DomUtil: {
+    create: jest.fn()
+  }
 }));
 
 jest.mock("@/modules/map/panes/paneConfigs");
@@ -104,6 +107,34 @@ describe("leaflet plugin", () => {
     it("should return legend after creation", () => {
       const legend = createLegend(map, mockHTML, mockPosition);
       expect(legend).toEqual(mockLegend);
+    });
+
+    it("should set onAdd function", () => {
+      const mockOnClick = () => {};
+      const mockOuterHTML = "<p></p>";
+      L.DomUtil.create.mockReturnValue({});
+      mockHTML = {
+        $el: {
+          outerHTML: mockOuterHTML
+        }
+      };
+      const legend = createLegend(map, mockHTML, mockPosition, mockOnClick);
+      const div = legend.onAdd();
+      expect(div.innerHTML).toBe(mockOuterHTML);
+      expect(div.onclick).toEqual(mockOnClick);
+    });
+
+    it("should not add onClickFunction if not present", () => {
+      const mockOuterHTML = "<p></p>";
+      L.DomUtil.create.mockReturnValue({});
+      mockHTML = {
+        $el: {
+          outerHTML: mockOuterHTML
+        }
+      };
+      const legend = createLegend(map, mockHTML, mockPosition);
+      const div = legend.onAdd();
+      expect(div.onclick).toBeUndefined();
     });
   });
 });
