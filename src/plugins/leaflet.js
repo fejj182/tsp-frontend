@@ -49,11 +49,14 @@ export const flyTo = (map, zoom, coords, duration) => {
   });
 };
 
-export const createLegend = (map, html, position) => {
+export const createLegend = (map, html, position, onClick) => {
   const legend = L.control({ position: position });
   legend.onAdd = function() {
     var div = L.DomUtil.create("div", "legend");
     div.innerHTML = html.$el.outerHTML;
+    if (onClick) {
+      div.onclick = onClick;
+    }
     return div;
   };
   legend.addTo(map);

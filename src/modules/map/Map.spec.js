@@ -4,6 +4,7 @@ import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
 import Legend from "@/modules/map/legend/Legend.vue";
+import MobileFilters from "@/modules/filters/MobileFilters.vue";
 import paneUtils from "@/modules/map/panes/paneUtils";
 import { createMap, createPanes, flyTo } from "@/plugins/leaflet";
 
@@ -34,7 +35,8 @@ describe("Map", () => {
       dispatch: jest.fn(),
       state: {
         stations: {
-          activeStation: null
+          activeStation: null,
+          activeConnections: []
         },
         filters: {
           activeDurationRange: []
@@ -92,6 +94,32 @@ describe("Map", () => {
     });
     Vue.nextTick(() => {
       expect(wrapper.find(Lines).exists()).toBe(false);
+      done();
+    });
+  });
+
+  it("should contain the mobile filters if mobile", done => {
+    window.innerWidth = 500;
+    mockStore.state.stations.activeConnections = [{}];
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find(MobileFilters).exists()).toBe(true);
+      done();
+    });
+  });
+
+  it("should not contain the mobile filters if not mobile", done => {
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find(MobileFilters).exists()).toBe(false);
       done();
     });
   });
