@@ -40,6 +40,8 @@ export default {
     this.mapPanes = createPanes(this.myMap);
     this.setMobileMapHeight();
     setTimeout(() => {
+      // Leaflet can load the tiles before vuetify has finished the layout
+      // https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map
       this.myMap.invalidateSize();
     }, 250);
   },
