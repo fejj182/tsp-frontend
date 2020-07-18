@@ -90,3 +90,18 @@ export const generatePositionMarker = (station, map, position) => {
   marker.addTo(map);
   return marker;
 };
+
+export const bindPopupToMarker = (marker, popupHTML, onClick) => {
+  const popup = marker.bindPopup(popupHTML, {
+    offset: [-3, -2]
+  });
+
+  popup.on("popupopen", () => {
+    const addButton = document.querySelector(".leaflet-popup-content button");
+    if (addButton) {
+      addButton.onclick = onClick;
+    }
+  });
+
+  return popup;
+};

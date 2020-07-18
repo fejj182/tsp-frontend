@@ -1,12 +1,11 @@
 <template>
-  <div v-show="!popup">
-    <div id="add-to-trip" ref="content">
+  <div v-if="!popup" ref="content">
+    <div id="add-to-trip">
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
         v-if="tripNotBegun || isConnection"
         data-test-id="btn-add"
-        @click="addToTrip"
         color="indigo"
         fab
         x-small
@@ -20,11 +19,13 @@
 
 <script>
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
+import { bindPopupToMarker } from "@/plugins/leaflet";
 
 export default {
   data: function() {
     return {
-      popup: null
+      popup: null,
+      popupContent: null
     };
   },
   props: {
@@ -36,6 +37,7 @@ export default {
     }
   },
   mounted() {
+    this.popupContent = this.$refs.content.innerHTML;
     this.bindPopup();
   },
   computed: {
@@ -65,9 +67,12 @@ export default {
   },
   methods: {
     bindPopup() {
-      this.popup = this.marker.bindPopup(this.$refs.content, {
-        offset: [-3, -2]
-      });
+      this.popup = bindPopupToMarker(
+        this.marker,
+        this.popupContent,
+        this.addToTrip
+      );
+
       if (
         this.selectedStop &&
         this.activeConnections.length > 0 &&

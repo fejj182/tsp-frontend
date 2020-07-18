@@ -1,5 +1,11 @@
 import L from "leaflet";
-import { createMap, createPanes, createLegend, flyTo } from "./leaflet";
+import {
+  createMap,
+  createPanes,
+  createLegend,
+  flyTo,
+  bindPopupToMarker
+} from "./leaflet";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 jest.mock("leaflet", () => ({
@@ -135,6 +141,83 @@ describe("leaflet plugin", () => {
       const legend = createLegend(map, mockHTML, mockPosition);
       const div = legend.onAdd();
       expect(div.onclick).toBeUndefined();
+    });
+  });
+
+  describe("Bind popup to marker", () => {
+    let marker, mockPopup, mockOn, mockPopupHTML;
+    beforeEach(() => {
+      marker = {
+        bindPopup: jest.fn()
+      };
+      mockOn = jest.fn();
+      mockPopupHTML = "<div></div>";
+      mockPopup = {
+        on: mockOn
+      };
+      marker.bindPopup.mockReturnValue(mockPopup);
+    });
+
+    it("should call marker bindPopup", () => {
+      bindPopupToMarker(marker, mockPopupHTML);
+      expect(marker.bindPopup).toHaveBeenCalledWith(
+        mockPopupHTML,
+        expect.any(Object)
+      );
+    });
+
+    it("should call return popup", () => {
+      const popup = bindPopupToMarker(marker, mockPopupHTML);
+      expect(popup).toEqual(mockPopup);
+    });
+
+    it("should add a listener to popupopen ", () => {
+      bindPopupToMarker(marker, mockPopupHTML);
+      expect(mockOn).toHaveBeenCalledWith("popupopen", expect.any(Function));
+    });
+
+    it("should add onclick function to popup button when popup opened", () => {
+      const originalQuerySelector = global.document.querySelector;
+
+      const mockQuerySelector = jest.fn();
+      global.document.querySelector = mockQuerySelector;
+
+      const mockButton = {
+        onclick: null
+      };
+      mockQuerySelector.mockReturnValue(mockButton);
+      const mockOnClick = () => {};
+
+      bindPopupToMarker(marker, mockPopupHTML, mockOnClick);
+      const onPopupOpen = mockOn.mock.calls[0][1];
+      onPopupOpen();
+
+      expect(mockQuerySelector).toHaveBeenCalledWith(
+        ".leaflet-popup-content button"
+      );
+      expect(mockButton.onclick).toEqual(mockOnClick);
+
+      global.document.querySelector = originalQuerySelector;
+    });
+
+    it("should add not add onclick function if button does not exist", () => {
+      const originalQuerySelector = global.document.querySelector;
+
+      const mockQuerySelector = jest.fn();
+      global.document.querySelector = mockQuerySelector;
+
+      mockQuerySelector.mockReturnValue(null);
+      const mockOnClick = () => {};
+
+      bindPopupToMarker(marker, mockPopupHTML, mockOnClick);
+      const onPopupOpen = mockOn.mock.calls[0][1];
+      onPopupOpen();
+
+      expect(mockQuerySelector).toHaveBeenCalledWith(
+        ".leaflet-popup-content button"
+      );
+
+      global.document.querySelector = originalQuerySelector;
     });
   });
 });
