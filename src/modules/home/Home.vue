@@ -10,9 +10,6 @@
         <Map v-else />
       </v-col>
     </v-row>
-    <footer>
-      <CookieBanner />
-    </footer>
   </v-container>
 </template>
 
@@ -20,15 +17,15 @@
 import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
-import CookieBanner from "@/modules/privacy/CookieBanner.vue";
+// import CookieBanner from "@/modules/privacy/CookieBanner.vue";
 
 export default {
   name: "home",
   components: {
     TripPanel,
     Welcome,
-    Map,
-    CookieBanner
+    Map
+    // CookieBanner
   },
   data() {
     return {
