@@ -39,8 +39,8 @@ export default {
     this.myMap = createMap("map", this.mapCentre, this.mapZoom);
     this.mapPanes = createPanes(this.myMap);
     this.setMobileMapHeight();
-    setTimeout(function() {
-      window.dispatchEvent(new Event("resize"));
+    setTimeout(() => {
+      this.myMap.invalidateSize();
     }, 250);
   },
   computed: {
