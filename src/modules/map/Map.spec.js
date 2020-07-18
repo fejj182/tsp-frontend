@@ -58,6 +58,7 @@ describe("Map", () => {
       flyTo: jest.fn()
     };
     createMap.mockReturnValue(mockMap);
+    createPanes.mockReturnValue({});
   });
 
   it("should contain the markers", done => {

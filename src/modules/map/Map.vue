@@ -1,6 +1,6 @@
 <template>
   <div id="map">
-    <div v-if="myMap">
+    <div v-if="myMap && mapPanes">
       <Markers :map="myMap" />
       <Lines v-if="tripStarted" :map="myMap" />
       <Legend :map="myMap" />
@@ -28,7 +28,7 @@ export default {
     return {
       defaultCentre: [40.7067997, 0.5801695],
       myMap: null,
-      mapPanes: {},
+      mapPanes: null,
       lowZoom: 6,
       regularZoom: 7,
       fastFly: 0.75,
