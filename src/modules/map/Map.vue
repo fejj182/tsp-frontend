@@ -2,7 +2,7 @@
   <div id="map">
     <div v-if="myMap && mapPanes">
       <Markers :map="myMap" />
-      <Lines v-if="tripStarted" :map="myMap" />
+      <Lines v-if="tripStarted" :map="myMap" :waitingTimeInSeconds="slowFly" />
       <Legend :map="myMap" />
       <MobileFilters v-if="showFilters" :map="myMap" />
     </div>

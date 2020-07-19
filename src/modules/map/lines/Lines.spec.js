@@ -4,12 +4,18 @@ import CoordLine from "./CoordLine.vue";
 import { fakeStation } from "@/helpers/tests";
 
 describe("Lines", () => {
-  let mockStore;
+  let mockStore, mockState;
   beforeEach(() => {
+    mockState = {
+      trip: {
+        selectedStop: null
+      }
+    };
     mockStore = {
       getters: {
-        savedTrip: []
-      }
+        completeTrip: []
+      },
+      state: mockState
     };
   });
 
@@ -42,6 +48,40 @@ describe("Lines", () => {
         }
       });
       expect(wrapper.findAll(CoordLine).length).toBe(2);
+    });
+
+    it("should have time to wait equal to zero when adding new stop", () => {
+      mockStore.getters.completeTrip = [
+        fakeStation(),
+        fakeStation(),
+        fakeStation()
+      ];
+      const wrapper = shallowMount(Lines, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.find(CoordLine).props().waitingTimeBeforeCreation).toBe(0);
+    });
+
+    it("should have time to wait when last stop is updated", () => {
+      mockStore.getters.completeTrip = [
+        fakeStation(),
+        fakeStation(),
+        fakeStation()
+      ];
+      const wrapper = shallowMount(Lines, {
+        propsData: {
+          waitingTimeInSeconds: 1
+        },
+        mocks: {
+          $store: mockStore
+        }
+      });
+      mockStore.state.trip.selectedStop = [{ name: "Barcelona" }];
+      expect(wrapper.find(CoordLine).props().waitingTimeBeforeCreation).toBe(
+        1000
+      );
     });
   });
 });

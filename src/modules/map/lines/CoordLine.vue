@@ -12,13 +12,22 @@ export default {
     },
     coordSet: {
       type: Array
+    },
+    waitingTimeBeforeCreation: {
+      type: Number,
+      default: 0
     }
   },
   mounted() {
-    this.geoJsonLayer = createLine(this.map, this.coordSet);
+    setTimeout(() => {
+      this.geoJsonLayer = createLine(this.map, this.coordSet);
+    }, this.waitingTimeBeforeCreation);
   },
   destroyed() {
-    this.geoJsonLayer.remove();
+    setTimeout(
+      () => this.geoJsonLayer.remove(),
+      this.geoJsonLayer ? 0 : this.waitingTimeBeforeCreation
+    );
   }
 };
 </script>

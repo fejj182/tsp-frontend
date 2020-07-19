@@ -83,6 +83,9 @@ describe("Map", () => {
     Vue.nextTick(() => {
       expect(wrapper.find(Lines).exists()).toBe(true);
       expect(wrapper.find(Lines).props().map).toEqual(mockMap);
+      expect(wrapper.find(Lines).props().waitingTimeInSeconds).toEqual(
+        wrapper.vm.slowFly
+      );
       done();
     });
   });

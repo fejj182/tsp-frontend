@@ -1,7 +1,11 @@
 <template>
   <div>
     <div v-for="(coordSet, index) in tripCoords" :key="Math.random() + index">
-      <CoordLine :coordSet="coordSet" :map="map" />
+      <CoordLine
+        :coordSet="coordSet"
+        :map="map"
+        :waitingTimeBeforeCreation="waitingTime"
+      />
     </div>
   </div>
 </template>
@@ -13,6 +17,9 @@ export default {
   props: {
     map: {
       type: Object
+    },
+    waitingTimeInSeconds: {
+      type: Number
     }
   },
   components: {
@@ -38,6 +45,11 @@ export default {
       } else {
         return [];
       }
+    },
+    waitingTime() {
+      return this.$store.state.trip.selectedStop === null
+        ? 0
+        : this.waitingTimeInSeconds * 1000;
     }
   }
 };

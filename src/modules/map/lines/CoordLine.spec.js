@@ -24,7 +24,7 @@ describe("CoordLine", () => {
     mockMap = {};
   });
   describe("GeoJSON layer", () => {
-    it("should initialize geoJson layer", () => {
+    it("should initialize geoJson layer", done => {
       const mockCoordSet = [10, 20];
       shallowMount(CoordLine, {
         mocks: {
@@ -35,13 +35,16 @@ describe("CoordLine", () => {
           coordSet: mockCoordSet
         }
       });
-      expect(L.geoJSON).toHaveBeenCalledWith({
-        type: "LineString",
-        coordinates: [mockCoordSet[0], mockCoordSet[1]]
+      setTimeout(() => {
+        expect(L.geoJSON).toHaveBeenCalledWith({
+          type: "LineString",
+          coordinates: [mockCoordSet[0], mockCoordSet[1]]
+        });
+        done();
       });
     });
 
-    it("should add geoJson layer to the map", () => {
+    it("should add geoJson layer to the map", done => {
       shallowMount(CoordLine, {
         mocks: {
           $store: mockStore
@@ -51,7 +54,10 @@ describe("CoordLine", () => {
           coordSet: []
         }
       });
-      expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
+      setTimeout(() => {
+        expect(geoJSON.addTo).toHaveBeenCalledWith(mockMap);
+        done();
+      });
     });
 
     it("should save line to local data", () => {
@@ -64,8 +70,12 @@ describe("CoordLine", () => {
           coordSet: []
         }
       });
-      wrapper.destroy();
-      expect(geoJSON.remove).toHaveBeenCalled();
+
+      setTimeout(() => {
+        wrapper.destroy();
+        expect(geoJSON.remove).toHaveBeenCalled();
+        done();
+      });
     });
   });
 });
