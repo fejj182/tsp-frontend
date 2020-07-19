@@ -5,6 +5,7 @@
       <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
         v-if="tripNotBegun || isConnection"
+        :id="buttonId"
         data-test-id="btn-add"
         color="indigo"
         fab
@@ -63,6 +64,9 @@ export default {
     },
     activeStation() {
       return this.$store.state.stations.activeStation;
+    },
+    buttonId() {
+      return `btn-add-${this.station.slug}`;
     }
   },
   methods: {
@@ -70,7 +74,8 @@ export default {
       this.popup = bindPopupToMarker(
         this.marker,
         this.popupContent,
-        this.addToTrip
+        this.addToTrip,
+        this.buttonId
       );
 
       if (

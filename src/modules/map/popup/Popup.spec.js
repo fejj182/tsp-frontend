@@ -10,7 +10,7 @@ jest.mock("@/plugins/leaflet");
 Vue.use(Vuetify);
 
 describe("Popup", () => {
-  let mockMarker, mockPopup, mockStore, mockProps;
+  let mockMarker, mockPopup, mockStore, mockProps, mockCitySlug;
   beforeEach(() => {
     jest.resetAllMocks();
     mockMarker = {
@@ -31,9 +31,10 @@ describe("Popup", () => {
         }
       }
     };
+    mockCitySlug = faker.address.city();
     mockProps = {
       marker: mockMarker,
-      station: { name: faker.address.city() },
+      station: { name: faker.address.city(), slug: mockCitySlug },
       type: null
     };
     mockPopup = {
@@ -53,7 +54,8 @@ describe("Popup", () => {
     expect(bindPopupToMarker).toHaveBeenCalledWith(
       mockMarker,
       popup.html(),
-      expect.any(Function)
+      expect.any(Function),
+      "btn-add-" + mockCitySlug
     );
   });
 

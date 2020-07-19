@@ -188,12 +188,12 @@ describe("leaflet plugin", () => {
       mockQuerySelector.mockReturnValue(mockButton);
       const mockOnClick = () => {};
 
-      bindPopupToMarker(marker, mockPopupHTML, mockOnClick);
+      bindPopupToMarker(marker, mockPopupHTML, mockOnClick, "barcelona");
       const onPopupOpen = mockOn.mock.calls[0][1];
       onPopupOpen();
 
       expect(mockQuerySelector).toHaveBeenCalledWith(
-        ".leaflet-popup-content button"
+        ".leaflet-popup-content #barcelona"
       );
       expect(mockButton.onclick).toEqual(mockOnClick);
 
@@ -209,12 +209,12 @@ describe("leaflet plugin", () => {
       mockQuerySelector.mockReturnValue(null);
       const mockOnClick = () => {};
 
-      bindPopupToMarker(marker, mockPopupHTML, mockOnClick);
+      bindPopupToMarker(marker, mockPopupHTML, mockOnClick, "barcelona");
       const onPopupOpen = mockOn.mock.calls[0][1];
       onPopupOpen();
 
       expect(mockQuerySelector).toHaveBeenCalledWith(
-        ".leaflet-popup-content button"
+        ".leaflet-popup-content #barcelona"
       );
 
       global.document.querySelector = originalQuerySelector;

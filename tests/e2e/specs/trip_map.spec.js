@@ -17,6 +17,7 @@ describe("trip_map", () => {
     cy.get(".position-1").click();
     cy.get(".leaflet-popup").should("exist");
 
+    cy.get(".marker-connection-madrid").click();
     cy.get(".marker-connection-zaragoza").click();
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
