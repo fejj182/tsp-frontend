@@ -3,6 +3,10 @@ import { getPaneNameFromDuration } from "@/modules/map/panes/paneUtils";
 import paneConfigs from "@/modules/map/panes/paneConfigs";
 
 export const createMap = (mapId, centreCoords, zoomLevel) => {
+  L.Map.addInitHook(function() {
+    window.myInitializedMap = this;
+  });
+
   const map = L.map(mapId);
   map.setView(centreCoords, zoomLevel);
 
@@ -20,7 +24,6 @@ export const createMap = (mapId, centreCoords, zoomLevel) => {
   ).addTo(map);
   // Leaflet can load the tiles before vuetify has finished the layout
   // https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map
-  map.invalidateSize();
   return map;
 };
 
@@ -109,4 +112,8 @@ export const bindPopupToMarker = (marker, popupHTML, onClick, buttonId) => {
   });
 
   return popup;
+};
+
+export const resetMapSize = () => {
+  window.myInitializedMap.invalidateSize();
 };

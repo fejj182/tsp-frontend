@@ -21,6 +21,7 @@ import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
 import CookieBanner from "@/modules/privacy/CookieBanner.vue";
+import { resetMapSize } from "@/plugins/leaflet.js";
 
 export default {
   name: "home",
@@ -60,6 +61,9 @@ export default {
         .dispatch("fetchStartingStations")
         .then(() => (this.dataLoaded = true));
     }
+  },
+  mounted() {
+    resetMapSize();
   }
 };
 </script>
