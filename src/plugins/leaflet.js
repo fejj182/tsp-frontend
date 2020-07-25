@@ -18,6 +18,9 @@ export const createMap = (mapId, centreCoords, zoomLevel) => {
       accessToken: process.env.VUE_APP_OPEN_STREET_MAPS_KEY
     }
   ).addTo(map);
+  // Leaflet can load the tiles before vuetify has finished the layout
+  // https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map
+  map.invalidateSize();
   return map;
 };
 
