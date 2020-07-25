@@ -22,8 +22,6 @@ export const createMap = (mapId, centreCoords, zoomLevel) => {
       accessToken: process.env.VUE_APP_OPEN_STREET_MAPS_KEY
     }
   ).addTo(map);
-  // Leaflet can load the tiles before vuetify has finished the layout
-  // https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map
   return map;
 };
 
@@ -115,5 +113,9 @@ export const bindPopupToMarker = (marker, popupHTML, onClick, buttonId) => {
 };
 
 export const resetMapSize = () => {
-  window.myInitializedMap.invalidateSize();
+  // Leaflet can load the tiles before vuetify has finished the layout
+  // https://stackoverflow.com/questions/36246815/data-toggle-tab-does-not-download-leaflet-map
+  setTimeout(() => {
+    window.myInitializedMap.invalidateSize();
+  }, 250);
 };

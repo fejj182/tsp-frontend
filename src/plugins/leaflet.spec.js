@@ -12,6 +12,9 @@ jest.mock("leaflet", () => ({
   map: jest.fn(),
   tileLayer: jest.fn(),
   control: jest.fn(),
+  Map: {
+    addInitHook: jest.fn()
+  },
   DomUtil: {
     create: jest.fn()
   }
