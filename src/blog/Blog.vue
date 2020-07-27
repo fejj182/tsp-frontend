@@ -28,20 +28,23 @@ export default {
       accessToken: token
     });
     window.storyblok.on("change", () => {
-      this.getStory("home", "draft");
+      this.getStory("draft");
     });
     window.storyblok.pingEditor(() => {
       if (window.storyblok.isInEditor()) {
-        this.getStory("home", "draft");
+        this.getStory("draft");
       } else {
-        this.getStory("home", "published");
+        this.getStory("published");
       }
     });
   },
   methods: {
-    getStory(slug, version) {
+    getStory(version) {
+      const alias = this.$route.params.alias
+        ? this.$route.params.alias
+        : "home";
       storyapi
-        .get("cdn/stories/" + slug, {
+        .get("cdn/stories/" + alias, {
           version: version
         })
         .then(response => {

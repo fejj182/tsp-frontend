@@ -1,8 +1,9 @@
 import Vue from "vue";
-import Blog from "./Blog";
+import App from "./App";
 import StoryblokVue from "storyblok-vue";
 import Page from "./components/Page";
 import BlogHeader from "./components/BlogHeader";
+import router from "./router";
 
 Vue.component("page", Page);
 Vue.component("BlogHeader", BlogHeader);
@@ -10,5 +11,6 @@ Vue.component("BlogHeader", BlogHeader);
 Vue.use(StoryblokVue);
 
 new Vue({
-  render: h => h(Blog)
+  router,
+  render: h => h(App)
 }).$mount("#app");
