@@ -43,6 +43,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "../assets/reset.css";
 @import "../assets/global.scss";
 
 .blog-post-header {
@@ -66,6 +67,8 @@ export default {
 }
 
 .blog-post-header__text {
+  padding: $desktop-container-spacing;
+  font-size: 24px;
   background: rgba(192, 192, 192, 0.75);
   max-width: 700px;
   color: #fff;
@@ -111,20 +114,6 @@ export default {
   }
 }
 
-@media screen and (max-width: 900px) {
-  .blog-post-header {
-    min-height: 455px;
-    background-size: cover;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .blog-post-header {
-    min-height: 395px;
-    background-size: cover;
-  }
-}
-
 @media screen and (max-width: $mobile) {
   .blog-post-header {
     background-size: cover;
@@ -136,7 +125,8 @@ export default {
   }
 
   .blog-post-header__text {
-    padding: $desktop-grid-gap $mobile-container-spacing;
+    padding: $mobile-container-spacing;
+    font-size: 18px;
   }
 
   .blog-post-header__text__title {
