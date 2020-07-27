@@ -9,7 +9,7 @@ module.exports = {
       chunks: ["chunk-vendors", "chunk-common", "index"]
     },
     blog: {
-      entry: "src/blog/main.js",
+      entry: "blog/main.js",
       template: "public/blog.html",
       //TODO: Do we need all chunk-vendors here?
       chunks: ["chunk-vendors", "chunk-common", "blog"]
