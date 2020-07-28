@@ -1,5 +1,5 @@
 <template>
-  <v-app id="app">
+  <v-app id="v-app">
     <Header />
     <v-content>
       <router-view />
@@ -48,7 +48,7 @@ export default {
 <style lang="scss">
 @media only screen and (max-width: 600px) {
   // "--vh" property is set in Map component
-  #app .v-application--wrap {
+  #v-app .v-application--wrap {
     min-height: calc(100vh - 56px);
     min-height: calc(var(--vh, 1vh) * 100 - 56px);
   }

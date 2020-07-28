@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { getImageMetaData } from "../image";
+import { getImageMetaData } from "../utils/image";
 
 export default {
   name: "BlogHeader",
