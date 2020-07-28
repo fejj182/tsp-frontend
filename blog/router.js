@@ -7,12 +7,12 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/blog",
-    name: "blog",
+    name: "blogHome",
     component: Blog
   },
   {
     path: "/blog/:alias",
-    name: "blog",
+    name: "blogPage",
     component: Blog
   }
 ];
