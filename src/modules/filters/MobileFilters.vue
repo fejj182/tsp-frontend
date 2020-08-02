@@ -4,9 +4,18 @@
       v-model="dialog"
       :width="550"
       style="position: fixed; z-index: 2000;"
+      data-test-id="v-dialog"
     >
       <template v-slot:activator="{ on }">
-        <v-btn class="mx-2" fab small color="secondary" v-on="on" ref="filter">
+        <v-btn
+          class="mx-2"
+          fab
+          small
+          color="secondary"
+          v-on="on"
+          ref="filter"
+          data-test-id="btn-filter"
+        >
           <v-icon>mdi-filter-outline</v-icon>
         </v-btn>
       </template>
@@ -35,7 +44,6 @@ export default {
     };
   },
   mounted() {
-    //TODO: add tests and stop remounting between stops
     this.legend = createLegend(
       this.map,
       this.$refs.filter,
