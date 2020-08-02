@@ -71,7 +71,7 @@ export default {
       return this.connectionsExist && this.isMobile;
     },
     connectionsExist() {
-      return this.$store.state.stations.activeConnections.length > 0;
+      return this.$store.getters.completeTrip.length > 0;
     },
     isMobile() {
       return window.innerWidth < 600;

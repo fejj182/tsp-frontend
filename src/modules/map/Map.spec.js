@@ -102,9 +102,9 @@ describe("Map", () => {
     });
   });
 
-  it("should contain the mobile filters if mobile", done => {
+  it("should contain the mobile filters if mobile and connections exist", done => {
     window.innerWidth = 500;
-    mockStore.state.stations.activeConnections = [{}];
+    mockStore.getters.completeTrip = [{}];
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
@@ -117,6 +117,20 @@ describe("Map", () => {
   });
 
   it("should not contain the mobile filters if not mobile", done => {
+    mockStore.getters.completeTrip = [{}];
+    const wrapper = shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    Vue.nextTick(() => {
+      expect(wrapper.find(MobileFilters).exists()).toBe(false);
+      done();
+    });
+  });
+
+  it("should not contain the mobile filters if connections dont exist", done => {
+    window.innerWidth = 500;
     const wrapper = shallowMount(Map, {
       mocks: {
         $store: mockStore
