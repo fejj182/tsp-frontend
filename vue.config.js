@@ -11,9 +11,8 @@ module.exports = {
     blog: {
       entry: "blog/main.js",
       template: "public/blog.html",
-      //TODO: Do we need all chunk-vendors here?
-      chunks: ["chunk-vendors", "chunk-common", "blog"],
-      publicPath: "/blog/"
+      //TODO: Can we reduce the amount of vendors?
+      chunks: ["chunk-vendors", "chunk-common", "blog"]
     }
   },
   transpileDependencies: ["vuetify"],
