@@ -10,12 +10,9 @@
         />
         <span> Click to return to home </span>
       </a>
-      <h1 v-show="!isMobile">
-        Multiple journey planner for train travel in Europe.
-      </h1>
       <v-spacer></v-spacer>
-      <ListDialog v-if="isMobile" />
-      <HelpDialog />
+      <ListDialog data-test-id="list-dialog" v-if="isMobile" />
+      <HelpDialog data-test-id="help-dialog" />
     </v-app-bar>
   </div>
 </template>
@@ -49,7 +46,6 @@ export default {
 
 <style lang="scss" scoped>
 #header h1 {
-  font-family: Raleway;
   font-size: 20px;
   margin-left: -3em;
 }

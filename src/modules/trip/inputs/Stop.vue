@@ -100,9 +100,7 @@ export default {
         }
       } else {
         this.$store.dispatch("resetTrip");
-        if (this.$route.name !== "home") {
-          this.$router.push("/");
-        }
+        this.$router.push("/");
       }
     },
     autocompleteFilter(item, queryText, itemText) {

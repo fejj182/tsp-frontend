@@ -87,6 +87,9 @@ export default {
       }
     },
     addToTrip() {
+      if (this.$route.name === "welcome") {
+        this.$router.push("/planner");
+      }
       this.$store.dispatch("addToTrip", this.station);
     }
   },

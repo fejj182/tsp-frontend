@@ -38,13 +38,16 @@ export default {
   },
   computed: {
     shouldWelcome() {
-      //TODO: tripStarted no longer exists
       return (
-        !this.$store.state.trip.tripStarted && this.$feature("welcomePanel")
+        !this.$store.getters.completeTrip.length > 0 &&
+        this.$feature("welcomePanel")
       );
     },
+    shouldFetchStartingStations() {
+      return this.$store.state.stations.startingStations.length === 0;
+    },
     connectionsExist() {
-      return this.$store.state.stations.activeConnections.length > 0;
+      return this.$store.getters.completeTrip.length > 0;
     },
     isMobile() {
       return window.innerWidth < 600;
@@ -56,19 +59,26 @@ export default {
         .dispatch("fetchTrip", { alias: this.$route.params.alias })
         .then(() => (this.dataLoaded = true));
     }
-    if (this.$route.name === "home") {
+    if (this.shouldFetchStartingStations) {
       this.$store
         .dispatch("fetchStartingStations")
         .then(() => (this.dataLoaded = true));
     }
   },
   mounted() {
-    resetMapSize();
+    if (!this.shouldWelcome) {
+      resetMapSize();
+    }
   }
 };
 </script>
 
 <style scoped>
+.container,
+.row {
+  height: 100%;
+}
+
 #home {
   padding: 4px;
 }

@@ -4,8 +4,6 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 
 import TripPanel from "./TripPanel";
-import ConnectionFilters from "@/modules/filters/ConnectionFilters";
-import TripForm from "@/modules/trip/TripForm";
 import { state as stations } from "@/store/modules/stations";
 
 Vue.use(Vuetify);

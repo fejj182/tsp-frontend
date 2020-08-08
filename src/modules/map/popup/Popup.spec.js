@@ -1,4 +1,4 @@
-import { shallowMount, mount } from "@vue/test-utils";
+import { shallowMount } from "@vue/test-utils";
 import { bindPopupToMarker } from "@/plugins/leaflet";
 import Popup from "./Popup.vue";
 import faker from "faker";
@@ -10,7 +10,13 @@ jest.mock("@/plugins/leaflet");
 Vue.use(Vuetify);
 
 describe("Popup", () => {
-  let mockMarker, mockPopup, mockStore, mockProps, mockCitySlug;
+  let mockMarker,
+    mockPopup,
+    mockStore,
+    mockProps,
+    mockCitySlug,
+    mockRouter,
+    mockRoute;
   beforeEach(() => {
     jest.resetAllMocks();
     mockMarker = {
@@ -41,15 +47,16 @@ describe("Popup", () => {
       openPopup: jest.fn(),
       remove: jest.fn()
     };
+    mockRouter = {
+      push: jest.fn()
+    };
+    mockRoute = {
+      name: "route"
+    };
     bindPopupToMarker.mockReturnValue(mockPopup);
   });
   it("should bind popup to marker on mount", () => {
-    const wrapper = shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    const wrapper = shallowMountPopup();
     const popup = wrapper.find("#add-to-trip");
     expect(bindPopupToMarker).toHaveBeenCalledWith(
       mockMarker,
@@ -60,12 +67,7 @@ describe("Popup", () => {
   });
 
   it("should dispatch addToTrip action when onclick function of popup is called", () => {
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    shallowMountPopup();
     const popupOnClick = bindPopupToMarker.mock.calls[0][2];
     popupOnClick();
     expect(mockStore.dispatch).toHaveBeenCalledWith(
@@ -75,58 +77,33 @@ describe("Popup", () => {
   });
 
   it("should not show popup content as markup only injected into real popup", () => {
-    const wrapper = shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    const wrapper = shallowMountPopup();
     expect(wrapper.find("#add-to-trip").exists()).toBe(false);
   });
 
   it("should open popup when station is same as in component", () => {
     mockStore.state.trip.selectedStop = mockProps.station;
     mockStore.state.stations.activeConnections = [{}];
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    shallowMountPopup();
     expect(mockPopup.openPopup).toHaveBeenCalled();
   });
 
   it("should not auto-open popup", () => {
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    shallowMountPopup();
     expect(mockPopup.openPopup).not.toHaveBeenCalled();
   });
 
   it("should not open popup when station is same as in component and no connections", () => {
     mockStore.state.trip.selectedStop = mockProps.station;
     mockStore.state.stations.activeConnections = [];
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    shallowMountPopup();
     expect(mockPopup.openPopup).not.toHaveBeenCalled();
   });
 
   it("should not open popup when station doesnt have same name", () => {
     mockStore.state.trip.selectedStop = { name: "another" };
     mockStore.state.stations.activeConnections = [{}];
-    shallowMount(Popup, {
-      mocks: {
-        $store: mockStore
-      },
-      propsData: mockProps
-    });
+    shallowMountPopup();
     expect(mockPopup.openPopup).not.toHaveBeenCalled();
   });
 
@@ -134,24 +111,14 @@ describe("Popup", () => {
     describe("activeStation", () => {
       it("should bind popup if changed", () => {
         mockStore.state.stations.activeStation = { name: "station" };
-        shallowMount(Popup, {
-          mocks: {
-            $store: mockStore
-          },
-          propsData: mockProps
-        });
+        shallowMountPopup();
         mockStore.state.stations.activeStation = { name: "Other station" };
         expect(bindPopupToMarker).toHaveBeenCalledTimes(2);
       });
 
       it("should close stop if activeStation reset", () => {
         mockStore.state.stations.activeStation = {};
-        shallowMount(Popup, {
-          mocks: {
-            $store: mockStore
-          },
-          propsData: mockProps
-        });
+        shallowMountPopup();
         mockStore.state.stations.activeStation = null;
         expect(mockPopup.remove).toHaveBeenCalled();
       });
@@ -163,67 +130,37 @@ describe("Popup", () => {
       bindPopupToMarker.mockReturnValue(null);
     });
     it("popup content should stay in DOM if popup not created", () => {
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
-      });
+      const wrapper = shallowMountPopup();
       expect(wrapper.find("#add-to-trip").exists()).toBe(true);
     });
 
     it("should have station name as an h1", () => {
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
-      });
+      const wrapper = shallowMountPopup();
       expect(wrapper.find("h1").text()).toBe(mockProps.station.name);
     });
 
     it("should show duration if it is a connection", () => {
       mockStore.state.trip.savedTrip = [mockProps.station];
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
-      });
+      const wrapper = shallowMountPopup();
       expect(wrapper.find("#duration").text()).toBe(wrapper.vm.duration);
     });
 
     it("should not show duration if it is not a connection", () => {
       mockStore.state.trip.savedTrip = [];
-      const wrapper = shallowMount(Popup, {
-        mocks: {
-          $store: mockStore
-        },
-        propsData: mockProps
-      });
+      const wrapper = shallowMountPopup();
       expect(wrapper.find("#duration").exists()).toBe(false);
     });
 
     describe("Buttons", () => {
       describe("begin trip", () => {
         it("should show begin trip button if trip if not started yet", () => {
-          const wrapper = shallowMount(Popup, {
-            mocks: {
-              $store: mockStore
-            },
-            propsData: mockProps
-          });
+          const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
         });
 
         it("should not show begin trip button if more than one stop in trip", () => {
           mockStore.state.trip.savedTrip = [{}];
-          const wrapper = shallowMount(Popup, {
-            mocks: {
-              $store: mockStore
-            },
-            propsData: mockProps
-          });
+          const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
         });
       });
@@ -231,23 +168,13 @@ describe("Popup", () => {
       describe("add to trip", () => {
         it("should show begin trip button if trip started and is a connection", () => {
           mockStore.state.trip.savedTrip = [mockProps.station];
-          const wrapper = shallowMount(Popup, {
-            mocks: {
-              $store: mockStore
-            },
-            propsData: mockProps
-          });
+          const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
         });
 
         it("should not show begin trip button if station is not last stop in saved trip", () => {
           mockStore.state.trip.savedTrip = [mockProps.station, {}];
-          const wrapper = shallowMount(Popup, {
-            mocks: {
-              $store: mockStore
-            },
-            propsData: mockProps
-          });
+          const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
         });
       });
@@ -255,4 +182,15 @@ describe("Popup", () => {
   });
 
   describe("Duration", () => {});
+
+  const shallowMountPopup = () => {
+    return shallowMount(Popup, {
+      mocks: {
+        $store: mockStore,
+        $router: mockRouter,
+        $route: mockRoute
+      },
+      propsData: mockProps
+    });
+  };
 });

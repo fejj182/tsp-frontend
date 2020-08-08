@@ -60,7 +60,13 @@ describe("StartingDestination", () => {
     it("should dispatch startTrip on change", () => {
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
-          $store: mockStore
+          $store: mockStore,
+          $router: {
+            push: jest.fn()
+          },
+          $route: {
+            name: "welcome"
+          }
         }
       });
       wrapper

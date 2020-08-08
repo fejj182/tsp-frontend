@@ -9,7 +9,7 @@
     <v-card>
       <h1 id="title">
         <v-card-title>
-          {{ title }}
+          Tips:
         </v-card-title>
       </h1>
       <v-card-text>
@@ -41,11 +41,6 @@ export default {
     };
   },
   computed: {
-    title() {
-      return window.innerWidth < 600
-        ? "Multiple journey planner for train travel in Europe."
-        : "Tips:";
-    },
     isMobile() {
       return window.innerWidth < 600;
     }
@@ -73,7 +68,6 @@ export default {
 
 @media only screen and (max-width: 600px) {
   .v-card__title {
-    font-family: Raleway;
     font-size: 16px;
     word-break: normal;
   }

@@ -5,6 +5,7 @@
       data-test-id="starting-destination"
       :items="stations"
       :filter="autocompleteFilter"
+      background-color="grey lighten-4"
       filled
       rounded
       hide-details
@@ -43,6 +44,9 @@ export default {
   },
   methods: {
     async onChangeStation(station) {
+      if (this.$route.name === "welcome") {
+        this.$router.push("/planner");
+      }
       await this.$store.dispatch("startTrip", station);
     },
     autocompleteFilter(item, queryText, itemText) {

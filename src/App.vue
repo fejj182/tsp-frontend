@@ -46,11 +46,13 @@ export default {
 </script>
 
 <style lang="scss">
+#v-app {
+  font-family: Raleway;
+}
 @media only screen and (max-width: 600px) {
-  // "--vh" property is set in Map component
   #v-app .v-application--wrap {
-    min-height: calc(100vh - 56px);
-    min-height: calc(var(--vh, 1vh) * 100 - 56px);
+    min-height: calc(100vh);
+    min-height: calc(var(--vh, 1vh) * 100);
   }
 }
 </style>

@@ -133,9 +133,7 @@ export default {
     resetTrip() {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
-      if (this.$route.name !== "home") {
-        this.$router.push("/");
-      }
+      this.$router.push("/");
     },
     onSubmit() {
       if (this.$route.name === "alias") {

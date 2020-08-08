@@ -294,14 +294,12 @@ describe("TripForm", () => {
         expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
       });
 
-      it("should change url to home when on named route", () => {
+      it("should change url to home when on alias route", () => {
         wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore,
             $router: mockRouter,
-            $route: {
-              name: "alias"
-            }
+            $route: mockRoute
           },
           stubs: mockStubs
         });

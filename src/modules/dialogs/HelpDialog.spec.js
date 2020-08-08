@@ -22,16 +22,6 @@ describe("HelpDialog", () => {
     expect(wrapper.find(".v-card__title").text()).toBe("Tips:");
   });
 
-  it("should have h1 title about tips on desktop", () => {
-    window.innerWidth = 500;
-    const wrapper = mount(HelpDialog, {
-      stubs: mockStubs
-    });
-    expect(wrapper.find(".v-card__title").text()).toBe(
-      "Multiple journey planner for train travel in Europe."
-    );
-  });
-
   it("should contain clipboard-list icon if mobile", () => {
     window.innerWidth = 500;
     const wrapper = shallowMount(HelpDialog, {
