@@ -66,6 +66,13 @@ export default {
     if (!this.shouldWelcome) {
       resetMapSize();
     }
+    this.setMobileViewportHeight();
+  },
+  methods: {
+    setMobileViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
+    }
   }
 };
 </script>

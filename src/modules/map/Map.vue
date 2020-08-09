@@ -38,7 +38,6 @@ export default {
   mounted() {
     this.myMap = createMap("map", this.mapCentre, this.mapZoom);
     this.mapPanes = createPanes(this.myMap);
-    this.setMobileMapHeight();
   },
   computed: {
     activeDurationRange() {
@@ -88,10 +87,6 @@ export default {
       } else {
         return this.defaultCentre;
       }
-    },
-    setMobileMapHeight() {
-      let vh = window.innerHeight * 0.01;
-      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }
   },
   watch: {
