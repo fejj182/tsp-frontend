@@ -15,7 +15,7 @@
       <!-- use template to stop .v-list-item__mask class being used, which was causing items 
       with diacritics to be highlighted in full https://github.com/vuetifyjs/vuetify/pull/9618/files -->
       <template v-slot:item="{ item }">
-        {{ item.text }}
+        <span :id="'list-item-' + item.value.slug">{{ item.text }}</span>
       </template>
     </v-autocomplete>
   </div>

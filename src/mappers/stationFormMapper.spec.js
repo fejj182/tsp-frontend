@@ -13,9 +13,10 @@ describe("stationFormMapper", () => {
       id: 1,
       name: "Barcelona",
       lat: faker.address.latitude(),
-      lng: faker.address.longitude()
+      lng: faker.address.longitude(),
+      slug: "barcelona"
     };
-    expect(mapStation(station)).toEqual({
+    expect(mapStation(station)).toStrictEqual({
       text: station.name,
       value: station
     });
@@ -26,9 +27,10 @@ describe("stationFormMapper", () => {
       name: "Barcelona",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
+      slug: "barcelona",
       duration: 90
     };
-    expect(mapStationByDuration(station)).toEqual({
+    expect(mapStationByDuration(station)).toStrictEqual({
       text: station.name,
       value: { ...station, duration: "1h 30m" }
     });
@@ -39,16 +41,18 @@ describe("stationFormMapper", () => {
       id: 1,
       name: "Barcelona",
       lat: faker.address.latitude(),
-      lng: faker.address.longitude()
+      lng: faker.address.longitude(),
+      slug: "barcelona"
     };
 
     const madrid = {
       id: 1,
       name: "Madrid",
       lat: faker.address.latitude(),
-      lng: faker.address.longitude()
+      lng: faker.address.longitude(),
+      slug: "barcelona"
     };
-    expect(mapStations([madrid, barcelona])).toEqual([
+    expect(mapStations([madrid, barcelona])).toStrictEqual([
       {
         text: barcelona.name,
         value: barcelona
@@ -66,6 +70,7 @@ describe("stationFormMapper", () => {
       name: "Barcelona",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
+      slug: "barcelona",
       duration: 100
     };
 
@@ -74,9 +79,10 @@ describe("stationFormMapper", () => {
       name: "Madrid",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
+      slug: "barcelona",
       duration: 50
     };
-    expect(mapStationsByDuration([madrid, barcelona])).toEqual([
+    expect(mapStationsByDuration([madrid, barcelona])).toStrictEqual([
       {
         text: madrid.name,
         value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }

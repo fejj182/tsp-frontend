@@ -21,10 +21,6 @@ describe("Header", () => {
     ListDialog: {
       name: "ListDialog",
       template: "<span></span>"
-    },
-    HelpDialog: {
-      name: "HelpDialog",
-      template: "<span></span>"
     }
   };
 
@@ -75,26 +71,5 @@ describe("Header", () => {
       stubs: mockStubs
     });
     expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(false);
-  });
-
-  it("should contain HelpDialog", () => {
-    const wrapper = shallowMount(Header, {
-      mocks: {
-        $route: mockRoute
-      },
-      stubs: mockStubs
-    });
-    expect(wrapper.find("[data-test-id=help-dialog]").exists()).toBe(true);
-  });
-
-  it("should not contain HelpDialog if route is welcome", () => {
-    mockRoute.name = "welcome";
-    const wrapper = shallowMount(Header, {
-      mocks: {
-        $route: mockRoute
-      },
-      stubs: mockStubs
-    });
-    expect(wrapper.find("[data-test-id=help-dialog]").exists()).toBe(false);
   });
 });

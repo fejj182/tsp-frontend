@@ -1,4 +1,4 @@
-describe("trip_map", () => {
+describe("Trip Map", () => {
   it("should create trip using map", () => {
     cy.server();
     cy.route("POST", "api/destinations/connections").as("getConnections");
@@ -63,42 +63,5 @@ describe("trip_map", () => {
     cy.get(".marker-starting").should("exist");
     cy.get(".marker-starting-zaragoza").click();
     cy.get(".leaflet-popup").should("exist");
-  });
-
-  it("should create trip using map on mobile", () => {
-    cy.server();
-    cy.route("POST", "api/destinations/connections").as("getConnections");
-    cy.viewport("iphone-6");
-    cy.visit("http://localhost:8080/");
-    cy.get(".Cookie__button").click();
-
-    cy.get(".marker-starting-barcelona").click();
-    cy.get(".leaflet-popup").should("exist");
-
-    cy.get("[data-test-id=btn-add]:visible").click();
-    cy.wait("@getConnections");
-
-    cy.get(".position-1").click();
-    cy.get(".leaflet-popup").should("exist");
-
-    cy.get(".marker-connection-zaragoza").click();
-    cy.get("g .leaflet-interactive").should("exist");
-    cy.get(".leaflet-popup").should("exist");
-    cy.get(".position-2").should("exist");
-    cy.get("#duration").should("exist");
-
-    cy.get("[data-test-id=btn-add]").click();
-    cy.get("[data-test-id=clipboard-2]").click();
-
-    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-    cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
-    cy.get("#stop-2 [data-test-id=stop]").should("exist");
-
-    cy.get("[data-test-id=save-trip]").click();
-    cy.get("[data-test-id=success-alias]").should("exist");
-    cy.get("[data-test-id=success-alias] .v-alert__content").should(
-      "contain.text",
-      "created"
-    );
   });
 });

@@ -1,35 +1,30 @@
 <template>
   <div v-show="logoLoaded">
     <v-app-bar app color="primary" dark id="header">
-      <v-col cols="8">
-        <a href="/">
-          <img
-            id="logo"
-            src="@/assets/Logo-1.png"
-            alt="trainspotter-logo"
-            @load="onLogoLoad"
-          />
-          <span> Click to return to home </span>
-        </a>
-      </v-col>
-      <v-col cols="4">
-        <v-row justify="end">
-          <ListDialog data-test-id="list-dialog" v-if="showListDialog" />
-          <HelpDialog data-test-id="help-dialog" v-if="showHelpDialog" />
-        </v-row>
-      </v-col>
+      <a href="/">
+        <img
+          id="logo"
+          src="@/assets/Logo-1.png"
+          alt="trainspotter-logo"
+          @load="onLogoLoad"
+        />
+        <span> Click to return to home </span>
+      </a>
+      <h1 v-if="showTitle">
+        Multiple journey planner for train travel in Europe.
+      </h1>
+      <v-spacer></v-spacer>
+      <ListDialog data-test-id="list-dialog" v-if="showListDialog" />
     </v-app-bar>
   </div>
 </template>
 
 <script>
 const ListDialog = () => import("@/modules/dialogs/ListDialog");
-const HelpDialog = () => import("@/modules/dialogs/HelpDialog");
 
 export default {
   components: {
-    ListDialog,
-    HelpDialog
+    ListDialog
   },
   data() {
     return {
@@ -40,11 +35,11 @@ export default {
     isMobile() {
       return window.innerWidth < 600;
     },
+    showTitle() {
+      return !this.isMobile && this.$route.name !== "welcome";
+    },
     showListDialog() {
       return this.isMobile && this.$route.name !== "welcome";
-    },
-    showHelpDialog() {
-      return this.$route.name !== "welcome";
     }
   },
   methods: {
@@ -60,9 +55,11 @@ export default {
   h1 {
     font-size: 20px;
     margin-left: -3em;
+    display: inline;
   }
   a {
     display: inline-block;
+    max-width: 66.67%;
   }
 }
 

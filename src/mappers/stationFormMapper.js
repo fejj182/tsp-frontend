@@ -9,7 +9,8 @@ export const mapStation = station => {
       id: station.id,
       name: station.name,
       lat: station.lat,
-      lng: station.lng
+      lng: station.lng,
+      slug: station.slug
     }
   };
 };
@@ -22,6 +23,7 @@ export const mapStationByDuration = station => {
       name: station.name,
       lat: station.lat,
       lng: station.lng,
+      slug: station.slug,
       duration: toHoursAndMinutes(station.duration)
     }
   };
@@ -46,7 +48,8 @@ export const mapStations = stations => {
           id: station.id,
           name: station.name,
           lat: station.lat,
-          lng: station.lng
+          lng: station.lng,
+          slug: station.slug
         }
       };
     });
@@ -71,6 +74,7 @@ export const mapStationsByDuration = stations => {
           name: station.name,
           lat: station.lat,
           lng: station.lng,
+          slug: station.slug,
           duration: toHoursAndMinutes(station.duration)
         }
       };

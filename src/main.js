@@ -2,9 +2,9 @@ import Vue from "vue";
 import VueGtag from "vue-gtag";
 import App from "./App.vue";
 import router from "./router";
-import config from "../config.js";
 import store from "./store/store";
 import vuetify from "./plugins/vuetify";
+import features from "./plugins/features";
 import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
 
@@ -19,7 +19,7 @@ Vue.use(
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
 Vue.use(VueMeta);
-Vue.use(config);
+Vue.use(features);
 Vue.config.productionTip = false;
 
 new Vue({
