@@ -25,6 +25,9 @@ export default {
       markers: []
     };
   },
+  mounted() {
+    this.generateMarkers(this.connections);
+  },
   computed: {
     connections() {
       return this.$store.state.stations.activeConnections;
@@ -33,8 +36,8 @@ export default {
       return this.$store.state.stations.activeConnections.length > 0;
     }
   },
-  watch: {
-    connections(stations) {
+  methods: {
+    generateMarkers(stations) {
       this.markers = [];
       setTimeout(() => {
         stations.forEach(station => {
@@ -50,6 +53,11 @@ export default {
           });
         });
       }, SLOW);
+    }
+  },
+  watch: {
+    connections(stations) {
+      this.generateMarkers(stations);
     }
   }
 };
