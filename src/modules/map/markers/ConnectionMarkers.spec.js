@@ -37,6 +37,16 @@ describe("ConnectionMarkers", () => {
 
   describe("DummyMarker", () => {
     test("should be same number as markers", done => {
+      mockState.stations.activeConnections = [{}, {}];
+      generateMarker.mockReturnValue({});
+      const wrapper = getWrapper();
+      setTimeout(() => {
+        expect(wrapper.findAll(DummyMarker).length).toBe(2);
+        done();
+      }, 0);
+    });
+
+    test("should be same number as markers if updated", done => {
       generateMarker.mockReturnValue({});
       const wrapper = getWrapper();
       mockState.stations.activeConnections = [{}, {}];
