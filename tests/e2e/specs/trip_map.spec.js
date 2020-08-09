@@ -46,8 +46,11 @@ describe("trip_map", () => {
 
     cy.get(".marker-starting-barcelona").click();
     cy.get("[data-test-id=btn-add]:visible").click();
+    cy.wait("@getConnections");
 
     // using trip form here instead of marker as causes state change
+    // wait for markers to be loaded before selecting input
+    cy.wait(250);
     cy.get("#stop-1 [data-test-id=stop]").click();
     cy.get(".v-list-item:visible")
       .first()
@@ -55,6 +58,7 @@ describe("trip_map", () => {
     cy.get(".leaflet-popup").should("exist");
 
     cy.get("[data-test-id=reset-trip]").click();
+    cy.get(".marker-connection-zaragoza").should("not.exist");
     cy.get(".leaflet-popup").should("not.exist");
     cy.get(".marker-starting").should("exist");
     cy.get(".marker-starting-zaragoza").click();
