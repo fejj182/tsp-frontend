@@ -1,8 +1,8 @@
 <template>
   <div v-if="!legend">
-    <v-card id="legend" max-width="375" outlined ref="legend">
+    <v-card id="legend" outlined ref="legend">
       <v-card-text>
-        <div class="overline mb-1">Legend</div>
+        <h2 class="overline">{{ title }}</h2>
         <v-simple-table fixed-header>
           <template v-slot:default>
             <tbody>
@@ -51,6 +51,14 @@ export default {
       legend: null
     };
   },
+  computed: {
+    title() {
+      return "Click on:";
+    },
+    isMobile() {
+      return window.innerWidth < 600;
+    }
+  },
   mounted() {
     this.legend = createLegend(this.map, this.$refs.legend, LEGEND_BOTTOMRIGHT);
   },
@@ -69,8 +77,16 @@ export default {
 #legend {
   opacity: 0.9;
 
+  h2 {
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 0.75rem !important;
+    line-height: 1.5rem;
+    padding: 0 0.25rem;
+    font-family: Raleway !important;
+  }
+
   .v-card__text {
-    padding: 0.25rem;
+    padding: 0;
   }
 
   td {
@@ -90,9 +106,5 @@ export default {
   i {
     color: #3f51b5;
   }
-}
-
-.v-application .overline {
-  font-weight: bold;
 }
 </style>

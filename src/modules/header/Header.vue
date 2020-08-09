@@ -1,18 +1,23 @@
 <template>
   <div v-show="logoLoaded">
     <v-app-bar app color="primary" dark id="header">
-      <a href="/">
-        <img
-          id="logo"
-          src="@/assets/Logo-1.png"
-          alt="trainspotter-logo"
-          @load="onLogoLoad"
-        />
-        <span> Click to return to home </span>
-      </a>
-      <v-spacer></v-spacer>
-      <ListDialog data-test-id="list-dialog" v-if="isMobile" />
-      <HelpDialog data-test-id="help-dialog" />
+      <v-col cols="8">
+        <a href="/">
+          <img
+            id="logo"
+            src="@/assets/Logo-1.png"
+            alt="trainspotter-logo"
+            @load="onLogoLoad"
+          />
+          <span> Click to return to home </span>
+        </a>
+      </v-col>
+      <v-col cols="4">
+        <v-row justify="end">
+          <ListDialog data-test-id="list-dialog" v-if="showListDialog" />
+          <HelpDialog data-test-id="help-dialog" v-if="showHelpDialog" />
+        </v-row>
+      </v-col>
     </v-app-bar>
   </div>
 </template>
@@ -34,6 +39,12 @@ export default {
   computed: {
     isMobile() {
       return window.innerWidth < 600;
+    },
+    showListDialog() {
+      return this.isMobile && this.$route.name !== "welcome";
+    },
+    showHelpDialog() {
+      return this.$route.name !== "welcome";
     }
   },
   methods: {
@@ -45,9 +56,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#header h1 {
-  font-size: 20px;
-  margin-left: -3em;
+#header {
+  h1 {
+    font-size: 20px;
+    margin-left: -3em;
+  }
+  a {
+    display: inline-block;
+  }
 }
 
 span {
@@ -64,9 +80,18 @@ span {
   width: 70%;
 }
 
+.col-8,
+.col-4 {
+  padding: 0;
+}
+
+.col-4 {
+  justify-content: flex-end;
+}
+
 @media only screen and (max-width: 600px) {
   #logo {
-    width: 80%;
+    width: 90%;
   }
 }
 </style>

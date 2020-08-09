@@ -11,7 +11,7 @@ import flushPromises from "flush-promises";
 Vue.use(Vuetify);
 
 describe("Home", () => {
-  let mockStore, mockFeatures;
+  let mockStore, mockFeatures, mockRoute;
 
   beforeEach(() => {
     mockStore = {
@@ -25,6 +25,9 @@ describe("Home", () => {
       getters: {
         completeTrip: []
       }
+    };
+    mockRoute = {
+      name: "home"
     };
     mockFeatures = jest.fn().mockImplementation(() => true);
   });
@@ -47,13 +50,14 @@ describe("Home", () => {
       window.innerWidth = 1000;
     });
 
-    it("should contain the trip panel if trip has started", () => {
-      mockStore.getters.completeTrip = [{}];
+    it("should contain the trip panel if route name is not welcome", () => {
+      mockRoute.name = "notwelcome";
       const wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(true);
     });
 
-    it("should not contain the trip panel if trip has not started", () => {
+    it("should not contain the trip panel if route name is welcome", () => {
+      mockRoute.name = "welcome";
       const wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
@@ -79,18 +83,21 @@ describe("Home", () => {
   });
 
   describe("Welcome Panel", () => {
-    it("should contain the welcome panel if trip has not started", () => {
+    it("should contain the welcome panel if route name is welcome", () => {
+      mockRoute.name = "welcome";
       const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(true);
     });
 
     it("should not contain the welcome panel if trip has not started and FT is off", () => {
+      mockRoute.name = "welcome";
       mockFeatures = jest.fn().mockImplementation(() => false);
       const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(false);
     });
 
     it("should contain the welcome panel on mobile if trip not started", () => {
+      mockRoute.name = "welcome";
       window.innerWidth = 500;
       const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(true);
@@ -133,9 +140,7 @@ describe("Home", () => {
   const shallowMountHome = () => {
     return shallowMount(Home, {
       mocks: {
-        $route: {
-          name: "home"
-        },
+        $route: mockRoute,
         $store: mockStore,
         $feature: mockFeatures
       }

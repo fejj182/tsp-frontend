@@ -38,10 +38,7 @@ export default {
   },
   computed: {
     shouldWelcome() {
-      return (
-        !this.$store.getters.completeTrip.length > 0 &&
-        this.$feature("welcomePanel")
-      );
+      return this.$route.name === "welcome" && this.$feature("welcomePanel");
     },
     shouldFetchStartingStations() {
       return this.$store.state.stations.startingStations.length === 0;

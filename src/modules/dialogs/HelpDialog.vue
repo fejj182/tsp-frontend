@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" :width="550">
     <template v-slot:activator="{ on }">
-      <v-btn class="mx-2" icon small v-on="on">
+      <v-btn class="mr-4" fab icon small v-on="on">
         <v-icon>mdi-help-circle</v-icon>
       </v-btn>
     </template>
