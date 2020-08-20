@@ -38,6 +38,8 @@ export default {
       let stations = this.$store.state.stations.startingStations;
       if (stations.length > 0) {
         stations = mapStations(stations);
+      } else if (this.startingStation) {
+        stations = [this.startingStation];
       }
       return stations;
     }

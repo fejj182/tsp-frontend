@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import cloneDeep from "lodash/cloneDeep";
 
 import StartingDestination from "./StartingDestination.vue";
-import { mapStations } from "@/mappers/stationFormMapper";
+import { mapStation, mapStations } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 
@@ -31,7 +31,7 @@ describe("StartingDestination", () => {
     };
   });
   describe("Autocomplete items", () => {
-    it("should load stations into props", async () => {
+    it("should load stations", async () => {
       mockStore.state.stations.startingStations = enabledStations;
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -42,6 +42,18 @@ describe("StartingDestination", () => {
       expect(
         wrapper.find("[data-test-id=starting-destination]").props().items
       ).toEqual(mappedStations);
+    });
+
+    it("should load starting station first", async () => {
+      mockStore.state.trip.startingStation = station;
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().items
+      ).toEqual([mapStation(station)]);
     });
 
     it("should not load stations into props", async () => {
