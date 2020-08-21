@@ -88,6 +88,8 @@ describe("TripForm", () => {
 
   describe("StartingDestination", () => {
     it("should be included", () => {
+      mockStore.state.trip.startingStation = {};
+      mockStore.state.stations.startingStations = [{}];
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore,
@@ -295,6 +297,7 @@ describe("TripForm", () => {
       });
 
       it("should change url to home when on alias route", () => {
+        mockRoute.name = "alias";
         wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore,
@@ -304,7 +307,7 @@ describe("TripForm", () => {
           stubs: mockStubs
         });
         wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockRouter.push).toHaveBeenCalledWith("/");
+        expect(mockRouter.push).toHaveBeenCalledWith("/planner");
       });
     });
 

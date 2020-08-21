@@ -1,6 +1,6 @@
 <template>
   <v-form ref="form" @submit.prevent="onSubmit" id="trip-form">
-    <StartingDestination />
+    <StartingDestination v-if="showStartingDestination" />
     <div v-for="(stop, index) in stops" :key="index">
       <!-- TODO: Dependency here on properties existing in each stop -->
       <Stop
@@ -117,6 +117,12 @@ export default {
     },
     url() {
       return window.location.href;
+    },
+    showStartingDestination() {
+      return (
+        this.$store.state.trip.startingStation ||
+        this.$store.state.stations.startingStations.length > 0
+      );
     }
   },
   methods: {
@@ -133,7 +139,9 @@ export default {
     resetTrip() {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
-      this.$router.push("/");
+      if (this.$route.name === "alias") {
+        this.$router.push("/planner");
+      }
     },
     onSubmit() {
       if (this.$route.name === "alias") {

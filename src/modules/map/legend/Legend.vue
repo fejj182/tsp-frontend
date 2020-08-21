@@ -2,7 +2,7 @@
   <div v-if="!legend">
     <v-card id="legend" outlined ref="legend">
       <v-card-text>
-        <h2 class="overline">{{ title }}</h2>
+        <h2 class="overline">Legend</h2>
         <v-simple-table fixed-header>
           <template v-slot:default>
             <tbody>
@@ -52,9 +52,6 @@ export default {
     };
   },
   computed: {
-    title() {
-      return "Click on:";
-    },
     isMobile() {
       return window.innerWidth < 600;
     }

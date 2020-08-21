@@ -19,7 +19,7 @@
           <v-icon>mdi-filter-outline</v-icon>
         </v-btn>
       </template>
-      <TripPanel :showFilters="true" />
+      <TripPanel />
     </v-dialog>
   </div>
 </template>

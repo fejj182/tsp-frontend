@@ -13,9 +13,7 @@ jest.mock("@/api/stations");
 Vue.use(Vuetify);
 
 describe("StartingDestination", () => {
-  let enabledStations;
-  let mockStore;
-  let station;
+  let enabledStations, station, mockStore, mockRoute;
   beforeEach(() => {
     jest.resetAllMocks();
     station = fakeStation();
@@ -29,13 +27,17 @@ describe("StartingDestination", () => {
         }
       }
     };
+    mockRoute = {
+      name: "name"
+    };
   });
   describe("Autocomplete items", () => {
     it("should load stations", async () => {
       mockStore.state.stations.startingStations = enabledStations;
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
-          $store: mockStore
+          $store: mockStore,
+          $route: mockRoute
         }
       });
       const mappedStations = mapStations(enabledStations);
@@ -48,7 +50,8 @@ describe("StartingDestination", () => {
       mockStore.state.trip.startingStation = station;
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
-          $store: mockStore
+          $store: mockStore,
+          $route: mockRoute
         }
       });
       expect(
@@ -59,7 +62,8 @@ describe("StartingDestination", () => {
     it("should not load stations into props", async () => {
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
-          $store: mockStore
+          $store: mockStore,
+          $route: mockRoute
         }
       });
       expect(
@@ -69,22 +73,58 @@ describe("StartingDestination", () => {
   });
 
   describe("On change", () => {
-    it("should dispatch startTrip on change", () => {
+    it("should dispatch startTrip on change", async () => {
+      mockRoute.name = "welcome";
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
           $store: mockStore,
           $router: {
             push: jest.fn()
           },
-          $route: {
-            name: "welcome"
-          }
+          $route: mockRoute,
+          $emit: jest.fn()
+        }
+      });
+      const autocompleteInput = wrapper.find(
+        "[data-test-id=starting-destination]"
+      );
+      autocompleteInput.vm.$emit("change", station);
+      await Vue.nextTick();
+      //TODO: assert event is emitted & inner icon is set correctly
+    });
+
+    it("should dispatch startTrip on change if route is not welcome", () => {
+      mockRoute.name = "notWelcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $router: {
+            push: jest.fn()
+          },
+          $route: mockRoute
         }
       });
       wrapper
         .find("[data-test-id=starting-destination]")
         .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
+    });
+
+    it("should not dispatch startTrip on change if route is not welcome and station is null", () => {
+      mockRoute.name = "notWelcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $router: {
+            push: jest.fn()
+          },
+          $route: mockRoute
+        }
+      });
+      wrapper
+        .find("[data-test-id=starting-destination]")
+        .vm.$emit("change", null);
+      expect(mockStore.dispatch).not.toBeCalledWith("startTrip", station);
     });
   });
 });

@@ -1,16 +1,20 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${image})` }">
     <h1>
-      The interactive planner for your next train trip in Europe.
+      The interactive route planner for your next train trip in Europe.
     </h1>
     <h2>
       Travel slow, efficient and sustainably.
     </h2>
     <h2>Built with <v-icon>mdi-heart</v-icon> for multi-journeys.</h2>
 
-    <div id="start">
-      <StartingDestination />
-    </div>
+    <v-form ref="form" @submit.prevent="onSubmit" id="start">
+      <StartingDestination v-on:change-station="onChangeStartingStation" />
+      <MaxJourneyTime />
+      <v-btn type="submit" color="secondary" rounded id="find-destinations-btn">
+        Find Routes
+      </v-btn>
+    </v-form>
 
     <span
       >Photo by
@@ -28,14 +32,36 @@
 </template>
 
 <script>
+//TODO: add tests
 import StartingDestination from "@/modules/trip/inputs/StartingDestination";
+import MaxJourneyTime from "@/modules/trip/inputs/MaxJourneyTime";
 export default {
+  data() {
+    return {
+      startingStation: null,
+      maxJourneyTime: null
+    };
+  },
   components: {
-    StartingDestination
+    StartingDestination,
+    MaxJourneyTime
   },
   computed: {
     image() {
       return require("@/assets/onur-k-D5Plb33eKZc-unsplash.jpg");
+    }
+  },
+  methods: {
+    onChangeStartingStation(station) {
+      this.startingStation = station;
+    },
+    onSubmit() {
+      const storeStartingStation = this.$store.state.trip.startingStation;
+      const startingStation = storeStartingStation
+        ? storeStartingStation
+        : this.startingStation;
+      this.$store.dispatch("startTrip", startingStation);
+      this.$router.push("/planner");
     }
   }
 };
@@ -65,10 +91,29 @@ h2 {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 50%;
+
+  i {
+    color: #303f9f;
+  }
+
+  #find-destinations-btn {
+    margin-top: 1rem;
+    i {
+      color: white;
+    }
+  }
 }
 
 #start {
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+@media only screen and (max-width: 600px) {
+  #start {
+    padding: 1rem;
+  }
 }
 
 @media only screen and (max-width: 600px) {
@@ -78,11 +123,22 @@ h2 {
 }
 
 span {
-  background-color: white;
-  opacity: 0.6;
+  color: white;
+  opacity: 0.8;
   position: absolute;
   bottom: 0;
   padding: 0.15rem;
   margin: 0.5rem 0.25rem;
+  a {
+    color: white;
+  }
+}
+</style>
+
+<style lang="scss">
+#welcome {
+  .v-input {
+    margin: 0.25rem 0;
+  }
 }
 </style>

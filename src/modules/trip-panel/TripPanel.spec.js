@@ -27,20 +27,7 @@ describe("Trip Panel", () => {
   });
 
   describe("Expansion panels", () => {
-    test("should not show any panels by default", () => {
-      const wrapper = shallowMount(TripPanel, {
-        mocks: {
-          $store: mockStore,
-          $route: mockRoute
-        }
-      });
-      expect(wrapper.find("[data-test-id=filter-panel]").exists()).toBe(false);
-      expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(
-        false
-      );
-    });
-
-    test("should show filter panel if showFilters is true", () => {
+    test("should contain filter panel", () => {
       const wrapper = shallowMount(TripPanel, {
         propsData: {
           showFilters: true
@@ -53,7 +40,7 @@ describe("Trip Panel", () => {
       expect(wrapper.find("[data-test-id=filter-panel]").exists()).toBe(true);
     });
 
-    test("should show form panel if showForm is true", () => {
+    test("should contain form panel", () => {
       const wrapper = shallowMount(TripPanel, {
         propsData: {
           showForm: true

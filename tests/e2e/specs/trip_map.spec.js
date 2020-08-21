@@ -9,8 +9,12 @@ describe("Trip Map", () => {
     cy.get(".marker-starting-barcelona").click();
     cy.get(".leaflet-popup").should("exist");
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
+    cy.get("#max-journey-time").click();
+    cy.get(".v-list-item:visible")
+      .first()
+      .click();
+    cy.get("#find-destinations-btn").click();
 
-    cy.get("[data-test-id=btn-add]:visible").click();
     cy.wait("@getConnections");
     cy.get("#stop-1 [data-test-id=stop]").should("exist");
 
@@ -45,7 +49,12 @@ describe("Trip Map", () => {
     cy.get(".Cookie__button").click();
 
     cy.get(".marker-starting-barcelona").click();
-    cy.get("[data-test-id=btn-add]:visible").click();
+    cy.get("#max-journey-time").click();
+    cy.get(".v-list-item:visible")
+      .first()
+      .click();
+    cy.get("#find-destinations-btn").click();
+
     cy.wait("@getConnections");
 
     // using trip form here instead of marker as causes state change

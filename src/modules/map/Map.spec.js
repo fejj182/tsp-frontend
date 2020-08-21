@@ -24,7 +24,7 @@ jest.mock("@/plugins/leaflet", () => ({
 }));
 
 describe("Map", () => {
-  let mockOn, mockOff, mockStore, mockMap;
+  let mockOn, mockOff, mockStore, mockMap, mockPanes;
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -58,7 +58,8 @@ describe("Map", () => {
       flyTo: jest.fn()
     };
     createMap.mockReturnValue(mockMap);
-    createPanes.mockReturnValue({});
+    mockPanes = {};
+    createPanes.mockReturnValue(mockPanes);
   });
 
   it("should contain the markers", done => {
@@ -237,11 +238,21 @@ describe("Map", () => {
   });
 
   it("should update pane groups when component mounted", () => {
-    const mockStyle = jest.fn();
-    mockMap.createPane.mockReturnValue({
-      style: mockStyle
+    const mockActiveDurationRange = [1, 2];
+    mockStore.state.filters.activeDurationRange = mockActiveDurationRange;
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore
+      }
     });
-    const wrapper = shallowMount(Map, {
+    expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
+      mockPanes,
+      mockActiveDurationRange
+    );
+  });
+
+  it("should update pane groups when activeDurationRange changes", () => {
+    shallowMount(Map, {
       mocks: {
         $store: mockStore
       }
@@ -249,7 +260,7 @@ describe("Map", () => {
     const mockActiveDurationRange = [1, 2];
     mockStore.state.filters.activeDurationRange = mockActiveDurationRange;
     expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
-      wrapper.vm.mapPanes,
+      mockPanes,
       mockActiveDurationRange
     );
   });

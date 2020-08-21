@@ -1,3 +1,5 @@
+import { startTripFromWelcome } from "../support/helpers";
+
 describe("Mobile", () => {
   it("should start from welcome", () => {
     cy.server();
@@ -8,10 +10,7 @@ describe("Mobile", () => {
     cy.get(".Cookie__button").click();
 
     cy.wait("@getDestinations");
-    cy.get("[data-test-id=starting-destination]").click();
-    cy.get("#list-item-barcelona").click();
-    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-
+    startTripFromWelcome();
     cy.wait("@getConnections");
 
     assertNothingBroken();

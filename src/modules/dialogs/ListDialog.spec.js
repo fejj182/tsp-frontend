@@ -24,7 +24,6 @@ describe("ListDialog", () => {
       stubs: mockStubs
     });
     expect(wrapper.find(TripPanel).exists()).toBe(true);
-    expect(wrapper.find(TripPanel).props().showForm).toBe(true);
   });
 
   it("should contain clipboard with number 0 if no stops selected", () => {

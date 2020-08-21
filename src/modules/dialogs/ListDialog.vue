@@ -9,7 +9,7 @@
         />
       </v-btn>
     </template>
-    <TripPanel :showForm="true" />
+    <TripPanel />
   </v-dialog>
 </template>
 

@@ -1,3 +1,5 @@
+import { startTripFromWelcome } from "../support/helpers";
+
 describe("Trip", function() {
   it("should create and update a trip using form", function() {
     cy.server();
@@ -15,10 +17,8 @@ describe("Trip", function() {
 
 function createTrip() {
   cy.wait("@getDestinations");
-  cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item")
-    .first()
-    .click();
+  startTripFromWelcome();
+
   cy.get(".position-1").should("exist");
 
   cy.get("#stop-1 [data-test-id=stop]").click();

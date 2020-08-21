@@ -1,5 +1,5 @@
 const INTERVAL = 60;
-const NUMBER_OF_PANES = 11;
+const NUMBER_OF_PANES = 7;
 
 export default {
   INTERVAL,

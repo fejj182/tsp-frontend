@@ -1,3 +1,5 @@
+import { startTripFromWelcome } from "../support/helpers";
+
 describe("TripForm", function() {
   it("remove button should work", function() {
     cy.server();
@@ -13,11 +15,7 @@ describe("TripForm", function() {
 
 function assertFirstStopAddAndClose() {
   cy.wait("@getDestinations");
-  cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item")
-    .first()
-    .click();
-  cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
+  startTripFromWelcome()
 
   cy.get("#stop-1 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")

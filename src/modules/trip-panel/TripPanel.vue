@@ -1,7 +1,7 @@
 <template>
   <v-container id="trip-panel">
-    <v-expansion-panels focusable v-model="panel" multiple>
-      <v-expansion-panel v-if="showFilters" data-test-id="filter-panel">
+    <v-expansion-panels focusable v-model="panel" multiple readonly>
+      <v-expansion-panel data-test-id="filter-panel">
         <v-expansion-panel-header>
           Filter
         </v-expansion-panel-header>
@@ -9,7 +9,7 @@
           <ConnectionFilters />
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel v-if="showForm" data-test-id="trip-form-panel">
+      <v-expansion-panel data-test-id="trip-form-panel">
         <v-expansion-panel-header>
           Trip Plan
         </v-expansion-panel-header>
@@ -34,16 +34,6 @@ export default {
     return {
       panel: [0, 1]
     };
-  },
-  props: {
-    showFilters: {
-      type: Boolean,
-      default: false
-    },
-    showForm: {
-      type: Boolean,
-      default: false
-    }
   }
 };
 </script>
