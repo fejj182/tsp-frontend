@@ -12,6 +12,8 @@
       hide-details
       @change="onChangeStation"
       :value="startingStation"
+      :rules="validationRules"
+      required
     >
       <!-- use template to stop .v-list-item__mask class being used, which was causing items 
       with diacritics to be highlighted in full https://github.com/vuetifyjs/vuetify/pull/9618/files -->
@@ -28,6 +30,11 @@ import { mapStation, mapStations } from "@/mappers/stationFormMapper";
 import deburr from "lodash/deburr";
 
 export default {
+  data() {
+    return {
+      validationRules: this.$route.name === "welcome" ? [value => !!value] : []
+    };
+  },
   computed: {
     startingStation() {
       let station = this.$store.state.trip.startingStation;

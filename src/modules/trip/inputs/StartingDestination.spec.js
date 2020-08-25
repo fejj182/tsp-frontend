@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import cloneDeep from "lodash/cloneDeep";
@@ -73,7 +73,7 @@ describe("StartingDestination", () => {
   });
 
   describe("On change", () => {
-    it("should dispatch startTrip on change", async () => {
+    it("should emit change-station event if route name is welcome", async done => {
       mockRoute.name = "welcome";
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -81,16 +81,17 @@ describe("StartingDestination", () => {
           $router: {
             push: jest.fn()
           },
-          $route: mockRoute,
-          $emit: jest.fn()
+          $route: mockRoute
         }
       });
-      const autocompleteInput = wrapper.find(
-        "[data-test-id=starting-destination]"
-      );
-      autocompleteInput.vm.$emit("change", station);
-      await Vue.nextTick();
-      //TODO: assert event is emitted & inner icon is set correctly
+      wrapper
+        .find("[data-test-id=starting-destination]")
+        .vm.$emit("change", station);
+
+      Vue.nextTick(() => {
+        expect(wrapper.emitted()["change-station"][0]).toEqual([station]);
+        done();
+      });
     });
 
     it("should dispatch startTrip on change if route is not welcome", () => {
@@ -125,6 +126,66 @@ describe("StartingDestination", () => {
         .find("[data-test-id=starting-destination]")
         .vm.$emit("change", null);
       expect(mockStore.dispatch).not.toBeCalledWith("startTrip", station);
+    });
+  });
+
+  describe("inner icon", () => {
+    it("should be present on welcome route", () => {
+      mockRoute.name = "welcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=starting-destination").props()
+          .prependInnerIcon
+      ).toBe("mdi-train");
+    });
+
+    it("should not be present if not on welcome route", () => {
+      mockRoute.name = "notwelcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=starting-destination").props()
+          .prependInnerIcon
+      ).toBe("");
+    });
+  });
+
+  describe("validation rules", () => {
+    it("should contain validation function if route is welcome", () => {
+      mockRoute.name = "welcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      const validationFunction = wrapper
+        .find("[data-test-id=starting-destination]")
+        .props().rules[0];
+      expect(validationFunction(true)).toBe(true);
+      expect(validationFunction(false)).toBe(false);
+    });
+
+    it("should contain empty array if route is not welcome", () => {
+      mockRoute.name = "notwelcome";
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().rules.length
+      ).toBe(0);
     });
   });
 });

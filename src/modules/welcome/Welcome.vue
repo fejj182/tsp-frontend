@@ -1,6 +1,6 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${image})` }">
-    <h1>
+    <h1 data-test-id="welcome-title">
       The interactive route planner for your next train trip in Europe.
     </h1>
     <h2>
@@ -8,7 +8,12 @@
     </h2>
     <h2>Built with <v-icon>mdi-heart</v-icon> for multi-journeys.</h2>
 
-    <v-form ref="form" @submit.prevent="onSubmit" id="start">
+    <v-form
+      ref="form"
+      v-model="valid"
+      @submit.prevent="onSubmit"
+      id="welcome-form"
+    >
       <StartingDestination v-on:change-station="onChangeStartingStation" />
       <MaxJourneyTime />
       <v-btn type="submit" color="secondary" rounded id="find-destinations-btn">
@@ -32,14 +37,14 @@
 </template>
 
 <script>
-//TODO: add tests
 import StartingDestination from "@/modules/trip/inputs/StartingDestination";
 import MaxJourneyTime from "@/modules/trip/inputs/MaxJourneyTime";
 export default {
   data() {
     return {
       startingStation: null,
-      maxJourneyTime: null
+      maxJourneyTime: null,
+      valid: true
     };
   },
   components: {
@@ -60,8 +65,11 @@ export default {
       const startingStation = storeStartingStation
         ? storeStartingStation
         : this.startingStation;
-      this.$store.dispatch("startTrip", startingStation);
-      this.$router.push("/planner");
+      this.$refs.form.validate();
+      if (startingStation) {
+        this.$store.dispatch("startTrip", startingStation);
+        this.$router.push("/planner");
+      }
     }
   }
 };
@@ -104,14 +112,14 @@ h2 {
   }
 }
 
-#start {
+#welcome-form {
   display: flex;
   flex-direction: column;
   padding: 2rem;
 }
 
 @media only screen and (max-width: 600px) {
-  #start {
+  #welcome-form {
     padding: 1rem;
   }
 }
