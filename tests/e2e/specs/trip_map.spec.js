@@ -11,7 +11,7 @@ describe("Trip Map", () => {
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#max-journey-time").click();
     cy.get(".v-list-item:visible")
-      .first()
+      .first() // 2 hours
       .click();
     cy.get("#find-destinations-btn").click();
 
@@ -21,7 +21,7 @@ describe("Trip Map", () => {
     cy.get(".position-1").click();
     cy.get(".leaflet-popup").should("exist");
 
-    cy.get(".marker-connection-madrid").click();
+    cy.get(".marker-connection-madrid").should("not.be.visible");
     cy.get(".marker-connection-zaragoza").click();
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
