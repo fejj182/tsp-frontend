@@ -10,12 +10,12 @@
       rounded
       single-line
       background-color="grey lighten-4"
+      data-test-id="max-journey-time-input"
     ></v-select>
   </div>
 </template>
 
 <script>
-//TODO: add tests
 export default {
   data: () => ({
     hours: [
