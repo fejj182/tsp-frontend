@@ -38,6 +38,7 @@ export default {
   mounted() {
     this.myMap = createMap("map", this.mapCentre, this.mapZoom);
     this.mapPanes = createPanes(this.myMap);
+    displayPanesInRange(this.mapPanes, this.activeDurationRange);
   },
   computed: {
     activeDurationRange() {

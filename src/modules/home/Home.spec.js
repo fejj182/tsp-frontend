@@ -68,18 +68,6 @@ describe("Home", () => {
       const wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
-
-    it("should show filters when trip started", () => {
-      mockStore.getters.completeTrip = [{}];
-      const wrapper = shallowMountHome();
-      expect(wrapper.find(TripPanel).props().showFilters).toBe(true);
-    });
-
-    it("should show form", () => {
-      mockStore.getters.completeTrip = [{}];
-      const wrapper = shallowMountHome();
-      expect(wrapper.find(TripPanel).props().showForm).toBe(true);
-    });
   });
 
   describe("Welcome Panel", () => {

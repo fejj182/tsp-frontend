@@ -9,7 +9,7 @@ Vue.use(Vuetify);
 const localVue = createLocalVue();
 
 describe("ListDialog", () => {
-  let vuetify, mockStubs;
+  let vuetify, mockStubs, mockStore;
   beforeEach(() => {
     vuetify = new Vuetify();
     mockStubs = {
@@ -18,13 +18,36 @@ describe("ListDialog", () => {
         template: "<span><slot></slot></span>"
       }
     };
+    mockStore = {
+      getters: {
+        completeTrip: []
+      }
+    };
   });
   it("should contain TripPanel", () => {
     const wrapper = shallowMount(ListDialog, {
       stubs: mockStubs
     });
     expect(wrapper.find(TripPanel).exists()).toBe(true);
-    expect(wrapper.find(TripPanel).props().showForm).toBe(true);
+    expect(wrapper.find(TripPanel).props().showFilters).toBe(false);
+  });
+
+  it("should close dialog when event is emitted", () => {
+    const wrapper = shallowMount(ListDialog, {
+      data() {
+        return {
+          dialog: true
+        };
+      }
+    });
+
+    expect(wrapper.find("[data-test-id=list-dialog]").attributes().value).toBe(
+      "true"
+    );
+    wrapper.find(TripPanel).vm.$emit("close-dialog");
+    expect(wrapper.find("[data-test-id=list-dialog]").attributes().value).toBe(
+      undefined
+    );
   });
 
   it("should contain clipboard with number 0 if no stops selected", () => {
@@ -32,26 +55,19 @@ describe("ListDialog", () => {
       localVue,
       vuetify,
       mocks: {
-        $store: {
-          getters: {
-            completeTrip: []
-          }
-        }
+        $store: mockStore
       }
     });
     expect(wrapper.find("[data-test-id=clipboard-0]").exists()).toBe(true);
   });
 
   it("should contain clipboard with number 1 if 1 stop selected", () => {
+    mockStore.getters.completeTrip = [{}];
     const wrapper = mount(ListDialog, {
       localVue,
       vuetify,
       mocks: {
-        $store: {
-          getters: {
-            completeTrip: [{}]
-          }
-        }
+        $store: mockStore
       }
     });
     expect(wrapper.find("[data-test-id=clipboard-0]").exists()).toBe(false);

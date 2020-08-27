@@ -100,7 +100,6 @@ export default {
         }
       } else {
         this.$store.dispatch("resetTrip");
-        this.$router.push("/");
       }
     },
     autocompleteFilter(item, queryText, itemText) {

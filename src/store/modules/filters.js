@@ -1,5 +1,7 @@
+import paneConfigs from "@/modules/map/panes/paneConfigs";
+
 export const state = {
-  activeDurationRange: [0, 10]
+  activeDurationRange: [0, paneConfigs.NUMBER_OF_PANES - 1]
 };
 
 export const getters = {};

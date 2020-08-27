@@ -4,7 +4,7 @@
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>
       <v-btn
-        v-if="tripNotBegun || isConnection"
+        v-if="showAddButton"
         :id="buttonId"
         data-test-id="btn-add"
         color="indigo"
@@ -67,6 +67,9 @@ export default {
     },
     buttonId() {
       return `btn-add-${this.station.slug}`;
+    },
+    showAddButton() {
+      return this.$route.name === "planner";
     }
   },
   methods: {

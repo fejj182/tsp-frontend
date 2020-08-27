@@ -1,11 +1,11 @@
 <template>
   <v-container fluid class="grey lighten-5" id="home">
     <v-row no-gutters>
-      <v-col v-if="!isMobile" :md="3" cols="12">
+      <v-col v-if="!isMobile" :md="4" cols="12">
         <Welcome v-if="shouldWelcome" />
-        <TripPanel v-else :showForm="true" :showFilters="connectionsExist" />
+        <TripPanel v-else />
       </v-col>
-      <v-col :md="9" cols="12">
+      <v-col :md="8" cols="12">
         <Welcome v-if="isMobile && shouldWelcome" />
         <Map v-else />
       </v-col>

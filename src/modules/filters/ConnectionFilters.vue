@@ -2,12 +2,13 @@
   <div>
     <v-range-slider
       v-model="sliderRange"
-      :step="sliderSteps"
+      :step="stepInterval"
       @change="onSlide"
       :thumb-size="24"
       thumb-label="always"
       hint="Journey time (hours)"
       persistent-hint
+      data-test-id="journey-time-slider"
     >
       <template v-slot:thumb-label="{ value }">
         {{ thumbLabel(value) }}
@@ -17,19 +18,32 @@
 </template>
 
 <script>
+import paneConfigs from "@/modules/map/panes/paneConfigs";
 export default {
   data() {
     return {
-      sliderRange: [0, 100],
-      sliderSteps: 10
+      sliderRange: null
     };
   },
-  mounted() {
-    this.$store.dispatch("updateDurationRange", this.paneGroupRange);
+  created() {
+    this.sliderRange = this.$store.state.filters.activeDurationRange.map(
+      range => range * this.stepInterval
+    );
   },
   computed: {
     paneGroupRange() {
-      return this.sliderRange.map(score => score / this.sliderSteps);
+      return this.sliderRange.map(score => score / this.stepInterval);
+    },
+    storeSliderRange() {
+      return this.$store.state.filters.activeDurationRange.map(
+        range => range * this.stepInterval
+      );
+    },
+    sliderSteps() {
+      return paneConfigs.NUMBER_OF_PANES - 1;
+    },
+    stepInterval() {
+      return 100 / this.sliderSteps;
     }
   },
   methods: {
@@ -37,7 +51,7 @@ export default {
       this.$store.dispatch("updateDurationRange", this.paneGroupRange);
     },
     thumbLabel(value) {
-      const hours = value / this.sliderSteps;
+      const hours = value / this.stepInterval;
       return hours < this.sliderSteps ? hours : hours + "+";
     }
   }

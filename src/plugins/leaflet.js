@@ -97,6 +97,7 @@ export const generatePositionMarker = (station, map, position) => {
 
 export const bindPopupToMarker = (marker, popupHTML, onClick, buttonId) => {
   const popup = marker.bindPopup(popupHTML, {
+    closeButton: false,
     offset: [-3, -2]
   });
 
