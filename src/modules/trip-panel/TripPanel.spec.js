@@ -1,4 +1,4 @@
-import { shallowMount } from "@vue/test-utils";
+import { shallowMount, mount } from "@vue/test-utils";
 import cloneDeep from "lodash/cloneDeep";
 import Vue from "vue";
 import Vuetify from "vuetify";
@@ -27,32 +27,73 @@ describe("Trip Panel", () => {
   });
 
   describe("Expansion panels", () => {
-    test("should contain filter panel", () => {
+    test("should contain panels by default", () => {
       const wrapper = shallowMount(TripPanel, {
-        propsData: {
-          showFilters: true
-        },
         mocks: {
           $store: mockStore,
           $route: mockRoute
         }
       });
       expect(wrapper.find("[data-test-id=filter-panel]").exists()).toBe(true);
+      expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(
+        true
+      );
     });
 
-    test("should contain form panel", () => {
+    test("should not contain panels if props passed as false", () => {
       const wrapper = shallowMount(TripPanel, {
         propsData: {
-          showForm: true
+          showFilters: false,
+          showForm: false
         },
         mocks: {
           $store: mockStore,
           $route: mockRoute
         }
       });
+      expect(wrapper.find("[data-test-id=filter-panel]").exists()).toBe(false);
       expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(
-        true
+        false
       );
+    });
+
+    describe("close button", () => {
+      let mockStubs;
+      beforeEach(() => {
+        mockStubs = {
+          ConnectionFilters: {
+            name: "ConnectionFilters",
+            template: "<span></span>"
+          },
+          TripForm: {
+            name: "TripForm",
+            template: "<span></span>"
+          }
+        };
+      });
+      it("should close filters", () => {
+        const wrapper = mount(TripPanel, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        wrapper.find("[data-test-id=close-filters]").trigger("click");
+        expect(wrapper.emitted()["close-dialog"]).toBeTruthy();
+      });
+
+      it("should close trip form", () => {
+        const wrapper = mount(TripPanel, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          },
+          stubs: mockStubs
+        });
+        wrapper.find("[data-test-id=close-trip]").trigger("click");
+        expect(wrapper.emitted()["close-dialog"]).toBeTruthy();
+      });
     });
   });
 });

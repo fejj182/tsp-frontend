@@ -1,17 +1,27 @@
 <template>
   <v-container id="trip-panel">
     <v-expansion-panels focusable v-model="panel" multiple readonly>
-      <v-expansion-panel data-test-id="filter-panel">
+      <v-expansion-panel v-if="showFilters" data-test-id="filter-panel">
         <v-expansion-panel-header>
           Filter
+          <template v-slot:actions>
+            <v-icon @click="$emit('close-dialog')" data-test-id="close-filters">
+              mdi-close
+            </v-icon>
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <ConnectionFilters />
         </v-expansion-panel-content>
       </v-expansion-panel>
-      <v-expansion-panel data-test-id="trip-form-panel">
+      <v-expansion-panel v-if="showForm" data-test-id="trip-form-panel">
         <v-expansion-panel-header>
           Trip Plan
+          <template v-slot:actions>
+            <v-icon @click="$emit('close-dialog')" data-test-id="close-trip">
+              mdi-close
+            </v-icon>
+          </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
           <TripForm />
@@ -34,6 +44,16 @@ export default {
     return {
       panel: [0, 1]
     };
+  },
+  props: {
+    showFilters: {
+      type: Boolean,
+      default: true
+    },
+    showForm: {
+      type: Boolean,
+      default: true
+    }
   }
 };
 </script>

@@ -8,18 +8,19 @@
     >
       <template v-slot:activator="{ on }">
         <v-btn
+          v-if="!legend"
+          v-on="on"
           class="mx-2"
           fab
           small
           color="secondary"
-          v-on="on"
           ref="filter"
           data-test-id="btn-filter"
         >
           <v-icon>mdi-filter-outline</v-icon>
         </v-btn>
       </template>
-      <TripPanel />
+      <TripPanel :showForm="false" v-on:close-dialog="dialog = false" />
     </v-dialog>
   </div>
 </template>

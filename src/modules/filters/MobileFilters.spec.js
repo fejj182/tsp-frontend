@@ -27,6 +27,24 @@ describe("MobileFilters", () => {
     expect(wrapper.find(TripPanel).exists()).toBe(true);
   });
 
+  it("should close dialog when event is emitted", () => {
+    const wrapper = shallowMount(MobileFilters, {
+      data() {
+        return {
+          dialog: true
+        };
+      }
+    });
+
+    expect(wrapper.find("[data-test-id=v-dialog]").attributes().value).toBe(
+      "true"
+    );
+    wrapper.find(TripPanel).vm.$emit("close-dialog");
+    expect(wrapper.find("[data-test-id=v-dialog]").attributes().value).toBe(
+      undefined
+    );
+  });
+
   it("should create filter button", () => {
     const mockMap = {};
     const wrapper = shallowMount(MobileFilters, {
@@ -44,7 +62,18 @@ describe("MobileFilters", () => {
     );
   });
 
-  it("should remove filter button", () => {
+  it("should remove button from dom", () => {
+    const mockLegend = {
+      remove: jest.fn()
+    };
+    createLegend.mockReturnValue(mockLegend);
+    const wrapper = shallowMount(MobileFilters, {
+      stubs: mockStubs
+    });
+    expect(wrapper.find("[data-test-id=btn-filter]").exists()).toBe(false);
+  });
+
+  it("should remove filter when component destroyed", () => {
     const mockLegend = {
       remove: jest.fn()
     };

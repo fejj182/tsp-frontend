@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="dialog" :width="550">
+  <v-dialog v-model="dialog" :width="550" data-test-id="list-dialog">
     <template v-slot:activator="{ on }">
       <v-btn class="mx-2" fab small color="secondary" v-on="on">
         <img
@@ -9,7 +9,7 @@
         />
       </v-btn>
     </template>
-    <TripPanel />
+    <TripPanel :showFilters="false" v-on:close-dialog="dialog = false" />
   </v-dialog>
 </template>
 
