@@ -1,12 +1,12 @@
 <template>
   <v-container id="trip-panel">
-    <v-expansion-panels focusable v-model="panel" multiple readonly>
+    <v-expansion-panels v-model="panel" multiple readonly>
       <v-expansion-panel v-if="showFilters" data-test-id="filter-panel">
         <v-expansion-panel-header>
           Filter
           <template v-slot:actions>
             <v-icon @click="$emit('close-dialog')" data-test-id="close-filters">
-              mdi-close
+              {{ iconName }}
             </v-icon>
           </template>
         </v-expansion-panel-header>
@@ -19,7 +19,7 @@
           Trip Plan
           <template v-slot:actions>
             <v-icon @click="$emit('close-dialog')" data-test-id="close-trip">
-              mdi-close
+              {{ iconName }}
             </v-icon>
           </template>
         </v-expansion-panel-header>
@@ -45,6 +45,14 @@ export default {
       panel: [0, 1]
     };
   },
+  computed: {
+    isMobile() {
+      return window.innerWidth < 600;
+    },
+    iconName() {
+      return this.isMobile ? "mdi-close" : "";
+    }
+  },
   props: {
     showFilters: {
       type: Boolean,
@@ -61,6 +69,8 @@ export default {
 <style lang="scss" scoped>
 .v-expansion-panel-header {
   min-height: 32px !important;
+  background-color: whitesmoke;
+  cursor: default;
 }
 </style>
 
