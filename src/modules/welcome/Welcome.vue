@@ -1,7 +1,7 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${image})` }">
     <h1 data-test-id="welcome-title">
-      How far do you want to go?
+      Where can you reach by train today?
     </h1>
     <h2>
       Tell us how much time you have and we'll do the rest.
