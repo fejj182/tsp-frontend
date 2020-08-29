@@ -1,12 +1,12 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${image})` }">
     <h1 data-test-id="welcome-title">
-      The interactive route planner for your next train trip in Europe.
+      How far do you want to go?
     </h1>
     <h2>
-      Travel slow, efficient and sustainably.
+      Tell us how much time you have and we'll do the rest.
     </h2>
-    <h2>Built with <v-icon>mdi-heart</v-icon> for multi-journeys.</h2>
+    <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
 
     <v-form
       ref="form"
@@ -77,17 +77,25 @@ export default {
 
 <style lang="scss" scoped>
 h1 {
-  padding: 0.5em;
-  font-size: 24px;
+  padding: 0.25em;
+  font-size: 32px;
   text-align: center;
   color: white;
 }
 
-h2 {
-  padding: 0.25em;
-  font-size: 18px;
-  text-align: center;
+h2,
+h3 {
   color: white;
+  padding: 0.25em;
+  text-align: center;
+}
+
+h2 {
+  font-size: 20px;
+}
+
+h3 {
+  font-size: 18px;
 }
 
 #welcome {
@@ -120,7 +128,19 @@ h2 {
 
 @media only screen and (max-width: 600px) {
   #welcome-form {
-    padding: 1rem;
+    padding: 0.5rem;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  h3 {
+    font-size: 16px;
   }
 }
 
