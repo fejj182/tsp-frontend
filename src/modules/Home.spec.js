@@ -1,9 +1,9 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "@/modules/home/Home.vue";
+import Home from "@/modules/Home.vue";
 import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
-import CookieBanner from "@/modules/privacy/CookieBanner.vue";
+import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import flushPromises from "flush-promises";

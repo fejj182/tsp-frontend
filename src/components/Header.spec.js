@@ -18,8 +18,8 @@ describe("Header", () => {
       name: "v-spacer",
       template: "<span></span>"
     },
-    ListDialog: {
-      name: "ListDialog",
+    TripDialog: {
+      name: "TripDialog",
       template: "<span></span>"
     }
   };
@@ -40,7 +40,7 @@ describe("Header", () => {
     expect(wrapper.find("a > img").exists()).toBe(true);
   });
 
-  it("should not contain ListDialog on desktop", () => {
+  it("should not contain TripDialog on desktop", () => {
     const wrapper = shallowMount(Header, {
       mocks: {
         $route: mockRoute
@@ -50,7 +50,7 @@ describe("Header", () => {
     expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(false);
   });
 
-  it("should contain ListDialog on mobile", () => {
+  it("should contain TripDialog on mobile", () => {
     window.innerWidth = 500;
     const wrapper = shallowMount(Header, {
       mocks: {
@@ -61,7 +61,7 @@ describe("Header", () => {
     expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(true);
   });
 
-  it("should not contain ListDialog if route is welcome", () => {
+  it("should not contain TripDialog if route is welcome", () => {
     window.innerWidth = 500;
     mockRoute.name = "welcome";
     const wrapper = shallowMount(Header, {

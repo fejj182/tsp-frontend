@@ -1,5 +1,5 @@
 import { shallowMount } from "@vue/test-utils";
-import MobileFilters from "./MobileFilters";
+import FiltersDialog from "./FiltersDialog";
 import TripPanel from "@/modules/trip-panel/TripPanel";
 import { createLegend } from "@/plugins/leaflet.js";
 import { LEGEND_TOPRIGHT } from "@/modules/map/markers/types";
@@ -10,7 +10,7 @@ Vue.use(Vuetify);
 
 jest.mock("@/plugins/leaflet.js");
 
-describe("MobileFilters", () => {
+describe("FiltersDialog", () => {
   const mockStubs = {
     VDialog: {
       name: "v-dialog",
@@ -21,14 +21,14 @@ describe("MobileFilters", () => {
     jest.resetAllMocks();
   });
   it("should contain TripPanel", () => {
-    const wrapper = shallowMount(MobileFilters, {
+    const wrapper = shallowMount(FiltersDialog, {
       stubs: mockStubs
     });
     expect(wrapper.find(TripPanel).exists()).toBe(true);
   });
 
   it("should close dialog when event is emitted", () => {
-    const wrapper = shallowMount(MobileFilters, {
+    const wrapper = shallowMount(FiltersDialog, {
       data() {
         return {
           dialog: true
@@ -47,7 +47,7 @@ describe("MobileFilters", () => {
 
   it("should create filter button", () => {
     const mockMap = {};
-    const wrapper = shallowMount(MobileFilters, {
+    const wrapper = shallowMount(FiltersDialog, {
       stubs: mockStubs,
       propsData: {
         map: mockMap
@@ -67,7 +67,7 @@ describe("MobileFilters", () => {
       remove: jest.fn()
     };
     createLegend.mockReturnValue(mockLegend);
-    const wrapper = shallowMount(MobileFilters, {
+    const wrapper = shallowMount(FiltersDialog, {
       stubs: mockStubs
     });
     expect(wrapper.find("[data-test-id=btn-filter]").exists()).toBe(false);
@@ -78,7 +78,7 @@ describe("MobileFilters", () => {
       remove: jest.fn()
     };
     createLegend.mockReturnValue(mockLegend);
-    const wrapper = shallowMount(MobileFilters, {
+    const wrapper = shallowMount(FiltersDialog, {
       stubs: mockStubs
     });
     wrapper.destroy();
@@ -86,7 +86,7 @@ describe("MobileFilters", () => {
   });
 
   it("should pass function to createLegend that opens dialog", () => {
-    const wrapper = shallowMount(MobileFilters);
+    const wrapper = shallowMount(FiltersDialog);
     expect(wrapper.find("[data-test-id=v-dialog]").exists()).toBe(true);
     expect(wrapper.find("[data-test-id=v-dialog]").props().value).toBe(false);
     wrapper.vm.open();

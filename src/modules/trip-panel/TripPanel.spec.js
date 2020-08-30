@@ -61,8 +61,8 @@ describe("Trip Panel", () => {
       let mockStubs;
       beforeEach(() => {
         mockStubs = {
-          ConnectionFilters: {
-            name: "ConnectionFilters",
+          FiltersSlider: {
+            name: "FiltersSlider",
             template: "<span></span>"
           },
           TripForm: {

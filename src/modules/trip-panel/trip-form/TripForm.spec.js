@@ -6,8 +6,8 @@ import cloneDeep from "lodash/cloneDeep";
 
 import TripForm from "./TripForm.vue";
 import tripApi from "@/api/trip";
-import StartingDestination from "@/modules/trip/inputs/StartingDestination.vue";
-import Stop from "@/modules/trip/inputs/Stop.vue";
+import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
+import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";

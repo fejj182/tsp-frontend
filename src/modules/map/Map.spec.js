@@ -4,7 +4,7 @@ import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
 import Legend from "@/modules/map/legend/Legend.vue";
-import MobileFilters from "@/modules/filters/MobileFilters.vue";
+import FiltersDialog from "@/components/dialogs/FiltersDialog.vue";
 import paneUtils from "@/modules/map/panes/paneUtils";
 import { createMap, createPanes, flyTo } from "@/plugins/leaflet";
 
@@ -112,7 +112,7 @@ describe("Map", () => {
       }
     });
     Vue.nextTick(() => {
-      expect(wrapper.find(MobileFilters).exists()).toBe(true);
+      expect(wrapper.find(FiltersDialog).exists()).toBe(true);
       done();
     });
   });
@@ -125,7 +125,7 @@ describe("Map", () => {
       }
     });
     Vue.nextTick(() => {
-      expect(wrapper.find(MobileFilters).exists()).toBe(false);
+      expect(wrapper.find(FiltersDialog).exists()).toBe(false);
       done();
     });
   });
@@ -138,7 +138,7 @@ describe("Map", () => {
       }
     });
     Vue.nextTick(() => {
-      expect(wrapper.find(MobileFilters).exists()).toBe(false);
+      expect(wrapper.find(FiltersDialog).exists()).toBe(false);
       done();
     });
   });

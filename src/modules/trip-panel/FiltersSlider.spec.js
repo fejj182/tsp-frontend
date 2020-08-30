@@ -2,7 +2,7 @@ import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 
-import ConnectionFilters from "./ConnectionFilters.vue";
+import FiltersSlider from "./FiltersSlider.vue";
 
 jest.mock("@/modules/map/panes/paneUtils", () => ({
   displayPanesInRange: jest.fn()
@@ -10,7 +10,7 @@ jest.mock("@/modules/map/panes/paneUtils", () => ({
 
 Vue.use(Vuetify);
 
-describe("ConnectionFilters", () => {
+describe("FiltersSlider", () => {
   let mockStore, mockPanes;
 
   beforeEach(() => {
@@ -33,7 +33,7 @@ describe("ConnectionFilters", () => {
   });
   it("should update slider value from store", () => {
     mockStore.state.filters.activeDurationRange = [0, 4];
-    const wrapper = shallowMount(ConnectionFilters, {
+    const wrapper = shallowMount(FiltersSlider, {
       mocks: {
         $store: mockStore
       }
@@ -44,7 +44,7 @@ describe("ConnectionFilters", () => {
   });
 
   it("should update pane groups when slider changes", () => {
-    const wrapper = mount(ConnectionFilters, {
+    const wrapper = mount(FiltersSlider, {
       mocks: {
         $store: mockStore
       }
@@ -59,7 +59,7 @@ describe("ConnectionFilters", () => {
   describe("thumbLabel", () => {
     it("should show", () => {
       mockStore.state.filters.activeDurationRange = [0, 4];
-      const wrapper = mount(ConnectionFilters, {
+      const wrapper = mount(FiltersSlider, {
         mocks: {
           $store: mockStore
         }
@@ -74,7 +74,7 @@ describe("ConnectionFilters", () => {
 
     it("should return 6+ instead of 6", () => {
       mockStore.state.filters.activeDurationRange = [0, 6];
-      const wrapper = mount(ConnectionFilters, {
+      const wrapper = mount(FiltersSlider, {
         mocks: {
           $store: mockStore
         }

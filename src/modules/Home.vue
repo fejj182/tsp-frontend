@@ -20,7 +20,7 @@
 import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
-import CookieBanner from "@/modules/privacy/CookieBanner.vue";
+import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 import { resetMapSize } from "@/plugins/leaflet.js";
 
 export default {

@@ -82,8 +82,8 @@
 </template>
 
 <script>
-import StartingDestination from "@/modules/trip/inputs/StartingDestination.vue";
-import Stop from "@/modules/trip/inputs/Stop.vue";
+import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
+import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
 import tripApi from "@/api/trip";
 
 export default {

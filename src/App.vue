@@ -8,7 +8,7 @@
 </template>
 
 <script>
-const Header = () => import("@/modules/header/Header.vue");
+const Header = () => import("@/components/Header.vue");
 
 export default {
   name: "App",

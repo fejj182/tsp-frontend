@@ -2,8 +2,8 @@ import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import Welcome from "./Welcome";
-import StartingDestination from "@/modules/trip/inputs/StartingDestination";
-import MaxJourneyTime from "@/modules/trip/inputs/MaxJourneyTime";
+import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination";
+import MaxJourneyTime from "@/modules/trip-panel/trip-form/inputs/MaxJourneyTime";
 
 Vue.use(Vuetify);
 

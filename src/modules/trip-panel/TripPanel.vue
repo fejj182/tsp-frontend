@@ -11,7 +11,7 @@
           </template>
         </v-expansion-panel-header>
         <v-expansion-panel-content>
-          <ConnectionFilters />
+          <FiltersSlider />
         </v-expansion-panel-content>
       </v-expansion-panel>
       <v-expansion-panel v-if="showForm" data-test-id="trip-form-panel">
@@ -32,12 +32,12 @@
 </template>
 
 <script>
-import ConnectionFilters from "@/modules/filters/ConnectionFilters.vue";
-import TripForm from "@/modules/trip/TripForm.vue";
+import FiltersSlider from "@/modules/trip-panel/FiltersSlider.vue";
+import TripForm from "@/modules/trip-panel/trip-form/TripForm.vue";
 
 export default {
   components: {
-    ConnectionFilters,
+    FiltersSlider,
     TripForm
   },
   data() {

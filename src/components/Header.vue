@@ -14,17 +14,17 @@
         Multiple journey planner for train travel in Europe.
       </h1>
       <v-spacer></v-spacer>
-      <ListDialog data-test-id="list-dialog" v-if="showListDialog" />
+      <TripDialog data-test-id="list-dialog" v-if="showTripDialog" />
     </v-app-bar>
   </div>
 </template>
 
 <script>
-const ListDialog = () => import("@/modules/dialogs/ListDialog");
+const TripDialog = () => import("@/components/dialogs/TripDialog");
 
 export default {
   components: {
-    ListDialog
+    TripDialog
   },
   data() {
     return {
@@ -38,7 +38,7 @@ export default {
     showTitle() {
       return !this.isMobile && this.$route.name !== "welcome";
     },
-    showListDialog() {
+    showTripDialog() {
       return this.isMobile && this.$route.name !== "welcome";
     }
   },

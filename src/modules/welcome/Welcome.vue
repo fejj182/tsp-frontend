@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import StartingDestination from "@/modules/trip/inputs/StartingDestination";
-import MaxJourneyTime from "@/modules/trip/inputs/MaxJourneyTime";
+import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination";
+import MaxJourneyTime from "@/modules/trip-panel/trip-form/inputs/MaxJourneyTime";
 export default {
   data() {
     return {

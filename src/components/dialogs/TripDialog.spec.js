@@ -1,14 +1,14 @@
 import { shallowMount, mount, createLocalVue } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import ListDialog from "./ListDialog";
+import TripDialog from "./TripDialog";
 import TripPanel from "@/modules/trip-panel/TripPanel";
 
 Vue.use(Vuetify);
 
 const localVue = createLocalVue();
 
-describe("ListDialog", () => {
+describe("TripDialog", () => {
   let vuetify, mockStubs, mockStore;
   beforeEach(() => {
     vuetify = new Vuetify();
@@ -25,7 +25,7 @@ describe("ListDialog", () => {
     };
   });
   it("should contain TripPanel", () => {
-    const wrapper = shallowMount(ListDialog, {
+    const wrapper = shallowMount(TripDialog, {
       stubs: mockStubs
     });
     expect(wrapper.find(TripPanel).exists()).toBe(true);
@@ -33,7 +33,7 @@ describe("ListDialog", () => {
   });
 
   it("should close dialog when event is emitted", () => {
-    const wrapper = shallowMount(ListDialog, {
+    const wrapper = shallowMount(TripDialog, {
       data() {
         return {
           dialog: true
@@ -51,7 +51,7 @@ describe("ListDialog", () => {
   });
 
   it("should contain clipboard with number 0 if no stops selected", () => {
-    const wrapper = mount(ListDialog, {
+    const wrapper = mount(TripDialog, {
       localVue,
       vuetify,
       mocks: {
@@ -63,7 +63,7 @@ describe("ListDialog", () => {
 
   it("should contain clipboard with number 1 if 1 stop selected", () => {
     mockStore.getters.completeTrip = [{}];
-    const wrapper = mount(ListDialog, {
+    const wrapper = mount(TripDialog, {
       localVue,
       vuetify,
       mocks: {

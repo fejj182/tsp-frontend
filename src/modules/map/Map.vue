@@ -4,7 +4,7 @@
       <Markers :map="myMap" />
       <Lines v-if="tripStarted" :map="myMap" :waitingTimeInSeconds="slowFly" />
       <Legend :map="myMap" />
-      <MobileFilters v-if="showFilters" :map="myMap" />
+      <FiltersDialog v-if="showFilters" :map="myMap" />
     </div>
   </div>
 </template>
@@ -15,14 +15,14 @@ import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
 import Legend from "@/modules/map/legend/Legend.vue";
-import MobileFilters from "@/modules/filters/MobileFilters.vue";
+import FiltersDialog from "@/components/dialogs/FiltersDialog.vue";
 
 export default {
   components: {
     Markers,
     Lines,
     Legend,
-    MobileFilters
+    FiltersDialog
   },
   data() {
     return {
