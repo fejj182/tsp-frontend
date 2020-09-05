@@ -1,5 +1,6 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
+const path = require("path");
 
 module.exports = {
   pages: {
@@ -21,6 +22,12 @@ module.exports = {
       new BundleAnalyzerPlugin({
         analyzerMode: "disabled"
       })
-    ]
+    ],
+    resolve: {
+      alias: {
+        "@": path.resolve(__dirname, "src/"),
+        "@blog": path.resolve(__dirname, "blog/")
+      }
+    }
   }
 };
