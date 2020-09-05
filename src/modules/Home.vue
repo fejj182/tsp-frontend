@@ -1,13 +1,17 @@
 <template>
   <v-container fluid class="grey lighten-5" id="home">
-    <v-row no-gutters>
-      <v-col v-if="!isMobile" :md="4" cols="12">
+    <v-row no-gutters v-if="splitScreen">
+      <Welcome v-if="shouldWelcome" />
+      <Map v-else />
+    </v-row>
+
+    <v-row no-gutters v-else>
+      <v-col :md="4">
         <Welcome v-if="shouldWelcome" />
         <TripPanel v-else />
       </v-col>
-      <v-col :md="8" cols="12">
-        <Welcome v-if="isMobile && shouldWelcome" />
-        <Map v-else />
+      <v-col :md="8">
+        <Map />
       </v-col>
     </v-row>
     <footer>
@@ -46,8 +50,8 @@ export default {
     connectionsExist() {
       return this.$store.getters.completeTrip.length > 0;
     },
-    isMobile() {
-      return window.innerWidth < 600;
+    splitScreen() {
+      return window.innerWidth < 992;
     }
   },
   created() {
@@ -87,7 +91,7 @@ export default {
   padding: 4px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #home {
     padding: 0;
   }

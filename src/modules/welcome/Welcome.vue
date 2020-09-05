@@ -100,8 +100,8 @@ h3 {
 
 #welcome {
   max-width: 100%;
+  width: calc(100% - 4px);
   height: 100%;
-  margin-right: 4px;
   padding: 1rem;
   opacity: 0.9;
   background-size: cover;
@@ -126,6 +126,18 @@ h3 {
   padding: 2rem;
 }
 
+span {
+  color: white;
+  opacity: 0.8;
+  position: absolute;
+  bottom: 0;
+  padding: 0.15rem;
+  margin: 0.5rem 0.25rem;
+  a {
+    color: white;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   #welcome-form {
     padding: 0.5rem;
@@ -144,21 +156,9 @@ h3 {
   }
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #welcome {
-    margin-right: 0;
-  }
-}
-
-span {
-  color: white;
-  opacity: 0.8;
-  position: absolute;
-  bottom: 0;
-  padding: 0.15rem;
-  margin: 0.5rem 0.25rem;
-  a {
-    color: white;
+    width: 100%;
   }
 }
 </style>
