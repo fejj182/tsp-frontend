@@ -1,15 +1,27 @@
 <template>
   <div class="blog-post-header" :style="blogPostHeaderStyle" v-editable="blok">
     <div class="blog-post-header__text">
-      <h1 class="blog-post-header__text__title">
+      <h1>
         {{ blok.title }}
       </h1>
 
       <div class="blog-post-header__text__divisor" />
 
-      <h2 class="blog-post-header__text__summary">
+      <h2>
         {{ blok.summary }}
       </h2>
+
+      <div class="blog-post-header__published">
+        <span
+          class="blog-post-header__author published-item"
+          v-if="blok.author"
+        >
+          <v-icon>mdi-account-circle</v-icon>
+          <p>{{ blok.author }}</p>
+        </span>
+
+        <p class="published-item">{{ publishedDate }}</p>
+      </div>
     </div>
 
     <img
@@ -37,6 +49,9 @@ export default {
       }
 
       return {};
+    },
+    publishedDate() {
+      return this.blok.published.substring(0, 10);
     }
   }
 };
@@ -56,16 +71,39 @@ export default {
   background-position: center;
 }
 
-.blog-post-header__text__title {
-  font-size: 70px;
-}
-
 .blog-post-header__text {
   padding: 1.5rem;
-  font-size: 24px;
-  background: rgba(192, 192, 192, 0.75);
+  background: rgba(192, 192, 192, 0.625);
   color: #fff;
   text-align: center;
+  h1 {
+    font-size: 70px;
+  }
+
+  h2,
+  i {
+    font-size: 28px;
+  }
+
+  .published-item {
+    margin: 0 1rem;
+  }
+
+  p {
+    font-size: 18px;
+    display: inline;
+  }
+  .v-icon {
+    margin-right: 0.5rem;
+    color: white;
+  }
+}
+
+.blog-post-header__published {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  padding-top: 1rem;
 }
 
 .blog-post-header__text__divisor {
@@ -83,13 +121,18 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
-  .blog-post-header__text__title {
-    font-size: 35px;
-  }
-
   .blog-post-header__text {
     padding: 0.5rem;
-    font-size: 18px;
+    h1 {
+      font-size: 28px;
+    }
+    h2,
+    i {
+      font-size: 22px;
+    }
+    p {
+      font-size: 16px;
+    }
   }
 }
 </style>
