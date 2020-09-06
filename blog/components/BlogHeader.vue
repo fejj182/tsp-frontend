@@ -11,11 +11,11 @@
         {{ blok.summary }}
       </h2>
 
-      <div class="blog-post-header__published">
-        <span
-          class="blog-post-header__author published-item"
-          v-if="blok.author"
-        >
+      <div
+        class="blog-post-header__published"
+        v-if="blok.author && blok.published"
+      >
+        <span class="blog-post-header__author published-item">
           <v-icon>mdi-account-circle</v-icon>
           <p>{{ blok.author }}</p>
         </span>
