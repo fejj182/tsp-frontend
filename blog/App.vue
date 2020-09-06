@@ -1,7 +1,28 @@
 <template>
-  <router-view></router-view>
+  <v-app id="v-app">
+    <Header />
+    <router-view></router-view>
+  </v-app>
 </template>
 
 <script>
-export default {};
+import Header from "@blog/components/Header";
+export default {
+  components: {
+    Header
+  }
+};
 </script>
+
+<style lang="scss">
+#v-app * {
+  font-family: "Raleway", sans-serif;
+  font-weight: 600;
+}
+@media only screen and (max-width: 600px) {
+  #v-app .v-application--wrap {
+    min-height: calc(100vh);
+    min-height: calc(var(--vh, 1vh) * 100);
+  }
+}
+</style>

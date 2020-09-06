@@ -43,13 +43,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/reset.css";
-@import "../assets/global.scss";
-
 .blog-post-header {
   position: relative;
   width: 100%;
-  min-height: 708px;
+  min-height: 70vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -59,33 +56,21 @@ export default {
   background-position: center;
 }
 
-.blog-post-header__image {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
+.blog-post-header__text__title {
+  font-size: 70px;
 }
 
 .blog-post-header__text {
-  padding: $desktop-container-spacing;
+  padding: 1.5rem;
   font-size: 24px;
   background: rgba(192, 192, 192, 0.75);
-  max-width: 700px;
   color: #fff;
   text-align: center;
-  z-index: 2;
-}
-
-.blog-post-header__text__title {
-  font-size: 70px;
-  font-weight: 600;
-  margin-bottom: 10px;
-  line-height: 1.15;
 }
 
 .blog-post-header__text__divisor {
-  margin: $desktop-grid-gap auto;
-  width: 150px;
+  margin: 1.5rem auto;
+  width: 40%;
   height: 2px;
   background-color: #fff;
 }
@@ -93,44 +78,18 @@ export default {
 .blog-post-header .arrow-down-icon {
   position: absolute;
   left: 50%;
-  bottom: -34px;
-  transform: translateX(-50%);
+  bottom: 0;
+  transform: translate(-50%, 50%);
 }
 
-.blog-post-header__text__summary {
-  margin-top: 10px;
-}
-
-@media screen and (min-width: 1440px) {
-  .blog-post-header {
-    background-position: center;
-  }
-}
-
-@media screen and (max-width: 1200px) {
-  .blog-post-header {
-    min-height: 455px;
-    background-size: cover;
-  }
-}
-
-@media screen and (max-width: $mobile) {
-  .blog-post-header {
-    background-size: cover;
-  }
-
-  .blog-post-header__image {
-    width: 100%;
-    position: relative;
+@media screen and (max-width: 992px) {
+  .blog-post-header__text__title {
+    font-size: 35px;
   }
 
   .blog-post-header__text {
-    padding: $mobile-container-spacing;
+    padding: 0.5rem;
     font-size: 18px;
-  }
-
-  .blog-post-header__text__title {
-    font-size: 35px;
   }
 }
 </style>
