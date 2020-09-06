@@ -69,69 +69,72 @@ export default {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-}
+  margin-bottom: 4rem;
 
-.blog-post-header__text {
-  padding: 1.5rem;
-  background: rgba(192, 192, 192, 0.625);
-  color: #fff;
-  text-align: center;
-  h1 {
-    font-size: 70px;
+  .blog-post-header__text {
+    padding: 1rem;
+    background: rgba(192, 192, 192, 0.625);
+    color: #fff;
+    text-align: center;
+    h1 {
+      font-size: 70px;
+    }
+
+    h2,
+    i {
+      font-size: 28px;
+    }
+
+    .published-item {
+      margin: 0 1rem;
+    }
+
+    p {
+      font-size: 18px;
+      display: inline;
+    }
+    .v-icon {
+      margin-right: 0.5rem;
+      color: white;
+    }
+
+    .blog-post-header__published {
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+      padding-top: 1rem;
+    }
+
+    .blog-post-header__text__divisor {
+      margin: 1.5rem auto;
+      width: 40%;
+      height: 2px;
+      background-color: #fff;
+    }
   }
 
-  h2,
-  i {
-    font-size: 28px;
+  .arrow-down-icon {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%, 50%);
   }
-
-  .published-item {
-    margin: 0 1rem;
-  }
-
-  p {
-    font-size: 18px;
-    display: inline;
-  }
-  .v-icon {
-    margin-right: 0.5rem;
-    color: white;
-  }
-}
-
-.blog-post-header__published {
-  display: flex;
-  justify-content: center;
-  padding: 0.5rem;
-  padding-top: 1rem;
-}
-
-.blog-post-header__text__divisor {
-  margin: 1.5rem auto;
-  width: 40%;
-  height: 2px;
-  background-color: #fff;
-}
-
-.blog-post-header .arrow-down-icon {
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translate(-50%, 50%);
 }
 
 @media screen and (max-width: 992px) {
-  .blog-post-header__text {
-    padding: 0.5rem;
-    h1 {
-      font-size: 28px;
-    }
-    h2,
-    i {
-      font-size: 22px;
-    }
-    p {
-      font-size: 16px;
+  .blog-post-header {
+    .blog-post-header__text {
+      padding: 0.5rem;
+      h1 {
+        font-size: 28px;
+      }
+      h2,
+      i {
+        font-size: 22px;
+      }
+      p {
+        font-size: 16px;
+      }
     }
   }
 }
