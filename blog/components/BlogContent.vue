@@ -37,7 +37,9 @@ export default {
     }
   },
   created() {
-    this.paragraphs = this.blok.content.split("\n\n");
+    this.paragraphs = this.blok.content
+      .split("\n")
+      .filter(paragraph => paragraph !== "");
   }
 };
 </script>
