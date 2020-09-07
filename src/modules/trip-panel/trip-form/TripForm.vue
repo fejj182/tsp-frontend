@@ -17,20 +17,19 @@
       v-model="invalid"
       text
       dense
-      dismissible
       type="info"
     >
       No stop selected
     </v-alert>
     <v-alert
-      v-if="alias"
+      v-if="success"
       data-test-id="success-alias"
       dense
       text
       dismissible
       type="success"
     >
-      Your trip has been created at your personal URL!
+      Trip created! Share or bookmark this page as you please.
     </v-alert>
     <v-alert
       v-if="updated"
@@ -39,7 +38,7 @@
       text
       type="success"
     >
-      Trip {{ alias }} updated!
+      Trip updated!
     </v-alert>
     <v-alert v-if="copySucceeded === true" dense text color="indigo">
       <v-icon color="indigo" left>mdi-share-variant</v-icon> Link copied to
@@ -94,7 +93,7 @@ export default {
   data() {
     return {
       invalid: false,
-      alias: null,
+      success: false,
       updated: false,
       copySucceeded: null
     };
@@ -134,6 +133,9 @@ export default {
         );
       } else {
         this.invalid = true;
+        setTimeout(() => {
+          this.invalid = false;
+        }, 2000);
       }
     },
     resetTrip() {
@@ -154,8 +156,11 @@ export default {
       if (this.completeTrip.length >= 2) {
         const response = await tripApi.create(this.completeTrip);
         if (response && response.alias) {
-          this.alias = response.alias;
           this.$router.push("trip/" + response.alias);
+          this.success = true;
+          setTimeout(() => {
+            this.success = false;
+          }, 10000);
         }
       }
     },
@@ -168,7 +173,7 @@ export default {
         this.updated = true;
         setTimeout(() => {
           this.updated = false;
-        }, 2000);
+        }, 3000);
       }
     },
     onCopySuccess() {
@@ -208,7 +213,7 @@ export default {
   }
 
   #trip-form .v-btn {
-    min-width: 110px;
+    min-width: 115px;
   }
 }
 </style>
