@@ -36,7 +36,6 @@
 import { getImageMetaData } from "../utils/image";
 
 export default {
-  name: "BlogHeader",
   props: ["blok"],
   computed: {
     blogPostHeaderStyle() {
@@ -61,7 +60,7 @@ export default {
 .blog-post-header {
   position: relative;
   width: 100%;
-  min-height: 70vh;
+  min-height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,6 +71,7 @@ export default {
   margin-bottom: 4rem;
 
   .blog-post-header__text {
+    margin-top: -10%;
     padding: 1rem;
     background: rgba(192, 192, 192, 0.625);
     color: #fff;

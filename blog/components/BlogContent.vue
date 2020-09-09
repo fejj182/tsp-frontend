@@ -20,7 +20,6 @@
 import { getImageMetaData } from "../utils/image";
 
 export default {
-  name: "BlogContent",
   props: ["blok"],
   data() {
     return {
