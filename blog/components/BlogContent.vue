@@ -8,6 +8,10 @@
       <p v-for="(paragraph, index) in paragraphs" :key="index">
         {{ paragraph }}
       </p>
+
+      <v-card v-if="blok.graphic">
+        <v-img :src="blok.graphic" contain></v-img>
+      </v-card>
     </div>
   </div>
 </template>
@@ -50,11 +54,28 @@ export default {
   h3 {
     margin-bottom: 2rem;
   }
+  .v-card {
+    width: 50%;
+    margin: 4rem auto 2rem;
+  }
 }
 
 @media screen and (max-width: 992px) {
   .blog-post-content {
     padding: 1rem 2rem;
+    .v-card {
+      width: 75%;
+      margin: 2rem auto 0;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .blog-post-content {
+    .v-card {
+      width: 95%;
+      margin: 2rem auto 0;
+    }
   }
 }
 </style>
