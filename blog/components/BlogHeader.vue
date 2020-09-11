@@ -26,6 +26,10 @@
           </span>
 
           <p class="published-item">{{ publishedDate }}</p>
+
+          <p class="published-item">
+            <v-icon>mdi-clock-outline</v-icon>{{ blok.readingTime }} mins
+          </p>
         </div>
       </div>
     </div>
@@ -97,23 +101,25 @@ export default {
       }
 
       .published-item {
-        margin: 0 1rem;
+        margin: 0 1.5rem;
       }
 
       p {
         font-size: 18px;
         display: inline;
       }
-      .v-icon {
+      i {
         margin-right: 0.5rem;
         color: white;
       }
 
       .blog-post-header__published {
         display: flex;
-        justify-content: center;
-        padding: 0.5rem;
+        justify-content: space-around;
+        padding: 0.5rem 0;
         padding-top: 1rem;
+        max-width: 500px;
+        margin: 0 auto;
       }
 
       .blog-post-header__text__divisor {
@@ -138,10 +144,24 @@ export default {
         h2,
         i {
           font-size: 22px;
+          margin-right: 0.25rem;
         }
         p {
           font-size: 16px;
         }
+        .published-item {
+          margin: 0.25rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .blog-post-header {
+    .blog-post-header__content {
+      .blog-post-header__text {
+        width: 100%;
       }
     }
   }
