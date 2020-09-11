@@ -24,6 +24,7 @@ export default {
     };
   },
   created() {
+    this.setMobileViewportHeight();
     window.storyblok.init({
       accessToken: token
     });
@@ -50,6 +51,10 @@ export default {
         .then(response => {
           this.story = response.data.story;
         });
+    },
+    setMobileViewportHeight() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty("--vh", `${vh}px`);
     }
   }
 };
