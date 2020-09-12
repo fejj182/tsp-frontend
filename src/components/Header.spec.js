@@ -21,6 +21,10 @@ describe("Header", () => {
     TripDialog: {
       name: "TripDialog",
       template: "<span></span>"
+    },
+    HeaderMenu: {
+      name: "HeaderMenu",
+      template: "<span></span>"
     }
   };
 
@@ -38,6 +42,27 @@ describe("Header", () => {
       stubs: mockStubs
     });
     expect(wrapper.find("a > img").exists()).toBe(true);
+  });
+
+  it("should contain HeaderMenu on welcome page", () => {
+    mockRoute.name = "welcome";
+    const wrapper = shallowMount(Header, {
+      mocks: {
+        $route: mockRoute
+      },
+      stubs: mockStubs
+    });
+    expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(true);
+  });
+
+  it("should not contain HeaderMenu if not on welcome page", () => {
+    const wrapper = shallowMount(Header, {
+      mocks: {
+        $route: mockRoute
+      },
+      stubs: mockStubs
+    });
+    expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(false);
   });
 
   it("should not contain TripDialog on desktop", () => {
