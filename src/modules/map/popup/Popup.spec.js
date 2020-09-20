@@ -152,15 +152,20 @@ describe("Popup", () => {
     });
 
     describe("Buttons", () => {
-      describe("begin trip", () => {
-        it("should show begin trip button if on planner", () => {
-          mockRoute.name = "planner"
+      describe("add to trip", () => {
+        it("should show begin trip button if trip if not started yet", () => {
           const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
         });
 
-        it("should not show begin trip button not on planner", () => {
-          mockRoute.name = "notPlanner"
+        it("should show begin trip button if trip started and is a connection", () => {
+          mockStore.state.trip.savedTrip = [{}, mockProps.station];
+          const wrapper = shallowMountPopup();
+          expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
+        });
+
+        it("should not show begin trip button if station is not last stop in saved trip", () => {
+          mockStore.state.trip.savedTrip = [mockProps.station, {}];
           const wrapper = shallowMountPopup();
           expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
         });

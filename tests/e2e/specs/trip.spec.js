@@ -55,8 +55,6 @@ function createTrip() {
 function resetTrip() {
   cy.get("[data-test-id=reset-trip]").click();
   cy.get(".stop").should("not.exist");
-  cy.reload();
-  cy.get(".stop").should("not.exist");
 }
 
 function assertReloadedTripInCorrectState() {
@@ -70,6 +68,7 @@ function assertReloadedTripInCorrectState() {
   cy.get("#stop-2 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
+  cy.get(".starting-marker").should("not.exist"); //TODO: check in prod
   cy.get(".position-1").should("exist");
   cy.get(".position-2").should("exist");
   cy.get(".position-3").should("exist");
@@ -88,6 +87,7 @@ function assertStopCanBeAdded() {
     .first()
     .click();
   cy.get("#stop-3 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("[data-test-id=btn-add]").click();
 
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");

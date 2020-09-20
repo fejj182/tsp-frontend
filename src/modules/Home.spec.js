@@ -106,19 +106,27 @@ describe("Home", () => {
       );
     });
 
-    it("should fetch trip if url matches", () => {
-      shallowMount(Home, {
-        mocks: {
-          $route: {
-            name: "alias",
-            params: {
-              alias: "some-alias"
-            }
-          },
-          $store: mockStore,
-          $feature: jest.fn()
+    it("should not fetch starting stations if route name is alias", () => {
+      mockRoute = {
+        name: "alias",
+        params: {
+          alias: "some-alias"
         }
-      });
+      };
+      shallowMountHome();
+      expect(mockStore.dispatch).not.toHaveBeenCalledWith(
+        "fetchStartingStations"
+      );
+    });
+
+    it("should fetch trip if url matches", () => {
+      mockRoute = {
+        name: "alias",
+        params: {
+          alias: "some-alias"
+        }
+      };
+      shallowMountHome();
       expect(mockStore.dispatch).toHaveBeenCalledWith("fetchTrip", {
         alias: "some-alias"
       });

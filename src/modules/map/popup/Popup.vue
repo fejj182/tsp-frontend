@@ -69,7 +69,7 @@ export default {
       return `btn-add-${this.station.slug}`;
     },
     showAddButton() {
-      return this.$route.name === "planner";
+      return this.tripNotBegun || this.isConnection;
     }
   },
   methods: {

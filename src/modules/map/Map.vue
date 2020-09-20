@@ -31,7 +31,6 @@ export default {
       mapPanes: null,
       lowZoom: 6,
       regularZoom: 7,
-      fastFly: 0.75,
       slowFly: 1.5
     };
   },
@@ -61,10 +60,10 @@ export default {
       }
     },
     mapZoom() {
-      if (this.completeTrip.length > 0) {
-        return this.lowZoom;
+      if (this.isMobile) {
+        return this.$route.name === "alias" ? this.lowZoom - 1 : this.lowZoom;
       } else {
-        return window.innerWidth > 600 ? this.regularZoom : this.lowZoom;
+        return this.$route.name === "alias" ? this.lowZoom : this.regularZoom;
       }
     },
     showFilters() {
@@ -78,9 +77,6 @@ export default {
     }
   },
   methods: {
-    flySpeed(trip) {
-      return trip.length == 1 ? this.fastFly : this.slowFly;
-    },
     flyCoords(trip) {
       if (trip.length > 0) {
         const stop = trip[trip.length - 1];
@@ -95,12 +91,8 @@ export default {
       displayPanesInRange(this.mapPanes, range);
     },
     completeTrip(trip) {
-      flyTo(
-        this.myMap,
-        this.mapZoom,
-        this.flyCoords(trip),
-        this.flySpeed(trip)
-      );
+      //TODO: should this happen only in certain conditions?
+      flyTo(this.myMap, this.lowZoom, this.flyCoords(trip), this.slowFly);
     }
   }
 };

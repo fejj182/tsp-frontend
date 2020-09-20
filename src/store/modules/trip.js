@@ -25,7 +25,7 @@ export const getters = {
 
 export const actions = {
   async fetchTrip({ commit, dispatch }, payload) {
-    dispatch("fetchStartingStations");
+    dispatch("fetchStartingStations"); //TODO: should this be here or called on reset
     const trip = await tripApi.get(payload.alias);
     if (trip && trip.length > 0) {
       commit("LOAD_TRIP", trip);

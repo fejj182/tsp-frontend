@@ -24,7 +24,7 @@ jest.mock("@/plugins/leaflet", () => ({
 }));
 
 describe("Map", () => {
-  let mockOn, mockOff, mockStore, mockMap, mockPanes;
+  let mockOn, mockOff, mockStore, mockMap, mockPanes, mockRoute;
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -60,12 +60,16 @@ describe("Map", () => {
     createMap.mockReturnValue(mockMap);
     mockPanes = {};
     createPanes.mockReturnValue(mockPanes);
+    mockRoute = {
+      name: "route"
+    };
   });
 
   it("should contain the markers", done => {
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -78,7 +82,8 @@ describe("Map", () => {
     mockStore.state.trip.savedTrip = [{}, {}];
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -94,7 +99,8 @@ describe("Map", () => {
   it("should not contain the lines", done => {
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -108,7 +114,8 @@ describe("Map", () => {
     mockStore.getters.completeTrip = [{}];
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -121,7 +128,8 @@ describe("Map", () => {
     mockStore.getters.completeTrip = [{}];
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -134,7 +142,8 @@ describe("Map", () => {
     window.innerWidth = 500;
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -146,7 +155,8 @@ describe("Map", () => {
   it("should contain the legend", done => {
     const wrapper = shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     Vue.nextTick(() => {
@@ -166,7 +176,8 @@ describe("Map", () => {
         };
       },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     expect(createMap).toBeCalledWith("map", [10, 20], 10);
@@ -179,17 +190,12 @@ describe("Map", () => {
       { lat: 2, lng: 3 }
     ];
     shallowMount(Map, {
-      data() {
-        return {
-          lowZoom: 6,
-          defaultCentre: [1, 2]
-        };
-      },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
-    expect(createMap).toBeCalledWith("map", [1, 2], 6);
+    expect(createMap).toBeCalledWith("map", [1, 2], expect.any(Number));
   });
 
   it("should call create map with middle station if number stops even if trip started", () => {
@@ -200,21 +206,16 @@ describe("Map", () => {
       { lat: 3, lng: 4 }
     ];
     shallowMount(Map, {
-      data() {
-        return {
-          lowZoom: 6,
-          defaultCentre: [1, 2]
-        };
-      },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
-    expect(createMap).toBeCalledWith("map", [1, 2], 6);
+    expect(createMap).toBeCalledWith("map", [1, 2], expect.any(Number));
   });
 
-  it("should call create map with low zoom when trip started", () => {
-    mockStore.getters.completeTrip = [{ lat: 1, lng: 2 }];
+  it("should call create map with low zoom when loading trip", () => {
+    mockRoute.name = "alias";
     shallowMount(Map, {
       data() {
         return {
@@ -222,16 +223,35 @@ describe("Map", () => {
         };
       },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
-    expect(createMap).toBeCalledWith("map", [1, 2], 2);
+    expect(createMap).toBeCalledWith("map", expect.any(Array), 2);
+  });
+
+  it("should call create map with very low zoom when loading trip on mobile", () => {
+    window.innerWidth = 500;
+    mockRoute.name = "alias";
+    shallowMount(Map, {
+      data() {
+        return {
+          lowZoom: 2
+        };
+      },
+      mocks: {
+        $store: mockStore,
+        $route: mockRoute
+      }
+    });
+    expect(createMap).toBeCalledWith("map", expect.any(Array), 1);
   });
 
   it("should create panes", () => {
     shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     expect(createPanes).toHaveBeenCalledWith(mockMap);
@@ -242,7 +262,8 @@ describe("Map", () => {
     mockStore.state.filters.activeDurationRange = mockActiveDurationRange;
     shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     expect(paneUtils.displayPanesInRange).toHaveBeenCalledWith(
@@ -254,7 +275,8 @@ describe("Map", () => {
   it("should update pane groups when activeDurationRange changes", () => {
     shallowMount(Map, {
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     const mockActiveDurationRange = [1, 2];
@@ -269,15 +291,16 @@ describe("Map", () => {
     shallowMount(Map, {
       data() {
         return {
-          fastFly: 0.1
+          slowFly: 1
         };
       },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     mockStore.getters.completeTrip = [{ lat: 1, lng: 2 }];
-    expect(flyTo).toHaveBeenCalledWith(mockMap, 6, [1, 2], 0.1);
+    expect(flyTo).toHaveBeenCalledWith(mockMap, 6, [1, 2], 1);
   });
 
   it("should call flyTo with last stop", () => {
@@ -289,7 +312,8 @@ describe("Map", () => {
         };
       },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     mockStore.getters.completeTrip = [
@@ -304,16 +328,17 @@ describe("Map", () => {
     shallowMount(Map, {
       data() {
         return {
-          regularZoom: 10,
+          lowZoom: 5,
           defaultCentre: [10, 20],
           slowFly: 3
         };
       },
       mocks: {
-        $store: mockStore
+        $store: mockStore,
+        $route: mockRoute
       }
     });
     mockStore.getters.completeTrip = [];
-    expect(flyTo).toHaveBeenCalledWith(mockMap, 10, [10, 20], 3);
+    expect(flyTo).toHaveBeenCalledWith(mockMap, 5, [10, 20], 3);
   });
 });

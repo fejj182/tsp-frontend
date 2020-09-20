@@ -2,7 +2,7 @@
   <v-container fluid class="grey lighten-5" id="home">
     <v-row no-gutters v-if="splitScreen">
       <Welcome v-if="shouldWelcome" />
-      <Map v-else />
+      <Map v-else-if="dataLoaded" />
     </v-row>
 
     <v-row no-gutters v-else>
@@ -11,7 +11,7 @@
         <TripPanel v-else />
       </v-col>
       <v-col :md="8">
-        <Map />
+        <Map v-if="dataLoaded" />
       </v-col>
     </v-row>
     <footer>
@@ -25,7 +25,6 @@ import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
 import CookieBanner from "@/modules/cookies/CookieBanner.vue";
-import { resetMapSize } from "@/plugins/leaflet.js";
 
 export default {
   name: "home",
@@ -44,9 +43,6 @@ export default {
     shouldWelcome() {
       return this.$route.name === "welcome" && this.$feature("welcomePanel");
     },
-    shouldFetchStartingStations() {
-      return this.$store.state.stations.startingStations.length === 0;
-    },
     connectionsExist() {
       return this.$store.getters.completeTrip.length > 0;
     },
@@ -60,16 +56,16 @@ export default {
         .dispatch("fetchTrip", { alias: this.$route.params.alias })
         .then(() => (this.dataLoaded = true));
     }
-    if (this.shouldFetchStartingStations) {
+    if (
+      this.$store.state.stations.startingStations.length === 0 &&
+      this.$route.name !== "alias"
+    ) {
       this.$store
         .dispatch("fetchStartingStations")
         .then(() => (this.dataLoaded = true));
     }
   },
   mounted() {
-    if (!this.shouldWelcome) {
-      resetMapSize();
-    }
     this.setMobileViewportHeight();
   },
   methods: {
