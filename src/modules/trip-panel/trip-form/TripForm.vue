@@ -63,7 +63,10 @@
         :block="!tripSaved"
         data-test-id="save-trip"
       >
-        <v-icon left>mdi-bookmark</v-icon>{{ save }}
+        <v-icon left>
+          {{ saveIcon }}
+        </v-icon>
+        {{ save }}
       </v-btn>
 
       <v-btn
@@ -110,6 +113,9 @@ export default {
     },
     save() {
       return this.$route.name != "alias" ? "Save" : "Update";
+    },
+    saveIcon() {
+      return this.$route.name != "alias" ? "mdi-bookmark" : "mdi-update";
     },
     tripSaved() {
       return this.$route.name === "alias" && this.hasStops;

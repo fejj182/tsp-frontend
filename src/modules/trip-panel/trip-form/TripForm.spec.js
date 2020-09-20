@@ -346,6 +346,20 @@ describe("TripForm", () => {
           expect(wrapper.find("[data-test-id=save-trip]").exists()).toBe(false);
         });
 
+        it("should show save button", () => {
+          mockStore.getters.hasStops = true;
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore,
+              $router: mockRouter,
+              $route: mockRoute
+            },
+            stubs: mockStubs
+          });
+          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe("Save");
+          expect(wrapper.find(".mdi-bookmark").exists()).toBe(true);
+        });
+
         it("should call create in tripApi", () => {
           mockStore.getters.hasStops = true;
           const wrapper = mount(TripForm, {
@@ -440,6 +454,23 @@ describe("TripForm", () => {
             }
           };
         });
+
+        it("should show update button if route name is alias", () => {
+          mockStore.getters.hasStops = true;
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore,
+              $router: mockRouter,
+              $route: mockRoute
+            },
+            stubs: mockStubs
+          });
+          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe(
+            "Update"
+          );
+          expect(wrapper.find(".mdi-update").exists()).toBe(true);
+        });
+
         it("should call tripApi update if route name is alias", () => {
           mockStore.getters.hasStops = true;
           const wrapper = mount(TripForm, {
