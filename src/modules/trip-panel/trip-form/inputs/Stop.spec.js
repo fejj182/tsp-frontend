@@ -17,7 +17,7 @@ jest.mock("@/modules/map/panes/paneUtils");
 Vue.use(Vuetify);
 
 describe("Stop", () => {
-  let mockStore;
+  let mockStore, madrid, valencia;
   beforeEach(() => {
     mockStore = {
       dispatch: jest.fn(),
@@ -30,10 +30,48 @@ describe("Stop", () => {
         completeTrip: []
       }
     };
+    valencia = fakeStation({ name: "valencia" });
+    madrid = fakeStation({ name: "madrid" });
     filterStationsOutOfRange.mockReturnValue([]);
   });
+
+  it("should show duration if stop has been selected", () => {
+    mockStore.state.trip.savedTrip = [madrid, valencia];
+    const stations = [valencia, madrid];
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations,
+        stopNumber: 1
+      }
+    });
+    expect(wrapper.find("[data-test-id=duration]").exists()).toBe(true);
+    expect(wrapper.find("[data-test-id=duration]").text()).toContain(
+      "mdi-clock-outline"
+    );
+    expect(wrapper.find("[data-test-id=duration]").text()).toContain(
+      toHoursAndMinutes(valencia.duration)
+    );
+  });
+
+  it("should not show duration if no stop has been selected", () => {
+    mockStore.state.trip.savedTrip = [];
+    const stations = [valencia, madrid];
+    const wrapper = shallowMount(Stop, {
+      mocks: {
+        $store: mockStore
+      },
+      propsData: {
+        stations,
+        stopNumber: 1
+      }
+    });
+    expect(wrapper.find("[data-test-id=duration]").exists()).toBe(false);
+  });
+
   test("when stop changes, should updated selected stop in store", () => {
-    const station = fakeStation();
     const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
@@ -42,14 +80,11 @@ describe("Stop", () => {
         stations: []
       }
     });
-    wrapper.find("[data-test-id=stop").vm.$emit("change", station);
-    expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", station);
+    wrapper.find("[data-test-id=stop").vm.$emit("change", madrid);
+    expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", madrid);
   });
 
   it("should use filtered stations as items prop in autocomplete if last stop", () => {
-    const valencia = fakeStation({ name: "valencia" });
-    const madrid = fakeStation({ name: "madrid" });
-
     const stations = [valencia, madrid];
     mockStore.state.trip.stops = [{}, {}];
     filterStationsOutOfRange.mockReturnValue([valencia]);
@@ -71,9 +106,6 @@ describe("Stop", () => {
   });
 
   it("should use unfiltered stations as items prop in autocomplete if not last stop", () => {
-    const valencia = fakeStation({ name: "valencia" });
-    const madrid = fakeStation({ name: "madrid" });
-
     const stations = [valencia, madrid];
     mockStore.state.trip.stops = [{}, {}];
     filterStationsOutOfRange.mockReturnValue([valencia]);
@@ -95,8 +127,6 @@ describe("Stop", () => {
   });
 
   it("should set value of stop from correct stop in savedTrip", () => {
-    const valencia = fakeStation({ name: "valencia" });
-    const madrid = fakeStation({ name: "madrid" });
     mockStore.state.trip.savedTrip = [madrid, valencia];
 
     const wrapper = shallowMount(Stop, {
@@ -115,9 +145,6 @@ describe("Stop", () => {
   });
 
   it("should have value null if there are no stations in the store", () => {
-    const valencia = fakeStation({ name: "valencia" });
-    const madrid = fakeStation({ name: "madrid" });
-
     const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore

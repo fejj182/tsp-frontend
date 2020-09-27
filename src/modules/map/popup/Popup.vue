@@ -138,5 +138,6 @@ h1,
 
 #duration {
   margin: 0 0.5rem 0 0.25rem;
+  color: #303f9f;
 }
 </style>

@@ -47,7 +47,7 @@
     <v-alert v-if="copySucceeded === false" dense type="error">
       Agh the copy action failed, check your URL instead.
     </v-alert>
-    <div class="btn-row">
+    <div class="btn-row btn-row-first">
       <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
         <v-icon left>mdi-clipboard-plus-outline</v-icon>Add
       </v-btn>
@@ -213,6 +213,10 @@ export default {
   margin: 0.75rem;
 }
 
+.btn-row-first {
+  margin-top: 2rem;
+}
+
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
@@ -227,15 +231,7 @@ export default {
 <style lang="scss">
 #trip-form {
   .v-input {
-    margin-bottom: 2rem;
-  }
-}
-
-@media only screen and (max-width: 600px) {
-  #trip-form {
-    .v-input {
-      margin-bottom: 1.5rem;
-    }
+    margin-bottom: 1.5rem;
   }
 }
 </style>

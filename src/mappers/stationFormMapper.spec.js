@@ -32,7 +32,7 @@ describe("stationFormMapper", () => {
     };
     expect(mapStationByDuration(station)).toStrictEqual({
       text: station.name,
-      value: { ...station, duration: "1h 30m" }
+      value: { ...station, duration: "1 hr 30 min" }
     });
   });
 

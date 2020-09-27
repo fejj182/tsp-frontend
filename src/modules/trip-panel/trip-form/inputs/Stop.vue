@@ -1,5 +1,9 @@
 <template>
   <div :id="stopId">
+    <p v-if="selected && selected.value.duration" data-test-id="duration">
+      <v-icon color="primary">mdi-clock-outline</v-icon>
+      {{ selected.value.duration }}
+    </p>
     <v-autocomplete
       label="Where next?"
       data-test-id="stop"
@@ -121,5 +125,12 @@ export default {
 .duration {
   font-size: 14px;
   padding-left: 0.25rem;
+}
+i {
+  margin: 0 0.25rem;
+}
+p {
+  margin: -0.625rem 0 0.875rem;
+  color: #303f9f;
 }
 </style>
