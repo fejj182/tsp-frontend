@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-post-content" v-editable="blok">
+  <div id="blog-content" v-editable="blok">
     <div class="blog-post-header__text">
       <h3 v-if="blok.title">
         {{ blok.title }}
@@ -48,10 +48,15 @@ export default {
 </script>
 
 <style lang="scss">
-.blog-post-content {
+#blog-content {
   padding: 1rem 4rem;
   h3 {
     margin-bottom: 2rem;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  p {
+    font-size: 20px;
   }
   .v-card {
     width: 50%;
@@ -60,8 +65,11 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
-  .blog-post-content {
+  #blog-content {
     padding: 1rem 2rem;
+    p {
+      font-size: 18px;
+    }
     .v-card {
       width: 75%;
       margin: 2rem auto 0;
@@ -70,7 +78,13 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .blog-post-content {
+  #blog-content {
+    h3 {
+      font-size: 20px;
+    }
+    p {
+      font-size: 16px;
+    }
     .v-card {
       width: 95%;
       margin: 2rem auto 0;

@@ -19,7 +19,7 @@ export default {
 <style lang="scss">
 #v-app * {
   font-family: "Raleway", sans-serif;
-  font-weight: 600;
+  font-weight: 500;
 }
 @media only screen and (max-width: 600px) {
   #v-app .v-application--wrap {

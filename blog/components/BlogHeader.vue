@@ -1,5 +1,5 @@
 <template>
-  <div class="blog-post-header">
+  <div id="blog-header">
     <div
       class="blog-post-header__content"
       :style="blogPostHeaderStyle"
@@ -67,7 +67,7 @@ export default {
 </script>
 
 <style lang="scss">
-.blog-post-header {
+#blog-header {
   .arrow-down-icon {
     display: block;
     margin: 0 auto;
@@ -133,13 +133,14 @@ export default {
 }
 
 @media screen and (max-width: 992px) {
-  .blog-post-header {
+  #blog-header {
     .blog-post-header__content {
       .blog-post-header__text {
         margin-top: -30%;
         padding: 0.5rem;
         h1 {
           font-size: 28px;
+          font-weight: 600;
         }
         h2,
         i {
@@ -158,7 +159,7 @@ export default {
 }
 
 @media screen and (max-width: 600px) {
-  .blog-post-header {
+  #blog-header {
     .blog-post-header__content {
       .blog-post-header__text {
         width: 100%;
