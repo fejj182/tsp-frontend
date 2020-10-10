@@ -79,6 +79,7 @@ span {
 
 #logo {
   margin-top: 0.5rem;
+  margin-left: 0.5rem;
   min-width: 70%;
   width: 70%;
 }
@@ -94,7 +95,8 @@ span {
 
 @media only screen and (max-width: 600px) {
   #logo {
-    width: 90%;
+    margin-left: 0;
+    width: 95%;
   }
 }
 </style>
