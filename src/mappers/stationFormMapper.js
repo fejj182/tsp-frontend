@@ -24,7 +24,8 @@ export const mapStationByDuration = station => {
       lat: station.lat,
       lng: station.lng,
       slug: station.slug,
-      duration: toHoursAndMinutes(station.duration)
+      duration: station.duration,
+      durationHrsAndMins: toHoursAndMinutes(station.duration)
     }
   };
 };
@@ -75,7 +76,8 @@ export const mapStationsByDuration = stations => {
           lat: station.lat,
           lng: station.lng,
           slug: station.slug,
-          duration: toHoursAndMinutes(station.duration)
+          duration: station.duration,
+          durationHrsAndMins: toHoursAndMinutes(station.duration)
         }
       };
     });

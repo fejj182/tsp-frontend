@@ -1,16 +1,18 @@
 <template>
   <v-form ref="form" @submit.prevent="onSubmit" id="trip-form">
     <StartingDestination v-if="showStartingDestination" />
-    <div v-for="(stop, index) in stops" :key="index">
-      <!-- TODO: Dependency here on properties existing in each stop -->
-      <Stop
-        class="stop"
-        :stations="stop.stations"
-        :read-only="stop.readOnly"
-        :fixed-stop="stop.fixed"
-        :stop-number="parseInt(index) + 1"
-      />
-    </div>
+    <Stop
+      v-for="(stop, index) in stops"
+      :key="index"
+      class="stop"
+      :stations="stop.stations"
+      :read-only="stop.readOnly"
+      :fixed-stop="stop.fixed"
+      :stop-number="parseInt(index) + 1"
+    />
+    <p data-test-id="total-duration" v-if="completeTrip.length > 2">
+      Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>
+    </p>
     <v-alert
       v-if="invalid"
       data-test-id="invalid"
@@ -87,6 +89,7 @@
 import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
 import tripApi from "@/api/trip";
+import { toHoursAndMinutes } from "@/mappers/durationMapper";
 
 export default {
   components: {
@@ -128,6 +131,13 @@ export default {
         this.$store.state.trip.startingStation ||
         this.$store.state.stations.startingStations.length > 0
       );
+    },
+    totalDurationBetweenStops() {
+      const totalDuration = this.completeTrip
+        .map(stop => stop.duration)
+        .filter(duration => !!duration)
+        .reduce((acc, curr) => acc + curr);
+      return toHoursAndMinutes(totalDuration);
     }
   },
   methods: {
@@ -215,6 +225,14 @@ export default {
 
 .btn-row-first {
   margin-top: 2rem;
+}
+
+p {
+  margin-left: 0.5rem;
+}
+
+span {
+  color: #303f9f;
 }
 
 @media only screen and (max-width: 600px) {

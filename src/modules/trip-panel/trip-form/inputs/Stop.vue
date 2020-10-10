@@ -1,8 +1,11 @@
 <template>
   <div :id="stopId">
-    <p v-if="selected && selected.value.duration" data-test-id="duration">
+    <p
+      v-if="selected && selected.value.durationHrsAndMins"
+      data-test-id="duration"
+    >
       <v-icon color="primary">mdi-clock-outline</v-icon>
-      {{ selected.value.duration }}
+      {{ selected.value.durationHrsAndMins }}
     </p>
     <v-autocomplete
       label="Where next?"
@@ -22,7 +25,7 @@
       <template v-slot:item="{ item }">
         {{ item.text }} -
         <span class="duration">
-          <em>{{ item.value.duration }}</em>
+          <em>{{ item.value.durationHrsAndMins }}</em>
         </span>
       </template>
     </v-autocomplete>

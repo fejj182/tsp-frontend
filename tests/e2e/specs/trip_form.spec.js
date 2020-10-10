@@ -15,7 +15,7 @@ describe("TripForm", function() {
 
 function assertFirstStopAddAndClose() {
   cy.wait("@getDestinations");
-  startTripFromWelcome()
+  startTripFromWelcome();
 
   cy.get("#stop-1 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
@@ -84,6 +84,8 @@ function add3Stops() {
   cy.get(".position-2").should("exist");
   cy.get(".position-3").should("exist");
   cy.get(".position-4").should("exist");
+  cy.get("[data-test-id=duration]").should("have.length", 3);
+  cy.get("[data-test-id=total-duration]").should("exist");
 }
 
 function assertStateAfterRemoveStop3() {

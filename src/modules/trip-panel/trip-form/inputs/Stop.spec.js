@@ -140,7 +140,11 @@ describe("Stop", () => {
     });
     expect(wrapper.find("[data-test-id=stop]").props().value).toEqual({
       text: valencia.name,
-      value: { ...valencia, duration: toHoursAndMinutes(valencia.duration) }
+      value: {
+        ...valencia,
+        duration: valencia.duration,
+        durationHrsAndMins: toHoursAndMinutes(valencia.duration)
+      }
     });
   });
 

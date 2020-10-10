@@ -3,15 +3,17 @@ import Vue from "vue";
 import Vuetify from "vuetify";
 import VueClipboard from "vue-clipboard2";
 import cloneDeep from "lodash/cloneDeep";
+import flushPromises from "flush-promises";
 
 import TripForm from "./TripForm.vue";
 import tripApi from "@/api/trip";
 import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
-import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
-import flushPromises from "flush-promises";
+import { fakeStation } from "@/helpers/tests";
+import { mapStationByDuration } from "@/mappers/stationFormMapper";
+import { toHoursAndMinutes } from "@/mappers/durationMapper";
 
 jest.mock("@/api/trip", () => ({
   create: jest.fn(),
@@ -171,6 +173,51 @@ describe("TripForm", () => {
       });
 
       expect(wrapper.find(Stop).props().stopNumber).toEqual(1);
+    });
+
+    describe("Total duration between stops", () => {
+      test("when no stops in trip, should not show total duration between stops", () => {
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          }
+        });
+        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
+          false
+        );
+      });
+
+      test("when three stops in trip, total duration should exist", () => {
+        mockStore.getters.completeTrip = [barcelona, valencia, madrid];
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          }
+        });
+        const totalDuration =
+          barcelona.duration + valencia.duration + madrid.duration;
+        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
+          true
+        );
+        expect(wrapper.find("[data-test-id=total-duration]").text()).toBe(
+          "Total travel time: " + toHoursAndMinutes(totalDuration)
+        );
+      });
+
+      test("when two stops in trip, total duration should not exist", () => {
+        mockStore.state.trip.stops = [barcelona, valencia];
+        const wrapper = shallowMount(TripForm, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          }
+        });
+        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
+          false
+        );
+      });
     });
   });
 

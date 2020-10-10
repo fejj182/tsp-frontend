@@ -32,7 +32,11 @@ describe("stationFormMapper", () => {
     };
     expect(mapStationByDuration(station)).toStrictEqual({
       text: station.name,
-      value: { ...station, duration: "1 hr 30 min" }
+      value: {
+        ...station,
+        duration: station.duration,
+        durationHrsAndMins: toHoursAndMinutes(station.duration)
+      }
     });
   });
 
@@ -85,11 +89,19 @@ describe("stationFormMapper", () => {
     expect(mapStationsByDuration([madrid, barcelona])).toStrictEqual([
       {
         text: madrid.name,
-        value: { ...madrid, duration: toHoursAndMinutes(madrid.duration) }
+        value: {
+          ...madrid,
+          duration: madrid.duration,
+          durationHrsAndMins: toHoursAndMinutes(madrid.duration)
+        }
       },
       {
         text: barcelona.name,
-        value: { ...barcelona, duration: toHoursAndMinutes(barcelona.duration) }
+        value: {
+          ...barcelona,
+          duration: barcelona.duration,
+          durationHrsAndMins: toHoursAndMinutes(barcelona.duration)
+        }
       }
     ]);
   });
