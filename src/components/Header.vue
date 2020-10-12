@@ -79,8 +79,6 @@ span {
 
 #logo {
   margin-top: 0.5rem;
-  margin-left: 0.5rem;
-  min-width: 70%;
   width: 70%;
 }
 
@@ -95,7 +93,6 @@ span {
 
 @media only screen and (max-width: 600px) {
   #logo {
-    margin-left: 0;
     width: 95%;
   }
 }
@@ -103,10 +100,6 @@ span {
 
 <style>
 @media only screen and (max-width: 600px) {
-  #header .v-toolbar__content {
-    padding: 4px;
-  }
-
   .v-dialog .container {
     padding: 0;
   }
