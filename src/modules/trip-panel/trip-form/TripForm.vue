@@ -10,19 +10,18 @@
       :fixed-stop="stop.fixed"
       :stop-number="parseInt(index) + 1"
     />
+    <v-btn
+      v-if="showAddDestination"
+      @click="onAddStop"
+      id="add-stop"
+      data-test-id="add-stop"
+      text
+    >
+      + Add destination
+    </v-btn>
     <p data-test-id="total-duration" v-if="completeTrip.length > 2">
       Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>
     </p>
-    <v-alert
-      v-if="invalid"
-      data-test-id="invalid"
-      v-model="invalid"
-      text
-      dense
-      type="info"
-    >
-      No stop selected
-    </v-alert>
     <v-alert
       v-if="success"
       data-test-id="success-alias"
@@ -50,9 +49,6 @@
       Agh the copy action failed, check your URL instead.
     </v-alert>
     <div class="btn-row btn-row-first">
-      <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
-        <v-icon left>mdi-clipboard-plus-outline</v-icon>Add
-      </v-btn>
       <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
         <v-icon left>mdi-restore</v-icon>Reset
       </v-btn>
@@ -66,9 +62,9 @@
         data-test-id="save-trip"
       >
         <v-icon left>
-          {{ saveIcon }}
+          mdi-bookmark
         </v-icon>
-        {{ save }}
+        Save
       </v-btn>
 
       <v-btn
@@ -98,7 +94,6 @@ export default {
   },
   data() {
     return {
-      invalid: false,
       success: false,
       updated: false,
       copySucceeded: null
@@ -111,14 +106,11 @@ export default {
     hasStops() {
       return this.$store.getters.hasStops;
     },
+    showAddDestination() {
+      return this.hasStops && this.$store.state.trip.selectedStop;
+    },
     completeTrip() {
       return this.$store.getters.completeTrip;
-    },
-    save() {
-      return this.$route.name != "alias" ? "Save" : "Update";
-    },
-    saveIcon() {
-      return this.$route.name != "alias" ? "mdi-bookmark" : "mdi-update";
     },
     tripSaved() {
       return this.$route.name === "alias" && this.hasStops;
@@ -142,17 +134,10 @@ export default {
   },
   methods: {
     onAddStop() {
-      if (this.$store.state.trip.selectedStop) {
-        this.$store.dispatch(
-          "fetchConnections",
-          this.$store.state.trip.selectedStop
-        );
-      } else {
-        this.invalid = true;
-        setTimeout(() => {
-          this.invalid = false;
-        }, 2000);
-      }
+      this.$store.dispatch(
+        "fetchConnections",
+        this.$store.state.trip.selectedStop
+      );
     },
     resetTrip() {
       this.$refs.form.reset();
@@ -233,6 +218,13 @@ p {
 
 span {
   color: #303f9f;
+}
+
+#add-stop {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  text-transform: none;
+  text-decoration: underline;
 }
 
 @media only screen and (max-width: 600px) {

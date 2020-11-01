@@ -281,37 +281,6 @@ describe("TripForm", () => {
           barcelona
         );
       });
-
-      it("should not dispatch action if selectedStop is null", () => {
-        mockStore.state.trip.selectedStop = null;
-        mockStore.getters.hasStops = true;
-        const wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
-        wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(mockStore.dispatch).not.toBeCalledWith("fetchConnections", null);
-      });
-
-      it("should show invalid alert if selectedStop is null", () => {
-        mockStore.state.trip.selectedStop = null;
-        mockStore.getters.hasStops = true;
-        const wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
-        expect(wrapper.find("[data-test-id=invalid]").exists()).toBe(false);
-        wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(wrapper.find("[data-test-id=invalid]").exists()).toBe(true);
-      });
     });
 
     describe("Reset trip", () => {
@@ -500,22 +469,6 @@ describe("TripForm", () => {
               alias: "some-alias"
             }
           };
-        });
-
-        it("should show update button if route name is alias", () => {
-          mockStore.getters.hasStops = true;
-          const wrapper = mount(TripForm, {
-            mocks: {
-              $store: mockStore,
-              $router: mockRouter,
-              $route: mockRoute
-            },
-            stubs: mockStubs
-          });
-          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe(
-            "Update"
-          );
-          expect(wrapper.find(".mdi-update").exists()).toBe(true);
         });
 
         it("should call tripApi update if route name is alias", () => {
