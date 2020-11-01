@@ -49,7 +49,12 @@
       Agh the copy action failed, check your URL instead.
     </v-alert>
     <div v-if="hasStops" class="btn-row">
-      <v-btn color="primary" id="buy-tickets">
+      <v-btn
+        href="https://omio.sjv.io/trainspotter"
+        target="_blank"
+        color="primary"
+        id="buy-tickets"
+      >
         Buy tickets
       </v-btn>
       <v-menu offset-y>
