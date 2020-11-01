@@ -63,11 +63,12 @@
             <v-icon>
               mdi-menu-down
             </v-icon>
+            {{ numberOfOptions }}
           </v-btn>
         </template>
         <v-list>
           <v-list-item
-            v-if="showResetTrip"
+            v-if="tripSaved"
             @click="resetTrip"
             data-test-id="reset-trip"
           >
@@ -138,14 +139,14 @@ export default {
     showAddDestination() {
       return this.hasStops && this.$store.state.trip.selectedStop;
     },
-    showResetTrip() {
-      return this.hasStops && this.$route.name === "alias";
-    },
     completeTrip() {
       return this.$store.getters.completeTrip;
     },
     tripSaved() {
       return this.$route.name === "alias" && this.hasStops;
+    },
+    numberOfOptions() {
+      return this.tripSaved ? 3 : 1;
     },
     url() {
       return window.location.href;
