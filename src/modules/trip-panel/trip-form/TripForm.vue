@@ -48,35 +48,59 @@
     <v-alert v-if="copySucceeded === false" dense type="error">
       Agh the copy action failed, check your URL instead.
     </v-alert>
-    <div class="btn-row btn-row-first">
-      <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
-        <v-icon left>mdi-restore</v-icon>Reset
+    <div v-if="hasStops" class="btn-row">
+      <v-btn color="primary" id="buy-tickets">
+        Buy tickets
       </v-btn>
-    </div>
-    <div class="btn-row">
-      <v-btn
-        v-if="hasStops"
-        type="submit"
-        color="primary"
-        :block="!tripSaved"
-        data-test-id="save-trip"
-      >
-        <v-icon left>
-          mdi-bookmark
-        </v-icon>
-        Save
-      </v-btn>
-
-      <v-btn
-        v-if="tripSaved"
-        color="primary"
-        v-clipboard:copy="url"
-        v-clipboard:success="onCopySuccess"
-        v-clipboard:error="onCopyFailure"
-        data-test-id="copy-url"
-      >
-        <v-icon left>mdi-content-copy</v-icon> Share
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" data-test-id="more-options">
+            <v-icon>
+              mdi-menu-down
+            </v-icon>
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-if="showResetTrip"
+            @click="resetTrip"
+            data-test-id="reset-trip"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-new-box
+              </v-icon>
+              New trip
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="hasStops"
+            @click="onSubmit"
+            data-test-id="save-trip"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-bookmark
+              </v-icon>
+              Save for later
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="tripSaved"
+            v-clipboard:copy="url"
+            v-clipboard:success="onCopySuccess"
+            v-clipboard:error="onCopyFailure"
+            data-test-id="copy-url"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-content-copy
+              </v-icon>
+              Share link
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </v-form>
 </template>
@@ -108,6 +132,9 @@ export default {
     },
     showAddDestination() {
       return this.hasStops && this.$store.state.trip.selectedStop;
+    },
+    showResetTrip() {
+      return this.hasStops && this.$route.name === "alias";
     },
     completeTrip() {
       return this.$store.getters.completeTrip;
@@ -194,22 +221,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-form {
-  padding-top: 16px;
-}
-
-#trip-form .v-btn {
-  min-width: 125px;
-}
-
 .btn-row {
   display: flex;
-  justify-content: space-between;
-  margin: 0.75rem;
+  .v-btn {
+    margin: 0.5rem;
+  }
 }
 
-.btn-row-first {
-  margin-top: 2rem;
+.v-form {
+  padding-top: 16px;
 }
 
 p {
@@ -218,6 +238,10 @@ p {
 
 span {
   color: #303f9f;
+}
+
+#buy-tickets {
+  flex: 1;
 }
 
 #add-stop {
@@ -230,10 +254,6 @@ span {
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
-  }
-
-  #trip-form .v-btn {
-    min-width: 115px;
   }
 }
 </style>

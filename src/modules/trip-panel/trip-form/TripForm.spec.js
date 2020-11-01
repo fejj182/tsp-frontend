@@ -12,7 +12,6 @@ import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
 import { state as trip } from "@/store/modules/trip";
 import { state as stations } from "@/store/modules/stations";
 import { fakeStation } from "@/helpers/tests";
-import { mapStationByDuration } from "@/mappers/stationFormMapper";
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
 
 jest.mock("@/api/trip", () => ({
@@ -84,6 +83,14 @@ describe("TripForm", () => {
       VAlert: {
         name: "v-alert",
         template: "<span></span>"
+      },
+      VFadeTransition: {
+        name: "v-fade-transition",
+        template: "<span></span>"
+      },
+      VMenu: {
+        name: "v-menu",
+        template: "<span><slot></slot> </span>"
       }
     };
   });
@@ -287,6 +294,7 @@ describe("TripForm", () => {
       let wrapper;
       beforeEach(() => {
         mockStore.getters.hasStops = true;
+        mockRoute.name = "alias";
         wrapper = mount(TripForm, {
           mocks: {
             $store: mockStore,
@@ -328,27 +336,6 @@ describe("TripForm", () => {
     });
 
     describe("Submit", () => {
-      let mockStubs;
-      beforeEach(() => {
-        mockStubs = {
-          StartingDestination: {
-            name: "StartingDestination",
-            template: "<span></span>"
-          },
-          Stop: {
-            name: "Stop",
-            template: "<span></span>"
-          },
-          VFadeTransition: {
-            name: "v-fade-transition",
-            template: "<span></span>"
-          },
-          VAlert: {
-            name: "v-alert",
-            template: "<span></span>"
-          }
-        };
-      });
       describe("Save trip", () => {
         it("save should not exist when component loads", () => {
           const wrapper = mount(TripForm, {
@@ -372,7 +359,9 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe("Save");
+          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe(
+            "Save for later"
+          );
           expect(wrapper.find(".mdi-bookmark").exists()).toBe(true);
         });
 
@@ -386,7 +375,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           expect(tripApi.create).toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -403,7 +392,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           expect(tripApi.create).not.toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -420,7 +409,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           await flushPromises();
           expect(wrapper.find("[data-test-id=success-alias]").exists()).toBe(
             true
@@ -454,7 +443,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           await flushPromises();
           expect(mockRouter.push).toHaveBeenCalledWith("trip/alias");
         });
@@ -481,7 +470,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           expect(tripApi.create).not.toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -502,7 +491,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("submit");
+          wrapper.find("[data-test-id=save-trip]").trigger("click");
           await flushPromises();
           expect(wrapper.find("[data-test-id=success-updated]").exists()).toBe(
             true
