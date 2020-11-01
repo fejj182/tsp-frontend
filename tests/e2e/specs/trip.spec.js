@@ -39,12 +39,14 @@ function createTrip() {
     .click();
   cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
 
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
 
   cy.reload();
   assertReloadedTripInCorrectState();
 
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
@@ -53,6 +55,7 @@ function createTrip() {
 }
 
 function resetTrip() {
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=reset-trip]").click();
   cy.get(".stop").should("not.exist");
 }
@@ -89,6 +92,7 @@ function assertStopCanBeAdded() {
   cy.get("#stop-3 [data-test-id=stop]").should("not.have.value", "");
   cy.get("[data-test-id=btn-add]").click();
 
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
@@ -120,6 +124,7 @@ function assertTripCanBeRebuilt() {
     .click();
   cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
 
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
   cy.get("[data-test-id=starting-destination]")

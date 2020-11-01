@@ -10,19 +10,18 @@
       :fixed-stop="stop.fixed"
       :stop-number="parseInt(index) + 1"
     />
+    <v-btn
+      v-if="showAddDestination"
+      @click="onAddStop"
+      id="add-stop"
+      data-test-id="add-stop"
+      text
+    >
+      + Add destination
+    </v-btn>
     <p data-test-id="total-duration" v-if="completeTrip.length > 2">
       Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>
     </p>
-    <v-alert
-      v-if="invalid"
-      data-test-id="invalid"
-      v-model="invalid"
-      text
-      dense
-      type="info"
-    >
-      No stop selected
-    </v-alert>
     <v-alert
       v-if="success"
       data-test-id="success-alias"
@@ -49,38 +48,65 @@
     <v-alert v-if="copySucceeded === false" dense type="error">
       Agh the copy action failed, check your URL instead.
     </v-alert>
-    <div class="btn-row btn-row-first">
-      <v-btn v-if="hasStops" @click="onAddStop" data-test-id="add-stop">
-        <v-icon left>mdi-clipboard-plus-outline</v-icon>Add
-      </v-btn>
-      <v-btn v-if="hasStops" @click="resetTrip" data-test-id="reset-trip">
-        <v-icon left>mdi-restore</v-icon>Reset
-      </v-btn>
-    </div>
-    <div class="btn-row">
+    <div v-if="hasStops" class="btn-row">
       <v-btn
-        v-if="hasStops"
-        type="submit"
+        href="https://omio.sjv.io/trainspotter"
+        target="_blank"
         color="primary"
-        :block="!tripSaved"
-        data-test-id="save-trip"
+        id="buy-tickets"
       >
-        <v-icon left>
-          {{ saveIcon }}
-        </v-icon>
-        {{ save }}
+        Buy tickets
       </v-btn>
-
-      <v-btn
-        v-if="tripSaved"
-        color="primary"
-        v-clipboard:copy="url"
-        v-clipboard:success="onCopySuccess"
-        v-clipboard:error="onCopyFailure"
-        data-test-id="copy-url"
-      >
-        <v-icon left>mdi-content-copy</v-icon> Share
-      </v-btn>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" data-test-id="more-options">
+            <v-icon>
+              mdi-menu-down
+            </v-icon>
+            {{ numberOfOptions }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item
+            v-if="tripSaved"
+            @click="resetTrip"
+            data-test-id="reset-trip"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-new-box
+              </v-icon>
+              New trip
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="hasStops"
+            @click="onSubmit"
+            data-test-id="save-trip"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-bookmark
+              </v-icon>
+              Save for later
+            </v-list-item-title>
+          </v-list-item>
+          <v-list-item
+            v-if="tripSaved"
+            v-clipboard:copy="url"
+            v-clipboard:success="onCopySuccess"
+            v-clipboard:error="onCopyFailure"
+            data-test-id="copy-url"
+          >
+            <v-list-item-title>
+              <v-icon left>
+                mdi-content-copy
+              </v-icon>
+              Share link
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </div>
   </v-form>
 </template>
@@ -98,7 +124,6 @@ export default {
   },
   data() {
     return {
-      invalid: false,
       success: false,
       updated: false,
       copySucceeded: null
@@ -111,17 +136,17 @@ export default {
     hasStops() {
       return this.$store.getters.hasStops;
     },
+    showAddDestination() {
+      return this.hasStops && this.$store.state.trip.selectedStop;
+    },
     completeTrip() {
       return this.$store.getters.completeTrip;
     },
-    save() {
-      return this.$route.name != "alias" ? "Save" : "Update";
-    },
-    saveIcon() {
-      return this.$route.name != "alias" ? "mdi-bookmark" : "mdi-update";
-    },
     tripSaved() {
       return this.$route.name === "alias" && this.hasStops;
+    },
+    numberOfOptions() {
+      return this.tripSaved ? 3 : 1;
     },
     url() {
       return window.location.href;
@@ -142,17 +167,10 @@ export default {
   },
   methods: {
     onAddStop() {
-      if (this.$store.state.trip.selectedStop) {
-        this.$store.dispatch(
-          "fetchConnections",
-          this.$store.state.trip.selectedStop
-        );
-      } else {
-        this.invalid = true;
-        setTimeout(() => {
-          this.invalid = false;
-        }, 2000);
-      }
+      this.$store.dispatch(
+        "fetchConnections",
+        this.$store.state.trip.selectedStop
+      );
     },
     resetTrip() {
       this.$refs.form.reset();
@@ -209,22 +227,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.v-form {
-  padding-top: 16px;
-}
-
-#trip-form .v-btn {
-  min-width: 125px;
-}
-
 .btn-row {
   display: flex;
-  justify-content: space-between;
-  margin: 0.75rem;
+  .v-btn {
+    margin: 0.5rem;
+  }
 }
 
-.btn-row-first {
-  margin-top: 2rem;
+.v-form {
+  padding-top: 16px;
 }
 
 p {
@@ -235,13 +246,20 @@ span {
   color: #303f9f;
 }
 
+#buy-tickets {
+  flex: 1;
+}
+
+#add-stop {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  text-transform: none;
+  text-decoration: underline;
+}
+
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
-  }
-
-  #trip-form .v-btn {
-    min-width: 115px;
   }
 }
 </style>

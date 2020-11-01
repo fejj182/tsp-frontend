@@ -39,6 +39,7 @@ describe("Trip Map", () => {
     cy.get("[data-test-id=duration]").should("have.length", 2);
     cy.get("[data-test-id=total-duration]").should("exist");
 
+    cy.get("[data-test-id=more-options]").click();
     cy.get("[data-test-id=save-trip]").click();
     cy.get("[data-test-id=success-alias]").should("exist");
     cy.get("[data-test-id=success-alias] .v-alert__content").should(
@@ -70,6 +71,9 @@ describe("Trip Map", () => {
       .click();
     cy.get(".leaflet-popup").should("exist");
 
+    cy.get("[data-test-id=more-options]").click();
+    cy.get("[data-test-id=save-trip]").click();
+    cy.get("[data-test-id=more-options]").click();
     cy.get("[data-test-id=reset-trip]").click();
     cy.get(".marker-connection-zaragoza").should("not.exist");
     cy.get(".leaflet-popup").should("not.exist");
