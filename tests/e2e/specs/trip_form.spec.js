@@ -49,6 +49,7 @@ function assertFullFlowAddAndClose() {
 
 function assertFullFlowSaveRefreshAndClose() {
   add3Stops();
+  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
   cy.reload();
