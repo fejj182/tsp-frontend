@@ -261,4 +261,36 @@ describe("Stop", () => {
     wrapper.find(".mdi-close").trigger("click");
     expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
   });
+
+  describe("Add stop button", () => {
+    it("add should not exist when component loads", () => {
+      const wrapper = shallowMount(Stop, {
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          stations: [valencia, madrid]
+        }
+      });
+      expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(false);
+    });
+
+    it("should dispatch fetchConnections action onClick", () => {
+      mockStore.state.trip.stops = [{}, {}];
+      mockStore.state.trip.savedTrip = [{}, {}, {}];
+      mockStore.state.trip.selectedStop = madrid;
+      const wrapper = mount(Stop, {
+        vuetify: new Vuetify(),
+        mocks: {
+          $store: mockStore
+        },
+        propsData: {
+          stations: [],
+          stopNumber: 2
+        }
+      });
+      wrapper.find("[data-test-id=add-stop]").trigger("click");
+      expect(mockStore.dispatch).toBeCalledWith("fetchConnections", madrid);
+    });
+  });
 });

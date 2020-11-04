@@ -29,6 +29,15 @@
         </span>
       </template>
     </v-autocomplete>
+    <v-btn
+      v-if="showAddStop"
+      @click="onAddStop"
+      id="add-stop"
+      data-test-id="add-stop"
+      text
+    >
+      + Add destination
+    </v-btn>
   </div>
 </template>
 
@@ -84,6 +93,9 @@ export default {
     selected() {
       const stop = this.$store.state.trip.savedTrip[this.stopNumber];
       return stop ? mapStationByDuration(stop) : null;
+    },
+    showAddStop() {
+      return this.selected && this.isLastStop;
     }
   },
   watch: {
@@ -116,6 +128,12 @@ export default {
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );
+    },
+    onAddStop() {
+      this.$store.dispatch(
+        "fetchConnections",
+        this.$store.state.trip.selectedStop
+      );
     }
   }
 };
@@ -135,5 +153,12 @@ i {
 p {
   margin: -0.625rem 0 0.875rem;
   color: #303f9f;
+}
+
+#add-stop {
+  margin-top: -1rem;
+  margin-bottom: 1rem;
+  text-transform: none;
+  text-decoration: underline;
 }
 </style>

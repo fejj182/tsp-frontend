@@ -10,15 +10,6 @@
       :fixed-stop="stop.fixed"
       :stop-number="parseInt(index) + 1"
     />
-    <v-btn
-      v-if="showAddDestination"
-      @click="onAddStop"
-      id="add-stop"
-      data-test-id="add-stop"
-      text
-    >
-      + Add destination
-    </v-btn>
     <p data-test-id="total-duration" v-if="completeTrip.length > 2">
       Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>
     </p>
@@ -166,12 +157,6 @@ export default {
     }
   },
   methods: {
-    onAddStop() {
-      this.$store.dispatch(
-        "fetchConnections",
-        this.$store.state.trip.selectedStop
-      );
-    },
     resetTrip() {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
@@ -250,11 +235,8 @@ span {
   flex: 1;
 }
 
-#add-stop {
-  margin-top: -1rem;
-  margin-bottom: 1rem;
-  text-transform: none;
-  text-decoration: underline;
+.v-menu__content {
+  z-index: 500 !important;
 }
 
 @media only screen and (max-width: 600px) {

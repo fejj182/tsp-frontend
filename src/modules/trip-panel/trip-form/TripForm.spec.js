@@ -259,37 +259,6 @@ describe("TripForm", () => {
   });
 
   describe("Buttons", () => {
-    describe("Add stop button", () => {
-      it("add should not exist when component loads", () => {
-        const wrapper = shallowMount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          }
-        });
-        expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(false);
-      });
-
-      it("should dispatch fetchConnections action onClick", () => {
-        mockStore.state.trip.selectedStop = barcelona;
-        mockStore.getters.hasStops = true;
-        const wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
-        wrapper.find("[data-test-id=add-stop]").trigger("click");
-        expect(mockStore.dispatch).toBeCalledWith(
-          "fetchConnections",
-          barcelona
-        );
-      });
-    });
-
     describe("Reset trip", () => {
       let wrapper;
       beforeEach(() => {
