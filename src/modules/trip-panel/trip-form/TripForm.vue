@@ -235,13 +235,15 @@ span {
   flex: 1;
 }
 
-.v-menu__content {
-  z-index: 500 !important;
-}
-
 @media only screen and (max-width: 600px) {
   .v-form {
     padding: 4px;
+  }
+}
+
+@media only screen and (min-width: 993px) {
+  .v-menu__content {
+    z-index: 500 !important;
   }
 }
 </style>
