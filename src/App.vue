@@ -50,7 +50,7 @@ export default {
   font-family: "Raleway", sans-serif;
   font-weight: 600;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #v-app .v-application--wrap {
     min-height: calc(100vh);
     min-height: calc(var(--vh, 1vh) * 100);

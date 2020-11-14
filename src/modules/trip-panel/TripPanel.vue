@@ -47,7 +47,7 @@ export default {
   },
   computed: {
     isMobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     },
     iconName() {
       return this.isMobile ? "mdi-close" : "";
@@ -75,7 +75,7 @@ export default {
 </style>
 
 <style lang="scss">
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #trip-panel {
     .v-expansion-panel-content__wrap {
       padding: 0 18px 16px;

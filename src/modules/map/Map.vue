@@ -73,7 +73,7 @@ export default {
       return this.$store.getters.completeTrip.length > 0;
     },
     isMobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     }
   },
   methods: {
@@ -104,7 +104,7 @@ export default {
   height: calc(100vh - 64px - 8px);
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #map {
     height: calc(100vh - 56px);
     height: calc(var(--vh, 1vh) * 100 - 56px);

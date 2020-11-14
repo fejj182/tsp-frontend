@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     isMobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     },
     showTitle() {
       return !this.isMobile && this.$route.name !== "welcome";
@@ -60,12 +60,10 @@ export default {
 #header {
   h1 {
     font-size: 20px;
-    margin-left: -3em;
-    display: inline;
+    margin-left: 3em;
   }
   a {
-    display: inline-block;
-    max-width: 66.67%;
+    display: block;
   }
 }
 
@@ -79,7 +77,8 @@ span {
 
 #logo {
   margin-top: 0.5rem;
-  width: 70%;
+  width: auto;
+  max-height: 64px;
 }
 
 .col-8,
@@ -91,15 +90,15 @@ span {
   justify-content: flex-end;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   #logo {
-    width: 95%;
+    max-height: 56px;
   }
 }
 </style>
 
 <style>
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   .v-dialog .container {
     padding: 0;
   }

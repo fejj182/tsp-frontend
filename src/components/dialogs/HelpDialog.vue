@@ -42,7 +42,7 @@ export default {
   },
   computed: {
     isMobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     }
   },
   methods: {
@@ -66,7 +66,7 @@ export default {
   font-size: 22px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 992px) {
   .v-card__title {
     font-size: 16px;
     word-break: normal;

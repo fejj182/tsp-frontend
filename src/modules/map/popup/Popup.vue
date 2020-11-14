@@ -50,7 +50,7 @@ export default {
       return this.$store.state.trip.savedTrip.length === 0;
     },
     mobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     },
     duration() {
       const duration = this.station.duration;

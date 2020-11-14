@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     isMobile() {
-      return window.innerWidth < 600;
+      return window.innerWidth < 992;
     }
   },
   mounted() {
