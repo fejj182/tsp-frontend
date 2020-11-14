@@ -5,6 +5,7 @@ import router from "./router";
 import store from "./store/store";
 import vuetify from "./plugins/vuetify";
 import features from "./plugins/features";
+import isMobile from "./plugins/isMobile";
 import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
 
@@ -20,6 +21,7 @@ VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
 Vue.use(VueMeta);
 Vue.use(features);
+Vue.use(isMobile);
 Vue.config.productionTip = false;
 
 new Vue({

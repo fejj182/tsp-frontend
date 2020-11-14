@@ -138,7 +138,7 @@ span {
   }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #welcome-form {
     padding: 0.5rem;
   }
@@ -156,7 +156,7 @@ span {
   }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #welcome {
     width: 100%;
   }

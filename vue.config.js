@@ -15,5 +15,12 @@ module.exports = {
         "@": path.resolve(__dirname, "src/")
       }
     }
+  },
+  css: {
+    loaderOptions: {
+      scss: {
+        prependData: `@import "@/helpers/variables.scss";`
+      }
+    }
   }
 };

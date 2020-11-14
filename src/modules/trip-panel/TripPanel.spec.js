@@ -2,11 +2,13 @@ import { shallowMount, mount } from "@vue/test-utils";
 import cloneDeep from "lodash/cloneDeep";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import isMobile from "@/plugins/isMobile";
 
 import TripPanel from "./TripPanel";
 import { state as stations } from "@/store/modules/stations";
 
 Vue.use(Vuetify);
+Vue.use(isMobile);
 
 describe("Trip Panel", () => {
   let mockStore, mockRoute;

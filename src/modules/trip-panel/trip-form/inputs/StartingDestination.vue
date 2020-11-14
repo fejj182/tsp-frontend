@@ -93,7 +93,7 @@ export default {
   }
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #starting-destination {
     .v-input {
       margin-top: 1rem;

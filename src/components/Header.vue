@@ -35,17 +35,14 @@ export default {
     };
   },
   computed: {
-    isMobile() {
-      return window.innerWidth < 992;
-    },
     showTitle() {
-      return !this.isMobile && this.$route.name !== "welcome";
+      return !this.$smallScreen() && this.$route.name !== "welcome";
     },
     showHeaderMenu() {
       return this.$route.name === "welcome";
     },
     showTripDialog() {
-      return this.isMobile && this.$route.name !== "welcome";
+      return this.$smallScreen() && this.$route.name !== "welcome";
     }
   },
   methods: {
@@ -90,15 +87,15 @@ span {
   justify-content: flex-end;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #logo {
     max-height: 56px;
   }
 }
 </style>
 
-<style>
-@media only screen and (max-width: 992px) {
+<style lang="scss">
+@media only screen and (max-width: $width-desktop) {
   .v-dialog .container {
     padding: 0;
   }

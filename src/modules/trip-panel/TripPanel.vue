@@ -46,11 +46,8 @@ export default {
     };
   },
   computed: {
-    isMobile() {
-      return window.innerWidth < 992;
-    },
     iconName() {
-      return this.isMobile ? "mdi-close" : "";
+      return this.$smallScreen() ? "mdi-close" : "";
     }
   },
   props: {
@@ -75,7 +72,7 @@ export default {
 </style>
 
 <style lang="scss">
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #trip-panel {
     .v-expansion-panel-content__wrap {
       padding: 0 18px 16px;

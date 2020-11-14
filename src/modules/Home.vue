@@ -77,7 +77,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .container,
 .row {
   height: 100%;
@@ -87,7 +87,7 @@ export default {
   padding: 4px;
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #home {
     padding: 0;
   }

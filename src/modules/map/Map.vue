@@ -60,20 +60,17 @@ export default {
       }
     },
     mapZoom() {
-      if (this.isMobile) {
+      if (this.$xSmallScreen()) {
         return this.$route.name === "alias" ? this.lowZoom - 1 : this.lowZoom;
       } else {
         return this.$route.name === "alias" ? this.lowZoom : this.regularZoom;
       }
     },
     showFilters() {
-      return this.connectionsExist && this.isMobile;
+      return this.connectionsExist && this.$smallScreen();
     },
     connectionsExist() {
       return this.$store.getters.completeTrip.length > 0;
-    },
-    isMobile() {
-      return window.innerWidth < 992;
     }
   },
   methods: {
@@ -98,13 +95,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 #map {
   width: 100%;
   height: calc(100vh - 64px - 8px);
 }
 
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: $width-desktop) {
   #map {
     height: calc(100vh - 56px);
     height: calc(var(--vh, 1vh) * 100 - 56px);

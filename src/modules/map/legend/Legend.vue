@@ -51,11 +51,6 @@ export default {
       legend: null
     };
   },
-  computed: {
-    isMobile() {
-      return window.innerWidth < 992;
-    }
-  },
   mounted() {
     this.legend = createLegend(this.map, this.$refs.legend, LEGEND_BOTTOMRIGHT);
   },

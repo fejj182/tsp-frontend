@@ -1,10 +1,12 @@
 import { shallowMount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
+import isMobile from "@/plugins/isMobile";
 
 import Header from "./Header";
 
 Vue.use(Vuetify);
+Vue.use(isMobile);
 
 describe("Header", () => {
   let mockRoute;
