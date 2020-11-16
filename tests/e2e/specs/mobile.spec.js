@@ -13,7 +13,7 @@ describe("Mobile", () => {
     startTripFromWelcome();
     cy.wait("@getConnections");
 
-    assertNothingBroken();
+    assertWorking();
   });
   it("should start from planner", () => {
     cy.server();
@@ -25,39 +25,45 @@ describe("Mobile", () => {
     cy.get(".marker-starting-barcelona").click();
     cy.get(".leaflet-popup").should("exist");
 
-    cy.get("[data-test-id=btn-add]:visible").click();
+    cy.get("[data-test-id=starting-destination]").click();
+    cy.get(".v-list-item:visible")
+      .first()
+      .click();
+
     cy.wait("@getConnections");
 
-    assertNothingBroken();
+    assertWorking();
   });
 });
 
-function assertNothingBroken() {
+function assertWorking() {
   cy.get(".position-1").click();
   cy.get(".leaflet-popup").should("exist");
 
-  cy.get(".marker-connection-zaragoza").click();
-  cy.get("g .leaflet-interactive").should("exist");
-  cy.get(".leaflet-popup").should("exist");
-  cy.get(".position-2").should("exist");
-  cy.get("#duration").should("exist");
+  cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
+  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get(".v-list-item:visible")
+    .first()
+    .click();
+  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
 
-  cy.get("[data-test-id=btn-add]").click();
+  cy.get("#duration").should("exist");
+  cy.get("[data-test-id=add-stop]").click();
+  cy.get("#stop-2 [data-test-id=stop]").click();
+  cy.get(".v-list-item:visible")
+    .first()
+    .click();
+
+  cy.get("[data-test-id=total-duration]").should("exist");
 
   cy.get("[data-test-id=btn-filter]").click();
   cy.get(".v-slider__thumb")
     .first()
     .click();
   cy.get("[data-test-id=trip-form-panel]").should("not.be.visible");
+  cy.get("[data-test-id=close-filters]").click();
 
-  cy.get(".mdi-close").click();
-
-  cy.get("[data-test-id=clipboard-2]").click();
-  cy.get("[data-test-id=filter-panel]").should("not.be.visible");
-
-  cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("#stop-2 [data-test-id=stop]").should("exist");
+  cy.get("#buy-tickets").should("exist");
 
   cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();

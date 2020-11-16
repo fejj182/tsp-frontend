@@ -1,19 +1,8 @@
 <template>
   <div v-if="!popup" ref="content">
-    <div id="add-to-trip">
+    <div id="popup-station-info">
       <h1 id="station-name">{{ station.name }}</h1>
       <p id="duration" v-if="isConnection">{{ duration }}</p>
-      <v-btn
-        v-if="showAddButton"
-        :id="buttonId"
-        data-test-id="btn-add"
-        color="indigo"
-        fab
-        x-small
-      >
-        <v-icon>mdi-clipboard-plus-outline</v-icon>
-        <label>Add to trip</label>
-      </v-btn>
     </div>
   </div>
 </template>
@@ -64,22 +53,11 @@ export default {
     },
     activeStation() {
       return this.$store.state.stations.activeStation;
-    },
-    buttonId() {
-      return `btn-add-${this.station.slug}`;
-    },
-    showAddButton() {
-      return this.tripNotBegun || this.isConnection;
     }
   },
   methods: {
     bindPopup() {
-      this.popup = bindPopupToMarker(
-        this.marker,
-        this.popupContent,
-        this.addToTrip,
-        this.buttonId
-      );
+      this.popup = bindPopupToMarker(this.marker, this.popupContent);
 
       if (
         this.selectedStop &&
@@ -88,12 +66,6 @@ export default {
       ) {
         this.popup.openPopup();
       }
-    },
-    addToTrip() {
-      if (this.$route.name === "welcome") {
-        this.$router.push("/planner");
-      }
-      this.$store.dispatch("addToTrip", this.station);
     }
   },
   watch: {
@@ -112,23 +84,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#add-to-trip {
+#popup-station-info {
   display: flex;
   align-items: center;
-  i {
-    color: white;
-  }
-  button {
-    margin: 0 0.25rem;
-  }
 }
 
 #station-name {
   margin: 0 0.25rem;
-}
-
-label {
-  display: none;
 }
 
 h1,

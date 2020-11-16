@@ -1,8 +1,12 @@
 <template>
   <v-container fluid class="grey lighten-5" id="home">
-    <v-row no-gutters v-if="splitScreen">
-      <Welcome v-if="shouldWelcome" />
-      <Map v-else-if="dataLoaded" />
+    <v-row no-gutters v-if="isMobile && shouldWelcome">
+      <Welcome />
+    </v-row>
+
+    <v-row no-gutters v-else-if="isMobile">
+      <Map />
+      <TripOverlay />
     </v-row>
 
     <v-row no-gutters v-else>
@@ -23,6 +27,7 @@
 <script>
 import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
+import TripOverlay from "@/modules/trip-panel/TripOverlay.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
 import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 
@@ -30,6 +35,7 @@ export default {
   name: "home",
   components: {
     TripPanel,
+    TripOverlay,
     Welcome,
     Map,
     CookieBanner
@@ -46,7 +52,7 @@ export default {
     connectionsExist() {
       return this.$store.getters.completeTrip.length > 0;
     },
-    splitScreen() {
+    isMobile() {
       return window.innerWidth < 992;
     }
   },

@@ -3,7 +3,6 @@
     <div v-if="myMap && mapPanes">
       <Markers :map="myMap" />
       <Lines v-if="tripStarted" :map="myMap" :waitingTimeInSeconds="slowFly" />
-      <Legend :map="myMap" />
       <FiltersDialog v-if="showFilters" :map="myMap" />
     </div>
   </div>
@@ -14,14 +13,12 @@ import { createMap, createPanes, flyTo } from "@/plugins/leaflet.js";
 import { displayPanesInRange } from "@/modules/map/panes/paneUtils";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
-import Legend from "@/modules/map/legend/Legend.vue";
 import FiltersDialog from "@/components/dialogs/FiltersDialog.vue";
 
 export default {
   components: {
     Markers,
     Lines,
-    Legend,
     FiltersDialog
   },
   data() {

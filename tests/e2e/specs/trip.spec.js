@@ -90,7 +90,7 @@ function assertStopCanBeAdded() {
     .first()
     .click();
   cy.get("#stop-3 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("[data-test-id=btn-add]").click();
+  cy.get("[data-test-id=add-stop]").click();
 
   cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();

@@ -57,28 +57,13 @@ describe("Popup", () => {
   });
   it("should bind popup to marker on mount", () => {
     const wrapper = shallowMountPopup();
-    const popup = wrapper.find("#add-to-trip");
-    expect(bindPopupToMarker).toHaveBeenCalledWith(
-      mockMarker,
-      popup.html(),
-      expect.any(Function),
-      "btn-add-" + mockCitySlug
-    );
-  });
-
-  it("should dispatch addToTrip action when onclick function of popup is called", () => {
-    shallowMountPopup();
-    const popupOnClick = bindPopupToMarker.mock.calls[0][2];
-    popupOnClick();
-    expect(mockStore.dispatch).toHaveBeenCalledWith(
-      "addToTrip",
-      mockProps.station
-    );
+    const popup = wrapper.find("#popup-station-info");
+    expect(bindPopupToMarker).toHaveBeenCalledWith(mockMarker, popup.html());
   });
 
   it("should not show popup content as markup only injected into real popup", () => {
     const wrapper = shallowMountPopup();
-    expect(wrapper.find("#add-to-trip").exists()).toBe(false);
+    expect(wrapper.find("#popup-station-info").exists()).toBe(false);
   });
 
   it("should open popup when station is same as in component", () => {
@@ -131,7 +116,7 @@ describe("Popup", () => {
     });
     it("popup content should stay in DOM if popup not created", () => {
       const wrapper = shallowMountPopup();
-      expect(wrapper.find("#add-to-trip").exists()).toBe(true);
+      expect(wrapper.find("#popup-station-info").exists()).toBe(true);
     });
 
     it("should have station name as an h1", () => {
@@ -149,27 +134,6 @@ describe("Popup", () => {
       mockStore.state.trip.savedTrip = [];
       const wrapper = shallowMountPopup();
       expect(wrapper.find("#duration").exists()).toBe(false);
-    });
-
-    describe("Buttons", () => {
-      describe("add to trip", () => {
-        it("should show begin trip button if trip if not started yet", () => {
-          const wrapper = shallowMountPopup();
-          expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
-        });
-
-        it("should show begin trip button if trip started and is a connection", () => {
-          mockStore.state.trip.savedTrip = [{}, mockProps.station];
-          const wrapper = shallowMountPopup();
-          expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(true);
-        });
-
-        it("should not show begin trip button if station is not last stop in saved trip", () => {
-          mockStore.state.trip.savedTrip = [mockProps.station, {}];
-          const wrapper = shallowMountPopup();
-          expect(wrapper.find("[data-test-id=btn-add]").exists()).toBe(false);
-        });
-      });
     });
   });
 

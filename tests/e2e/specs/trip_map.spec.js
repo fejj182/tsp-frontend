@@ -30,12 +30,12 @@ describe("Trip Map", () => {
     cy.get(".position-2").should("exist");
     cy.get("#duration").should("exist");
 
-    cy.get("[data-test-id=btn-add]").click();
+    cy.get("[data-test-id=add-stop]").click();
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
     cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
     cy.get("#stop-2 [data-test-id=stop]").should("exist");
     cy.get(".marker-connection-madrid").click();
-    cy.get("[data-test-id=btn-add]").click();
+    cy.get("[data-test-id=add-stop]").click();
     cy.get("[data-test-id=duration]").should("have.length", 2);
     cy.get("[data-test-id=total-duration]").should("exist");
 

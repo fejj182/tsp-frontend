@@ -2,6 +2,7 @@ import { shallowMount } from "@vue/test-utils";
 import Home from "@/modules/Home.vue";
 import Map from "@/modules/map/Map.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
+import TripOverlay from "@/modules/trip-panel/TripOverlay.vue";
 import Welcome from "@/modules/welcome/Welcome.vue";
 import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 import Vue from "vue";
@@ -30,6 +31,7 @@ describe("Home", () => {
       name: "home"
     };
     mockFeatures = jest.fn().mockImplementation(() => true);
+    window.innerWidth = 1000;
   });
 
   describe("children", () => {
@@ -39,6 +41,22 @@ describe("Home", () => {
       expect(wrapper.find(Map).exists()).toBe(true);
     });
 
+    it("should contain the map and tripoverlay on mobile", async () => {
+      window.innerWidth = 500;
+      const wrapper = shallowMountHome();
+      await flushPromises();
+      expect(wrapper.find(Map).exists()).toBe(true);
+      expect(wrapper.find(TripOverlay).exists()).toBe(true);
+    });
+
+    it("should contain not the map on mobile if route is welcome", async () => {
+      window.innerWidth = 500;
+      mockRoute.name = "welcome";
+      const wrapper = shallowMountHome();
+      await flushPromises();
+      expect(wrapper.find(Map).exists()).toBe(false);
+    });
+
     it("should contain the cookie banner", () => {
       const wrapper = shallowMountHome();
       expect(wrapper.find(CookieBanner).exists()).toBe(true);
@@ -46,10 +64,6 @@ describe("Home", () => {
   });
 
   describe("Trip Panel", () => {
-    beforeEach(() => {
-      window.innerWidth = 1000;
-    });
-
     it("should contain the trip panel if route name is not welcome", () => {
       mockRoute.name = "notwelcome";
       const wrapper = shallowMountHome();

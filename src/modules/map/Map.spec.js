@@ -4,7 +4,6 @@ import isMobile from "@/plugins/isMobile";
 import Map from "./Map";
 import Markers from "@/modules/map/markers/Markers.vue";
 import Lines from "@/modules/map/lines/Lines.vue";
-import Legend from "@/modules/map/legend/Legend.vue";
 import FiltersDialog from "@/components/dialogs/FiltersDialog.vue";
 import paneUtils from "@/modules/map/panes/paneUtils";
 import { createMap, createPanes, flyTo } from "@/plugins/leaflet";
@@ -151,20 +150,6 @@ describe("Map", () => {
     });
     Vue.nextTick(() => {
       expect(wrapper.find(FiltersDialog).exists()).toBe(false);
-      done();
-    });
-  });
-
-  it("should contain the legend", done => {
-    const wrapper = shallowMount(Map, {
-      mocks: {
-        $store: mockStore,
-        $route: mockRoute
-      }
-    });
-    Vue.nextTick(() => {
-      expect(wrapper.find(Legend).exists()).toBe(true);
-      expect(wrapper.find(Legend).props().map).toEqual(mockMap);
       done();
     });
   });

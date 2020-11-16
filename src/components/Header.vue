@@ -15,19 +15,16 @@
       </h1>
       <v-spacer></v-spacer>
       <HeaderMenu data-test-id="header-menu" v-if="showHeaderMenu" />
-      <TripDialog data-test-id="list-dialog" v-if="showTripDialog" />
     </v-app-bar>
   </div>
 </template>
 
 <script>
 const HeaderMenu = () => import("@/components/HeaderMenu");
-const TripDialog = () => import("@/components/dialogs/TripDialog");
 
 export default {
   components: {
-    HeaderMenu,
-    TripDialog
+    HeaderMenu
   },
   data() {
     return {
@@ -40,9 +37,6 @@ export default {
     },
     showHeaderMenu() {
       return this.$route.name === "welcome";
-    },
-    showTripDialog() {
-      return this.$smallScreen() && this.$route.name !== "welcome";
     }
   },
   methods: {

@@ -20,10 +20,6 @@ describe("Header", () => {
       name: "v-spacer",
       template: "<span></span>"
     },
-    TripDialog: {
-      name: "TripDialog",
-      template: "<span></span>"
-    },
     HeaderMenu: {
       name: "HeaderMenu",
       template: "<span></span>"
@@ -65,38 +61,5 @@ describe("Header", () => {
       stubs: mockStubs
     });
     expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(false);
-  });
-
-  it("should not contain TripDialog on desktop", () => {
-    const wrapper = shallowMount(Header, {
-      mocks: {
-        $route: mockRoute
-      },
-      stubs: mockStubs
-    });
-    expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(false);
-  });
-
-  it("should contain TripDialog on mobile", () => {
-    window.innerWidth = 500;
-    const wrapper = shallowMount(Header, {
-      mocks: {
-        $route: mockRoute
-      },
-      stubs: mockStubs
-    });
-    expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(true);
-  });
-
-  it("should not contain TripDialog if route is welcome", () => {
-    window.innerWidth = 500;
-    mockRoute.name = "welcome";
-    const wrapper = shallowMount(Header, {
-      mocks: {
-        $route: mockRoute
-      },
-      stubs: mockStubs
-    });
-    expect(wrapper.find("[data-test-id=list-dialog]").exists()).toBe(false);
   });
 });

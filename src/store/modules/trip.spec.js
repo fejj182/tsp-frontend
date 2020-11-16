@@ -168,23 +168,6 @@ describe("popups", () => {
       });
     });
 
-    describe("addToTrip", () => {
-      it("addToTrip should commit ADD_STARTING_STATION", () => {
-        let station = {};
-        module.actions.addToTrip({ dispatch, commit }, station);
-        expect(commit).toHaveBeenCalledWith("ADD_STARTING_STATION", station);
-      });
-      it("addToTripshould dispatch resetTrip", () => {
-        let station = {};
-        module.actions.addToTrip({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("resetMap");
-      });
-      it("should dispatch fetchConnections", () => {
-        let station = {};
-        module.actions.addToTrip({ dispatch, commit }, station);
-        expect(dispatch).toHaveBeenCalledWith("fetchConnections", station);
-      });
-    });
     describe("selectStartingInput", () => {
       it("should commit SELECT_STARTING_STATION to the store", () => {
         let station = {};

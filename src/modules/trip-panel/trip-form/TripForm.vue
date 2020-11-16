@@ -237,7 +237,8 @@ span {
 
 @media only screen and (max-width: $width-desktop) {
   .v-form {
-    padding: 4px;
+    padding: 1rem;
+    padding-top: 0.25rem;
   }
 }
 

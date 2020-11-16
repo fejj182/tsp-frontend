@@ -104,20 +104,9 @@ export const generatePositionMarker = (station, map, position) => {
   return marker;
 };
 
-export const bindPopupToMarker = (marker, popupHTML, onClick, buttonId) => {
-  const popup = marker.bindPopup(popupHTML, {
+export const bindPopupToMarker = (marker, popupHTML) => {
+  return marker.bindPopup(popupHTML, {
     closeButton: false,
     offset: [-3, -2]
   });
-
-  popup.on("popupopen", () => {
-    const addButton = document.querySelector(
-      ".leaflet-popup-content #" + buttonId
-    );
-    if (addButton) {
-      addButton.onclick = onClick;
-    }
-  });
-
-  return popup;
 };

@@ -173,54 +173,5 @@ describe("leaflet plugin", () => {
       const popup = bindPopupToMarker(marker, mockPopupHTML);
       expect(popup).toEqual(mockPopup);
     });
-
-    it("should add a listener to popupopen ", () => {
-      bindPopupToMarker(marker, mockPopupHTML);
-      expect(mockOn).toHaveBeenCalledWith("popupopen", expect.any(Function));
-    });
-
-    it("should add onclick function to popup button when popup opened", () => {
-      const originalQuerySelector = global.document.querySelector;
-
-      const mockQuerySelector = jest.fn();
-      global.document.querySelector = mockQuerySelector;
-
-      const mockButton = {
-        onclick: null
-      };
-      mockQuerySelector.mockReturnValue(mockButton);
-      const mockOnClick = () => {};
-
-      bindPopupToMarker(marker, mockPopupHTML, mockOnClick, "barcelona");
-      const onPopupOpen = mockOn.mock.calls[0][1];
-      onPopupOpen();
-
-      expect(mockQuerySelector).toHaveBeenCalledWith(
-        ".leaflet-popup-content #barcelona"
-      );
-      expect(mockButton.onclick).toEqual(mockOnClick);
-
-      global.document.querySelector = originalQuerySelector;
-    });
-
-    it("should add not add onclick function if button does not exist", () => {
-      const originalQuerySelector = global.document.querySelector;
-
-      const mockQuerySelector = jest.fn();
-      global.document.querySelector = mockQuerySelector;
-
-      mockQuerySelector.mockReturnValue(null);
-      const mockOnClick = () => {};
-
-      bindPopupToMarker(marker, mockPopupHTML, mockOnClick, "barcelona");
-      const onPopupOpen = mockOn.mock.calls[0][1];
-      onPopupOpen();
-
-      expect(mockQuerySelector).toHaveBeenCalledWith(
-        ".leaflet-popup-content #barcelona"
-      );
-
-      global.document.querySelector = originalQuerySelector;
-    });
   });
 });
