@@ -4,7 +4,7 @@
       v-model="sliderRange"
       :step="stepInterval"
       @change="onSlide"
-      :thumb-size="24"
+      :thumb-size="30"
       thumb-label="always"
       hint="Journey time (hours)"
       persistent-hint

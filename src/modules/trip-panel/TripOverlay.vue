@@ -53,7 +53,7 @@ export default {
   padding: 0;
   max-height: 255px;
   overflow-y: auto;
-  transition: max-height 0.5s;
+  transition: max-height 0.25s;
   transition-timing-function: ease-in;
 }
 </style>
