@@ -40,21 +40,65 @@
       Agh the copy action failed, check your URL instead.
     </v-alert>
     <div v-if="hasStops" class="btn-row">
-      <v-btn
-        href="https://omio.sjv.io/trainspotter"
-        target="_blank"
-        color="primary"
-        id="buy-tickets"
-      >
-        Buy tickets
-      </v-btn>
       <v-menu offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" data-test-id="more-options">
-            <v-icon>
-              mdi-menu-down
+          <v-btn color="primary" v-bind="attrs" v-on="on" id="find-offers">
+            <v-icon class="btn-icon">
+              mdi-auto-fix
             </v-icon>
-            {{ numberOfOptions }}
+            Find...
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item>
+            <v-icon left>
+              mdi-ticket
+            </v-icon>
+            <v-btn
+              left
+              text
+              href="https://omio.sjv.io/trainspotter"
+              target="_blank"
+            >
+              Train tickets
+            </v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-icon left>
+              mdi-creation
+            </v-icon>
+            <v-btn
+              text
+              href="https://c83.travelpayouts.com/click?shmarker=302537&promo_id=1927&source_type=link&type=click&trs=4737"
+              target="_blank"
+            >
+              Experiences
+            </v-btn>
+          </v-list-item>
+          <v-list-item>
+            <v-icon left>
+              mdi-bike
+            </v-icon>
+            <v-btn
+              text
+              href="https://c57.travelpayouts.com/click?shmarker=302537&promo_id=1766&source_type=link&type=click&trs=4737"
+              target="_blank"
+            >
+              Bike rental
+            </v-btn>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+      <v-btn v-if="!tripSaved" type="submit" data-test-id="save-trip">
+        <v-icon class="btn-icon" color="grey">mdi-bookmark</v-icon>
+        Save
+      </v-btn>
+      <v-menu offset-y v-else>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn v-bind="attrs" v-on="on" data-test-id="more-options">
+            <v-icon class="btn-icon">
+              mdi-dots-vertical
+            </v-icon>
           </v-btn>
         </template>
         <v-list>
@@ -231,8 +275,16 @@ span {
   color: #303f9f;
 }
 
-#buy-tickets {
+#find-offers {
   flex: 1;
+}
+
+.v-list {
+  padding: 0;
+}
+
+.btn-icon {
+  padding-right: 0.5rem;
 }
 
 @media only screen and (max-width: $width-desktop) {
