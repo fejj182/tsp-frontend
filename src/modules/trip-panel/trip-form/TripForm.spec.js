@@ -1,11 +1,11 @@
 import { shallowMount, mount } from "@vue/test-utils";
 import Vue from "vue";
 import Vuetify from "vuetify";
-import VueClipboard from "vue-clipboard2";
 import cloneDeep from "lodash/cloneDeep";
 import flushPromises from "flush-promises";
 
 import TripForm from "./TripForm.vue";
+import TripActions from "@/modules/trip-panel/trip-form/TripActions";
 import tripApi from "@/api/trip";
 import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
@@ -20,7 +20,6 @@ jest.mock("@/api/trip", () => ({
 }));
 
 Vue.use(Vuetify);
-Vue.use(VueClipboard);
 
 describe("TripForm", () => {
   let mockStore,
@@ -90,7 +89,7 @@ describe("TripForm", () => {
       },
       VMenu: {
         name: "v-menu",
-        template: "<span><slot></slot> </span>"
+        template: "<span></span>"
       }
     };
   });
@@ -101,9 +100,7 @@ describe("TripForm", () => {
       mockStore.state.stations.startingStations = [{}];
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         },
         stubs: {
           VForm: {
@@ -119,9 +116,7 @@ describe("TripForm", () => {
     it("should appear if there are stops in the store", () => {
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
       expect(wrapper.find(Stop).exists()).toBe(false);
@@ -133,9 +128,7 @@ describe("TripForm", () => {
       mockStore.state.trip.stops = { 1: { stations: mockStations } };
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
       expect(wrapper.find(Stop).props().stations).toEqual(mockStations);
@@ -145,9 +138,7 @@ describe("TripForm", () => {
       mockStore.state.trip.stops = { 1: { readOnly: true } };
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
 
@@ -159,9 +150,7 @@ describe("TripForm", () => {
       mockStore.state.trip.stops = mockStops;
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
 
@@ -173,9 +162,7 @@ describe("TripForm", () => {
       mockStore.state.trip.stops = mockStops;
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
 
@@ -186,8 +173,7 @@ describe("TripForm", () => {
       test("when no stops in trip, should not show total duration between stops", () => {
         const wrapper = shallowMount(TripForm, {
           mocks: {
-            $store: mockStore,
-            $route: mockRoute
+            $store: mockStore
           }
         });
         expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
@@ -199,8 +185,7 @@ describe("TripForm", () => {
         mockStore.getters.completeTrip = [barcelona, valencia, madrid];
         const wrapper = shallowMount(TripForm, {
           mocks: {
-            $store: mockStore,
-            $route: mockRoute
+            $store: mockStore
           }
         });
         const totalDuration =
@@ -217,8 +202,7 @@ describe("TripForm", () => {
         mockStore.state.trip.stops = [barcelona, valencia];
         const wrapper = shallowMount(TripForm, {
           mocks: {
-            $store: mockStore,
-            $route: mockRoute
+            $store: mockStore
           }
         });
         expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
@@ -233,9 +217,7 @@ describe("TripForm", () => {
       mockStore.state.trip.stops = [{ stations: mockStations }];
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
       expect(wrapper.findAll(Stop).length).toBe(1);
@@ -249,102 +231,83 @@ describe("TripForm", () => {
       ];
       const wrapper = shallowMount(TripForm, {
         mocks: {
-          $store: mockStore,
-          $router: mockRouter,
-          $route: mockRoute
+          $store: mockStore
         }
       });
       expect(wrapper.findAll(Stop).length).toBe(3);
     });
   });
-
-  describe("Buttons", () => {
-    describe("Reset trip", () => {
-      let wrapper;
-      beforeEach(() => {
-        mockStore.getters.hasStops = true;
-        mockRoute.name = "alias";
-        wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
+  describe("TripActions", () => {
+    it("should not exist by default", () => {
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
       });
-
-      it("reset should not exist if no stops in store", () => {
-        mockStore.getters.hasStops = false;
-        expect(wrapper.find("[data-test-id=reset-trip]").exists()).toBe(false);
-      });
-
-      it("should reset form", () => {
-        wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockReset).toHaveBeenCalled();
-      });
-
-      it("should dispatch resetTrip action", () => {
-        wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockStore.dispatch).toHaveBeenCalledWith("resetTrip");
-      });
-
-      it("should change url to home when on alias route", () => {
-        mockRoute.name = "alias";
-        wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
-        wrapper.find("[data-test-id=reset-trip]").trigger("click");
-        expect(mockRouter.push).toHaveBeenCalledWith("/planner");
-      });
+      expect(wrapper.find(TripActions).exists()).toBe(false);
     });
 
-    describe("Submit", () => {
-      describe("Save trip", () => {
-        it("save should not exist when component loads", () => {
-          const wrapper = mount(TripForm, {
-            mocks: {
-              $store: mockStore,
-              $router: mockRouter,
-              $route: mockRoute
-            },
-            stubs: mockStubs
-          });
-          expect(wrapper.find("[data-test-id=save-trip]").exists()).toBe(false);
-        });
+    it("should exist if stops are present", () => {
+      const savedTrip = [{}];
+      mockStore.getters.hasStops = true;
+      mockStore.state.trip.savedTrip = savedTrip;
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      expect(wrapper.find(TripActions).exists()).toBe(true);
+      expect(wrapper.find(TripActions).props().tripSaved).toBe(true);
+    });
 
-        it("should show save button", () => {
+    describe("events", () => {
+      describe("reset", () => {
+        it("should reset the form", () => {
           mockStore.getters.hasStops = true;
           const wrapper = mount(TripForm, {
             mocks: {
               $store: mockStore,
-              $router: mockRouter,
-              $route: mockRoute
+              $route: mockRoute,
+              $router: mockRouter
             },
             stubs: mockStubs
           });
-          expect(wrapper.find("[data-test-id=save-trip]").text()).toBe(
-            "Save for later"
-          );
-          expect(wrapper.find(".mdi-bookmark").exists()).toBe(true);
+          const actions = wrapper.find(TripActions);
+          wrapper.find(TripActions).vm.$emit("reset-trip");
+          expect(mockReset).toHaveBeenCalled();
+          expect(mockRouter.push).not.toHaveBeenCalledWith("/planner");
         });
 
-        it("should call create in tripApi", () => {
+        it("should change the url", () => {
+          mockStore.getters.hasStops = true;
+          mockRoute.name = "alias";
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore,
+              $route: mockRoute,
+              $router: mockRouter
+            },
+            stubs: mockStubs
+          });
+          const actions = wrapper.find(TripActions);
+          wrapper.find(TripActions).vm.$emit("reset-trip");
+          expect(mockRouter.push).toHaveBeenCalledWith("/planner");
+        });
+      });
+
+      describe("save", () => {
+        it("should create the trip", () => {
           mockStore.getters.hasStops = true;
           const wrapper = mount(TripForm, {
             mocks: {
               $store: mockStore,
-              $router: mockRouter,
-              $route: mockRoute
+              $route: mockRoute,
+              $router: mockRouter
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+
+          wrapper.find(TripActions).vm.$emit("save-trip");
           expect(tripApi.create).toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -361,7 +324,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+          wrapper.find(TripActions).vm.$emit("save-trip");
           expect(tripApi.create).not.toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -378,7 +341,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+          wrapper.find(TripActions).vm.$emit("save-trip");
           await flushPromises();
           expect(wrapper.find("[data-test-id=success-alias]").exists()).toBe(
             true
@@ -412,13 +375,13 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+          wrapper.find(TripActions).vm.$emit("save-trip");
           await flushPromises();
           expect(mockRouter.push).toHaveBeenCalledWith("trip/alias");
         });
       });
 
-      describe("Update trip", () => {
+      describe("update", () => {
         let mockRoute;
         beforeEach(() => {
           mockRoute = {
@@ -439,7 +402,7 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+          wrapper.find(TripActions).vm.$emit("save-trip");
           expect(tripApi.create).not.toHaveBeenCalledWith(
             mockStore.getters.completeTrip
           );
@@ -460,16 +423,35 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          wrapper.find("[data-test-id=save-trip]").trigger("click");
+          wrapper.find(TripActions).vm.$emit("save-trip");
           await flushPromises();
           expect(wrapper.find("[data-test-id=success-updated]").exists()).toBe(
             true
           );
         });
       });
-    });
-    describe("Copy button", () => {
-      it("should appear only if trip has been saved", () => {
+      describe("Copy button", () => {
+        it("success message should show", () => {
+          mockStore.getters.hasStops = true;
+          mockRoute.name = "alias";
+          const wrapper = mount(TripForm, {
+            mocks: {
+              $store: mockStore,
+              $router: mockRouter,
+              $route: mockRoute
+            },
+            stubs: mockStubs
+          });
+          wrapper.find(TripActions).vm.$emit("copy-success");
+          expect(wrapper.find("[data-test-id=copy-success]").exists()).toBe(
+            true
+          );
+          expect(wrapper.find("[data-test-id=copy-failure]").exists()).toBe(
+            false
+          );
+        });
+      });
+      it("failure message should show", () => {
         mockStore.getters.hasStops = true;
         mockRoute.name = "alias";
         const wrapper = mount(TripForm, {
@@ -480,18 +462,11 @@ describe("TripForm", () => {
           },
           stubs: mockStubs
         });
-        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(true);
-      });
-      it("should not appear if trip has not been saved", () => {
-        const wrapper = mount(TripForm, {
-          mocks: {
-            $store: mockStore,
-            $router: mockRouter,
-            $route: mockRoute
-          },
-          stubs: mockStubs
-        });
-        expect(wrapper.find("[data-test-id=copy-url]").exists()).toBe(false);
+        wrapper.find(TripActions).vm.$emit("copy-failure");
+        expect(wrapper.find("[data-test-id=copy-success]").exists()).toBe(
+          false
+        );
+        expect(wrapper.find("[data-test-id=copy-failure]").exists()).toBe(true);
       });
     });
   });

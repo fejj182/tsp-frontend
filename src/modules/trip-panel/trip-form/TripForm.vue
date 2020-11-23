@@ -32,128 +32,45 @@
     >
       Trip updated!
     </v-alert>
-    <v-alert v-if="copySucceeded === true" dense text color="indigo">
+    <v-alert
+      v-if="copySucceeded === true"
+      dense
+      text
+      color="indigo"
+      data-test-id="copy-success"
+    >
       <v-icon color="indigo" left>mdi-share-variant</v-icon> Link copied to
       clipboard.
     </v-alert>
-    <v-alert v-if="copySucceeded === false" dense type="error">
+    <v-alert
+      v-if="copySucceeded === false"
+      dense
+      type="error"
+      data-test-id="copy-failure"
+    >
       Agh the copy action failed, check your URL instead.
     </v-alert>
-    <div v-if="hasStops" class="btn-row">
-      <v-menu offset-y>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn color="primary" v-bind="attrs" v-on="on" id="find-offers">
-            <v-icon class="btn-icon">
-              mdi-auto-fix
-            </v-icon>
-            Find...
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item>
-            <v-icon left>
-              mdi-ticket
-            </v-icon>
-            <v-btn
-              left
-              text
-              href="https://omio.sjv.io/trainspotter"
-              target="_blank"
-            >
-              Train tickets
-            </v-btn>
-          </v-list-item>
-          <v-list-item>
-            <v-icon left>
-              mdi-creation
-            </v-icon>
-            <v-btn
-              text
-              href="https://c83.travelpayouts.com/click?shmarker=302537&promo_id=1927&source_type=link&type=click&trs=4737"
-              target="_blank"
-            >
-              Experiences
-            </v-btn>
-          </v-list-item>
-          <v-list-item>
-            <v-icon left>
-              mdi-bike
-            </v-icon>
-            <v-btn
-              text
-              href="https://c57.travelpayouts.com/click?shmarker=302537&promo_id=1766&source_type=link&type=click&trs=4737"
-              target="_blank"
-            >
-              Bike rental
-            </v-btn>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-      <v-btn v-if="!tripSaved" type="submit" data-test-id="save-trip">
-        <v-icon class="btn-icon" color="grey">mdi-bookmark</v-icon>
-        Save
-      </v-btn>
-      <v-menu offset-y v-else>
-        <template v-slot:activator="{ on, attrs }">
-          <v-btn v-bind="attrs" v-on="on" data-test-id="more-options">
-            <v-icon class="btn-icon">
-              mdi-dots-vertical
-            </v-icon>
-          </v-btn>
-        </template>
-        <v-list>
-          <v-list-item
-            v-if="tripSaved"
-            @click="resetTrip"
-            data-test-id="reset-trip"
-          >
-            <v-list-item-title>
-              <v-icon left>
-                mdi-new-box
-              </v-icon>
-              New trip
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            v-if="hasStops"
-            @click="onSubmit"
-            data-test-id="save-trip"
-          >
-            <v-list-item-title>
-              <v-icon left>
-                mdi-bookmark
-              </v-icon>
-              Save for later
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item
-            v-if="tripSaved"
-            v-clipboard:copy="url"
-            v-clipboard:success="onCopySuccess"
-            v-clipboard:error="onCopyFailure"
-            data-test-id="copy-url"
-          >
-            <v-list-item-title>
-              <v-icon left>
-                mdi-content-copy
-              </v-icon>
-              Share link
-            </v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </div>
+    <TripActions
+      v-if="hasStops"
+      :tripSaved="tripSaved"
+      v-on:reset-trip="resetTrip"
+      v-on:save-trip="onSubmit"
+      v-on:copy-success="onCopySuccess"
+      v-on:copy-failure="onCopyFailure"
+    />
   </v-form>
 </template>
 
 <script>
 import StartingDestination from "@/modules/trip-panel/trip-form/inputs/StartingDestination.vue";
 import Stop from "@/modules/trip-panel/trip-form/inputs/Stop.vue";
+import TripActions from "@/modules/trip-panel/trip-form/TripActions";
 import tripApi from "@/api/trip";
 import { toHoursAndMinutes } from "@/mappers/durationMapper";
 
 export default {
   components: {
+    TripActions,
     StartingDestination,
     Stop
   },
@@ -178,13 +95,7 @@ export default {
       return this.$store.getters.completeTrip;
     },
     tripSaved() {
-      return this.$route.name === "alias" && this.hasStops;
-    },
-    numberOfOptions() {
-      return this.tripSaved ? 3 : 1;
-    },
-    url() {
-      return window.location.href;
+      return this.$store.state.trip.savedTrip.length > 0;
     },
     showStartingDestination() {
       return (
@@ -256,47 +167,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.btn-row {
-  display: flex;
-  .v-btn {
-    margin: 0.5rem;
-  }
-}
-
 .v-form {
   padding-top: 16px;
-}
-
-p {
-  margin-left: 0.5rem;
-}
-
-span {
-  color: #303f9f;
-}
-
-#find-offers {
-  flex: 1;
-}
-
-.v-list {
-  padding: 0;
-}
-
-.btn-icon {
-  padding-right: 0.5rem;
+  p {
+    margin-left: 0.5rem;
+    color: rgba(0, 0, 0, 0.87);
+    span {
+      color: #303f9f;
+    }
+  }
 }
 
 @media only screen and (max-width: $width-desktop) {
   .v-form {
     padding: 1rem;
     padding-top: 0.25rem;
-  }
-}
-
-@media only screen and (min-width: 993px) {
-  .v-menu__content {
-    z-index: 500 !important;
   }
 }
 </style>
