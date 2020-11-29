@@ -9,7 +9,7 @@ describe("Trip", function() {
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
     createTrip();
-    assertStopCanBeAdded();
+    assertStopCanBeAddedToSavedTrip();
     assertTripCanBeRebuilt();
     resetTrip();
   });
@@ -39,7 +39,6 @@ function createTrip() {
     .click();
   cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
 
-  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
 
@@ -47,7 +46,7 @@ function createTrip() {
   assertReloadedTripInCorrectState();
 
   cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=save-trip]").click();
+  cy.get("[data-test-id=save-for-later]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
   cy.reload();
@@ -82,7 +81,7 @@ function assertReloadedTripInCorrectState() {
   cy.get(".v-list-item").should("not.exist");
 }
 
-function assertStopCanBeAdded() {
+function assertStopCanBeAddedToSavedTrip() {
   cy.get("[data-test-id=add-stop]").click();
   cy.get(".marker-connection:visible").should("exist");
   cy.get("#stop-3 [data-test-id=stop]").click();
@@ -93,7 +92,7 @@ function assertStopCanBeAdded() {
   cy.get("[data-test-id=add-stop]").click();
 
   cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=save-trip]").click();
+  cy.get("[data-test-id=save-for-later]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
 
   cy.reload();
@@ -125,7 +124,7 @@ function assertTripCanBeRebuilt() {
   cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
 
   cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=save-trip]").click();
+  cy.get("[data-test-id=save-for-later]").click();
   cy.get("[data-test-id=success-updated]").should("exist");
   cy.get("[data-test-id=starting-destination]")
     .should("exist")

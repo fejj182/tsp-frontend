@@ -248,16 +248,13 @@ describe("TripForm", () => {
     });
 
     it("should exist if stops are present", () => {
-      const savedTrip = [{}];
       mockStore.getters.hasStops = true;
-      mockStore.state.trip.savedTrip = savedTrip;
       const wrapper = shallowMount(TripForm, {
         mocks: {
           $store: mockStore
         }
       });
       expect(wrapper.find(TripActions).exists()).toBe(true);
-      expect(wrapper.find(TripActions).props().tripSaved).toBe(true);
     });
 
     describe("events", () => {

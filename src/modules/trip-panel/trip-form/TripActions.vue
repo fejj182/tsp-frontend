@@ -51,7 +51,7 @@
             New trip
           </v-list-item-title>
         </v-list-item>
-        <v-list-item @click="$emit('save-trip')" data-test-id="save-trip">
+        <v-list-item @click="$emit('save-trip')" data-test-id="save-for-later">
           <v-list-item-title>
             <v-icon left>
               mdi-bookmark
@@ -85,14 +85,12 @@ export default {
   components: {
     TripActionListItem
   },
-  props: {
-    tripSaved: {
-      type: Boolean
-    }
-  },
   computed: {
     url() {
       return window.location.href;
+    },
+    tripSaved() {
+      return this.$route.name === "alias";
     }
   },
   methods: {

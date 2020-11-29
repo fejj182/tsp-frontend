@@ -9,8 +9,17 @@ Vue.use(Vuetify);
 Vue.use(VueClipboard);
 
 describe("TripActions", () => {
+  let mockRoute;
+
+  beforeEach(() => {
+    mockRoute = { name: "name" };
+  });
+
   it("should contain the find offers button", () => {
     const wrapper = mount(TripActions, {
+      mocks: {
+        $route: mockRoute
+      },
       stubs: {
         VMenu: {
           name: "v-menu",
@@ -23,6 +32,9 @@ describe("TripActions", () => {
 
   it("should contain the TripActionListItems", () => {
     const wrapper = mount(TripActions, {
+      mocks: {
+        $route: mockRoute
+      },
       stubs: {
         VMenu: {
           name: "v-menu",
@@ -33,10 +45,10 @@ describe("TripActions", () => {
     expect(wrapper.findAll(TripActionListItem).length).toBe(3);
   });
 
-  it("should contain the save button", () => {
+  it("should contain the save button if not saved trip", () => {
     const wrapper = mount(TripActions, {
-      propsData: {
-        tripSaved: false
+      mocks: {
+        $route: mockRoute
       },
       stubs: {
         VMenu: {
@@ -49,9 +61,10 @@ describe("TripActions", () => {
   });
 
   it("should contain the more options button if trip already saved", () => {
+    mockRoute.name = "alias";
     const wrapper = mount(TripActions, {
-      propsData: {
-        tripSaved: true
+      mocks: {
+        $route: mockRoute
       },
       stubs: {
         VMenu: {
@@ -64,9 +77,10 @@ describe("TripActions", () => {
   });
 
   it("should contain the trip actions list if trip already saved", () => {
+    mockRoute.name = "alias";
     const wrapper = mount(TripActions, {
-      propsData: {
-        tripSaved: true
+      mocks: {
+        $route: mockRoute
       },
       stubs: {
         VMenu: {

@@ -119,6 +119,7 @@ export default {
         }
       } else {
         this.$store.dispatch("resetTrip");
+        //TODO: should reset URL?
       }
     },
     autocompleteFilter(item, queryText, itemText) {

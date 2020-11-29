@@ -52,7 +52,6 @@
     </v-alert>
     <TripActions
       v-if="hasStops"
-      :tripSaved="tripSaved"
       v-on:reset-trip="resetTrip"
       v-on:save-trip="onSubmit"
       v-on:copy-success="onCopySuccess"
@@ -93,9 +92,6 @@ export default {
     },
     completeTrip() {
       return this.$store.getters.completeTrip;
-    },
-    tripSaved() {
-      return this.$store.state.trip.savedTrip.length > 0;
     },
     showStartingDestination() {
       return (

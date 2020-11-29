@@ -63,13 +63,13 @@ function assertWorking() {
   cy.get("[data-test-id=trip-form-panel]").should("not.be.visible");
   cy.get("[data-test-id=close-filters]").click();
 
-  cy.get("#buy-tickets").should("exist");
+  cy.get("#find-offers-btn").should("exist");
 
-  cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-alias]").should("exist");
   cy.get("[data-test-id=success-alias] .v-alert__content").should(
     "contain.text",
     "created"
   );
+  cy.get("[data-test-id=more-options]").should("exist");
 }
