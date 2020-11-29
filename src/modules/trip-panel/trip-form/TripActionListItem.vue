@@ -1,7 +1,7 @@
 <template>
   <v-list-item>
     <v-icon left>{{ icon }}</v-icon>
-    <v-btn left text :href="href" :target="target">
+    <v-btn left text :href="href" :target="target" class="btn-action-list-item">
       {{ name }}
     </v-btn>
   </v-list-item>
@@ -26,4 +26,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.btn-action-list-item {
+  flex: 1;
+  justify-content: left;
+}
+</style>

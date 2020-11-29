@@ -37,6 +37,7 @@ export default {
   left: 0;
   right: 0;
   width: 90%;
+  max-width: 500px;
   margin: 0 auto;
   z-index: 850;
 }
