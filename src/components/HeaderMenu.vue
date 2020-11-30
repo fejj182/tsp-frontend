@@ -4,6 +4,7 @@
       <template v-slot:activator="{ on: menu, attrs }">
         <v-btn icon text v-bind="attrs" v-on="{ ...menu }">
           <v-icon>mdi-menu</v-icon>
+          <span class="sr-only">Alternative Menu</span>
         </v-btn>
       </template>
       <v-list id="header-menu__list">

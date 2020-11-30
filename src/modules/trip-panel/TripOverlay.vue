@@ -5,6 +5,7 @@
       <v-spacer></v-spacer>
       <v-btn icon @click="collapse = !collapse">
         <v-icon>{{ collapse ? "mdi-chevron-up" : "mdi-chevron-down" }}</v-icon>
+        <span class="sr-only">Collapse/Expand Trip Planner</span>
       </v-btn>
     </v-card-title>
     <v-divider></v-divider>

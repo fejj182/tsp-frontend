@@ -8,6 +8,7 @@ import features from "./plugins/features";
 import isMobile from "./plugins/isMobile";
 import VueClipboard from "vue-clipboard2";
 import VueMeta from "vue-meta";
+import "@/assets/global.css";
 
 Vue.use(
   VueGtag,
