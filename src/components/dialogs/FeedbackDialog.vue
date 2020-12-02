@@ -51,12 +51,24 @@
         </v-form>
       </v-card>
     </v-dialog>
+    <v-alert
+      v-if="success"
+      data-test-id="feedback-success"
+      dense
+      text
+      dismissible
+      type="success"
+    >
+      Sent. Thanks for helping!
+    </v-alert>
   </div>
 </template>
 
 <script>
+import feedbackApi from "@/api/feedback";
 export default {
   data: () => ({
+    success: false,
     dialog: false,
     valid: true,
     name: "",
@@ -73,6 +85,7 @@ export default {
       this.$nextTick(() => {
         const valid = this.$refs.form.validate();
         if (valid) {
+          feedbackApi.create(this.name, this.email, this.feedback);
           this.dialog = false;
           this.$refs.form.reset();
           this.rules = {};
