@@ -14,17 +14,20 @@
         Multiple journey planner for train travel in Europe.
       </h1>
       <v-spacer></v-spacer>
+      <FeedbackDialog />
       <HeaderMenu data-test-id="header-menu" v-if="showHeaderMenu" />
     </v-app-bar>
   </div>
 </template>
 
 <script>
-const HeaderMenu = () => import("@/components/HeaderMenu");
+import HeaderMenu from "@/components/HeaderMenu";
+import FeedbackDialog from "@/components/dialogs/FeedbackDialog";
 
 export default {
   components: {
-    HeaderMenu
+    HeaderMenu,
+    FeedbackDialog
   },
   data() {
     return {

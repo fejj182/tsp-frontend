@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import isMobile from "@/plugins/isMobile";
 
 import Header from "./Header";
+import FeedbackDialog from "@/components/dialogs/FeedbackDialog";
 
 Vue.use(Vuetify);
 Vue.use(isMobile);
@@ -61,5 +62,15 @@ describe("Header", () => {
       stubs: mockStubs
     });
     expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(false);
+  });
+
+  it("should contain Feedback Dialog", () => {
+    const wrapper = shallowMount(Header, {
+      mocks: {
+        $route: mockRoute
+      },
+      stubs: mockStubs
+    });
+    expect(wrapper.find(FeedbackDialog).exists()).toBe(true);
   });
 });
