@@ -1,38 +1,37 @@
 <template>
-  <div id="welcome" :style="{ backgroundImage: `url(${image})` }">
-    <h1 data-test-id="welcome-title">
-      Where can you reach by train today?
-    </h1>
-    <h2>
-      Tell us how much time you have and we'll do the rest.
-    </h2>
-    <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
+  <div id="welcome" :style="{ backgroundImage: `url(${backgroundImage.src})` }">
+    <v-col :md="5" :offset-md="0">
+      <h1 data-test-id="welcome-title">Where can you reach by train today?</h1>
+      <h2>Tell us how much time you have and we'll do the rest.</h2>
+      <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
 
-    <v-form
-      ref="form"
-      v-model="valid"
-      @submit.prevent="onSubmit"
-      id="welcome-form"
-    >
-      <StartingDestination v-on:change-station="onChangeStartingStation" />
-      <MaxJourneyTime />
-      <v-btn type="submit" color="secondary" rounded id="find-destinations-btn">
-        Find Routes
-      </v-btn>
-    </v-form>
-
-    <span
-      >Photo by
-      <a
-        href="https://unsplash.com/@kodozani?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
-        >Onur K</a
+      <v-form
+        ref="form"
+        v-model="valid"
+        @submit.prevent="onSubmit"
+        id="welcome-form"
       >
-      on
-      <a
-        href="/s/photos/rail?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
-        >Unsplash</a
+        <StartingDestination v-on:change-station="onChangeStartingStation" />
+        <MaxJourneyTime />
+        <v-btn
+          type="submit"
+          color="secondary"
+          rounded
+          id="find-destinations-btn"
+        >
+          Find Routes
+        </v-btn>
+      </v-form>
+      <span
+        >Photo by
+        <a :href="backgroundImage.photographerHref">{{
+          backgroundImage.photographer
+        }}</a>
+        on
+        <a :href="backgroundImage.unsplashHref">Unsplash</a>
+      </span>
       >
-    </span>
+    </v-col>
   </div>
 </template>
 
@@ -52,8 +51,26 @@ export default {
     MaxJourneyTime
   },
   computed: {
-    image() {
-      return require("@/assets/onur-k-D5Plb33eKZc-unsplash.jpg");
+    backgroundImage() {
+      if (window.innerWidth < 992) {
+        return {
+          src: require("@/assets/onur-k-D5Plb33eKZc-unsplash.jpg"),
+          photographerHref:
+            "https://unsplash.com/@kodozani?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText",
+          photographer: "Onur K",
+          unsplashHref:
+            "https://unsplash.com/s/photos/rail?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
+        };
+      } else {
+        return {
+          src: require("@/assets/charles-forerunner-gapYVvUg1M8-unsplash.jpg"),
+          photographerHref:
+            "https://unsplash.com/@charles_forerunner?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText",
+          photographer: "Charles Forerunner",
+          unsplashHref:
+            "https://unsplash.com/s/photos/train?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText"
+        };
+      }
     }
   },
   methods: {
@@ -123,7 +140,7 @@ h3 {
 #welcome-form {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+  padding: 2rem 4rem;
 }
 
 span {

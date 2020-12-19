@@ -75,13 +75,6 @@ describe("Home", () => {
       const wrapper = shallowMountHome();
       expect(wrapper.find(TripPanel).exists()).toBe(false);
     });
-
-    it("should not contain the trip panel on mobile", () => {
-      window.innerWidth = 500;
-      mockStore.getters.completeTrip = [{}];
-      const wrapper = shallowMountHome();
-      expect(wrapper.find(TripPanel).exists()).toBe(false);
-    });
   });
 
   describe("Welcome Panel", () => {
@@ -91,18 +84,10 @@ describe("Home", () => {
       expect(wrapper.find(Welcome).exists()).toBe(true);
     });
 
-    it("should not contain the welcome panel if trip has not started and FT is off", () => {
-      mockRoute.name = "welcome";
+    it("should not contain the welcome panel if FT is off", () => {
       mockFeatures = jest.fn().mockImplementation(() => false);
       const wrapper = shallowMountHome();
       expect(wrapper.find(Welcome).exists()).toBe(false);
-    });
-
-    it("should contain the welcome panel on mobile if trip not started", () => {
-      mockRoute.name = "welcome";
-      window.innerWidth = 500;
-      const wrapper = shallowMountHome();
-      expect(wrapper.find(Welcome).exists()).toBe(true);
     });
   });
 

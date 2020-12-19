@@ -1,3 +1,5 @@
+import { startTripFromWelcome } from "../support/helpers";
+
 describe("Trip Map", () => {
   it("should create trip using map", () => {
     cy.server();
@@ -6,16 +8,10 @@ describe("Trip Map", () => {
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
 
-    cy.get(".marker-starting-barcelona").click();
-    cy.get(".leaflet-popup").should("exist");
-    cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-    cy.get("#max-journey-time").click();
-    cy.get(".v-list-item:visible")
-      .first() // 2 hours
-      .click();
-    cy.get("#find-destinations-btn").click();
+    startTripFromWelcome();
 
     cy.wait("@getConnections");
+    cy.get(".marker-starting-barcelona").should("not.exist");
     cy.get("#stop-1 [data-test-id=stop]").should("exist");
 
     cy.get(".position-1").click();
@@ -47,17 +43,14 @@ describe("Trip Map", () => {
     );
   });
   it("should be able to reset a trip and not break UI", () => {
+    //TODO: investigate if we can get rid of this test by modifying behaviour of reset
+
     cy.server();
     cy.route("POST", "api/destinations/connections").as("getConnections");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
 
-    cy.get(".marker-starting-barcelona").click();
-    cy.get("#max-journey-time").click();
-    cy.get(".v-list-item:visible")
-      .first()
-      .click();
-    cy.get("#find-destinations-btn").click();
+    startTripFromWelcome();
 
     cy.wait("@getConnections");
 

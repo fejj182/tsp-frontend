@@ -1,6 +1,6 @@
 <template>
   <v-container fluid class="grey lighten-5" id="home">
-    <v-row no-gutters v-if="isMobile && shouldWelcome">
+    <v-row no-gutters v-if="shouldWelcome">
       <Welcome />
     </v-row>
 
@@ -11,13 +11,13 @@
 
     <v-row no-gutters v-else>
       <v-col :md="4">
-        <Welcome v-if="shouldWelcome" />
-        <TripPanel v-else />
+        <TripPanel />
       </v-col>
       <v-col :md="8">
         <Map v-if="dataLoaded" />
       </v-col>
     </v-row>
+
     <footer>
       <CookieBanner />
     </footer>

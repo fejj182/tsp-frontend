@@ -8,6 +8,10 @@ import MaxJourneyTime from "@/modules/trip-panel/trip-form/inputs/MaxJourneyTime
 Vue.use(Vuetify);
 
 describe("Welcome", () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
   it("should contain StartingDestination", () => {
     const wrapper = shallowMount(Welcome);
     expect(wrapper.find(StartingDestination).exists()).toBe(true);
@@ -26,6 +30,56 @@ describe("Welcome", () => {
   it("should contain title", () => {
     const wrapper = shallowMount(Welcome);
     expect(wrapper.find("[data-test-id=welcome-title]").exists()).toBe(true);
+  });
+
+  it("should use mobile image", () => {
+    window.innerWidth = 500;
+    const mobileMockRequire = jest.fn();
+    const mobileSpy = jest.mock(
+      "@/assets/onur-k-D5Plb33eKZc-unsplash.jpg",
+      mobileMockRequire,
+      {
+        virtual: true
+      }
+    );
+    const desktopMockRequire = jest.fn();
+    const desktopspy = jest.mock(
+      "@/assets/charles-forerunner-gapYVvUg1M8-unsplash.jpg",
+      desktopMockRequire,
+      {
+        virtual: true
+      }
+    );
+
+    const wrapper = shallowMount(Welcome);
+
+    expect(mobileMockRequire).toBeCalled();
+    expect(desktopMockRequire).not.toBeCalled();
+  });
+
+  it("should use desktop image", () => {
+    window.innerWidth = 1000;
+    const mobileMockRequire = jest.fn();
+    const mobileSpy = jest.mock(
+      "@/assets/onur-k-D5Plb33eKZc-unsplash.jpg",
+      mobileMockRequire,
+      {
+        virtual: true
+      }
+    );
+    const desktopMockRequire = jest.fn();
+    const spy = jest.mock(
+      "@/assets/charles-forerunner-gapYVvUg1M8-unsplash.jpg",
+      desktopMockRequire,
+      {
+        virtual: true
+      }
+    );
+
+    const wrapper = shallowMount(Welcome);
+
+    expect(mobileMockRequire).not.toBeCalled();
+    expect(desktopMockRequire).toBeCalled();
   });
 
   describe("submit button", () => {
