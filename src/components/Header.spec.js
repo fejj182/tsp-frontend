@@ -4,6 +4,7 @@ import Vuetify from "vuetify";
 import isMobile from "@/plugins/isMobile";
 
 import Header from "./Header";
+import HeaderMenu from "./HeaderMenu";
 import FeedbackDialog from "@/components/dialogs/FeedbackDialog";
 
 Vue.use(Vuetify);
@@ -19,10 +20,6 @@ describe("Header", () => {
     },
     VSpacer: {
       name: "v-spacer",
-      template: "<span></span>"
-    },
-    HeaderMenu: {
-      name: "HeaderMenu",
       template: "<span></span>"
     }
   };
@@ -51,7 +48,7 @@ describe("Header", () => {
       },
       stubs: mockStubs
     });
-    expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(true);
+    expect(wrapper.find(HeaderMenu).exists()).toBe(true);
   });
 
   it("should not contain HeaderMenu if not on welcome page", () => {
@@ -61,7 +58,7 @@ describe("Header", () => {
       },
       stubs: mockStubs
     });
-    expect(wrapper.find("[data-test-id=header-menu]").exists()).toBe(false);
+    expect(wrapper.find(HeaderMenu).exists()).toBe(false);
   });
 
   it("should contain Feedback Dialog", () => {

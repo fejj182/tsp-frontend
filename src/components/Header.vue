@@ -15,7 +15,7 @@
       </h1>
       <v-spacer></v-spacer>
       <FeedbackDialog />
-      <HeaderMenu data-test-id="header-menu" v-if="showHeaderMenu" />
+      <HeaderMenu v-if="showHeaderMenu" />
     </v-app-bar>
   </div>
 </template>
