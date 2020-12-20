@@ -1,17 +1,15 @@
 <template>
   <div>
-    <StartingMarkers data-test-id="starting-markers" :map="map" />
-    <TripMarkers data-test-id="trip-markers" :map="map" />
-    <ConnectionMarkers data-test-id="connection-markers" :map="map" />
+    <StartingMarkers :map="map" />
+    <TripMarkers :map="map" />
+    <ConnectionMarkers :map="map" />
   </div>
 </template>
 
 <script>
-const StartingMarkers = () =>
-  import("@/modules/map/markers/StartingMarkers.vue");
-const ConnectionMarkers = () =>
-  import("@/modules/map/markers/ConnectionMarkers.vue");
-const TripMarkers = () => import("@/modules/map/markers/trip/TripMarkers.vue");
+import StartingMarkers from "@/modules/map/markers/StartingMarkers.vue";
+import ConnectionMarkers from "@/modules/map/markers/ConnectionMarkers.vue";
+import TripMarkers from "@/modules/map/markers/trip/TripMarkers.vue";
 
 export default {
   components: {
