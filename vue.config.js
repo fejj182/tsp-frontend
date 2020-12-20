@@ -19,7 +19,7 @@ module.exports = {
   chainWebpack: config => {
     config.plugins.delete("prefetch");
     config.plugin("preload").tap(options => {
-      options[0].include = "allChunks";
+      options[0].include = "initial";
       return options;
     });
   },
