@@ -5,8 +5,8 @@
     </v-row>
 
     <v-row no-gutters v-else-if="isMobile">
-      <Map />
-      <TripOverlay />
+      <Map data-test-id="map" />
+      <TripOverlay data-test-id="trip-overlay" />
     </v-row>
 
     <v-row no-gutters v-else>
@@ -25,9 +25,9 @@
 </template>
 
 <script>
-import Map from "@/modules/map/Map.vue";
-import TripPanel from "@/modules/trip-panel/TripPanel.vue";
-import TripOverlay from "@/modules/trip-panel/TripOverlay.vue";
+const Map = () => import("@/modules/map/Map.vue");
+const TripPanel = () => import("@/modules/trip-panel/TripPanel.vue");
+const TripOverlay = () => import("@/modules/trip-panel/TripOverlay.vue");
 import Welcome from "@/modules/welcome/Welcome.vue";
 import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 

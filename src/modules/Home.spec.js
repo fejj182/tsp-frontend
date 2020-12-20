@@ -12,7 +12,7 @@ import flushPromises from "flush-promises";
 Vue.use(Vuetify);
 
 describe("Home", () => {
-  let mockStore, mockFeatures, mockRoute;
+  let mockStore, mockFeatures, mockRoute, mockStubs;
 
   beforeEach(() => {
     mockStore = {
@@ -30,23 +30,34 @@ describe("Home", () => {
     mockRoute = {
       name: "home"
     };
+    mockStubs = {
+      Map: {
+        name: "Map",
+        template: "<span></span>"
+      },
+      TripOverlay: {
+        name: "TripOverlay",
+        template: "<span></span>"
+      }
+    };
     mockFeatures = jest.fn().mockImplementation(() => true);
     window.innerWidth = 1000;
   });
 
   describe("children", () => {
-    it("should contain the map", async () => {
-      const wrapper = shallowMountHome();
-      await flushPromises();
-      expect(wrapper.find(Map).exists()).toBe(true);
-    });
-
     it("should contain the map and tripoverlay on mobile", async () => {
       window.innerWidth = 500;
       const wrapper = shallowMountHome();
       await flushPromises();
-      expect(wrapper.find(Map).exists()).toBe(true);
-      expect(wrapper.find(TripOverlay).exists()).toBe(true);
+      expect(wrapper.find("[data-test-id=map]").exists()).toBe(true);
+      expect(wrapper.find("[data-test-id=trip-overlay]").exists()).toBe(true);
+    });
+
+    it("should not contain the map and tripoverlay on desktop", async () => {
+      const wrapper = shallowMountHome();
+      await flushPromises();
+      expect(wrapper.find("[data-test-id=map]").exists()).toBe(false);
+      expect(wrapper.find("[data-test-id=trip-overlay]").exists()).toBe(false);
     });
 
     it("should contain not the map on mobile if route is welcome", async () => {
@@ -54,7 +65,7 @@ describe("Home", () => {
       mockRoute.name = "welcome";
       const wrapper = shallowMountHome();
       await flushPromises();
-      expect(wrapper.find(Map).exists()).toBe(false);
+      expect(wrapper.find("[data-test-id=map]").exists()).toBe(false);
     });
 
     it("should contain the cookie banner", () => {
@@ -138,7 +149,8 @@ describe("Home", () => {
         $route: mockRoute,
         $store: mockStore,
         $feature: mockFeatures
-      }
+      },
+      stubs: mockStubs
     });
   };
 });
