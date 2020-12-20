@@ -11,7 +11,7 @@
         <span> Click to return to home </span>
       </a>
       <h1 v-if="showTitle">
-        Multiple journey planner for train travel in Europe.
+        Plan your trip. Enjoy the journey.
       </h1>
       <v-spacer></v-spacer>
       <FeedbackDialog />
