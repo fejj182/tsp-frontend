@@ -33,7 +33,6 @@
           on
           <a :href="backgroundImage.unsplashHref">Unsplash</a>
         </span>
-        >
       </v-col>
     </v-row>
     <v-row>
