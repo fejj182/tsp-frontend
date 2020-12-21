@@ -269,26 +269,11 @@ describe("TripForm", () => {
             },
             stubs: mockStubs
           });
-          const actions = wrapper.find(TripActions);
           wrapper.find(TripActions).vm.$emit("reset-trip");
           expect(mockReset).toHaveBeenCalled();
-          expect(mockRouter.push).not.toHaveBeenCalledWith("/planner");
-        });
-
-        it("should change the url", () => {
-          mockStore.getters.hasStops = true;
-          mockRoute.name = "alias";
-          const wrapper = mount(TripForm, {
-            mocks: {
-              $store: mockStore,
-              $route: mockRoute,
-              $router: mockRouter
-            },
-            stubs: mockStubs
-          });
-          const actions = wrapper.find(TripActions);
-          wrapper.find(TripActions).vm.$emit("reset-trip");
-          expect(mockRouter.push).toHaveBeenCalledWith("/planner");
+          expect(mockRouter.push).toHaveBeenCalledWith("/");
+          expect(mockStore.dispatch).toBeCalledWith("resetTrip");
+          expect(mockStore.dispatch).toBeCalledWith("resetFilters");
         });
       });
 

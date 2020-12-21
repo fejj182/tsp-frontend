@@ -1,14 +1,18 @@
 <template>
   <v-app id="v-app">
     <Header />
-    <v-content>
-      <router-view />
-    </v-content>
+    <v-container fluid id="app-container">
+      <v-content>
+        <router-view />
+      </v-content>
+    </v-container>
+    <CookieBanner />
   </v-app>
 </template>
 
 <script>
 import Header from "@/components/Header.vue";
+import CookieBanner from "@/modules/cookies/CookieBanner.vue";
 
 export default {
   name: "App",
@@ -36,9 +40,13 @@ export default {
     ]
   },
   components: {
-    Header
+    Header,
+    CookieBanner
   },
-
+  mounted() {
+    let vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty("--vh", `${vh}px`);
+  },
   data: () => ({
     //
   })
@@ -50,10 +58,23 @@ export default {
   font-family: "Raleway", sans-serif;
   font-weight: 600;
 }
+.container,
+.row {
+  height: 100%;
+}
+
+#app-container {
+  padding: 0.25rem;
+}
+
 @media only screen and (max-width: $width-desktop) {
   #v-app .v-application--wrap {
     min-height: calc(100vh);
     min-height: calc(var(--vh, 1vh) * 100);
+  }
+
+  #app-container {
+    padding: 0;
   }
 }
 </style>

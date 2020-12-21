@@ -62,6 +62,7 @@ export default {
         this.$emit("change-station", station);
       } else {
         if (station) {
+          //TODO: can this be done without triggering a reset?
           this.$store.dispatch("startTrip", station);
         }
       }

@@ -15,21 +15,16 @@ describe("Mobile", () => {
 
     assertWorking();
   });
-  it("should start from planner", () => {
+  it("should redirect from planner", () => {
     cy.server();
+    cy.route("GET", "api/destinations").as("getDestinations");
     cy.route("POST", "api/destinations/connections").as("getConnections");
     cy.viewport("iphone-6");
     cy.visit("http://localhost:8080/planner");
     cy.get(".Cookie__button").click();
 
-    cy.get(".marker-starting-barcelona").click();
-    cy.get(".leaflet-popup").should("exist");
-
-    cy.get("[data-test-id=starting-destination]").click();
-    cy.get(".v-list-item:visible")
-      .first()
-      .click();
-
+    cy.wait("@getDestinations");
+    startTripFromWelcome();
     cy.wait("@getConnections");
 
     assertWorking();

@@ -19,7 +19,7 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
-      :append-outer-icon="isLastStop ? 'mdi-close' : ''"
+      :append-outer-icon="allowRemove ? 'mdi-close' : ''"
       @click:append-outer="removeStop"
     >
       <template v-slot:item="{ item }">
@@ -76,6 +76,9 @@ export default {
     },
     isLastStop() {
       return this.stopNumber === this.$store.state.trip.stops.length;
+    },
+    allowRemove() {
+      return this.stopNumber > 1 && this.isLastStop;
     },
     items() {
       if (this.isLastStop) {

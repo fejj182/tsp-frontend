@@ -11,7 +11,7 @@
       data-test-id="journey-time-slider"
     >
       <template v-slot:thumb-label="{ value }">
-        {{ thumbLabel(value) }}
+        <span class="thumb-label">{{ thumbLabel(value) }}</span>
       </template>
     </v-range-slider>
   </div>

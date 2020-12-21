@@ -7,67 +7,62 @@ describe("TripForm", function() {
     cy.route("POST", "api/trip").as("saveTrip");
     cy.visit("http://localhost:8080/");
     cy.get(".Cookie__button").click();
-    assertFirstStopAddAndClose();
-    assertFullFlowAddAndClose();
-    assertFullFlowSaveRefreshAndClose();
+    assertAddingAndRemoving();
+    assertFullFlow();
+    assertAfterRefresh();
+    assertReset();
+    assertWithoutDuration();
   });
 });
 
-function assertFirstStopAddAndClose() {
+function assertAddingAndRemoving() {
   cy.wait("@getDestinations");
   startTripFromWelcome();
 
+  cy.get(".thumb-label").contains("0");
+  cy.get(".thumb-label").contains("2");
   cy.get("#stop-1 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
   cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("#stop-1 .mdi-close").click();
-  assertStateAfterReset();
-}
+  cy.get("[data-test-id=add-stop]").click();
 
-function assertStateAfterReset() {
-  cy.wait(250);
-  cy.get(".marker-starting").should("exist");
-  cy.get(".marker-connection").should("not.exist");
-  cy.get("#stop-1 [data-test-id=stop]").should("not.exist");
-  cy.get("[data-test-id=starting-destination]").should("have.value", "");
-  cy.get(".position-1").should("not.exist");
-  cy.get(".leaflet-popup").should("not.exist");
-  cy.get("g .leaflet-interactive").should("not.exist");
-}
+  cy.get("#stop-2 [data-test-id=stop]").click();
+  cy.get(".v-list-item:visible")
+    .first()
+    .click();
+  cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
 
-function assertFullFlowAddAndClose() {
-  add3Stops();
-  cy.get("#stop-3 .mdi-close").click();
-  assertStateAfterRemoveStop3();
   cy.get("#stop-2 .mdi-close").click();
-  assertStateAfterRemoveStop2();
-  cy.get("#stop-1 .mdi-close").click();
-  assertStateAfterReset();
+  cy.get("#stop-1 .mdi-close").should("not.exist");
+  cy.get("#stop-2 [data-test-id=stop]").should("not.exist");
+  cy.get("#stop-1 [data-test-id=stop]").should("have.value", "");
 }
 
-function assertFullFlowSaveRefreshAndClose() {
+function assertFullFlow() {
   add3Stops();
   cy.get("[data-test-id=more-options]").should("not.exist");
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
+  cy.get("[data-test-id=success-alias]").should("exist");
+  cy.get("[data-test-id=success-alias] .v-alert__content").should(
+    "contain.text",
+    "created"
+  );
   cy.get("[data-test-id=more-options]").should("exist");
+}
+
+function assertAfterRefresh() {
   cy.reload();
 
   cy.get("#stop-3 .mdi-close").click();
-  assertStateAfterRemoveStop3();
+  assertAfterRemoveStop();
   cy.get("#stop-2 .mdi-close").click();
-  assertStateAfterRemoveStop2();
-  cy.get("#stop-1 .mdi-close").click();
-  assertStateAfterReset();
 }
 
 function add3Stops() {
-  cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item")
-    .first()
-    .click();
   cy.get("#stop-1 [data-test-id=stop]").click();
   cy.get(".v-list-item:visible")
     .first()
@@ -90,7 +85,7 @@ function add3Stops() {
   cy.get("[data-test-id=total-duration]").should("exist");
 }
 
-function assertStateAfterRemoveStop3() {
+function assertAfterRemoveStop() {
   cy.wait(250);
   cy.get("#stop-3").should("not.exist");
   cy.get("#stop-2 [data-test-id=stop]").should("have.value", "");
@@ -102,12 +97,21 @@ function assertStateAfterRemoveStop3() {
   cy.get(".marker-connection:visible").should("exist");
 }
 
-function assertStateAfterRemoveStop2() {
-  cy.wait(250);
-  cy.get("#stop-2").should("not.exist");
-  cy.get("#stop-1 [data-test-id=stop]").should("have.value", "");
-  cy.get(".position-1").should("exist");
-  cy.get(".position-2").should("not.exist");
-  cy.get(".position-3").should("not.exist");
-  cy.get(".marker-connection:visible").should("exist");
+function assertReset() {
+  cy.reload();
+  cy.get("[data-test-id=more-options]").click();
+  cy.get("[data-test-id=reset-trip]").click();
+  cy.wait("@getDestinations");
+  startTripFromWelcome();
+  assertFullFlow();
+}
+
+function assertWithoutDuration() {
+  cy.get("[data-test-id=more-options]").click();
+  cy.get("[data-test-id=reset-trip]").click();
+  cy.get("[data-test-id=starting-destination]").click();
+  cy.get("#list-item-barcelona").click();
+  cy.get("#find-destinations-btn").click();
+  cy.get(".thumb-label").contains("0");
+  cy.get(".thumb-label").contains("6+");
 }

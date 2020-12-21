@@ -42,34 +42,4 @@ describe("Trip Map", () => {
       "created"
     );
   });
-  it("should be able to reset a trip and not break UI", () => {
-    //TODO: investigate if we can get rid of this test by modifying behaviour of reset
-
-    cy.server();
-    cy.route("POST", "api/destinations/connections").as("getConnections");
-    cy.visit("http://localhost:8080/");
-    cy.get(".Cookie__button").click();
-
-    startTripFromWelcome();
-
-    cy.wait("@getConnections");
-
-    // using trip form here instead of marker as causes state change
-    // wait for markers to be loaded before selecting input
-    cy.wait(250);
-    cy.get("#stop-1 [data-test-id=stop]").click();
-    cy.get(".v-list-item:visible")
-      .first()
-      .click();
-    cy.get(".leaflet-popup").should("exist");
-
-    cy.get("[data-test-id=save-trip]").click();
-    cy.get("[data-test-id=more-options]").click();
-    cy.get("[data-test-id=reset-trip]").click();
-    cy.get(".marker-connection-zaragoza").should("not.exist");
-    cy.get(".leaflet-popup").should("not.exist");
-    cy.get(".marker-starting").should("exist");
-    cy.get(".marker-starting-zaragoza").click();
-    cy.get(".leaflet-popup").should("exist");
-  });
 });

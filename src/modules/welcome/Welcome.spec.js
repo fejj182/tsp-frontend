@@ -8,31 +8,60 @@ import MaxJourneyTime from "@/modules/trip-panel/trip-form/inputs/MaxJourneyTime
 Vue.use(Vuetify);
 
 describe("Welcome", () => {
+  let mockStore;
   beforeEach(() => {
     jest.resetAllMocks();
+    mockStore = {
+      dispatch: jest.fn()
+    };
+  });
+
+  it("should fetch starting stations", () => {
+    shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
+    expect(mockStore.dispatch).toHaveBeenCalledWith("fetchStartingStations");
   });
 
   it("should contain StartingDestination", () => {
-    const wrapper = shallowMount(Welcome);
+    const wrapper = shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
     expect(wrapper.find(StartingDestination).exists()).toBe(true);
   });
 
   it("should contain MaxJourneyTime", () => {
-    const wrapper = shallowMount(Welcome);
+    const wrapper = shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
     expect(wrapper.find(MaxJourneyTime).exists()).toBe(true);
   });
 
   it("should contain submit button", () => {
-    const wrapper = shallowMount(Welcome);
+    const wrapper = shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
     expect(wrapper.find("#find-destinations-btn").exists()).toBe(true);
   });
 
   it("should contain title", () => {
-    const wrapper = shallowMount(Welcome);
+    const wrapper = shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
     expect(wrapper.find("[data-test-id=welcome-title]").exists()).toBe(true);
   });
 
-  it("should use mobile image", () => {
+  it("should use mobile background image", () => {
     window.innerWidth = 500;
     const mobileMockRequire = jest.fn();
     const mobileSpy = jest.mock(
@@ -51,13 +80,17 @@ describe("Welcome", () => {
       }
     );
 
-    const wrapper = shallowMount(Welcome);
+    const wrapper = shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
 
     expect(mobileMockRequire).toBeCalled();
     expect(desktopMockRequire).not.toBeCalled();
   });
 
-  it("should use desktop image", () => {
+  it("should use desktop background image", () => {
     window.innerWidth = 1000;
     const mobileMockRequire = jest.fn();
     const mobileSpy = jest.mock(
@@ -76,7 +109,11 @@ describe("Welcome", () => {
       }
     );
 
-    const wrapper = shallowMount(Welcome);
+    shallowMount(Welcome, {
+      mocks: {
+        $store: mockStore
+      }
+    });
 
     expect(mobileMockRequire).not.toBeCalled();
     expect(desktopMockRequire).toBeCalled();
@@ -159,7 +196,10 @@ describe("Welcome", () => {
         stubs: mockStubs
       });
       wrapper.find("#find-destinations-btn").trigger("submit");
-      expect(mockDispatch).not.toHaveBeenCalled();
+      expect(mockDispatch).not.toHaveBeenCalledWith(
+        "startTrip",
+        expect.any(Object)
+      );
       expect(mockRouter.push).not.toHaveBeenCalled();
     });
 

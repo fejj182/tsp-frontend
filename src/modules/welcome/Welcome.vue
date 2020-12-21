@@ -84,6 +84,9 @@ export default {
     StartingDestination,
     MaxJourneyTime
   },
+  created() {
+    this.$store.dispatch("fetchStartingStations");
+  },
   computed: {
     backgroundImage() {
       if (window.innerWidth < 992) {

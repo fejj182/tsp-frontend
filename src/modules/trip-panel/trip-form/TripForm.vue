@@ -111,9 +111,8 @@ export default {
     resetTrip() {
       this.$refs.form.reset();
       this.$store.dispatch("resetTrip");
-      if (this.$route.name === "alias") {
-        this.$router.push("/planner");
-      }
+      this.$store.dispatch("resetFilters");
+      this.$router.push("/");
     },
     onSubmit() {
       if (this.$route.name === "alias") {

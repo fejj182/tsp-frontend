@@ -2,6 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 
 import Home from "@/modules/Home.vue";
+import Welcome from "@/modules/welcome/Welcome.vue";
 import PrivacyPolicy from "@/components/PrivacyPolicy.vue";
 import NotFound from "@/components/NotFound.vue";
 
@@ -11,7 +12,7 @@ const routes = [
   {
     path: "/",
     name: "welcome",
-    component: Home
+    component: Welcome
   },
   {
     path: "/planner",

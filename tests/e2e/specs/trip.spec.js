@@ -53,12 +53,6 @@ function createTrip() {
   assertReloadedTripInCorrectState();
 }
 
-function resetTrip() {
-  cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=reset-trip]").click();
-  cy.get(".stop").should("not.exist");
-}
-
 function assertReloadedTripInCorrectState() {
   cy.get(".leaflet-popup").should("not.exist");
   cy.get("[data-test-id=starting-destination]")
@@ -132,4 +126,10 @@ function assertTripCanBeRebuilt() {
   cy.get("#stop-1 [data-test-id=stop]")
     .should("exist")
     .should("not.have.value", "");
+}
+
+function resetTrip() {
+  cy.get("[data-test-id=more-options]").click();
+  cy.get("[data-test-id=reset-trip]").click();
+  cy.get(".stop").should("not.exist");
 }
