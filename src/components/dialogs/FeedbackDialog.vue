@@ -8,7 +8,7 @@
         </v-btn>
       </template>
       <v-card>
-        <v-form ref="form" @submit.prevent="onSubmit">
+        <v-form ref="form" v-model="valid" @submit.prevent="onSubmit">
           <v-card-title class="mb-4">
             Tell us what you're thinking...
           </v-card-title>
@@ -39,28 +39,27 @@
               </v-row>
             </v-container>
           </v-card-text>
+          <v-alert
+            v-if="success"
+            data-test-id="feedback-success"
+            dense
+            text
+            type="success"
+          >
+            Sent. Thanks for helping!
+          </v-alert>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="primary" text @click="dialog = false">
+            <v-btn color="primary" text @click="onClose">
               Close
             </v-btn>
-            <v-btn color="primary" type="submit">
+            <v-btn color="primary" type="submit" data-test-id="btn-submit">
               Send
             </v-btn>
           </v-card-actions>
         </v-form>
       </v-card>
     </v-dialog>
-    <v-alert
-      v-if="success"
-      data-test-id="feedback-success"
-      dense
-      text
-      dismissible
-      type="success"
-    >
-      Sent. Thanks for helping!
-    </v-alert>
   </div>
 </template>
 
@@ -78,6 +77,7 @@ export default {
   }),
   methods: {
     onSubmit() {
+      // Rules are being set in this way to override default eager validation
       this.rules = {
         emailRules: [v => !v || /.+@.+\..+/.test(v) || "E-mail must be valid"],
         feedbackRequired: [v => !!v || "Please tell us something :)"]
@@ -86,11 +86,15 @@ export default {
         const valid = this.$refs.form.validate();
         if (valid) {
           feedbackApi.create(this.name, this.email, this.feedback);
-          this.dialog = false;
           this.$refs.form.reset();
           this.rules = {};
+          this.success = true;
         }
       });
+    },
+    onClose() {
+      this.dialog = false;
+      this.success = false;
     }
   }
 };
