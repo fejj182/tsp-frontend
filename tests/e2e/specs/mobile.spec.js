@@ -58,8 +58,15 @@ function assertWorking() {
   cy.get("[data-test-id=trip-form-panel]").should("not.be.visible");
   cy.get("[data-test-id=close-filters]").click();
 
-  cy.get("#find-offers-btn").should("exist");
+  cy.get("#find-offers-btn").should("be.visible");
+  cy.get("[data-test-id=save-trip]").should("be.visible");
 
+  cy.get(".mdi-chevron-down").click();
+
+  cy.get("#find-offers-btn").should("not.be.visible");
+  cy.get("[data-test-id=save-trip]").should("not.be.visible");
+
+  cy.get(".mdi-chevron-up").click();
   cy.get("[data-test-id=save-trip]").click();
   cy.get("[data-test-id=success-alias]").should("exist");
   cy.get("[data-test-id=success-alias] .v-alert__content").should(

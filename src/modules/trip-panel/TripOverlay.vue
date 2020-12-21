@@ -57,7 +57,7 @@ export default {
   max-height: 0;
 }
 
-#overlay-trip-form {
+.v-card__text {
   padding: 0;
   max-height: 255px;
   overflow-y: auto;
