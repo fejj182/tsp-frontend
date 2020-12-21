@@ -9,6 +9,7 @@
       :read-only="stop.readOnly"
       :fixed-stop="stop.fixed"
       :stop-number="parseInt(index) + 1"
+      v-on:scroll-form-to-bottom="$emit('scroll-form-to-bottom')"
     />
     <p data-test-id="total-duration" v-if="completeTrip.length > 2">
       Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>

@@ -5,6 +5,7 @@ import Vuetify from "vuetify";
 import isMobile from "@/plugins/isMobile";
 
 import TripPanel from "./TripPanel";
+import TripForm from "@/modules/trip-panel/trip-form/TripForm";
 import { state as stations } from "@/store/modules/stations";
 
 Vue.use(Vuetify);
@@ -57,6 +58,22 @@ describe("Trip Panel", () => {
       expect(wrapper.find("[data-test-id=trip-form-panel]").exists()).toBe(
         false
       );
+    });
+
+    describe("TripForm", () => {
+      it("should scroll to bottom when event emitted", () => {
+        document.getElementById = jest.fn();
+        document.getElementById.mockReturnValue({ scrollHeight: 100 });
+
+        const wrapper = shallowMount(TripPanel, {
+          mocks: {
+            $store: mockStore,
+            $route: mockRoute
+          }
+        });
+        wrapper.find(TripForm).vm.$emit("scroll-form-to-bottom");
+        expect(document.getElementById("panel-trip-form").scrollTop).toBe(100);
+      });
     });
 
     describe("close button", () => {

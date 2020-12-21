@@ -169,6 +169,17 @@ describe("TripForm", () => {
       expect(wrapper.find(Stop).props().stopNumber).toEqual(1);
     });
 
+    it("should propogate emitted event", () => {
+      mockStore.state.trip.stops = [{}];
+      const wrapper = shallowMount(TripForm, {
+        mocks: {
+          $store: mockStore
+        }
+      });
+      wrapper.find(Stop).vm.$emit("scroll-form-to-bottom");
+      expect(wrapper.emitted()["scroll-form-to-bottom"]).toBeTruthy();
+    });
+
     describe("Total duration between stops", () => {
       test("when no stops in trip, should not show total duration between stops", () => {
         const wrapper = shallowMount(TripForm, {

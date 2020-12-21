@@ -109,8 +109,17 @@ export default {
     }
   },
   methods: {
+    onAddStop() {
+      this.$store
+        .dispatch("fetchConnections", this.$store.state.trip.selectedStop)
+        .then(() => {
+          this.$emit("scroll-form-to-bottom");
+        });
+    },
     onChangeStation(station) {
-      this.$store.dispatch("selectStop", station);
+      this.$store.dispatch("selectStop", station).then(() => {
+        this.$emit("scroll-form-to-bottom");
+      });
     },
     removeStop() {
       if (this.$store.state.trip.savedTrip.length > 2) {
@@ -131,12 +140,6 @@ export default {
         deburr(itemText)
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
-      );
-    },
-    onAddStop() {
-      this.$store.dispatch(
-        "fetchConnections",
-        this.$store.state.trip.selectedStop
       );
     }
   }

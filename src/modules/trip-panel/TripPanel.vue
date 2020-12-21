@@ -23,8 +23,8 @@
             </v-icon>
           </template>
         </v-expansion-panel-header>
-        <v-expansion-panel-content>
-          <TripForm />
+        <v-expansion-panel-content id="panel-trip-form">
+          <TripForm v-on:scroll-form-to-bottom="scrollFormToBottom" />
         </v-expansion-panel-content>
       </v-expansion-panel>
     </v-expansion-panels>
@@ -45,11 +45,6 @@ export default {
       panel: [0, 1]
     };
   },
-  computed: {
-    iconName() {
-      return this.$smallScreen() ? "mdi-close" : "";
-    }
-  },
   props: {
     showFilters: {
       type: Boolean,
@@ -58,6 +53,17 @@ export default {
     showForm: {
       type: Boolean,
       default: true
+    }
+  },
+  computed: {
+    iconName() {
+      return this.$smallScreen() ? "mdi-close" : "";
+    }
+  },
+  methods: {
+    scrollFormToBottom() {
+      const tripForm = document.getElementById("panel-trip-form");
+      tripForm.scrollTop = tripForm.scrollHeight;
     }
   }
 };
@@ -68,6 +74,11 @@ export default {
   min-height: 32px !important;
   background-color: whitesmoke;
   cursor: default;
+}
+
+#panel-trip-form {
+  max-height: 575px;
+  overflow-y: scroll;
 }
 </style>
 

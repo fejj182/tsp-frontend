@@ -1,5 +1,5 @@
 <template>
-  <v-card class="trip-overlay">
+  <v-card id="trip-overlay">
     <v-card-title>
       <span>Trip Plan</span>
       <v-spacer></v-spacer>
@@ -9,8 +9,8 @@
       </v-btn>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-text :class="{ collapse: collapse }">
-      <TripForm />
+    <v-card-text :class="{ collapse: collapse }" id="overlay-trip-form">
+      <TripForm v-on:scroll-form-to-bottom="scrollFormToBottom" />
     </v-card-text>
   </v-card>
 </template>
@@ -27,12 +27,18 @@ export default {
       sheet: true,
       collapse: false
     };
+  },
+  methods: {
+    scrollFormToBottom() {
+      const tripForm = document.getElementById("overlay-trip-form");
+      tripForm.scrollTop = tripForm.scrollHeight;
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.trip-overlay {
+#trip-overlay {
   position: absolute;
   bottom: 0;
   left: 0;
@@ -51,7 +57,7 @@ export default {
   max-height: 0;
 }
 
-.v-card__text {
+#overlay-trip-form {
   padding: 0;
   max-height: 255px;
   overflow-y: auto;

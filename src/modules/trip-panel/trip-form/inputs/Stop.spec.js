@@ -1,4 +1,5 @@
 import { shallowMount, mount } from "@vue/test-utils";
+import flushPromises from "flush-promises";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import cloneDeep from "lodash/cloneDeep";
@@ -20,7 +21,7 @@ describe("Stop", () => {
   let mockStore, madrid, valencia;
   beforeEach(() => {
     mockStore = {
-      dispatch: jest.fn(),
+      dispatch: jest.fn().mockResolvedValue({}),
       state: {
         stations: cloneDeep(stations),
         trip: cloneDeep(trip),
@@ -71,7 +72,7 @@ describe("Stop", () => {
     expect(wrapper.find("[data-test-id=duration]").exists()).toBe(false);
   });
 
-  test("when stop changes, should updated selected stop in store", () => {
+  test("when stop changes, should updated selected stop in store", async () => {
     const wrapper = shallowMount(Stop, {
       mocks: {
         $store: mockStore
@@ -81,7 +82,9 @@ describe("Stop", () => {
       }
     });
     wrapper.find("[data-test-id=stop").vm.$emit("change", madrid);
+    await flushPromises();
     expect(mockStore.dispatch).toHaveBeenCalledWith("selectStop", madrid);
+    expect(wrapper.emitted()["scroll-form-to-bottom"]).toBeTruthy();
   });
 
   it("should use filtered stations as items prop in autocomplete if last stop", () => {
@@ -275,7 +278,7 @@ describe("Stop", () => {
       expect(wrapper.find("[data-test-id=add-stop]").exists()).toBe(false);
     });
 
-    it("should dispatch fetchConnections action onClick", () => {
+    it("should dispatch fetchConnections action onClick", async () => {
       mockStore.state.trip.stops = [{}, {}];
       mockStore.state.trip.savedTrip = [{}, {}, {}];
       mockStore.state.trip.selectedStop = madrid;
@@ -290,7 +293,9 @@ describe("Stop", () => {
         }
       });
       wrapper.find("[data-test-id=add-stop]").trigger("click");
+      await flushPromises();
       expect(mockStore.dispatch).toBeCalledWith("fetchConnections", madrid);
+      expect(wrapper.emitted()["scroll-form-to-bottom"]).toBeTruthy();
     });
   });
 });
