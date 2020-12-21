@@ -70,6 +70,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#trip-panel {
+  padding-right: 1rem;
+}
+
 .v-expansion-panel-header {
   min-height: 32px !important;
   background-color: whitesmoke;

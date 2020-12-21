@@ -1,11 +1,9 @@
 <template>
   <v-app id="v-app">
     <Header />
-    <v-container fluid id="app-container">
-      <v-content>
-        <router-view />
-      </v-content>
-    </v-container>
+    <v-content>
+      <router-view />
+    </v-content>
     <CookieBanner />
   </v-app>
 </template>
@@ -58,23 +56,11 @@ export default {
   font-family: "Raleway", sans-serif;
   font-weight: 600;
 }
-.container,
-.row {
-  height: 100%;
-}
-
-#app-container {
-  padding: 0.25rem;
-}
 
 @media only screen and (max-width: $width-desktop) {
   #v-app .v-application--wrap {
     min-height: calc(100vh);
     min-height: calc(var(--vh, 1vh) * 100);
-  }
-
-  #app-container {
-    padding: 0;
   }
 }
 </style>

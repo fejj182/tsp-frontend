@@ -1,17 +1,19 @@
 <template>
-  <v-row no-gutters v-if="isMobile">
-    <Map data-test-id="map" />
-    <TripOverlay data-test-id="trip-overlay" />
-  </v-row>
+  <div id="home">
+    <v-row no-gutters v-if="isMobile">
+      <Map data-test-id="map" />
+      <TripOverlay data-test-id="trip-overlay" />
+    </v-row>
 
-  <v-row no-gutters v-else>
-    <v-col :md="4">
-      <TripPanel />
-    </v-col>
-    <v-col :md="8">
-      <Map />
-    </v-col>
-  </v-row>
+    <v-row no-gutters v-else>
+      <v-col :md="4">
+        <TripPanel />
+      </v-col>
+      <v-col :md="8">
+        <Map />
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -41,3 +43,14 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+#home {
+  padding: 0.25rem;
+}
+@media only screen and (max-width: $width-desktop) {
+  #home {
+    padding: 0;
+  }
+}
+</style>

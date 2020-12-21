@@ -1,71 +1,67 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${backgroundImage.src})` }">
-    <v-row>
-      <v-col :md="5" class="page">
-        <h1 data-test-id="welcome-title">
-          Where can you reach by train today?
-        </h1>
-        <h2>Tell us how much time you have and we'll do the rest.</h2>
-        <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
+    <v-col :md="5" class="page">
+      <h1 data-test-id="welcome-title">
+        Where can you reach by train today?
+      </h1>
+      <h2>Tell us how much time you have and we'll do the rest.</h2>
+      <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
 
-        <v-form
-          ref="form"
-          v-model="valid"
-          @submit.prevent="onSubmit"
-          id="welcome-form"
+      <v-form
+        ref="form"
+        v-model="valid"
+        @submit.prevent="onSubmit"
+        id="welcome-form"
+      >
+        <StartingDestination v-on:change-station="onChangeStartingStation" />
+        <MaxJourneyTime />
+        <v-btn
+          type="submit"
+          color="secondary"
+          rounded
+          id="find-destinations-btn"
         >
-          <StartingDestination v-on:change-station="onChangeStartingStation" />
-          <MaxJourneyTime />
-          <v-btn
-            type="submit"
-            color="secondary"
-            rounded
-            id="find-destinations-btn"
-          >
-            Find Routes
-          </v-btn>
-        </v-form>
-        <span
-          >Photo by
-          <a :href="backgroundImage.photographerHref">{{
-            backgroundImage.photographer
-          }}</a>
-          on
-          <a :href="backgroundImage.unsplashHref">Unsplash</a>
-        </span>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col :md="5" :offset-md="7" class="page">
-        <div id="mission">
-          <h1>Our mission</h1>
-          <p>
-            We have spent years travelling to all corners of the world. At great
-            speed, we can go from the heart of Asia to Eastern Europe in a
-            matter of hours. However, this model is simply not sustainable
-            considering the volume of CO2 generated during air travel.
-          </p>
-          <p>
-            At Trainspotter, we want to travel another way. We can still cross
-            borders, but want to be able to see them as we pass. We can still
-            see incredible new places, but it just so happens they are a bit
-            closer to home.
-          </p>
-          <p>
-            Join us on our travel revolution, where we make your journey part of
-            the trip.
-          </p>
-          <p>
-            Enjoy the journey.
-          </p>
-          <p>
-            Yours,
-            <br />
-            Trainspotter
-          </p>
-        </div>
-      </v-col>
-    </v-row>
+          Find Routes
+        </v-btn>
+      </v-form>
+      <span
+        >Photo by
+        <a :href="backgroundImage.photographerHref">{{
+          backgroundImage.photographer
+        }}</a>
+        on
+        <a :href="backgroundImage.unsplashHref">Unsplash</a>
+      </span>
+    </v-col>
+    <v-col :md="5" :offset-md="7" class="page">
+      <div id="mission">
+        <h1>Our mission</h1>
+        <p>
+          We have spent years travelling to all corners of the world. At great
+          speed, we can go from the heart of Asia to Eastern Europe in a matter
+          of hours. However, this model is simply not sustainable considering
+          the volume of CO2 generated during air travel.
+        </p>
+        <p>
+          At Trainspotter, we want to travel another way. We can still cross
+          borders, but want to be able to see them as we pass. We can still see
+          incredible new places, but it just so happens they are a bit closer to
+          home.
+        </p>
+        <p>
+          Join us on our travel revolution, where we make your journey part of
+          the trip.
+        </p>
+        <p>
+          Enjoy the journey.
+        </p>
+        <p>
+          Yours,
+          <br />
+          Trainspotter
+        </p>
+      </div>
+    </v-col>
   </div>
 </template>
 
@@ -132,8 +128,8 @@ export default {
 <style lang="scss" scoped>
 #welcome {
   max-width: 100%;
-  width: calc(100% - 4px);
-  height: calc(100vh - 72px);
+  width: calc(100%);
+  height: calc(100vh - 64px);
   padding: 1rem;
   opacity: 0.9;
   background-size: cover;
