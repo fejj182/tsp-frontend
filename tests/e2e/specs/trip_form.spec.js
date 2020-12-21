@@ -21,24 +21,25 @@ function assertAddingAndRemoving() {
 
   cy.get(".thumb-label").contains("0");
   cy.get(".thumb-label").contains("2");
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
   cy.get("[data-test-id=add-stop]").click();
 
-  cy.get("#stop-2 [data-test-id=stop]").click();
+  cy.get("#stop-2 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 
   cy.get("#stop-2 .mdi-close").click();
   cy.get("#stop-1 .mdi-close").should("not.exist");
-  cy.get("#stop-2 [data-test-id=stop]").should("not.exist");
-  cy.get("#stop-1 [data-test-id=stop]").should("have.value", "");
+  cy.get("#stop-2 .v-select__selection").should("not.exist");
+  cy.get("#stop-1 .v-select__selection").should("not.exist");
+  cy.get("#stop-1 [data-test-id=stop]").should("exist");
 }
 
 function assertFullFlow() {
@@ -63,17 +64,17 @@ function assertAfterRefresh() {
 }
 
 function add3Stops() {
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
   cy.get("[data-test-id=add-stop]").click();
-  cy.get("#stop-2 [data-test-id=stop]").click();
+  cy.get("#stop-2 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
   cy.get("[data-test-id=add-stop]").click();
-  cy.get("#stop-3 [data-test-id=stop]").click();
+  cy.get("#stop-3 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
@@ -88,8 +89,9 @@ function add3Stops() {
 function assertAfterRemoveStop() {
   cy.wait(250);
   cy.get("#stop-3").should("not.exist");
-  cy.get("#stop-2 [data-test-id=stop]").should("have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-2 .v-select__selection").should("not.exist");
+  cy.get("#stop-2 [data-test-id=stop]").should("exist");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
   cy.get(".position-1").should("exist");
   cy.get(".position-2").should("exist");
   cy.get(".position-3").should("not.exist");

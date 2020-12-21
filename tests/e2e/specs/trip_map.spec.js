@@ -20,7 +20,7 @@ describe("Trip Map", () => {
     cy.get(".marker-connection-madrid").should("not.be.visible");
     cy.get(".marker-connection-zaragoza").click();
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-    cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+    cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
     cy.get("g .leaflet-interactive").should("exist");
     cy.get(".leaflet-popup").should("exist");
     cy.get(".position-2").should("exist");
@@ -28,7 +28,7 @@ describe("Trip Map", () => {
 
     cy.get("[data-test-id=add-stop]").click();
     cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-    cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+    cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
     cy.get("#stop-2 [data-test-id=stop]").should("exist");
     cy.get(".marker-connection-madrid").click();
     cy.get("[data-test-id=add-stop]").click();

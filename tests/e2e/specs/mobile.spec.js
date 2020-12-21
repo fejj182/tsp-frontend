@@ -36,15 +36,15 @@ function assertWorking() {
   cy.get(".leaflet-popup").should("exist");
 
   cy.get("[data-test-id=starting-destination]").should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 
   cy.get("#duration").should("exist");
   cy.get("[data-test-id=add-stop]").click();
-  cy.get("#stop-2 [data-test-id=stop]").click();
+  cy.get("#stop-2 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();

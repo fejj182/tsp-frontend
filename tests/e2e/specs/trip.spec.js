@@ -21,23 +21,21 @@ function createTrip() {
 
   cy.get(".position-1").should("exist");
 
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
   cy.get(".position-2").should("exist");
   cy.get("g .leaflet-interactive").should("exist");
   cy.get(".leaflet-popup").should("exist");
 
   cy.get("[data-test-id=add-stop]").click();
-  cy.get("#stop-2 [data-test-id=stop]")
-    .first()
-    .click();
+  cy.get("#stop-2 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-2 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
 
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
@@ -58,18 +56,14 @@ function assertReloadedTripInCorrectState() {
   cy.get("[data-test-id=starting-destination]")
     .should("exist")
     .should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-2 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
+  cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
   cy.get(".starting-marker").should("not.exist"); //TODO: check in prod
   cy.get(".position-1").should("exist");
   cy.get(".position-2").should("exist");
   cy.get(".position-3").should("exist");
   cy.get("g .leaflet-interactive").should("have.length", 2);
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item").should("not.exist");
   cy.get("#stop-1 .mdi-menu-down").click();
   cy.get(".v-list-item").should("not.exist");
@@ -78,11 +72,11 @@ function assertReloadedTripInCorrectState() {
 function assertStopCanBeAddedToSavedTrip() {
   cy.get("[data-test-id=add-stop]").click();
   cy.get(".marker-connection:visible").should("exist");
-  cy.get("#stop-3 [data-test-id=stop]").click();
+  cy.get("#stop-3 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-3 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-3 .v-select__selection").should("not.have.text", "");
   cy.get("[data-test-id=add-stop]").click();
 
   cy.get("[data-test-id=more-options]").click();
@@ -94,15 +88,9 @@ function assertStopCanBeAddedToSavedTrip() {
   cy.get("[data-test-id=starting-destination]")
     .should("exist")
     .should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-2 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-3 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
+  cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
+  cy.get("#stop-3 .v-select__selection").should("not.have.text", "");
 }
 
 function assertTripCanBeRebuilt() {
@@ -111,11 +99,11 @@ function assertTripCanBeRebuilt() {
     .first()
     .click();
 
-  cy.get("#stop-1 [data-test-id=stop]").click();
+  cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
-  cy.get("#stop-1 [data-test-id=stop]").should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 
   cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=save-for-later]").click();
@@ -123,9 +111,7 @@ function assertTripCanBeRebuilt() {
   cy.get("[data-test-id=starting-destination]")
     .should("exist")
     .should("not.have.value", "");
-  cy.get("#stop-1 [data-test-id=stop]")
-    .should("exist")
-    .should("not.have.value", "");
+  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 }
 
 function resetTrip() {
