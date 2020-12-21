@@ -1,5 +1,7 @@
 <template>
   <div id="starting-destination">
+    <!-- TODO: Once the UX of choosing a starting destination is improved, get rid of autocomplete -->
+    <!-- too buggy on mobile with focus/context menu problems -->
     <v-autocomplete
       label="Start from..."
       data-test-id="starting-destination"

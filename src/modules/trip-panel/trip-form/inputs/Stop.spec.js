@@ -87,7 +87,7 @@ describe("Stop", () => {
     expect(wrapper.emitted()["scroll-form-to-bottom"]).toBeTruthy();
   });
 
-  it("should use filtered stations as items prop in autocomplete if last stop", () => {
+  it("should use filtered stations as items prop in select if last stop", () => {
     const stations = [valencia, madrid];
     mockStore.state.trip.stops = [{}, {}];
     filterStationsOutOfRange.mockReturnValue([valencia]);
@@ -108,7 +108,7 @@ describe("Stop", () => {
     );
   });
 
-  it("should use unfiltered stations as items prop in autocomplete if not last stop", () => {
+  it("should use unfiltered stations as items prop in select if not last stop", () => {
     const stations = [valencia, madrid];
     mockStore.state.trip.stops = [{}, {}];
     filterStationsOutOfRange.mockReturnValue([valencia]);

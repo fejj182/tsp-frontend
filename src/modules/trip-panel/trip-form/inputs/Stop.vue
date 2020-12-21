@@ -7,11 +7,10 @@
       <v-icon color="primary">mdi-clock-outline</v-icon>
       {{ selected.value.durationHrsAndMins }}
     </p>
-    <v-autocomplete
+    <v-select
       label="Where next?"
       data-test-id="stop"
       :items="items"
-      :filter="autocompleteFilter"
       filled
       rounded
       hide-details
@@ -28,7 +27,7 @@
           <em>{{ item.value.durationHrsAndMins }}</em>
         </span>
       </template>
-    </v-autocomplete>
+    </v-select>
     <v-btn
       v-if="showAddStop"
       @click="onAddStop"
@@ -133,23 +132,12 @@ export default {
         this.$store.dispatch("resetTrip");
         //TODO: should reset URL?
       }
-    },
-    autocompleteFilter(item, queryText, itemText) {
-      // same as default but adding deburr
-      return (
-        deburr(itemText)
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
-      );
     }
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.v-autocomplete {
-  z-index: 1500;
-}
 .duration {
   font-size: 14px;
   padding-left: 0.25rem;
