@@ -42,7 +42,7 @@ describe("TripActions", () => {
         }
       }
     });
-    expect(wrapper.findAll(TripActionListItem).length).toBe(3);
+    expect(wrapper.findAll(TripActionListItem).length).toBe(5);
   });
 
   it("should contain the save button if not saved trip", () => {
