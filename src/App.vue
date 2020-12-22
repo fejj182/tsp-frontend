@@ -19,7 +19,7 @@ export default {
     meta: [
       {
         name: "description",
-        content: "Multiple journey planner for train travel in Europe."
+        content: "Plan your next trip by train."
       },
       {
         property: "og:title",
@@ -27,7 +27,7 @@ export default {
       },
       {
         property: "og:description",
-        content: "Multiple journey planner for train travel in Europe."
+        content: "Plan your next trip by train."
       },
       {
         property: "og:image",
