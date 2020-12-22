@@ -59,7 +59,7 @@ export default {
 
 .v-card__text {
   padding: 0;
-  max-height: 255px;
+  max-height: 300px;
   overflow-y: auto;
   transition: max-height 0.25s;
   transition-timing-function: ease-in;

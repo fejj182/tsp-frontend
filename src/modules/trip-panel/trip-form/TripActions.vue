@@ -18,9 +18,21 @@
             target="_blank"
           />
           <TripActionListItem
-            name="Experiences"
-            href="https://c83.travelpayouts.com/click?shmarker=302537&promo_id=1927&source_type=link&type=click&trs=4737"
-            icon="mdi-creation"
+            name="Eco Hotels"
+            href="https://ecohotels.com/"
+            icon="mdi-bed"
+            target="_blank"
+          />
+          <TripActionListItem
+            name="Coworking Spaces"
+            href="https://www.coworker.com/"
+            icon="mdi-laptop"
+            target="_blank"
+          />
+          <TripActionListItem
+            name="Yoga retreats"
+            href="https://www.bookyogaretreats.com/?aid=6567"
+            icon="mdi-meditation"
             target="_blank"
           />
           <TripActionListItem

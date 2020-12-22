@@ -6,7 +6,7 @@
       @change="onSlide"
       :thumb-size="30"
       thumb-label="always"
-      hint="Journey time (hours)"
+      hint="Time between stops (hours)"
       persistent-hint
       data-test-id="journey-time-slider"
     >

@@ -169,7 +169,7 @@ describe("Welcome", () => {
         stubs: mockStubs
       });
       wrapper.find("#find-destinations-btn").trigger("submit");
-      expect(mockRouter.push).toHaveBeenCalledWith("/planner");
+      expect(mockRouter.push).toHaveBeenCalledWith("/trip-planner");
     });
 
     it("should validate the form", () => {

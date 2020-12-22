@@ -83,7 +83,7 @@ function add3Stops() {
   cy.get(".position-3").should("exist");
   cy.get(".position-4").should("exist");
   cy.get("[data-test-id=duration]").should("have.length", 3);
-  cy.get("[data-test-id=total-duration]").should("exist");
+  cy.get("#total-duration").should("exist");
 }
 
 function assertAfterRemoveStop() {

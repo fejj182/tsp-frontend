@@ -13,11 +13,11 @@
           class="mx-2"
           fab
           small
-          color="secondary"
+          color="primary"
           ref="filter"
           data-test-id="btn-filter"
         >
-          <v-icon>mdi-filter-outline</v-icon>
+          <v-icon>mdi-timer-sand</v-icon>
         </v-btn>
       </template>
       <TripPanel :showForm="false" v-on:close-dialog="dialog = false" />

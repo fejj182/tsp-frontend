@@ -20,7 +20,7 @@ describe("Mobile", () => {
     cy.route("GET", "api/destinations").as("getDestinations");
     cy.route("POST", "api/destinations/connections").as("getConnections");
     cy.viewport("iphone-6");
-    cy.visit("http://localhost:8080/planner");
+    cy.visit("http://localhost:8080/trip-planner");
     cy.get(".Cookie__button").click();
 
     cy.wait("@getDestinations");
@@ -49,7 +49,7 @@ function assertWorking() {
     .first()
     .click();
 
-  cy.get("[data-test-id=total-duration]").should("exist");
+  cy.get("#total-duration").should("exist");
 
   cy.get("[data-test-id=btn-filter]").click();
   cy.get(".v-slider__thumb")

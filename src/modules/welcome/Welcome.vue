@@ -2,9 +2,9 @@
   <div id="welcome" :style="{ backgroundImage: `url(${backgroundImage.src})` }">
     <v-col :md="5" class="page">
       <h1 data-test-id="welcome-title">
-        Where can you reach by train today?
+        Forget flying.
       </h1>
-      <h2>Tell us how much time you have and we'll do the rest.</h2>
+      <h2>Let us help you plan your next trip by train.</h2>
       <h3>With <v-icon>mdi-heart</v-icon> for multi-journeys in Europe.</h3>
 
       <v-form
@@ -24,7 +24,7 @@
           Find Routes
         </v-btn>
       </v-form>
-      <span
+      <span id="photo-credit"
         >Photo by
         <a :href="backgroundImage.photographerHref">{{
           backgroundImage.photographer
@@ -34,26 +34,40 @@
       </span>
     </v-col>
     <v-col :md="5" :offset-md="7" class="page">
-      <div id="mission">
-        <h1>Our mission</h1>
+      <div class="section" id="how-it-works">
+        <h1><span>How it works</span> 🤔</h1>
         <p>
-          We have spent years travelling to all corners of the world. At great
-          speed, we can go from the heart of Asia to Eastern Europe in a matter
-          of hours. However, this model is simply not sustainable considering
-          the volume of CO2 generated during air travel.
+          Tell us where you want to start from and how long you prefer to travel
+          for.
         </p>
         <p>
-          At Trainspotter, we want to travel another way. We can still cross
-          borders, but want to be able to see them as we pass. We can still see
-          incredible new places, but it just so happens they are a bit closer to
-          home.
+          We will show you some suggested connections. You can then build your
+          ideal adventure stop by stop.
         </p>
         <p>
-          Join us on our travel revolution, where we make your journey part of
-          the trip.
+          Once it's all planned out, you can book your tickets and whatever else
+          you need from our selected partners.
+        </p>
+      </div>
+    </v-col>
+    <v-col :md="5" :offset-md="7" class="page">
+      <div class="section">
+        <h1><span>Our mission</span> 🌍</h1>
+        <p>
+          We have spent years travelling to all corners of the world. We can go
+          from the heart of Asia to Eastern Europe in a matter of hours.
         </p>
         <p>
-          Enjoy the journey.
+          However, this model is simply not sustainable with the volume CO2
+          generated during air travel.
+        </p>
+        <p>
+          At Trainspotter, we believe it's still possible to cross borders and
+          see incredible new places while having less environmental impact.
+        </p>
+        <p>
+          So join us on our travel revolution, where we make your journey part
+          of the trip.
         </p>
         <p>
           Yours,
@@ -118,7 +132,7 @@ export default {
       this.$refs.form.validate();
       if (startingStation) {
         this.$store.dispatch("startTrip", startingStation);
-        this.$router.push("/planner");
+        this.$router.push("/trip-planner");
       }
     }
   }
@@ -153,10 +167,19 @@ export default {
   height: calc(100vh - 72px - 1rem);
 }
 
-#mission {
+.section {
   background: rgba(48, 63, 159, 0.8);
   h1 {
-    text-decoration: underline;
+    span {
+      text-decoration: underline;
+    }
+  }
+}
+
+#how-it-works {
+  h1,
+  p {
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -197,7 +220,7 @@ p {
   padding: 0.75rem;
 }
 
-span {
+#photo-credit {
   color: white;
   opacity: 0.8;
   position: absolute;

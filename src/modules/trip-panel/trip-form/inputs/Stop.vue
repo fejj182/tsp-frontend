@@ -156,4 +156,11 @@ p {
   text-transform: none;
   text-decoration: underline;
 }
+
+@media only screen and (max-width: $width-desktop) {
+  #add-stop {
+    margin-top: -1.25rem;
+    margin-bottom: 0.5rem;
+  }
+}
 </style>

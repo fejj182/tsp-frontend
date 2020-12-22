@@ -11,7 +11,7 @@
       :stop-number="parseInt(index) + 1"
       v-on:scroll-form-to-bottom="$emit('scroll-form-to-bottom')"
     />
-    <p data-test-id="total-duration" v-if="completeTrip.length > 2">
+    <p id="total-duration" v-if="completeTrip.length > 2">
       Total travel time: <span>{{ this.totalDurationBetweenStops }}</span>
     </p>
     <v-alert
@@ -178,6 +178,10 @@ export default {
   .v-form {
     padding: 1rem;
     padding-top: 0.25rem;
+  }
+
+  #total-duration {
+    margin-bottom: 0.25rem;
   }
 }
 </style>

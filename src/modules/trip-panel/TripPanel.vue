@@ -16,7 +16,7 @@
       </v-expansion-panel>
       <v-expansion-panel v-if="showForm" data-test-id="trip-form-panel">
         <v-expansion-panel-header>
-          Trip Plan
+          Trip Planner
           <template v-slot:actions>
             <v-icon @click="$emit('close-dialog')" data-test-id="close-trip">
               {{ iconName }}

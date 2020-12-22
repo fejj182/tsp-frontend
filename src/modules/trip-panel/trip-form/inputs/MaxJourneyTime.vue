@@ -3,7 +3,7 @@
     <v-select
       :items="hours"
       @change="onChangeTime"
-      label="Max Journey Time"
+      label="Hours per stop"
       hide-details
       prepend-inner-icon="mdi-timer-sand"
       filled

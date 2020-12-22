@@ -187,9 +187,7 @@ describe("TripForm", () => {
             $store: mockStore
           }
         });
-        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
-          false
-        );
+        expect(wrapper.find("#total-duration").exists()).toBe(false);
       });
 
       test("when three stops in trip, total duration should exist", () => {
@@ -201,10 +199,8 @@ describe("TripForm", () => {
         });
         const totalDuration =
           barcelona.duration + valencia.duration + madrid.duration;
-        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
-          true
-        );
-        expect(wrapper.find("[data-test-id=total-duration]").text()).toBe(
+        expect(wrapper.find("#total-duration").exists()).toBe(true);
+        expect(wrapper.find("#total-duration").text()).toBe(
           "Total travel time: " + toHoursAndMinutes(totalDuration)
         );
       });
@@ -216,9 +212,7 @@ describe("TripForm", () => {
             $store: mockStore
           }
         });
-        expect(wrapper.find("[data-test-id=total-duration]").exists()).toBe(
-          false
-        );
+        expect(wrapper.find("#total-duration").exists()).toBe(false);
       });
     });
   });

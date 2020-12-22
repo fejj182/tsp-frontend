@@ -15,7 +15,7 @@ const routes = [
     component: Welcome
   },
   {
-    path: "/planner",
+    path: "/trip-planner",
     name: "planner",
     component: Home
   },
