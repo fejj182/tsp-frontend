@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Home from "@/modules/Home.vue";
-import Welcome from "@/modules/welcome/Welcome.vue";
+import Planner from "@/pages/Planner.vue";
+import Welcome from "@/pages/Welcome.vue";
 import PrivacyPolicy from "@/components/PrivacyPolicy.vue";
 import NotFound from "@/components/NotFound.vue";
 
@@ -17,12 +17,12 @@ const routes = [
   {
     path: "/trip-planner",
     name: "planner",
-    component: Home
+    component: Planner
   },
   {
     path: "/trip/:alias",
     name: "alias",
-    component: Home
+    component: Planner
   },
   {
     path: "/privacy-policy",

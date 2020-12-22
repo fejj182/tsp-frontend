@@ -1,14 +1,13 @@
 import { shallowMount } from "@vue/test-utils";
-import Home from "@/modules/Home.vue";
+import Planner from "@/pages/Planner.vue";
 import TripPanel from "@/modules/trip-panel/TripPanel.vue";
-import Welcome from "@/modules/welcome/Welcome.vue";
 import Vue from "vue";
 import Vuetify from "vuetify";
 import flushPromises from "flush-promises";
 
 Vue.use(Vuetify);
 
-describe("Home", () => {
+describe("Planner", () => {
   let mockStore, mockFeatures, mockRoute, mockStubs;
 
   beforeEach(() => {
@@ -24,7 +23,7 @@ describe("Home", () => {
       }
     };
     mockRoute = {
-      name: "home"
+      name: "route"
     };
     mockStubs = {
       Map: {
@@ -42,7 +41,7 @@ describe("Home", () => {
   describe("children", () => {
     it("should contain the map and tripoverlay on mobile", async () => {
       window.innerWidth = 500;
-      const wrapper = shallowMountHome();
+      const wrapper = shallowMountPlanner();
       await flushPromises();
       expect(wrapper.find("[data-test-id=map]").exists()).toBe(true);
       expect(wrapper.find("[data-test-id=trip-overlay]").exists()).toBe(true);
@@ -50,7 +49,7 @@ describe("Home", () => {
 
     it("should not contain the map and tripoverlay on desktop", async () => {
       window.innerWidth = 1000;
-      const wrapper = shallowMountHome();
+      const wrapper = shallowMountPlanner();
       await flushPromises();
       expect(wrapper.find("[data-test-id=map]").exists()).toBe(false);
       expect(wrapper.find("[data-test-id=trip-overlay]").exists()).toBe(false);
@@ -60,7 +59,7 @@ describe("Home", () => {
   describe("Trip Panel", () => {
     it("should contain the trip panel on desktop", () => {
       window.innerWidth = 1000;
-      const wrapper = shallowMountHome();
+      const wrapper = shallowMountPlanner();
       expect(wrapper.find(TripPanel).exists()).toBe(true);
     });
   });
@@ -73,20 +72,20 @@ describe("Home", () => {
           alias: "some-alias"
         }
       };
-      shallowMountHome();
+      shallowMountPlanner();
       expect(mockStore.dispatch).toHaveBeenCalledWith("fetchTrip", {
         alias: "some-alias"
       });
     });
 
     it("should not fetch trip if not on alias page", () => {
-      shallowMountHome();
+      shallowMountPlanner();
       expect(mockStore.dispatch).not.toHaveBeenCalled();
     });
   });
 
-  const shallowMountHome = () => {
-    return shallowMount(Home, {
+  const shallowMountPlanner = () => {
+    return shallowMount(Planner, {
       mocks: {
         $route: mockRoute,
         $store: mockStore,

@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="planner">
     <v-row no-gutters v-if="isMobile">
       <Map data-test-id="map" />
       <TripOverlay data-test-id="trip-overlay" />
@@ -23,7 +23,7 @@ const TripPanel = () => import("@/modules/trip-panel/TripPanel.vue");
 const TripOverlay = () => import("@/modules/trip-panel/TripOverlay.vue");
 
 export default {
-  name: "home",
+  name: "planner",
   components: {
     TripPanel,
     TripOverlay,
@@ -45,11 +45,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#home {
+#planner {
   padding: 0.25rem;
 }
 @media only screen and (max-width: $width-desktop) {
-  #home {
+  #planner {
     padding: 0;
   }
 }

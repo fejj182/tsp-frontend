@@ -27,7 +27,7 @@ describe("Header", () => {
   beforeEach(() => {
     window.innerWidth = 1000;
     mockRoute = {
-      name: "home"
+      name: "route"
     };
   });
   it("should contain logo as a link", () => {

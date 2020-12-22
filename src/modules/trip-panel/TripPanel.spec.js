@@ -25,7 +25,7 @@ describe("Trip Panel", () => {
       }
     };
     mockRoute = {
-      name: "home"
+      name: "route"
     };
   });
 

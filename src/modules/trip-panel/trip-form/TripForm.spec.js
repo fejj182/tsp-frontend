@@ -58,7 +58,7 @@ describe("TripForm", () => {
     };
 
     mockRoute = {
-      name: "home"
+      name: "route"
     };
 
     mockReset = jest.fn();
