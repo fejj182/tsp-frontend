@@ -1,23 +1,22 @@
 <template>
-  <div id="planner">
-    <v-row no-gutters v-if="isMobile">
-      <Map data-test-id="map" />
+  <div id="planner" v-if="!loading">
+    <v-row no-gutters v-if="$smallScreen()">
+      <Map data-test-id="map-mobile" />
       <TripOverlay data-test-id="trip-overlay" />
     </v-row>
 
     <v-row no-gutters v-else>
       <v-col :md="4">
-        <TripPanel />
+        <TripPanel data-test-id="trip-panel" />
       </v-col>
       <v-col :md="8">
-        <Map />
+        <Map data-test-id="map-desktop" />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
-//TODO: No longer need for dynamic imports, rename component to Planner
 const Map = () => import("@/modules/map/Map.vue");
 const TripPanel = () => import("@/modules/trip-panel/TripPanel.vue");
 const TripOverlay = () => import("@/modules/trip-panel/TripOverlay.vue");
@@ -29,14 +28,19 @@ export default {
     TripOverlay,
     Map
   },
-  computed: {
-    isMobile() {
-      return window.innerWidth < 992;
-    }
+  data() {
+    return {
+      loading: false
+    };
   },
   created() {
     if (this.$route.name === "alias") {
-      this.$store.dispatch("fetchTrip", { alias: this.$route.params.alias });
+      this.loading = true;
+      this.$store
+        .dispatch("fetchTrip", { alias: this.$route.params.alias })
+        .then(() => {
+          this.loading = false;
+        });
     } else if (!this.$store.state.trip.startingStation) {
       this.$router.push("/");
     }

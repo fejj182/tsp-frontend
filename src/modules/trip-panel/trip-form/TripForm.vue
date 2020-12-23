@@ -128,6 +128,9 @@ export default {
         if (response && response.alias) {
           this.$router.push("trip/" + response.alias);
           this.success = true;
+          this.$nextTick(() => {
+            this.$emit("scroll-form-to-bottom");
+          });
           setTimeout(() => {
             this.success = false;
           }, 10000);
@@ -141,6 +144,9 @@ export default {
       );
       if (response) {
         this.updated = true;
+        this.$nextTick(() => {
+          this.$emit("scroll-form-to-bottom");
+        });
         setTimeout(() => {
           this.updated = false;
         }, 3000);
@@ -148,12 +154,18 @@ export default {
     },
     onCopySuccess() {
       this.copySucceeded = true;
+      this.$nextTick(() => {
+        this.$emit("scroll-form-to-bottom");
+      });
       setTimeout(() => {
         this.copySucceeded = null;
       }, 2000);
     },
     onCopyFailure() {
       this.copySucceeded = false;
+      this.$nextTick(() => {
+        this.$emit("scroll-form-to-bottom");
+      });
       setTimeout(() => {
         this.copySucceeded = null;
       }, 2000);
@@ -180,16 +192,12 @@ export default {
     padding-top: 0.25rem;
   }
 
+  .v-alert {
+    margin-top: 1rem;
+  }
+
   #total-duration {
     margin-bottom: 0.25rem;
-  }
-}
-</style>
-
-<style lang="scss">
-#trip-form {
-  .v-input {
-    margin-bottom: 1.5rem;
   }
 }
 </style>

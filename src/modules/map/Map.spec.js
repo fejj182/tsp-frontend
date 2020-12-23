@@ -113,6 +113,7 @@ describe("Map", () => {
 
   it("should contain the mobile filters if mobile and connections exist", done => {
     window.innerWidth = 500;
+    mockStore.state.stations.activeStation = {};
     mockStore.getters.completeTrip = [{}];
     const wrapper = shallowMount(Map, {
       mocks: {
@@ -127,6 +128,7 @@ describe("Map", () => {
   });
 
   it("should not contain the mobile filters if not mobile", done => {
+    mockStore.state.stations.activeStation = {};
     mockStore.getters.completeTrip = [{}];
     const wrapper = shallowMount(Map, {
       mocks: {
@@ -171,7 +173,7 @@ describe("Map", () => {
     expect(createMap).toBeCalledWith("map", [10, 20], 10);
   });
 
-  it("should call create map with middle station if trip started", () => {
+  it("should centre map with middle station coords if trip loaded", () => {
     mockStore.getters.completeTrip = [
       { lat: 0, lng: 1 },
       { lat: 1, lng: 2 },
@@ -186,7 +188,7 @@ describe("Map", () => {
     expect(createMap).toBeCalledWith("map", [1, 2], expect.any(Number));
   });
 
-  it("should call create map with middle station if number stops even if trip started", () => {
+  it("should centre map with middle station coords if number stops even if trip loaded", () => {
     mockStore.getters.completeTrip = [
       { lat: 0, lng: 1 },
       { lat: 1, lng: 2 },
@@ -200,6 +202,22 @@ describe("Map", () => {
       }
     });
     expect(createMap).toBeCalledWith("map", [1, 2], expect.any(Number));
+  });
+
+  it("should shift centre up if loading trip on mobile", () => {
+    window.innerWidth = 500;
+    mockStore.getters.completeTrip = [
+      { lat: 0, lng: 1 },
+      { lat: 1, lng: 2 },
+      { lat: 2, lng: 3 }
+    ];
+    shallowMount(Map, {
+      mocks: {
+        $store: mockStore,
+        $route: mockRoute
+      }
+    });
+    expect(createMap).toBeCalledWith("map", [-4, 2], expect.any(Number));
   });
 
   it("should call create map with low zoom when loading trip", () => {

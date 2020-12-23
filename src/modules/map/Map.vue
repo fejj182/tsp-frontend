@@ -51,7 +51,9 @@ export default {
         const middleStop = this.completeTrip[
           Math.floor((this.completeTrip.length - 1) / 2)
         ];
-        return [middleStop.lat, middleStop.lng];
+        return this.$smallScreen()
+          ? [middleStop.lat - 5, middleStop.lng]
+          : [middleStop.lat, middleStop.lng];
       } else {
         return this.defaultCentre;
       }
@@ -64,7 +66,11 @@ export default {
       }
     },
     showFilters() {
-      return this.connectionsExist && this.$smallScreen();
+      return (
+        this.connectionsExist &&
+        this.$smallScreen() &&
+        this.$store.state.stations.activeStation
+      );
     },
     connectionsExist() {
       return this.$store.getters.completeTrip.length > 0;

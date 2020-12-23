@@ -9,6 +9,7 @@
     </p>
     <v-select
       label="Where next?"
+      :class="isLastStop ? 'last-stop' : ''"
       data-test-id="stop"
       :items="items"
       filled
@@ -151,15 +152,21 @@ p {
 }
 
 #add-stop {
-  margin-top: -1rem;
   margin-bottom: 1rem;
   text-transform: none;
   text-decoration: underline;
 }
 
+.v-input {
+  margin-bottom: 1.5rem;
+}
+
+.last-stop {
+  margin-bottom: 0.5rem;
+}
+
 @media only screen and (max-width: $width-desktop) {
   #add-stop {
-    margin-top: -1.25rem;
     margin-bottom: 0.5rem;
   }
 }

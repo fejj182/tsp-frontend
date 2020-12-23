@@ -85,6 +85,15 @@ export default {
 .v-autocomplete {
   z-index: 1500;
 }
+.v-input {
+  margin-bottom: 1.5rem;
+}
+
+@media only screen and (max-width: $width-desktop) {
+  .v-input {
+    margin-top: 1rem;
+  }
+}
 </style>
 
 <style lang="scss">
@@ -93,14 +102,6 @@ export default {
     color: #303f9f;
     padding-bottom: 2px;
     padding-right: 0.5rem;
-  }
-}
-
-@media only screen and (max-width: $width-desktop) {
-  #starting-destination {
-    .v-input {
-      margin-top: 1rem;
-    }
   }
 }
 </style>
