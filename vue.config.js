@@ -1,6 +1,5 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
   .BundleAnalyzerPlugin;
-const Critters = require("critters-webpack-plugin");
 const path = require("path");
 
 module.exports = {
@@ -9,8 +8,7 @@ module.exports = {
     plugins: [
       new BundleAnalyzerPlugin({
         analyzerMode: "disabled"
-      }),
-      new Critters({})
+      })
     ],
     resolve: {
       alias: {
