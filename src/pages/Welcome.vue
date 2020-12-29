@@ -50,7 +50,7 @@
         </p>
       </div>
     </v-col>
-    <v-col :md="5" :offset-md="7" class="page">
+    <v-col :md="5" class="page">
       <div class="section">
         <h1><span>Our mission</span> 🌍</h1>
         <p>
