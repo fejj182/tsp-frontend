@@ -2,7 +2,7 @@
   <div>
     <v-dialog v-model="dialog" max-width="600px">
       <template v-slot:activator="{ on, attrs }">
-        <v-btn icon text dark v-bind="attrs" v-on="on">
+        <v-btn :icon="$smallScreen()" text v-bind="attrs" v-on="on">
           <v-icon>mdi-forum</v-icon>
           <span class="sr-only">Contact Us</span>
         </v-btn>

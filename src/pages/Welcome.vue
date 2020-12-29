@@ -1,6 +1,6 @@
 <template>
   <div id="welcome" :style="{ backgroundImage: `url(${backgroundImage.src})` }">
-    <v-col :md="5" class="page">
+    <v-col :md="5" class="page" id="above-fold">
       <h1 data-test-id="welcome-title">
         Forget flying.
       </h1>
@@ -33,8 +33,8 @@
         <a :href="backgroundImage.unsplashHref">Unsplash</a>
       </span>
     </v-col>
-    <v-col :md="5" :offset-md="7" class="page">
-      <div class="section" id="how-it-works">
+    <v-col :md="5" :offset-md="7" class="page" id="how-it-works">
+      <div class="section">
         <h1><span>How it works</span> 🤔</h1>
         <p>
           Tell us where you want to start from and how long you prefer to travel
@@ -42,7 +42,7 @@
         </p>
         <p>
           We will show you some suggested connections. You can then build your
-          ideal adventure stop by stop.
+          ideal adventure one stop at a time.
         </p>
         <p>
           Once it's all planned out, you can book your tickets and whatever else
@@ -50,7 +50,7 @@
         </p>
       </div>
     </v-col>
-    <v-col :md="5" class="page">
+    <v-col :md="5" class="page" id="our-mission">
       <div class="section">
         <h1><span>Our mission</span> 🌍</h1>
         <p>
@@ -145,7 +145,6 @@ export default {
   max-width: 100%;
   width: calc(100%);
   height: calc(100vh - 64px);
-  padding: 1rem;
   opacity: 0.9;
   background-size: cover;
   background-repeat: no-repeat;
@@ -164,12 +163,18 @@ export default {
   }
 }
 
+#above-fold {
+  padding: 1.5rem;
+}
+
 .page {
-  height: calc(100vh - 72px - 1rem);
+  height: calc(100vh - 72px);
+  padding: 1rem;
 }
 
 .section {
   background: rgba(48, 63, 159, 0.8);
+  border-radius: 0.5rem;
   h1 {
     span {
       text-decoration: underline;
@@ -244,7 +249,11 @@ p {
   }
 
   .page {
-    height: calc(100vh - 56px - 1rem);
+    height: calc(100vh - 56px);
+    p {
+      padding: 0.5rem;
+      margin-bottom: 0;
+    }
   }
 
   h1 {
@@ -258,10 +267,6 @@ p {
   h3,
   p {
     font-size: 16px;
-  }
-
-  p {
-    padding: 0rem 0.5rem;
   }
 }
 </style>
