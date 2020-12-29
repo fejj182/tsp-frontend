@@ -8,7 +8,6 @@
       prepend-inner-icon="mdi-timer-sand"
       filled
       rounded
-      single-line
       background-color="grey lighten-4"
       data-test-id="max-journey-time-input"
     ></v-select>
