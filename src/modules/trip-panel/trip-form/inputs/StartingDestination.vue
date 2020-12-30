@@ -15,6 +15,7 @@
       @change="onChangeStation"
       :value="startingStation"
       :rules="validationRules"
+      append-icon=""
       required
     >
       <!-- use template to stop .v-list-item__mask class being used, which was causing items 

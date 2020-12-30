@@ -5,6 +5,7 @@
       @change="onChangeTime"
       label="Hours per stop"
       hide-details
+      append-icon=""
       prepend-inner-icon="mdi-timer-sand"
       filled
       rounded

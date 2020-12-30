@@ -65,8 +65,6 @@ function assertReloadedTripInCorrectState() {
   cy.get("g .leaflet-interactive").should("have.length", 2);
   cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item").should("not.exist");
-  cy.get("#stop-1 .mdi-menu-down").click();
-  cy.get(".v-list-item").should("not.exist");
 }
 
 function assertStopCanBeAddedToSavedTrip() {

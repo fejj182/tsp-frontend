@@ -4,7 +4,6 @@
     <Stop
       v-for="(stop, index) in stops"
       :key="index"
-      class="stop"
       :stations="stop.stations"
       :read-only="stop.readOnly"
       :fixed-stop="stop.fixed"

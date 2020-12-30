@@ -1,5 +1,5 @@
 <template>
-  <div :id="stopId">
+  <div class="stop" :id="stopId">
     <p
       v-if="selected && selected.value.durationHrsAndMins"
       data-test-id="duration"
@@ -19,6 +19,7 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
+      append-icon=""
       :append-outer-icon="allowRemove ? 'mdi-close' : ''"
       @click:append-outer="removeStop"
     >
@@ -168,6 +169,14 @@ p {
 @media only screen and (max-width: $width-desktop) {
   #add-stop {
     margin-bottom: 0.5rem;
+  }
+}
+</style>
+
+<style lang="scss">
+.stop {
+  .v-select .v-select__selection--disabled {
+    color: rgba(0, 0, 0, 0.87);
   }
 }
 </style>
