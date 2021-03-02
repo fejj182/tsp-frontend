@@ -70,6 +70,22 @@ describe("StartingDestination", () => {
         wrapper.find("[data-test-id=starting-destination]").props().items.length
       ).toBe(0);
     });
+
+    it("should create country categories from stations", () => {
+      const fr = fakeStation({ country: "FR" });
+      const es = fakeStation({ country: "ES" });
+      const es2 = fakeStation({ country: "ES" });
+
+      mockStore.state.stations.startingStations = [fr, es, es2];
+      const wrapper = mount(StartingDestination, {
+        vuetify: new Vuetify(),
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      expect(wrapper.vm.countries).toEqual(["France", "Spain"]);
+    });
   });
 
   describe("On change", () => {

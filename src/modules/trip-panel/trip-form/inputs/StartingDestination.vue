@@ -1,12 +1,9 @@
 <template>
   <div id="starting-destination">
-    <!-- TODO: Once the UX of choosing a starting destination is improved, get rid of autocomplete -->
-    <!-- too buggy on mobile with focus/context menu problems -->
-    <v-autocomplete
+    <v-select
       label="Start from..."
       data-test-id="starting-destination"
-      :items="stations"
-      :filter="autocompleteFilter"
+      :items="filteredStations"
       background-color="grey lighten-4"
       :prepend-inner-icon="innerIcon"
       filled
@@ -18,24 +15,44 @@
       append-icon=""
       required
     >
-      <!-- use template to stop .v-list-item__mask class being used, which was causing items 
-      with diacritics to be highlighted in full https://github.com/vuetifyjs/vuetify/pull/9618/files -->
-      <template v-slot:item="{ item }">
-        <span :id="'list-item-' + item.value.slug">{{ item.text }}</span>
+      <template v-slot:prepend-item>
+        <v-list-item
+          ripple
+          @click="toggleCountry"
+          v-for="country in countries"
+          :key="country"
+          :id="`${country}`"
+        >
+          <v-list-item-action>
+            <v-icon
+              :color="selectedCountries.length > 0 ? 'indigo darken-4' : ''"
+            >
+              {{ icon }}
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ countryMap[country] }}
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
       </template>
-    </v-autocomplete>
+    </v-select>
   </div>
 </template>
 
 <script>
 // TODO: Remove state from component
 import { mapStation, mapStations } from "@/mappers/stationFormMapper";
-import deburr from "lodash/deburr";
+import uniq from "lodash/uniq";
+import xor from "lodash/xor";
 
 export default {
   data() {
     return {
-      validationRules: this.$route.name === "welcome" ? [value => !!value] : []
+      validationRules: this.$route.name === "welcome" ? [value => !!value] : [],
+      countryMap: { ES: "Spain", FR: "France", PT: "Portugal" },
+      selectedCountries: []
     };
   },
   computed: {
@@ -55,8 +72,34 @@ export default {
       }
       return stations;
     },
+    filteredStations() {
+      if (this.selectedCountries.length == 0) {
+        return this.stations;
+      }
+      console.log(
+        this.selectedCountries,
+        this.$store.state.stations.startingStations
+      );
+      return mapStations(
+        this.$store.state.stations.startingStations.filter(
+          station => this.selectedCountries.indexOf(station.country) != -1
+        )
+      );
+    },
+    countries() {
+      return uniq(
+        this.$store.state.stations.startingStations.map(
+          station => station.country
+        )
+      );
+    },
     innerIcon() {
       return this.$route.name === "welcome" ? "mdi-train" : "";
+    },
+    icon() {
+      // if (this.likesAllFruit) return "mdi-close-box";
+      // if (this.likesSomeFruit) return "mdi-minus-box";
+      return "mdi-checkbox-blank-outline";
     }
   },
   methods: {
@@ -70,13 +113,10 @@ export default {
         }
       }
     },
-    autocompleteFilter(item, queryText, itemText) {
-      // same as default but adding _.deburr
-      return (
-        deburr(itemText)
-          .toLocaleLowerCase()
-          .indexOf(queryText.toLocaleLowerCase()) > -1
-      );
+    toggleCountry(event) {
+      this.selectedCountries = xor(this.selectedCountries, [
+        event.target.closest(".v-list-item").id
+      ]);
     }
   }
 };
