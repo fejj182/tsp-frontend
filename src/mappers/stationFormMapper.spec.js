@@ -14,7 +14,8 @@ describe("stationFormMapper", () => {
       name: "Barcelona",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
-      slug: "barcelona"
+      slug: "barcelona",
+      country: "ES"
     };
     expect(mapStation(station)).toStrictEqual({
       text: station.name,
@@ -28,7 +29,8 @@ describe("stationFormMapper", () => {
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
       slug: "barcelona",
-      duration: 90
+      duration: 90,
+      country: "ES"
     };
     expect(mapStationByDuration(station)).toStrictEqual({
       text: station.name,
@@ -46,7 +48,8 @@ describe("stationFormMapper", () => {
       name: "Barcelona",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
-      slug: "barcelona"
+      slug: "barcelona",
+      country: "ES"
     };
 
     const madrid = {
@@ -54,7 +57,8 @@ describe("stationFormMapper", () => {
       name: "Madrid",
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
-      slug: "barcelona"
+      slug: "barcelona",
+      country: "ES"
     };
     expect(mapStations([madrid, barcelona])).toStrictEqual([
       {
@@ -75,6 +79,7 @@ describe("stationFormMapper", () => {
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
       slug: "barcelona",
+      country: "ES",
       duration: 100
     };
 
@@ -84,6 +89,7 @@ describe("stationFormMapper", () => {
       lat: faker.address.latitude(),
       lng: faker.address.longitude(),
       slug: "barcelona",
+      country: "ES",
       duration: 50
     };
     expect(mapStationsByDuration([madrid, barcelona])).toStrictEqual([

@@ -8,3 +8,9 @@ export function startTripFromWelcome() {
     .click();
   cy.get("#find-destinations-btn").click();
 }
+
+export function startTripFromWelcomeBasic() {
+  cy.get("[data-test-id=starting-destination]").click();
+  cy.get("#list-item-barcelona").click();
+  cy.get("#find-destinations-btn").click();
+}

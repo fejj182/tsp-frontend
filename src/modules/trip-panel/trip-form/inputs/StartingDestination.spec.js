@@ -84,7 +84,7 @@ describe("StartingDestination", () => {
           $route: mockRoute
         }
       });
-      expect(wrapper.vm.countries).toEqual(["France", "Spain"]);
+      expect(wrapper.vm.countries).toEqual(["FR", "ES"]);
     });
   });
 
