@@ -29,7 +29,8 @@ describe("StartingDestination", () => {
       getters: {
         getStationsByCountries: countries => {
           return enabledStations;
-        }
+        },
+        completeTrip: enabledStations
       }
     };
     mockRoute = {
@@ -178,7 +179,7 @@ describe("StartingDestination", () => {
       });
     });
 
-    it("should dispatch startTrip on change if route is not welcome", () => {
+    it("should fetch connections on change if not on welcome page", () => {
       mockRoute.name = "notWelcome";
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -193,23 +194,6 @@ describe("StartingDestination", () => {
         .find("[data-test-id=starting-destination]")
         .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
-    });
-
-    it("should not dispatch startTrip on change if route is not welcome and station is null", () => {
-      mockRoute.name = "notWelcome";
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore,
-          $router: {
-            push: jest.fn()
-          },
-          $route: mockRoute
-        }
-      });
-      wrapper
-        .find("[data-test-id=starting-destination]")
-        .vm.$emit("change", null);
-      expect(mockStore.dispatch).not.toBeCalledWith("startTrip", station);
     });
   });
 

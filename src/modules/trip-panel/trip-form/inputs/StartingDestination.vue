@@ -13,6 +13,8 @@
       hide-details
       @change="onChangeStation"
       :rules="validationRules"
+      :readonly="readOnly"
+      :append-icon="!readOnly ? '$dropdown' : ''"
       required
     >
       <template v-slot:item="{ item }">
@@ -88,6 +90,9 @@ export default {
         )
       );
     },
+    readOnly() {
+      return this.$store.getters.completeTrip.length > 1;
+    },
     innerIcon() {
       return this.$route.name === "welcome" ? "mdi-train" : "";
     }
@@ -97,10 +102,7 @@ export default {
       if (this.$route.name === "welcome") {
         this.$emit("change-station", station);
       } else {
-        if (station) {
-          //TODO: can this be done without triggering a reset?
-          this.$store.dispatch("startTrip", station);
-        }
+        this.$store.dispatch("startTrip", station);
       }
     },
     autocompleteFilter(item, queryText, itemText) {

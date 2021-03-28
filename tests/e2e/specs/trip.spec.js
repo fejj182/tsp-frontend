@@ -10,7 +10,6 @@ describe("Trip", function() {
     cy.get(".Cookie__button").click();
     createTrip();
     assertStopCanBeAddedToSavedTrip();
-    assertTripCanBeRebuilt();
     resetTrip();
   });
 });
@@ -89,25 +88,6 @@ function assertStopCanBeAddedToSavedTrip() {
   cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
   cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
   cy.get("#stop-3 .v-select__selection").should("not.have.text", "");
-}
-
-function assertTripCanBeRebuilt() {
-  cy.get("[data-test-id=starting-destination]").click();
-  cy.get("#list-item-barcelona").click();
-
-  cy.get("#stop-1 .v-select__slot").click();
-  cy.get(".v-list-item:visible")
-    .first()
-    .click();
-  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
-
-  cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=save-for-later]").click();
-  cy.get("[data-test-id=success-updated]").should("exist");
-  cy.get("[data-test-id=starting-destination]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 }
 
 function resetTrip() {

@@ -43,6 +43,10 @@ function assertAddingAndRemoving() {
   cy.get("#stop-2 .v-select__selection").should("not.exist");
   cy.get("#stop-1 .v-select__selection").should("not.exist");
   cy.get("#stop-1 [data-test-id=stop]").should("exist");
+
+  cy.get("[data-test-id=starting-destination]").click();
+  cy.get("#list-item-bilbao").click();
+  cy.get(".marker-connection-zaragoza").should("exist");
 }
 
 function assertFullFlow() {
