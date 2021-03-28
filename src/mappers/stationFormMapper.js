@@ -1,20 +1,6 @@
 import { toHoursAndMinutes } from "./durationMapper";
 import cloneDeep from "lodash/cloneDeep";
 
-//Note: only used in StartingDestination
-export const mapStation = station => {
-  return {
-    text: station.name,
-    value: {
-      id: station.id,
-      name: station.name,
-      lat: station.lat,
-      lng: station.lng,
-      slug: station.slug
-    }
-  };
-};
-
 export const mapStationByDuration = station => {
   return {
     text: station.name,
@@ -24,6 +10,7 @@ export const mapStationByDuration = station => {
       lat: station.lat,
       lng: station.lng,
       slug: station.slug,
+      country: station.country,
       duration: station.duration,
       durationHrsAndMins: toHoursAndMinutes(station.duration)
     }
@@ -50,7 +37,8 @@ export const mapStations = stations => {
           name: station.name,
           lat: station.lat,
           lng: station.lng,
-          slug: station.slug
+          slug: station.slug,
+          country: station.country
         }
       };
     });
@@ -76,6 +64,7 @@ export const mapStationsByDuration = stations => {
           lat: station.lat,
           lng: station.lng,
           slug: station.slug,
+          country: station.country,
           duration: station.duration,
           durationHrsAndMins: toHoursAndMinutes(station.duration)
         }

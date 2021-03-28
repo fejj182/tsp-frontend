@@ -4,7 +4,7 @@ import Vuetify from "vuetify";
 import cloneDeep from "lodash/cloneDeep";
 
 import StartingDestination from "./StartingDestination.vue";
-import { mapStation, mapStations } from "@/mappers/stationFormMapper";
+import { mapStations } from "@/mappers/stationFormMapper";
 import { fakeStation } from "@/helpers/tests";
 import { state as trip } from "@/store/modules/trip";
 
@@ -25,6 +25,12 @@ describe("StartingDestination", () => {
         stations: {
           startingStations: []
         }
+      },
+      getters: {
+        getStationsByCountries: countries => {
+          return enabledStations;
+        },
+        completeTrip: enabledStations
       }
     };
     mockRoute = {
@@ -55,20 +61,99 @@ describe("StartingDestination", () => {
         }
       });
       expect(
-        wrapper.find("[data-test-id=starting-destination]").props().items
-      ).toEqual([mapStation(station)]);
+        wrapper.find("[data-test-id=starting-destination]").props().value
+      ).toEqual(station);
     });
 
-    it("should not load stations into props", async () => {
-      const wrapper = shallowMount(StartingDestination, {
+    it("should get stations by selected countries ", async () => {
+      const selectedCountries = ["ES", "FR"];
+      const getStationsByCountries = jest.fn();
+      getStationsByCountries.mockReturnValue(enabledStations);
+      mockStore.getters.getStationsByCountries = getStationsByCountries;
+
+      shallowMount(StartingDestination, {
+        data() {
+          return {
+            selectedCountries
+          };
+        },
         mocks: {
           $store: mockStore,
           $route: mockRoute
         }
       });
+
+      expect(getStationsByCountries).toHaveBeenCalledWith(selectedCountries);
+    });
+
+    it("should create country categories from stations", () => {
+      const fr = fakeStation({ country: "FR" });
+      const es = fakeStation({ country: "ES" });
+      const es2 = fakeStation({ country: "ES" });
+
+      mockStore.state.stations.startingStations = [fr, es, es2];
+      const wrapper = mount(StartingDestination, {
+        vuetify: new Vuetify(),
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        }
+      });
+      expect(wrapper.vm.countries).toEqual(["FR", "ES"]);
+    });
+  });
+
+  describe("Toggling countries", () => {
+    it("should clear selected station if not included in list of selected countries", () => {
+      const station = fakeStation({ country: "PT" });
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        },
+        data() {
+          return {
+            selectedStation: station,
+            selectedCountries: ["ES", "FR"]
+          };
+        }
+      });
+
       expect(
-        wrapper.find("[data-test-id=starting-destination]").props().items.length
-      ).toBe(0);
+        wrapper.find("[data-test-id=starting-destination]").props().value
+      ).toBe(station);
+
+      wrapper.vm.clearSelectedStationIfNotInSelectedCountries();
+
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().value
+      ).toBe(null);
+    });
+
+    it("should not clear selected station if included in list of selected countries", () => {
+      const station = fakeStation({ country: "ES" });
+      const wrapper = shallowMount(StartingDestination, {
+        mocks: {
+          $store: mockStore,
+          $route: mockRoute
+        },
+        data() {
+          return {
+            selectedStation: station,
+            selectedCountries: ["ES", "FR"]
+          };
+        }
+      });
+
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().value
+      ).toBe(station);
+
+      wrapper.vm.clearSelectedStationIfNotInSelectedCountries();
+
+      expect(
+        wrapper.find("[data-test-id=starting-destination]").props().value
+      ).toBe(station);
     });
   });
 
@@ -94,7 +179,7 @@ describe("StartingDestination", () => {
       });
     });
 
-    it("should dispatch startTrip on change if route is not welcome", () => {
+    it("should fetch connections on change if not on welcome page", () => {
       mockRoute.name = "notWelcome";
       const wrapper = shallowMount(StartingDestination, {
         mocks: {
@@ -109,23 +194,6 @@ describe("StartingDestination", () => {
         .find("[data-test-id=starting-destination]")
         .vm.$emit("change", station);
       expect(mockStore.dispatch).toBeCalledWith("startTrip", station);
-    });
-
-    it("should not dispatch startTrip on change if route is not welcome and station is null", () => {
-      mockRoute.name = "notWelcome";
-      const wrapper = shallowMount(StartingDestination, {
-        mocks: {
-          $store: mockStore,
-          $router: {
-            push: jest.fn()
-          },
-          $route: mockRoute
-        }
-      });
-      wrapper
-        .find("[data-test-id=starting-destination]")
-        .vm.$emit("change", null);
-      expect(mockStore.dispatch).not.toBeCalledWith("startTrip", station);
     });
   });
 

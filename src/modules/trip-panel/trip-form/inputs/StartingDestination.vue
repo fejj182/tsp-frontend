@@ -1,8 +1,7 @@
 <template>
   <div id="starting-destination">
-    <!-- TODO: Once the UX of choosing a starting destination is improved, get rid of autocomplete -->
-    <!-- too buggy on mobile with focus/context menu problems -->
     <v-autocomplete
+      v-model="selectedStation"
       label="Start from..."
       data-test-id="starting-destination"
       :items="stations"
@@ -13,15 +12,44 @@
       rounded
       hide-details
       @change="onChangeStation"
-      :value="startingStation"
       :rules="validationRules"
-      append-icon=""
+      :readonly="readOnly"
+      :append-icon="!readOnly ? '$dropdown' : ''"
       required
     >
-      <!-- use template to stop .v-list-item__mask class being used, which was causing items 
-      with diacritics to be highlighted in full https://github.com/vuetifyjs/vuetify/pull/9618/files -->
       <template v-slot:item="{ item }">
         <span :id="'list-item-' + item.value.slug">{{ item.text }}</span>
+      </template>
+      <template v-slot:prepend-item>
+        <v-list-group prepend-icon="mdi-filter">
+          <template v-slot:activator>
+            <v-list-item-title data-test-id="countries"
+              >Countries</v-list-item-title
+            >
+          </template>
+          <v-list-item
+            ripple
+            @click="toggleCountry"
+            v-for="country in countries"
+            :key="country"
+            :id="`${country}`"
+          >
+            <v-list-item-action>
+              <v-icon
+                :color="
+                  selectedCountries.length > 0 ? 'indigo darken-4' : 'indigo'
+                "
+              >
+                {{ icon(country) }}
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title :data-test-id="`list-item-${country}`">
+                {{ countryMap[country] }}
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list-group>
       </template>
     </v-autocomplete>
   </div>
@@ -29,31 +57,41 @@
 
 <script>
 // TODO: Remove state from component
-import { mapStation, mapStations } from "@/mappers/stationFormMapper";
+import { mapStations } from "@/mappers/stationFormMapper";
 import deburr from "lodash/deburr";
+import uniq from "lodash/uniq";
+import xor from "lodash/xor";
 
 export default {
   data() {
     return {
-      validationRules: this.$route.name === "welcome" ? [value => !!value] : []
+      validationRules: this.$route.name === "welcome" ? [value => !!value] : [],
+      countryMap: { ES: "Spain", FR: "France", PT: "Portugal" },
+      selectedCountries: [],
+      selectedStation: null
     };
   },
+  mounted() {
+    const station = this.$store.state.trip.startingStation;
+    if (station) {
+      this.selectedStation = station;
+    }
+  },
   computed: {
-    startingStation() {
-      let station = this.$store.state.trip.startingStation;
-      if (station) {
-        station = mapStation(station);
-      }
-      return station;
-    },
     stations() {
-      let stations = this.$store.state.stations.startingStations;
-      if (stations.length > 0) {
-        stations = mapStations(stations);
-      } else if (this.startingStation) {
-        stations = [this.startingStation];
-      }
-      return stations;
+      return mapStations(
+        this.$store.getters.getStationsByCountries(this.selectedCountries)
+      );
+    },
+    countries() {
+      return uniq(
+        this.$store.state.stations.startingStations.map(
+          station => station.country
+        )
+      );
+    },
+    readOnly() {
+      return this.$store.getters.completeTrip.length > 1;
     },
     innerIcon() {
       return this.$route.name === "welcome" ? "mdi-train" : "";
@@ -64,10 +102,7 @@ export default {
       if (this.$route.name === "welcome") {
         this.$emit("change-station", station);
       } else {
-        if (station) {
-          //TODO: can this be done without triggering a reset?
-          this.$store.dispatch("startTrip", station);
-        }
+        this.$store.dispatch("startTrip", station);
       }
     },
     autocompleteFilter(item, queryText, itemText) {
@@ -77,6 +112,28 @@ export default {
           .toLocaleLowerCase()
           .indexOf(queryText.toLocaleLowerCase()) > -1
       );
+    },
+    toggleCountry(event) {
+      this.selectedCountries = xor(this.selectedCountries, [
+        event.target.closest(".v-list-item").id
+      ]);
+      this.clearSelectedStationIfNotInSelectedCountries();
+    },
+    clearSelectedStationIfNotInSelectedCountries() {
+      if (
+        this.selectedStation &&
+        this.selectedCountries.length > 0 &&
+        this.selectedCountries.indexOf(this.selectedStation.country) == -1
+      ) {
+        this.selectedStation = null;
+      }
+    },
+    icon(country) {
+      if (this.selectedCountries.indexOf(country) != -1) {
+        return "mdi-checkbox-marked";
+      } else {
+        return "mdi-checkbox-blank-outline";
+      }
     }
   }
 };
@@ -88,6 +145,9 @@ export default {
 }
 .v-input {
   margin-bottom: 1.5rem;
+}
+.v-list-item__action {
+  margin-right: 16px !important;
 }
 
 @media only screen and (max-width: $width-desktop) {
@@ -103,6 +163,15 @@ export default {
     color: #303f9f;
     padding-bottom: 2px;
     padding-right: 0.5rem;
+  }
+}
+
+.v-list-group {
+  .v-list-item__icon {
+    margin-right: 16px !important;
+    .v-icon {
+      color: #303f9f;
+    }
   }
 }
 </style>

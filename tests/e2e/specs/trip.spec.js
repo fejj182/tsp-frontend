@@ -10,7 +10,6 @@ describe("Trip", function() {
     cy.get(".Cookie__button").click();
     createTrip();
     assertStopCanBeAddedToSavedTrip();
-    assertTripCanBeRebuilt();
     resetTrip();
   });
 });
@@ -19,17 +18,11 @@ function createTrip() {
   cy.wait("@getDestinations");
   startTripFromWelcome();
 
-  cy.get(".position-1").should("exist");
-
   cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
     .click();
   cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
-  cy.get(".position-2").should("exist");
-  cy.get("g .leaflet-interactive").should("exist");
-  cy.get(".leaflet-popup").should("exist");
-
   cy.get("[data-test-id=add-stop]").click();
   cy.get("#stop-2 .v-select__slot").click();
   cy.get(".v-list-item:visible")
@@ -39,6 +32,12 @@ function createTrip() {
 
   cy.get("[data-test-id=save-trip]").click();
   cy.wait("@saveTrip");
+
+  cy.get("[data-test-id=success-alias]").should("exist");
+  cy.get("[data-test-id=success-alias] .v-alert__content").should(
+    "contain.text",
+    "created"
+  );
 
   cy.reload();
   assertReloadedTripInCorrectState();
@@ -89,27 +88,6 @@ function assertStopCanBeAddedToSavedTrip() {
   cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
   cy.get("#stop-2 .v-select__selection").should("not.have.text", "");
   cy.get("#stop-3 .v-select__selection").should("not.have.text", "");
-}
-
-function assertTripCanBeRebuilt() {
-  cy.get("[data-test-id=starting-destination]").click();
-  cy.get(".v-list-item")
-    .first()
-    .click();
-
-  cy.get("#stop-1 .v-select__slot").click();
-  cy.get(".v-list-item:visible")
-    .first()
-    .click();
-  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
-
-  cy.get("[data-test-id=more-options]").click();
-  cy.get("[data-test-id=save-for-later]").click();
-  cy.get("[data-test-id=success-updated]").should("exist");
-  cy.get("[data-test-id=starting-destination]")
-    .should("exist")
-    .should("not.have.value", "");
-  cy.get("#stop-1 .v-select__selection").should("not.have.text", "");
 }
 
 function resetTrip() {

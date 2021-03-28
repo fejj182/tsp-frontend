@@ -12,6 +12,44 @@ describe("stations", () => {
   let station = {};
   const connections = [{}, {}];
 
+  describe("getters", () => {
+    describe("getStationsByCountries", () => {
+      it("should return stations of a single country", () => {
+        const countries = ["ES"];
+        let state = {
+          startingStations: [{ country: "ES" }, { country: "FR" }]
+        };
+        expect(
+          module.getters.getStationsByCountries(state)(countries)
+        ).toEqual([{ country: "ES" }]);
+      });
+
+      it("should return stations of a multiple countries", () => {
+        const countries = ["ES", "FR"];
+        let state = {
+          startingStations: [
+            { country: "ES" },
+            { country: "FR" },
+            { country: "PT" }
+          ]
+        };
+        expect(
+          module.getters.getStationsByCountries(state)(countries)
+        ).toEqual([{ country: "ES" }, { country: "FR" }]);
+      });
+
+      it("should return all stations if passed list of empty countries", () => {
+        let state = {
+          startingStations: [{ country: "ES" }, { country: "FR" }]
+        };
+        expect(module.getters.getStationsByCountries(state)([])).toEqual([
+          { country: "ES" },
+          { country: "FR" }
+        ]);
+      });
+    });
+  });
+
   describe("actions", () => {
     describe("fetchConnections", () => {
       let commit, dispatch;

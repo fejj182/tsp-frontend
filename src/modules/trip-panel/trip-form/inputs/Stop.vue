@@ -19,8 +19,8 @@
       :readonly="readOnly"
       @change="onChangeStation"
       :value="selected"
-      append-icon=""
       :append-outer-icon="allowRemove ? 'mdi-close' : ''"
+      :append-icon="!readOnly ? '$dropdown' : ''"
       @click:append-outer="removeStop"
     >
       <template v-slot:item="{ item }">

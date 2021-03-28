@@ -1,4 +1,7 @@
-import { startTripFromWelcome } from "../support/helpers";
+import {
+  startTripFromWelcome,
+  startTripFromWelcomeBasic
+} from "../support/helpers";
 
 describe("TripForm", function() {
   it("remove button should work", function() {
@@ -18,9 +21,9 @@ describe("TripForm", function() {
 function assertAddingAndRemoving() {
   cy.wait("@getDestinations");
   startTripFromWelcome();
-
   cy.get(".thumb-label").contains("0");
   cy.get(".thumb-label").contains("2");
+
   cy.get("#stop-1 .v-select__slot").click();
   cy.get(".v-list-item:visible")
     .first()
@@ -40,6 +43,10 @@ function assertAddingAndRemoving() {
   cy.get("#stop-2 .v-select__selection").should("not.exist");
   cy.get("#stop-1 .v-select__selection").should("not.exist");
   cy.get("#stop-1 [data-test-id=stop]").should("exist");
+
+  cy.get("[data-test-id=starting-destination]").click();
+  cy.get("#list-item-bilbao").click();
+  cy.get(".marker-connection-zaragoza").should("exist");
 }
 
 function assertFullFlow() {
@@ -104,7 +111,7 @@ function assertReset() {
   cy.get("[data-test-id=more-options]").click();
   cy.get("[data-test-id=reset-trip]").click();
   cy.wait("@getDestinations");
-  startTripFromWelcome();
+  startTripFromWelcomeBasic();
   assertFullFlow();
 }
 
