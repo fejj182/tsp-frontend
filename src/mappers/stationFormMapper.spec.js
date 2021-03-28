@@ -1,5 +1,4 @@
 import {
-  mapStation,
   mapStations,
   mapStationByDuration,
   mapStationsByDuration
@@ -8,20 +7,6 @@ import faker from "faker";
 import { toHoursAndMinutes } from "./durationMapper";
 
 describe("stationFormMapper", () => {
-  it("should map a single station", () => {
-    const station = {
-      id: 1,
-      name: "Barcelona",
-      lat: faker.address.latitude(),
-      lng: faker.address.longitude(),
-      slug: "barcelona",
-      country: "ES"
-    };
-    expect(mapStation(station)).toStrictEqual({
-      text: station.name,
-      value: station
-    });
-  });
   it("should map a single station with duration", () => {
     const station = {
       id: 1,
@@ -42,34 +27,11 @@ describe("stationFormMapper", () => {
     });
   });
 
-  it("should map and sort a list of stations by name", () => {
-    const barcelona = {
-      id: 1,
-      name: "Barcelona",
-      lat: faker.address.latitude(),
-      lng: faker.address.longitude(),
-      slug: "barcelona",
-      country: "ES"
-    };
-
-    const madrid = {
-      id: 1,
-      name: "Madrid",
-      lat: faker.address.latitude(),
-      lng: faker.address.longitude(),
-      slug: "barcelona",
-      country: "ES"
-    };
-    expect(mapStations([madrid, barcelona])).toStrictEqual([
-      {
-        text: barcelona.name,
-        value: barcelona
-      },
-      {
-        text: madrid.name,
-        value: madrid
-      }
-    ]);
+  describe("mapStations", () => {
+    it("should return same list of empty stations", () => {
+      const noStations = [];
+      expect(mapStations(noStations)).toEqual(noStations);
+    });
   });
 
   it("should map and sort a list of stations by duration", () => {

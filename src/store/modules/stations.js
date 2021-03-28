@@ -6,7 +6,16 @@ export const state = {
   startingStations: []
 };
 
-export const getters = {};
+export const getters = {
+  getStationsByCountries: state => countries => {
+    if (countries.length == 0) {
+      return state.startingStations;
+    }
+    return state.startingStations.filter(
+      station => countries.indexOf(station.country) != -1
+    );
+  }
+};
 
 export const actions = {
   async fetchConnections({ dispatch, commit }, station) {

@@ -1,9 +1,10 @@
 <template>
   <div id="starting-destination">
     <v-autocomplete
+      v-model="selectedStation"
       label="Start from..."
       data-test-id="starting-destination"
-      :items="filteredStations"
+      :items="stations"
       :filter="autocompleteFilter"
       background-color="grey lighten-4"
       :prepend-inner-icon="innerIcon"
@@ -11,7 +12,6 @@
       rounded
       hide-details
       @change="onChangeStation"
-      :value="startingStation"
       :rules="validationRules"
       required
     >
@@ -42,7 +42,7 @@
               </v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>
+              <v-list-item-title :data-test-id="`list-item-${country}`">
                 {{ countryMap[country] }}
               </v-list-item-title>
             </v-list-item-content>
@@ -55,7 +55,7 @@
 
 <script>
 // TODO: Remove state from component
-import { mapStation, mapStations } from "@/mappers/stationFormMapper";
+import { mapStations } from "@/mappers/stationFormMapper";
 import deburr from "lodash/deburr";
 import uniq from "lodash/uniq";
 import xor from "lodash/xor";
@@ -65,34 +65,20 @@ export default {
     return {
       validationRules: this.$route.name === "welcome" ? [value => !!value] : [],
       countryMap: { ES: "Spain", FR: "France", PT: "Portugal" },
-      selectedCountries: []
+      selectedCountries: [],
+      selectedStation: null
     };
   },
+  mounted() {
+    const station = this.$store.state.trip.startingStation;
+    if (station) {
+      this.selectedStation = station;
+    }
+  },
   computed: {
-    startingStation() {
-      let station = this.$store.state.trip.startingStation;
-      if (station) {
-        station = mapStation(station);
-      }
-      return station;
-    },
     stations() {
-      let stations = this.$store.state.stations.startingStations;
-      if (stations.length > 0) {
-        stations = mapStations(stations);
-      } else if (this.startingStation) {
-        stations = [this.startingStation];
-      }
-      return stations;
-    },
-    filteredStations() {
-      if (this.selectedCountries.length == 0) {
-        return this.stations;
-      }
       return mapStations(
-        this.$store.state.stations.startingStations.filter(
-          station => this.selectedCountries.indexOf(station.country) != -1
-        )
+        this.$store.getters.getStationsByCountries(this.selectedCountries)
       );
     },
     countries() {
@@ -129,6 +115,16 @@ export default {
       this.selectedCountries = xor(this.selectedCountries, [
         event.target.closest(".v-list-item").id
       ]);
+      this.clearSelectedStationIfNotInSelectedCountries();
+    },
+    clearSelectedStationIfNotInSelectedCountries() {
+      if (
+        this.selectedStation &&
+        this.selectedCountries.length > 0 &&
+        this.selectedCountries.indexOf(this.selectedStation.country) == -1
+      ) {
+        this.selectedStation = null;
+      }
     },
     icon(country) {
       if (this.selectedCountries.indexOf(country) != -1) {
